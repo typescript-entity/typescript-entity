@@ -1,7 +1,6 @@
-import { Modelable } from './interfaces';
+import { Config, Modelable } from './interfaces';
 import Model from './Model';
 export declare type Attributes<M extends Model<C>, C extends Config = M['config']> = NonFunctionProperties<NonModelProperties<M>>;
-export declare type Config = {};
 export declare type Constructor<M extends Model<C>, C extends Config> = Function & {
     config: C;
     sanitizers: Sanitizers<M>;

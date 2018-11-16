@@ -1,9 +1,7 @@
-import { Modelable } from './interfaces';
+import { Config, Modelable } from './interfaces';
 import Model from './Model';
 
 export type Attributes<M extends Model<C>, C extends Config = M['config']> = NonFunctionProperties<NonModelProperties<M>>;
-
-export type Config = {};
 
 export type Constructor<M extends Model<C>, C extends Config> = Function & {
   config: C;

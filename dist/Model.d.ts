@@ -1,5 +1,5 @@
-import { Modelable } from './interfaces';
-import { Attributes, Config, Constructor, Sanitizers, Validators } from './types';
+import { Config, Modelable } from './interfaces';
+import { Attributes, Constructor, Sanitizers, Validators } from './types';
 export default abstract class Model<C extends Config = Config> implements Modelable<C> {
     ['constructor']: Constructor<this, C>;
     readonly config: C;

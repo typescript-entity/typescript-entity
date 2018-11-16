@@ -15,7 +15,7 @@ An example `User` model is shown below.
 ```javascript
 import { Model, Config as BaseConfig, Sanitizers, Validators, sanitizers, validators } from 'typescript-model';
 
-export type Config = BaseConfig & {
+export interface Config extends BaseConfig {
   minUsernameLength: number,
 };
 

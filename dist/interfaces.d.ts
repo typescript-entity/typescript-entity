@@ -1,4 +1,5 @@
-import { Config } from './types';
+export interface Config {
+}
 export interface Configurable<C extends Config> {
     config: C;
 }

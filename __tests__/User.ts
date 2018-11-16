@@ -1,6 +1,6 @@
 import { Model, Config as BaseConfig, Sanitizers, Validators, sanitizers, validators } from '../src/';
 
-export type Config = BaseConfig & {
+export interface Config extends BaseConfig {
   minUsernameLength: number,
 };
 
