@@ -21,5 +21,8 @@ var string = function (value, options) {
     return 'string' === typeof value && validator.isLength(value, options);
 };
 exports.string = string;
-var uuid = function (value, version) { return string(value) && validator.isUUID(value, version); };
+var uuid = function (value, version) {
+    if (version === void 0) { version = 4; }
+    return string(value) && validator.isUUID(value, version);
+};
 exports.uuid = uuid;
