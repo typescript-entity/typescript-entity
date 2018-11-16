@@ -111,4 +111,4 @@ var Model = /** @class */ (function () {
     Model.validators = {};
     return Model;
 }());
-exports.default = Model;
+exports.Model = Model;
