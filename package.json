@@ -23,6 +23,7 @@
     "type": "git",
     "url": "git+https://github.com/apancutt/typescript-model.git"
   },
+  "files": ["dist/**/*"],
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "dependencies": {
