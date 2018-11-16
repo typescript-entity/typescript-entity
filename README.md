@@ -13,7 +13,7 @@ npm install --save typescript-model
 An example `User` model is shown below.
 
 ```javascript
-import { Model, Config as BaseConfig, Sanitizers, Validators, sanitizers, validators } from '../src/';
+import { Model, Config as BaseConfig, Sanitizers, Validators, sanitizers, validators } from 'typescript-model';
 
 export type Config = BaseConfig & {
   minUsernameLength: number,
