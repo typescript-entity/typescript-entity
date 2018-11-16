@@ -1,0 +1,60 @@
+{
+  "name": "typescript-model",
+  "version": "0.0.1",
+  "description": "Typescript entity data modeling (EDM) library with attribute sanitization and validation.",
+  "keywords": [
+    "typescript",
+    "entity",
+    "data",
+    "model",
+    "edm",
+    "sanitize",
+    "sanitization",
+    "validate",
+    "validation"
+  ],
+  "homepage": "https://github.com/apancutt/typescript-model#readme",
+  "bugs": {
+    "url": "https://github.com/apancutt/typescript-model/issues"
+  },
+  "author": "Adam Pancutt <adam@pancutt.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/apancutt/typescript-model.git"
+  },
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "dependencies": {
+    "@types/validator": "^9.4.2",
+    "validator": "^10.9.0"
+  },
+  "devDependencies": {
+    "@types/jest": "^23.3.8",
+    "@types/node": "^10.12.1",
+    "jest": "^23.6.0",
+    "ts-jest": "^23.10.4",
+    "typescript": "^3.1.6"
+  },
+  "scripts": {
+    "build": "rm -rf ./dist/ && tsc -p tsconfig.build.json",
+    "build:watch": "npm run build -- --watch",
+    "test": "jest",
+    "test:watch": "npm run test -- --watch"
+  },
+  "jest": {
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "jsx",
+      "json",
+      "node"
+    ],
+    "testEnvironment": "node",
+    "testRegex": "/__tests__/.*\\.test\\.(ts|tsx|js)$",
+    "transform": {
+      "^.+\\.ts?$": "ts-jest"
+    }
+  }
+}

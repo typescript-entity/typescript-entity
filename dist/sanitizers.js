@@ -1,0 +1,13 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var validator = require("validator");
+var boolean = function (value) { return validator.toBoolean(string(value)); };
+exports.boolean = boolean;
+var date = function (value) { return validator.toDate(value); };
+exports.date = date;
+var float = function (value) { return validator.toFloat(string(value)); };
+exports.float = float;
+var integer = function (value) { return validator.toInt(string(value)); };
+exports.integer = integer;
+var string = function (value) { return validator.toString(value); };
+exports.string = string;
