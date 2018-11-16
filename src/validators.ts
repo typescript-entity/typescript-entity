@@ -6,7 +6,7 @@ const email = (value: string) => string(value) && validator.isEmail(value);
 const float = (value: number, options: ValidatorJS.IsFloatOptions = {}) => 'number' === typeof value && validator.isFloat(sanitizer.string(value), options);
 const integer = (value: number, options: ValidatorJS.IsIntOptions = {}) => 'number' === typeof value && validator.isInt(sanitizer.string(value), options);
 const string = (value: string, options: ValidatorJS.IsLengthOptions = {}) => 'string' === typeof value && validator.isLength(value, options);
-const uuid = (value: string, version: 3 | 4 | 5 | 'all') => string(value) && validator.isUUID(value, version);
+const uuid = (value: string, version: 3 | 4 | 5 | 'all' = 4) => string(value) && validator.isUUID(value, version);
 
 export {
   boolean,
