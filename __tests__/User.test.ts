@@ -54,16 +54,16 @@ test('a User instance can be validated', () => {
 test('a User instance inherits default configuration', () => {
 
   const user = clean();
-  expect(user.config.minUsernameLength).toBe(5);
+  expect(user.config.min_username_length).toBe(5);
 
 });
 
 test('a User instance can override default configuration', () => {
 
   const user = clean({
-    minUsernameLength: 10,
+    min_username_length: 10,
   });
 
-  expect(user.config.minUsernameLength).toBe(10);
+  expect(user.config.min_username_length).toBe(10);
 
 });

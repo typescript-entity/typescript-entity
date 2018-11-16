@@ -1,7 +1,7 @@
 import { Model, Config as BaseConfig, Sanitizers, Validators, sanitizers, validators } from '../src/';
 
 export interface Config extends BaseConfig {
-  minUsernameLength: number,
+  min_username_length: number,
 };
 
 export class User extends Model<Config> {
@@ -13,7 +13,7 @@ export class User extends Model<Config> {
 
   static config: Config = {
     ...Model.config,
-    minUsernameLength: 5,
+    min_username_length: 5,
   };
 
   static sanitizers: Sanitizers<User> = {
@@ -28,7 +28,7 @@ export class User extends Model<Config> {
     ...Model.validators,
     email: (model, key, value) => validators.email(value),
     id: (model, key, value) => undefined === value || validators.integer(value, {min: 1}),
-    username: (model, key, value) => validators.string(value, {min: model.config.minUsernameLength}),
+    username: (model, key, value) => validators.string(value, {min: model.config.min_username_length}),
     verified: (model, key, value) => validators.boolean(value),
   };
 
@@ -36,7 +36,7 @@ export class User extends Model<Config> {
     super({ ...User.config, ...config as object } as Config);
     this.email = email;
     this.username = username;
-    this.verified= verified;
+    this.verified = verified;
   }
 
 }
