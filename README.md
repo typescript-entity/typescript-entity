@@ -12,7 +12,7 @@ npm install --save typescript-model
 
 An example `User` model is shown below.
 
-```javascript
+```typescript
 import { Model, Config as BaseConfig, Sanitizers, Validators, sanitizers, validators } from 'typescript-model';
 
 export interface Config extends BaseConfig {
@@ -59,7 +59,7 @@ export class User extends Model<Config> {
 
 Instantiation:
 
-```javascript
+```typescript
 import { User } from './User';
 
 const user = new User('foo@example.com', 'foo', false);
