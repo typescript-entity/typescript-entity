@@ -1,13 +1,11 @@
 {
   "name": "typescript-model",
   "version": "1.0.0",
-  "description": "Typescript entity data modeling (EDM) library with attribute sanitization and validation.",
+  "description": "Typed entity modeling library with attribute sanitization and validation.",
   "keywords": [
     "typescript",
     "entity",
-    "data",
     "model",
-    "edm",
     "sanitize",
     "sanitization",
     "validate",

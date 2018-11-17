@@ -1,6 +1,6 @@
 # typescript-model
 
-Typescript entity data modeling (EDM) library with attribute sanitization and validation.
+Fully-typed entity modeling library with attribute sanitization and validation.
 
 ## Installation
 
@@ -16,7 +16,7 @@ An example `User` model is shown below.
 import { Model, Config as BaseConfig, Sanitizers, Validators, sanitizers, validators } from 'typescript-model';
 
 export interface Config extends BaseConfig {
-  minUsernameLength: number,
+  min_username_length: number,
 };
 
 export class User extends Model<Config> {
@@ -70,3 +70,11 @@ console.log(user);
 ```
 
  Review the `__tests__` directory for additional usage examples.
+
+## Motivation
+
+There are various ORM libraries available for Typescript and JavaScript but all are tightly coupled with Data Access Mappers and underlying data stores.
+
+This library provides just the low-level requirements of an entity model without the concern of how data is mapped.
+
+The specific use-case that led to it's inception was to be able to share entity models between API and client applications. While an API application maps data sourced from arbitrary - and usually multiple - data stores, the client application would map data sourced from the API.
