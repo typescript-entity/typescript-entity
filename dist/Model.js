@@ -2,14 +2,17 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 var Model = /** @class */ (function () {
     /**
+     * @param attrs
      * @param config
      */
-    function Model(config) {
+    function Model(attrs, config, raw) {
         if (config === void 0) { config = Model.config; }
+        if (raw === void 0) { raw = false; }
         this.config = config;
         Object.defineProperty(this, 'config', {
             enumerable: false,
         });
+        this[raw ? 'mergeRaw' : 'merge'](attrs);
     }
     /**
      * Sanitizes all attributes on the model.
