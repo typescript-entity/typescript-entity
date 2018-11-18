@@ -8,10 +8,9 @@ export declare abstract class Model<C extends Config = Config> implements Modela
     static sanitizers: Sanitizers<Model>;
     static validators: Validators<Model>;
     /**
-     * @param attrs
      * @param config
      */
-    constructor(attrs: Attributes<Model>, config?: C, raw?: boolean);
+    constructor(config?: C);
     /**
      * Sanitizes all attributes on the model.
      */

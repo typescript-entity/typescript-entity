@@ -13,7 +13,7 @@ npm install --save typescript-model
 An example `User` model is shown below.
 
 ```typescript
-import { Attributes, Model, Config as BaseConfig, Sanitizers, Validators, sanitizers, validators } from 'typescript-model';
+import { Model, Config as BaseConfig, Sanitizers, Validators, sanitizers, validators } from 'typescript-model';
 
 export interface Config extends BaseConfig {
   min_username_length: number,
@@ -21,10 +21,10 @@ export interface Config extends BaseConfig {
 
 export class User extends Model<Config> {
 
-  public email!: string; // Note the use of '!' to silence TS2564 errors; these properties are definitely assigned in super.constructor()
-  public id?: number; // A '!' is not required as this parameter is marked as optional ('?')
-  public username!: string;
-  public verified!: boolean;
+  public email: string;
+  public id?: number;
+  public username: string;
+  public verified: boolean;
 
   static config: Config = {
     ...Model.config,
@@ -47,8 +47,11 @@ export class User extends Model<Config> {
     verified: (model, key, value) => validators.boolean(value),
   };
 
-  public constructor(attrs: Attributes<User>, config: Partial<Config> = {}, raw: boolean = false) {
-    super(attrs, { ...User.config, ...config as object } as Config, raw);
+  public constructor(email: string, username: string, verified: boolean = false, config: Partial<Config> = {}) {
+    super({ ...User.config, ...config as object } as Config);
+    this.email = email;
+    this.username = username;
+    this.verified = verified;
   }
 
 }
@@ -59,9 +62,11 @@ Instantiation:
 ```typescript
 import { User } from './User';
 
-const user = new User({ email: 'foo@example.com', username: 'foo', verified: false });
+const user = new User('foo@example.com', 'foo', false);
 
-console.log(user); // User { email: 'foo@example.com', username: 'foo', verified: false }
+console.log(user);
+
+// User { email: 'foo@example.com', username: 'foo', verified: false }
 ```
 
  Review the `__tests__` directory for additional usage examples.

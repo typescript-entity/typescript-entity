@@ -1,4 +1,4 @@
-import { Attributes, Model, Config as BaseConfig, Sanitizers, Validators, sanitizers, validators } from '../src/';
+import { Model, Config as BaseConfig, Sanitizers, Validators, sanitizers, validators } from '../src/';
 
 export interface Config extends BaseConfig {
   min_username_length: number,
@@ -6,10 +6,10 @@ export interface Config extends BaseConfig {
 
 export class User extends Model<Config> {
 
-  public email!: string;
+  public email: string;
   public id?: number;
-  public username!: string;
-  public verified!: boolean;
+  public username: string;
+  public verified: boolean;
 
   static config: Config = {
     ...Model.config,
@@ -32,8 +32,11 @@ export class User extends Model<Config> {
     verified: (model, key, value) => validators.boolean(value),
   };
 
-  public constructor(attrs: Attributes<User>, config: Partial<Config> = {}, raw: boolean = false) {
-    super(attrs, { ...User.config, ...config as object } as Config, raw);
+  public constructor(email: string, username: string, verified: boolean = false, config: Partial<Config> = {}) {
+    super({ ...User.config, ...config as object } as Config);
+    this.email = email;
+    this.username = username;
+    this.verified = verified;
   }
 
 }
