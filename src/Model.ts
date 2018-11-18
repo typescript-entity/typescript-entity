@@ -12,13 +12,15 @@ export abstract class Model<C extends Config = Config> implements Modelable<C> {
   public static validators: Validators<Model> = {};
 
   /**
+   * @param attrs
    * @param config
    */
-  public constructor(config: C = Model.config as C) {
+  public constructor(attrs: Attributes<Model>, config: C = Model.config as C, raw: boolean = false) {
     this.config = config;
     Object.defineProperty(this, 'config', {
       enumerable: false,
     });
+    this[raw ? 'mergeRaw' : 'merge'](attrs);
   }
 
   /**
