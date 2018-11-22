@@ -81,10 +81,9 @@ var Model = /** @class */ (function () {
      */
     Model.prototype.mergeRaw = function (attrs, keys) {
         var _this = this;
-        if (undefined === keys) {
-            keys = Object.keys(this.constructor.sanitizers).concat(Object.keys(this.constructor.validators)).filter(function (elem, pos, arr) { return arr.indexOf(elem) === pos; });
-        }
-        keys.forEach(function (key) {
+        (keys || Object.keys(this.constructor.sanitizers)
+            .concat(Object.keys(this.constructor.validators))
+            .filter(function (elem, pos, arr) { return arr.indexOf(elem) === pos; })).forEach(function (key) {
             if (undefined !== attrs[key]) {
                 _this[key] = attrs[key];
             }

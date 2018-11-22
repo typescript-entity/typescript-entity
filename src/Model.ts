@@ -104,14 +104,13 @@ export abstract class Model<C extends Config = Config> implements Modelable<C> {
    */
   public mergeRaw(attrs: Partial<Attributes<this>>, keys?: (keyof Attributes<this>)[]): this {
 
-    if (undefined === keys) {
-      keys = Object.keys(this.constructor.sanitizers).concat(Object.keys(this.constructor.validators)).filter((elem, pos, arr) => arr.indexOf(elem) === pos) as (keyof Attributes<this>)[];
-    }
-
     type A = Attributes<this>;
     type K = keyof A;
 
-    keys.forEach((key) => {
+    (keys || Object.keys(this.constructor.sanitizers)
+      .concat(Object.keys(this.constructor.validators))
+      .filter((elem, pos, arr) => arr.indexOf(elem) === pos) as (keyof Attributes<this>)[]
+    ).forEach((key) => {
       if (undefined !== attrs[key]) {
         (this[key] as A[K]) = attrs[key] as A[K];
       }
@@ -130,7 +129,7 @@ export abstract class Model<C extends Config = Config> implements Modelable<C> {
     const json: any = Object.assign({}, this);
 
     Object.getOwnPropertyNames(prototype).forEach((key) => {
-      let descriptor = Object.getOwnPropertyDescriptor(prototype, key);
+      const descriptor = Object.getOwnPropertyDescriptor(prototype, key);
       if (descriptor && 'function' === typeof descriptor.get) {
         json[key] = this[key as keyof this];
       }
