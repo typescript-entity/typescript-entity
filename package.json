@@ -27,18 +27,18 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "dependencies": {
-    "@types/validator": "^9.4.2",
-    "validator": "^10.9.0"
+    "@types/validator": "10",
+    "validator": "11"
   },
   "devDependencies": {
-    "@types/jest": "^23.3.8",
-    "@types/node": "^10.12.1",
-    "jest": "^23.6.0",
-    "ts-jest": "^23.10.4",
-    "tslint": "^5.11.0",
-    "tslint-config-airbnb": "^5.11.1",
-    "tsutils": "^3.5.0",
-    "typescript": "^3.1.6"
+    "@types/jest": "24",
+    "@types/node": "12",
+    "jest": "24",
+    "ts-jest": "24",
+    "tslint": "5",
+    "tslint-config-airbnb": "5",
+    "tsutils": "3",
+    "typescript": "3"
   },
   "scripts": {
     "build": "rm -rf ./dist/ && tsc -p tsconfig.build.json",
