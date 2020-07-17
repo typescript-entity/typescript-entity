@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.string = exports.integer = exports.float = exports.date = exports.boolean = void 0;
 var validator = require("validator");
 var boolean = function (value) { return validator.toBoolean(string(value)); };
 exports.boolean = boolean;

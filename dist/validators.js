@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.uuid = exports.string = exports.integer = exports.float = exports.email = exports.boolean = void 0;
 var validator = require("validator");
 var sanitizer = require("./sanitizers");
 var boolean = function (value) { return 'boolean' === typeof value; };
