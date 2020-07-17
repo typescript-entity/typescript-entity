@@ -1,6 +1,6 @@
 {
   "name": "typescript-model",
-  "version": "1.2.3",
+  "version": "1.2.4",
   "description": "Typed entity modeling library with attribute sanitization and validation.",
   "keywords": [
     "typescript",
