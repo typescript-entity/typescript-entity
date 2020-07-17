@@ -28,14 +28,14 @@
   "types": "dist/index.d.ts",
   "dependencies": {
     "@types/validator": "10",
-    "validator": "11"
+    "validator": "13"
   },
   "devDependencies": {
-    "@types/jest": "24",
-    "@types/node": "12",
-    "jest": "24",
-    "ts-jest": "24",
-    "tslint": "5",
+    "@types/jest": "26",
+    "@types/node": "14",
+    "jest": "26",
+    "ts-jest": "26",
+    "tslint": "6",
     "tslint-config-airbnb": "5",
     "tsutils": "3",
     "typescript": "3"
