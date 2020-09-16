@@ -1,29 +1,9 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.uuid = exports.string = exports.integer = exports.float = exports.email = exports.boolean = void 0;
-var validator = require("validator");
-var sanitizer = require("./sanitizers");
-var boolean = function (value) { return 'boolean' === typeof value; };
-exports.boolean = boolean;
-var email = function (value) { return string(value) && validator.isEmail(value); };
-exports.email = email;
-var float = function (value, options) {
-    if (options === void 0) { options = {}; }
-    return 'number' === typeof value && validator.isFloat(sanitizer.string(value), options);
-};
-exports.float = float;
-var integer = function (value, options) {
-    if (options === void 0) { options = {}; }
-    return 'number' === typeof value && validator.isInt(sanitizer.string(value), options);
-};
-exports.integer = integer;
-var string = function (value, options) {
-    if (options === void 0) { options = {}; }
-    return 'string' === typeof value && validator.isLength(value, options);
-};
-exports.string = string;
-var uuid = function (value, version) {
-    if (version === void 0) { version = 4; }
-    return string(value) && validator.isUUID(value, version);
-};
-exports.uuid = uuid;
+import validator from 'validator';
+import * as sanitizer from './sanitizers';
+const boolean = (value) => 'boolean' === typeof value;
+const email = (value) => string(value) && validator.isEmail(value);
+const float = (value, options = {}) => 'number' === typeof value && validator.isFloat(sanitizer.string(value), options);
+const integer = (value, options = {}) => 'number' === typeof value && validator.isInt(sanitizer.string(value), options);
+const string = (value, options = {}) => 'string' === typeof value && validator.isLength(value, options);
+const uuid = (value, version = 4) => string(value) && validator.isUUID(value, version);
+export { boolean, email, float, integer, string, uuid, };

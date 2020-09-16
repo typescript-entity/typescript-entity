@@ -2,15 +2,14 @@
   "compilerOptions": {
     "declaration": true,
     "forceConsistentCasingInFileNames": true,
-    "keyofStringsOnly": true,
-    "lib": ["es6", "dom"],
+    "moduleResolution": "node",
     "noImplicitReturns": true,
     "noUnusedLocals": true,
     "strict": true,
-    "target": "es5"
+    "target": "ES6"
   },
   "include": [
-    "./src/",
-    "./__tests__/"
+    "__tests__/**/*",
+    "src/**/*"
   ]
 }

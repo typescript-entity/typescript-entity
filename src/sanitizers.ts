@@ -1,4 +1,4 @@
-import * as validator from 'validator';
+import validator from 'validator';
 
 const boolean = (value: any) => validator.toBoolean(string(value));
 const date = (value: any) => validator.toDate(value);
