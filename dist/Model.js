@@ -1,4 +1,7 @@
-export class Model {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.Model = void 0;
+class Model {
     /**
      * @param config
      */
@@ -99,6 +102,7 @@ export class Model {
         return json;
     }
 }
+exports.Model = Model;
 Model.config = {};
 Model.sanitizers = {};
 Model.validators = {};
