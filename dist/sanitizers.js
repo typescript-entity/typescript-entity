@@ -10,5 +10,5 @@ const float = (value) => validator_1.default.toFloat(string(value));
 exports.float = float;
 const integer = (value) => validator_1.default.toInt(string(value));
 exports.integer = integer;
-const string = (value) => validator_1.default.toString(value);
+const string = (value) => null !== value && undefined !== value ? String(value) : '';
 exports.string = string;

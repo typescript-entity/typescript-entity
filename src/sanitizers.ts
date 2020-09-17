@@ -4,7 +4,7 @@ const boolean = (value: any) => validator.toBoolean(string(value));
 const date = (value: any) => validator.toDate(value);
 const float = (value: any) => validator.toFloat(string(value));
 const integer = (value: any) => validator.toInt(string(value));
-const string = (value: any) => validator.toString(value);
+const string = (value: any) => null !== value && undefined !== value ? String(value) : '';
 
 export {
   boolean,
