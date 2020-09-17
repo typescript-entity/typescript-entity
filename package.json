@@ -1,6 +1,6 @@
 {
   "name": "typescript-entity",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Typed entity library with attribute sanitization and validation.",
   "keywords": [
     "typescript",
