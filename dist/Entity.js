@@ -1,18 +1,18 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Model = void 0;
-class Model {
+exports.Entity = void 0;
+class Entity {
     /**
      * @param config
      */
-    constructor(config = Model.config) {
+    constructor(config = Entity.config) {
         this.config = config;
         Object.defineProperty(this, 'config', {
             enumerable: false,
         });
     }
     /**
-     * Sanitizes all attributes on the model.
+     * Sanitizes all attributes on the entity.
      */
     sanitize() {
         Object.keys(this.constructor.sanitizers).forEach((key) => {
@@ -30,8 +30,7 @@ class Model {
         return this.constructor.sanitizers[key] ? this.constructor.sanitizers[key](this, key, value) : value;
     }
     /**
-     * Validates all attributes on the model. An error is thrown if anything fails
-     * validation.
+     * Validates all attributes on the entity. An error is thrown if anything fails validation.
      */
     validate() {
         Object.keys(this.constructor.validators).forEach((key) => {
@@ -40,9 +39,8 @@ class Model {
         return this;
     }
     /**
-     * Validates a `value` for the given `key`. An error is thrown either by the
-     * validator function itself, or a generic `TypeError` is thrown if the
-     * validator function returns falsey.
+     * Validates a `value` for the given `key`. An error is thrown either by the validator function
+     * itself, or a generic `TypeError` is thrown if the validator function returns falsey.
      *
      * @param key
      * @param value
@@ -54,15 +52,14 @@ class Model {
         return true;
     }
     /**
-     * Sanitizes and validates all attributes on the model.
+     * Sanitizes and validates all attributes on the entity.
      */
     clean() {
         return this.sanitize().validate();
     }
     /**
-     * Merges an arbitrary set of attributes into the model then cleans it up.
-     * Useful for hydrating a model from user provided data or JSON from an
-     * untrusted source.
+     * Merges an arbitrary set of attributes into the entity then cleans it up. Useful for hydrating a
+     * entity from user provided data or JSON from an untrusted source.
      *
      * @param attrs
      * @param keys
@@ -71,8 +68,8 @@ class Model {
         return this.mergeRaw(attrs, keys).clean();
     }
     /**
-     * Merges an arbitrary set of attributes into the model without cleaning. Only
-     * use this if you are certain the object contains clean data.
+     * Merges an arbitrary set of attributes into the entity without cleaning. Only use this if you
+     * are certain the object contains clean data.
      *
      * @param attrs
      * @param keys
@@ -88,7 +85,7 @@ class Model {
         return this;
     }
     /**
-     * Include attributes defined by getters when stringifying the model to JSON.
+     * Include attributes defined by getters when stringifying the entity to JSON.
      */
     toJSON() {
         const prototype = Object.getPrototypeOf(this);
@@ -102,7 +99,7 @@ class Model {
         return json;
     }
 }
-exports.Model = Model;
-Model.config = {};
-Model.sanitizers = {};
-Model.validators = {};
+exports.Entity = Entity;
+Entity.config = {};
+Entity.sanitizers = {};
+Entity.validators = {};

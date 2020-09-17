@@ -1,25 +1,24 @@
 {
-  "name": "typescript-model",
-  "version": "1.3.1",
-  "description": "Typed entity modeling library with attribute sanitization and validation.",
+  "name": "typescript-entity",
+  "version": "0.0.1",
+  "description": "Typed entity library with attribute sanitization and validation.",
   "keywords": [
     "typescript",
     "entity",
-    "model",
     "sanitize",
     "sanitization",
     "validate",
     "validation"
   ],
-  "homepage": "https://github.com/apancutt/typescript-model#readme",
+  "homepage": "https://github.com/apancutt/typescript-entity#readme",
   "bugs": {
-    "url": "https://github.com/apancutt/typescript-model/issues"
+    "url": "https://github.com/apancutt/typescript-entity/issues"
   },
   "author": "Adam Pancutt <adam@pancutt.com>",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/apancutt/typescript-model.git"
+    "url": "git+https://github.com/apancutt/typescript-entity.git"
   },
   "files": [
     "dist/**/*"

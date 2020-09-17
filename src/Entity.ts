@@ -1,20 +1,20 @@
 import { Config } from './Config';
-import { Modelable } from './Modelable';
+import { Entityable } from './Entityable';
 import { Attributes, Constructor, Sanitizers, Validators } from './types';
 
-export abstract class Model<C extends Config = Config> implements Modelable<C> {
+export abstract class Entity<C extends Config = Config> implements Entityable<C> {
 
   public ['constructor']: Constructor<this, C>;
   public readonly config: C;
 
   public static config: Config = {};
-  public static sanitizers: Sanitizers<Model> = {};
-  public static validators: Validators<Model> = {};
+  public static sanitizers: Sanitizers<Entity> = {};
+  public static validators: Validators<Entity> = {};
 
   /**
    * @param config
    */
-  public constructor(config: C = Model.config as C) {
+  public constructor(config: C = Entity.config as C) {
     this.config = config;
     Object.defineProperty(this, 'config', {
       enumerable: false,
@@ -22,7 +22,7 @@ export abstract class Model<C extends Config = Config> implements Modelable<C> {
   }
 
   /**
-   * Sanitizes all attributes on the model.
+   * Sanitizes all attributes on the entity.
    */
   public sanitize(): this {
 
@@ -48,8 +48,7 @@ export abstract class Model<C extends Config = Config> implements Modelable<C> {
   }
 
   /**
-   * Validates all attributes on the model. An error is thrown if anything fails
-   * validation.
+   * Validates all attributes on the entity. An error is thrown if anything fails validation.
    */
   public validate(): this {
 
@@ -62,9 +61,8 @@ export abstract class Model<C extends Config = Config> implements Modelable<C> {
   }
 
   /**
-   * Validates a `value` for the given `key`. An error is thrown either by the
-   * validator function itself, or a generic `TypeError` is thrown if the
-   * validator function returns falsey.
+   * Validates a `value` for the given `key`. An error is thrown either by the validator function
+   * itself, or a generic `TypeError` is thrown if the validator function returns falsey.
    *
    * @param key
    * @param value
@@ -77,16 +75,15 @@ export abstract class Model<C extends Config = Config> implements Modelable<C> {
   }
 
   /**
-   * Sanitizes and validates all attributes on the model.
+   * Sanitizes and validates all attributes on the entity.
    */
   public clean() {
     return this.sanitize().validate();
   }
 
   /**
-   * Merges an arbitrary set of attributes into the model then cleans it up.
-   * Useful for hydrating a model from user provided data or JSON from an
-   * untrusted source.
+   * Merges an arbitrary set of attributes into the entity then cleans it up. Useful for hydrating a
+   * entity from user provided data or JSON from an untrusted source.
    *
    * @param attrs
    * @param keys
@@ -96,8 +93,8 @@ export abstract class Model<C extends Config = Config> implements Modelable<C> {
   }
 
   /**
-   * Merges an arbitrary set of attributes into the model without cleaning. Only
-   * use this if you are certain the object contains clean data.
+   * Merges an arbitrary set of attributes into the entity without cleaning. Only use this if you
+   * are certain the object contains clean data.
    *
    * @param attrs
    * @param keys
@@ -121,7 +118,7 @@ export abstract class Model<C extends Config = Config> implements Modelable<C> {
   }
 
   /**
-   * Include attributes defined by getters when stringifying the model to JSON.
+   * Include attributes defined by getters when stringifying the entity to JSON.
    */
   public toJSON() {
 

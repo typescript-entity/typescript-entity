@@ -1,25 +1,25 @@
-# typescript-model
+# typescript-entity
 
-Typed entity modeling library with attribute sanitization and validation.
+Typed entity library with attribute sanitization and validation.
 
 ## Installation
 
 ```shell
-npm install --save typescript-model
+yarn add typescript-entity
 ```
 
 ## Usage
 
-An example `User` model is shown below.
+An example `User` entity is shown below.
 
 ```typescript
-import { Model, Config as BaseConfig, Sanitizers, Validators, sanitizers, validators } from 'typescript-model';
+import { Config as BaseConfig, Entity, Sanitizers, Validators, sanitizers, validators } from 'typescript-entity';
 
 export interface Config extends BaseConfig {
   minUsernameLength: number,
 };
 
-export class User extends Model<Config> {
+export class User extends Entity<Config> {
 
   public email: string;
   public id?: number;
@@ -27,24 +27,24 @@ export class User extends Model<Config> {
   public verified: boolean;
 
   static config: Config = {
-    ...Model.config,
+    ...Entity.config,
     minUsernameLength: 5,
   };
 
   static sanitizers: Sanitizers<User> = {
-    ...Model.sanitizers,
-    email: (model, key, value) => sanitizers.string(value),
-    id: (model, key, value) => undefined !== value ? sanitizers.integer(value) : undefined,
-    username: (model, key, value) => sanitizers.string(value),
-    verified: (model, key, value) => sanitizers.boolean(value),
+    ...Entity.sanitizers,
+    email: (entity, key, value) => sanitizers.string(value),
+    id: (entity, key, value) => undefined !== value ? sanitizers.integer(value) : undefined,
+    username: (entity, key, value) => sanitizers.string(value),
+    verified: (entity, key, value) => sanitizers.boolean(value),
   };
 
   static validators: Validators<User> = {
-    ...Model.validators,
-    email: (model, key, value) => validators.email(value),
-    id: (model, key, value) => undefined === value || validators.integer(value, { min: 1 }),
-    username: (model, key, value) => validators.string(value, { min: model.config.minUsernameLength }),
-    verified: (model, key, value) => validators.boolean(value),
+    ...Entity.validators,
+    email: (entity, key, value) => validators.email(value),
+    id: (entity, key, value) => undefined === value || validators.integer(value, { min: 1 }),
+    username: (entity, key, value) => validators.string(value, { min: entity.config.minUsernameLength }),
+    verified: (entity, key, value) => validators.boolean(value),
   };
 
   public constructor(email: string, username: string, verified: boolean = false, config: Partial<Config> = {}) {
@@ -75,8 +75,8 @@ console.log(user);
 
 There are various ORM libraries available for Typescript and JavaScript but all are tightly coupled with Data Access Mappers and underlying data stores.
 
-This library provides just the low-level requirements of an entity model without the concern of how data is mapped.
+This library provides just the low-level requirements of an entity without the concern of how data is mapped.
 
-The specific use-case that led to it's inception was to be able to share entity models between API and client applications. While an API application maps data sourced from arbitrary - and usually multiple - data stores, the client application would map data sourced from the API.
+The specific use-case that led to it's inception was to be able to share entities between API and client applications. While an API application maps data sourced from arbitrary - and usually multiple - data stores, the client application would map data sourced from the API.
 
-Both applications would share a common package that provides the model definitions containing common domain and business logic while each being able to implement their own data mapping functionality, either by extending the base entities with `create()`, `update()`, etc. implementations (Active Record pattern) or with dedicated data mapper classes (Repository pattern).
+Both applications would share a common package that provides the entity definitions containing common domain and business logic while each being able to implement their own data mapping functionality, either by extending the base entities with `create()`, `update()`, etc. implementations (Active Record pattern) or with dedicated data mapper classes (Repository pattern).

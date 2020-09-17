@@ -1,24 +1,24 @@
 import { Config } from './Config';
-import { Modelable } from './Modelable';
-import { Model } from './Model';
+import { Entityable } from './Entityable';
+import { Entity } from './Entity';
 
-export type Attributes<M extends Model<C>, C extends Config = M['config']> = NonFunctionProperties<NonModelProperties<M>>;
+export type Attributes<E extends Entity<C>, C extends Config = E['config']> = NonFunctionProperties<NonEntityProperties<E>>;
 
-export type Constructor<M extends Model<C>, C extends Config> = Function & {
+export type Constructor<E extends Entity<C>, C extends Config> = Function & {
   config: C;
-  sanitizers: Sanitizers<M>;
-  validators: Sanitizers<M>;
+  sanitizers: Sanitizers<E>;
+  validators: Validators<E>;
 };
 
-export type Sanitizers<M extends Model<C>, C extends Config = M['config'], A = Attributes<M>> = {
-  [K in keyof A]: (model: Modelable<C>, key: K, value: any) => A[K];
+export type Sanitizers<E extends Entity<C>, C extends Config = E['config'], A = Attributes<E>> = {
+  [K in keyof A]: (entity: Entityable<C>, key: K, value: any) => A[K];
 };
 
-export type Validators<M extends Model<C>, C extends Config = M['config'], A = Attributes<M>> = {
-  [K in keyof A]: (model: Modelable<C>, key: K, value: A[K]) => boolean;
+export type Validators<E extends Entity<C>, C extends Config = E['config'], A = Attributes<E>> = {
+  [K in keyof A]: (entity: Entityable<C>, key: K, value: A[K]) => boolean;
 };
 
-type NonModelProperties<M extends Model<C>, C extends Config = M['config']> = Pick<M, Exclude<keyof M, keyof Model>>;
+type NonEntityProperties<E extends Entity<C>, C extends Config = E['config']> = Pick<E, Exclude<keyof E, keyof Entity>>;
 
 type NonFunctionPropertyNames<T> = {
   [K in keyof T]: T[K] extends Function ? never : K
