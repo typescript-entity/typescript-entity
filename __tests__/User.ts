@@ -1,4 +1,4 @@
-import { AttributeConfigs, Attributes, DynamicAttributeConfig, Entity, normalizers, StaticAttributeConfig, validators } from '../src/index';
+import { AttributeConfigs, Attributes, DynamicAttributeConfig, Entity, StaticAttributeConfig, normalizers, validators } from '../src/';
 
 type EmailAttributeConfig = StaticAttributeConfig<string, UserAttributeConfigs> & Required<Pick<StaticAttributeConfig<string, UserAttributeConfigs>, 'value' | 'normalizer' | 'validator'>>;
 
