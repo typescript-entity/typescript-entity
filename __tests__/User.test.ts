@@ -1,69 +1,89 @@
-import { Config, User } from './User';
+import InvalidAttributeError from '../src/InvalidAttributeError';
+import NonwritableAttributeError from '../src/NonwritableAttributeError';
+import { UserEntity } from './User';
 
-const clean = (config: Partial<Config> = {}) => new User('foo@example.com', 'foo', false, config).mergeRaw({
-  id: 123,
-});
+test('an entity can be constructed with default values', () => {
 
-const dirty = (config: Partial<Config> = {}) => new User(true as any, 123 as any, 'abc' as any, config).mergeRaw({
-  id: {},
-} as any);
-
-test('a User instance can be constructed', () => {
-
-  const user = clean();
-  expect(user).toBeInstanceOf(User);
-
-});
-
-test('a User instance can be populated with attributes', () => {
-
-  const user = clean();
-  expect(user.email).toBe('foo@example.com');
-  expect(user.id).toBe(123);
-  expect(user.username).toBe('foo');
-  expect(user.verified).toBe(false);
+  const user = new UserEntity();
+  expect(user).toBeInstanceOf(UserEntity);
+  expect(user.attr('email')).toBe('');
+  expect(user.attr('email_domain')).toBe(undefined);
+  expect(user.attr('username')).toBe('');
+  expect(user.attr('uuid')).toBe(undefined);
+  expect(user.attr('verified')).toBe(false);
 
 });
 
-test('a User instance can be sanitized', () => {
+test('an entity can be constructed with custom values', () => {
 
-  const user = dirty();
-  expect(typeof user.email).toBe('boolean');
-  expect(typeof user.id).toBe('object');
-  expect(typeof user.username).toBe('number');
-  expect(typeof user.verified).toBe('string');
-
-  user.sanitize();
-  expect(typeof user.email).toBe('string');
-  expect(typeof user.id).toBe('number');
-  expect(typeof user.username).toBe('string');
-  expect(typeof user.verified).toBe('boolean');
+  const user = new UserEntity({
+    email: 'foo@example.com',
+    username: 'foobar',
+    uuid: '7a2d2178-37da-4f5c-bb05-5f6819ff6ecd',
+    verified: true,
+  });
+  expect(user.attr('email')).toBe('foo@example.com');
+  expect(user.attr('email_domain')).toBe('example.com');
+  expect(user.attr('username')).toBe('foobar');
+  expect(user.attr('uuid')).toBe('7a2d2178-37da-4f5c-bb05-5f6819ff6ecd');
+  expect(user.attr('verified')).toBe(true);
 
 });
 
-test('a User instance can be validated', () => {
+test('an entity can be filled with custom values later', () => {
 
-  const user = dirty();
+  const user = new UserEntity();
+  user.fill({
+    email: 'foo@example.com',
+    username: 'foobar',
+    verified: true,
+  });
+  expect(user.attr('email')).toBe('foo@example.com');
+  expect(user.attr('email_domain')).toBe('example.com');
+  expect(user.attr('username')).toBe('foobar');
+  expect(user.attr('verified')).toBe(true);
+
+});
+
+test('an entity cannot be filled with readonly values later', () => {
+
+  const user = new UserEntity();
+  expect(() => {
+    user.fill({
+      uuid: '7a2d2178-37da-4f5c-bb05-5f6819ff6ecd',
+    });
+  }).toThrow(NonwritableAttributeError);
+
+});
+
+test('an entity cannot be constructed with values for dynamic attributes', () => {
 
   expect(() => {
-    user.validate();
-  }).toThrow(TypeError);
+    new UserEntity({
+      email_domain: 'foo.com',
+    });
+  }).toThrow(NonwritableAttributeError);
 
 });
 
-test('a User instance inherits default configuration', () => {
+test('an entity cannot be filled with values for dynamic attributes later', () => {
 
-  const user = clean();
-  expect(user.config.min_username_length).toBe(5);
+  const user = new UserEntity();
+  expect(() => {
+    user.fill({
+      email_domain: 'foo.com',
+    });
+  }).toThrow(NonwritableAttributeError);
 
 });
 
-test('a User instance can override default configuration', () => {
+test('an entity cannot be filled with invalid values later', () => {
 
-  const user = clean({
-    min_username_length: 10,
-  });
-
-  expect(user.config.min_username_length).toBe(10);
+  const user = new UserEntity();
+  expect(() => {
+    user.fill({
+      username: 'abc',
+    });
+  }).toThrow(InvalidAttributeError);
 
 });

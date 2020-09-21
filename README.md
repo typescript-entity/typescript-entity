@@ -10,66 +10,7 @@ yarn add typescript-entity
 
 ## Usage
 
-An example `User` entity is shown below.
-
-```typescript
-import { Config as BaseConfig, Entity, Sanitizers, Validators, sanitizers, validators } from 'typescript-entity';
-
-export interface Config extends BaseConfig {
-  minUsernameLength: number,
-};
-
-export class User extends Entity<Config> {
-
-  public email: string;
-  public id?: number;
-  public username: string;
-  public verified: boolean;
-
-  static config: Config = {
-    ...Entity.config,
-    minUsernameLength: 5,
-  };
-
-  static sanitizers: Sanitizers<User> = {
-    ...Entity.sanitizers,
-    email: (entity, key, value) => sanitizers.string(value),
-    id: (entity, key, value) => undefined !== value ? sanitizers.integer(value) : undefined,
-    username: (entity, key, value) => sanitizers.string(value),
-    verified: (entity, key, value) => sanitizers.boolean(value),
-  };
-
-  static validators: Validators<User> = {
-    ...Entity.validators,
-    email: (entity, key, value) => validators.email(value),
-    id: (entity, key, value) => undefined === value || validators.integer(value, { min: 1 }),
-    username: (entity, key, value) => validators.string(value, { min: entity.config.minUsernameLength }),
-    verified: (entity, key, value) => validators.boolean(value),
-  };
-
-  public constructor(email: string, username: string, verified: boolean = false, config: Partial<Config> = {}) {
-    super({ ...User.config, ...config as object } as Config);
-    this.email = email;
-    this.username = username;
-    this.verified = verified;
-  }
-
-}
-```
-
-Instantiation:
-
-```typescript
-import { User } from './User';
-
-const user = new User('foo@example.com', 'foo', false);
-
-console.log(user);
-
-// User { email: 'foo@example.com', username: 'foo', verified: false }
-```
-
- Review the `__tests__` directory for additional usage examples.
+See the example [User](./__tests__/User.ts) entity and the corresponding [test](./__tests__/User.test.ts) for usage examples.
 
 ## Motivation
 

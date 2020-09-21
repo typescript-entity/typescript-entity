@@ -1,42 +1,53 @@
-import { Config as BaseConfig, Entity, Sanitizers, Validators, sanitizers, validators } from '../src/';
+import { AttributeConfigs, Attributes, DynamicAttributeConfig, Entity, normalizers, StaticAttributeConfig, validators } from '../src/index';
 
-export interface Config extends BaseConfig {
-  min_username_length: number,
+type EmailAttributeConfig = StaticAttributeConfig<string, UserAttributeConfigs> & Required<Pick<StaticAttributeConfig<string, UserAttributeConfigs>, 'value' | 'normalizer' | 'validator'>>;
+
+type EmailDomainAttributeConfig = DynamicAttributeConfig<string, UserAttributeConfigs>;
+
+type UsernameAttributeConfig = StaticAttributeConfig<string, UserAttributeConfigs> & Required<Pick<StaticAttributeConfig<string, UserAttributeConfigs>, 'value' | 'normalizer'>>;
+
+type UuidAttributeConfig = StaticAttributeConfig<string, UserAttributeConfigs> & Required<Pick<StaticAttributeConfig<string, UserAttributeConfigs>, 'normalizer'>> & {
+  readonly: true;
 };
 
-export class User extends Entity<Config> {
+type VerifiedAttributeConfig = StaticAttributeConfig<boolean, UserAttributeConfigs> & Required<Pick<StaticAttributeConfig<boolean, UserAttributeConfigs>, 'value' | 'normalizer'>>;
 
-  public email: string;
-  public id?: number;
-  public username: string;
-  public verified: boolean;
+interface UserAttributeConfigs extends AttributeConfigs {
+  email: EmailAttributeConfig;
+  email_domain: EmailDomainAttributeConfig;
+  username: UsernameAttributeConfig;
+  uuid: UuidAttributeConfig;
+  verified: VerifiedAttributeConfig;
+};
 
-  static config: Config = {
-    ...Entity.config,
-    min_username_length: 5,
-  };
+const userAttributeConfigs:UserAttributeConfigs = {
+  email: {
+    value: '',
+    normalizer: (entity, name, value) => normalizers.string(value),
+    validator: (entity, name, value) => validators.email(value),
+  },
+  email_domain: {
+    value: (entity, name) => entity.attr('email').split('@', 2)[1],
+  },
+  username: {
+    value: '',
+    normalizer: (entity, name, value) => normalizers.string(value),
+    validator: (entity, name, value) => validators.string(value, { min: 5 }),
+  },
+  uuid: {
+    readonly: true,
+    normalizer: (entity, name, value) => normalizers.string(value),
+  },
+  verified: {
+    value: false,
+    normalizer: (entity, name, value) => normalizers.boolean(value),
+  },
+};
 
-  static sanitizers: Sanitizers<User> = {
-    ...Entity.sanitizers,
-    email: (entity, key, value) => sanitizers.string(value),
-    id: (entity, key, value) => undefined !== value ? sanitizers.integer(value) : undefined,
-    username: (entity, key, value) => sanitizers.string(value),
-    verified: (entity, key, value) => sanitizers.boolean(value),
-  };
+export class UserEntity extends Entity<UserAttributeConfigs> {
 
-  static validators: Validators<User> = {
-    ...Entity.validators,
-    email: (entity, key, value) => validators.email(value),
-    id: (entity, key, value) => undefined === value || validators.integer(value, {min: 1}),
-    username: (entity, key, value) => validators.string(value, {min: entity.config.min_username_length}),
-    verified: (entity, key, value) => validators.boolean(value),
-  };
-
-  public constructor(email: string, username: string, verified: boolean = false, config: Partial<Config> = {}) {
-    super({ ...User.config, ...config as object } as Config);
-    this.email = email;
-    this.username = username;
-    this.verified = verified;
+  public constructor(attrs: Partial<Attributes<UserAttributeConfigs>> = {}) {
+    super(userAttributeConfigs, attrs);
   }
 
 }

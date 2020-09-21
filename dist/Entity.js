@@ -1,105 +1,64 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Entity = void 0;
+const lodash_1 = require("lodash");
+const NonwritableAttributeError_1 = require("./NonwritableAttributeError");
+const InvalidAttributeError_1 = require("./InvalidAttributeError");
 class Entity {
-    /**
-     * @param config
-     */
-    constructor(config = Entity.config) {
-        this.config = config;
-        Object.defineProperty(this, 'config', {
-            enumerable: false,
-        });
+    constructor(attributeConfigs, attrs = {}) {
+        this.attributeConfigs = attributeConfigs;
+        this.fill(lodash_1.cloneDeep(attrs), true, true, true);
     }
-    /**
-     * Sanitizes all attributes on the entity.
-     */
-    sanitize() {
-        Object.keys(this.constructor.sanitizers).forEach((key) => {
-            this[key] = this.sanitizeValue(key, this[key]);
-        });
-        return this;
+    attr(name) {
+        const attrConfig = this.attributeConfigs[name];
+        return 'function' === typeof attrConfig.value ? attrConfig.value(this, name) : attrConfig.value;
     }
-    /**
-     * Returns a sanitized `value` for the given `key`.
-     *
-     * @param key
-     * @param value
-     */
-    sanitizeValue(key, value) {
-        return this.constructor.sanitizers[key] ? this.constructor.sanitizers[key](this, key, value) : value;
+    attrs() {
+        return Object.keys(this.attributeConfigs).reduce((accumulator, name) => (Object.assign(Object.assign({}, accumulator), { [name]: this.attr(name) })), {});
     }
-    /**
-     * Validates all attributes on the entity. An error is thrown if anything fails validation.
-     */
-    validate() {
-        Object.keys(this.constructor.validators).forEach((key) => {
-            this.validateValue(key, this[key]);
-        });
-        return this;
-    }
-    /**
-     * Validates a `value` for the given `key`. An error is thrown either by the validator function
-     * itself, or a generic `TypeError` is thrown if the validator function returns falsey.
-     *
-     * @param key
-     * @param value
-     */
-    validateValue(key, value) {
-        if (undefined !== this.constructor.validators[key] && !this.constructor.validators[key](this, key, value)) {
-            throw new TypeError(`Invalid value provided for ${this.constructor.name}.${key}: ${value}`);
+    fill(attrs, normalize = true, validate = true, allowReadonly = false) {
+        if (normalize) {
+            attrs = this.normalizeAttrs(attrs);
         }
-        return true;
-    }
-    /**
-     * Sanitizes and validates all attributes on the entity.
-     */
-    clean() {
-        return this.sanitize().validate();
-    }
-    /**
-     * Merges an arbitrary set of attributes into the entity then cleans it up. Useful for hydrating a
-     * entity from user provided data or JSON from an untrusted source.
-     *
-     * @param attrs
-     * @param keys
-     */
-    merge(attrs, keys) {
-        return this.mergeRaw(attrs, keys).clean();
-    }
-    /**
-     * Merges an arbitrary set of attributes into the entity without cleaning. Only use this if you
-     * are certain the object contains clean data.
-     *
-     * @param attrs
-     * @param keys
-     */
-    mergeRaw(attrs, keys) {
-        (keys || Object.keys(this.constructor.sanitizers)
-            .concat(Object.keys(this.constructor.validators))
-            .filter((elem, pos, arr) => arr.indexOf(elem) === pos)).forEach((key) => {
-            if (undefined !== attrs[key]) {
-                this[key] = attrs[key];
+        if (validate) {
+            this.validateAttrs(attrs, true);
+        }
+        Object.entries(attrs)
+            .filter(([name]) => !!this.attributeConfigs[name])
+            .forEach(([name, value]) => {
+            const attrConfig = this.attributeConfigs[name];
+            if ((!allowReadonly && attrConfig.readonly) || 'function' === typeof attrConfig.value) {
+                throw new NonwritableAttributeError_1.default(this, name, value);
             }
+            attrConfig.value = value;
         });
         return this;
     }
-    /**
-     * Include attributes defined by getters when stringifying the entity to JSON.
-     */
+    normalizeAttr(name, value) {
+        const attrConfig = this.attributeConfigs[name];
+        return attrConfig && 'function' === typeof attrConfig.normalizer ? attrConfig.normalizer(this, name, value) : value;
+    }
+    normalizeAttrs(attrs) {
+        return Object.entries(attrs)
+            .filter(([name]) => !!this.attributeConfigs[name])
+            .reduce((acc, [name, value]) => (Object.assign(Object.assign({}, acc), { [name]: this.normalizeAttr(name, value) })), {});
+    }
+    validateAttr(name, value, throwOnInvalid = false) {
+        const attrConfig = this.attributeConfigs[name];
+        if (!attrConfig || 'function' !== typeof attrConfig.validator || attrConfig.validator(this, name, value)) {
+            return true;
+        }
+        if (throwOnInvalid) {
+            throw new InvalidAttributeError_1.default(this, name, value);
+        }
+        return false;
+    }
+    validateAttrs(attrs, throwOnInvalid = false) {
+        return !!Object.entries(attrs)
+            .filter(([name]) => !!this.attributeConfigs[name])
+            .find(([name, value]) => !this.validateAttr(name, value, throwOnInvalid));
+    }
     toJSON() {
-        const prototype = Object.getPrototypeOf(this);
-        const json = Object.assign({}, this);
-        Object.getOwnPropertyNames(prototype).forEach((key) => {
-            const descriptor = Object.getOwnPropertyDescriptor(prototype, key);
-            if (descriptor && 'function' === typeof descriptor.get) {
-                json[key] = this[key];
-            }
-        });
-        return json;
+        return this.attrs();
     }
 }
-exports.Entity = Entity;
-Entity.config = {};
-Entity.sanitizers = {};
-Entity.validators = {};
+exports.default = Entity;

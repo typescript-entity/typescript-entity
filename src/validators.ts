@@ -1,18 +1,9 @@
 import validator from 'validator';
-import * as sanitizer from './sanitizers';
+import { string as stringNormalizer } from './normalizers';
 
-const boolean = (value: boolean) => 'boolean' === typeof value;
-const email = (value: string) => string(value) && validator.isEmail(value);
-const float = (value: number, options: validator.IsFloatOptions = {}) => 'number' === typeof value && validator.isFloat(sanitizer.string(value), options);
-const integer = (value: number, options: validator.IsIntOptions = {}) => 'number' === typeof value && validator.isInt(sanitizer.string(value), options);
-const string = (value: string, options: validator.IsLengthOptions = {}) => 'string' === typeof value && validator.isLength(value, options);
-const uuid = (value: string, version: 3 | 4 | 5 | 'all' = 4) => string(value) && validator.isUUID(value, version);
-
-export {
-  boolean,
-  email,
-  float,
-  integer,
-  string,
-  uuid,
-};
+export const boolean = (value: boolean) => validator.isBoolean(stringNormalizer(value));
+export const email = (value: string, options: validator.IsEmailOptions = {}) => validator.isEmail(stringNormalizer(value), options);
+export const float = (value: number, options: validator.IsFloatOptions = {}) => validator.isFloat(stringNormalizer(value), options);
+export const integer = (value: number, options: validator.IsIntOptions = {}) => validator.isInt(stringNormalizer(value), options);
+export const string = (value: string, options: validator.IsLengthOptions = {}) => validator.isLength(stringNormalizer(value), options);
+export const uuid = (value: string, version: validator.UUIDVersion = 4) => validator.isUUID(stringNormalizer(value), version);
