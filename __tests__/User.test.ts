@@ -1,6 +1,5 @@
-import InvalidAttributeError from '../src/InvalidAttributeError';
-import NonwritableAttributeError from '../src/NonwritableAttributeError';
 import { UserEntity } from './User';
+import { InvalidAttributeError, NonwritableAttributeError } from '../src/Error';
 
 test('an entity can be constructed with default values', () => {
 

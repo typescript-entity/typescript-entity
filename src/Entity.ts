@@ -1,7 +1,6 @@
 import { cloneDeep } from 'lodash';
-import NonwritableAttributeError from './NonwritableAttributeError';
-import InvalidAttributeError from './InvalidAttributeError';
-import { AttributeConfig, AttributeConfigs, ResolvedAttributeType, AttributeName, Attributes, Entries, RawAttributes } from './types';
+import { InvalidAttributeError, NonwritableAttributeError } from './Error';
+import { AttributeConfig, AttributeConfigs, AttributeName, Attributes, Entries, RawAttributes, ResolvedAttributeType } from './Type';
 
 export default abstract class Entity<A extends AttributeConfigs> {
 

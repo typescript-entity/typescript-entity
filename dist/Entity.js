@@ -1,8 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const lodash_1 = require("lodash");
-const NonwritableAttributeError_1 = require("./NonwritableAttributeError");
-const InvalidAttributeError_1 = require("./InvalidAttributeError");
+const Error_1 = require("./Error");
 class Entity {
     constructor(attributeConfigs, attrs = {}) {
         this.attributeConfigs = attributeConfigs;
@@ -27,7 +26,7 @@ class Entity {
             .forEach(([name, value]) => {
             const attrConfig = this.attributeConfigs[name];
             if ((!allowReadonly && attrConfig.readonly) || 'function' === typeof attrConfig.value) {
-                throw new NonwritableAttributeError_1.default(this, name, value);
+                throw new Error_1.NonwritableAttributeError(this, name, value);
             }
             attrConfig.value = value;
         });
@@ -48,7 +47,7 @@ class Entity {
             return true;
         }
         if (throwOnInvalid) {
-            throw new InvalidAttributeError_1.default(this, name, value);
+            throw new Error_1.InvalidAttributeError(this, name, value);
         }
         return false;
     }

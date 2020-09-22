@@ -1,4 +1,4 @@
-import { AttributeConfigs, ResolvedAttributeType, AttributeName, Attributes, RawAttributes } from './types';
+import { AttributeConfigs, AttributeName, Attributes, RawAttributes, ResolvedAttributeType } from './Type';
 export default abstract class Entity<A extends AttributeConfigs> {
     private attributeConfigs;
     constructor(attributeConfigs: A, attrs?: Partial<Attributes<A>>);

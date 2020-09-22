@@ -1,0 +1,11 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.uuid = exports.string = exports.integer = exports.float = exports.email = exports.boolean = void 0;
+const validator_1 = require("validator");
+const Normalizer = require("./Normalizer");
+exports.boolean = (value) => validator_1.default.isBoolean(Normalizer.string(value));
+exports.email = (value, options = {}) => validator_1.default.isEmail(Normalizer.string(value), options);
+exports.float = (value, options = {}) => validator_1.default.isFloat(Normalizer.string(value), options);
+exports.integer = (value, options = {}) => validator_1.default.isInt(Normalizer.string(value), options);
+exports.string = (value, options = {}) => validator_1.default.isLength(Normalizer.string(value), options);
+exports.uuid = (value, version = 4) => validator_1.default.isUUID(Normalizer.string(value), version);
