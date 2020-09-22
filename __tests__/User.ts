@@ -1,4 +1,6 @@
-import { AttributeConfigs, Attributes, DynamicAttributeConfig, Entity, Normalizer, StaticAttributeConfig, Validator } from '../src/';
+import { AttributeConfigs, DynamicAttributeConfig, Entity, Normalizer, RawAttributes, StaticAttributeConfig, Validator } from '../src/';
+
+type DateOfBirthAttributeConfig = StaticAttributeConfig<Date, UserAttributeConfigs> & Required<Pick<StaticAttributeConfig<Date, UserAttributeConfigs>, 'normalizer' | 'validator'>>;
 
 type EmailAttributeConfig = StaticAttributeConfig<string, UserAttributeConfigs> & Required<Pick<StaticAttributeConfig<string, UserAttributeConfigs>, 'value' | 'normalizer' | 'validator'>>;
 
@@ -13,6 +15,7 @@ type UuidAttributeConfig = StaticAttributeConfig<string, UserAttributeConfigs> &
 type VerifiedAttributeConfig = StaticAttributeConfig<boolean, UserAttributeConfigs> & Required<Pick<StaticAttributeConfig<boolean, UserAttributeConfigs>, 'value' | 'normalizer'>>;
 
 interface UserAttributeConfigs extends AttributeConfigs {
+  date_of_birth: DateOfBirthAttributeConfig;
   email: EmailAttributeConfig;
   email_domain: EmailDomainAttributeConfig;
   username: UsernameAttributeConfig;
@@ -21,6 +24,10 @@ interface UserAttributeConfigs extends AttributeConfigs {
 };
 
 const userAttributeConfigs:UserAttributeConfigs = {
+  date_of_birth: {
+    normalizer: (entity, name, value) => Normalizer.date(value),
+    validator: (entity, name, value) => value < new Date(),
+  },
   email: {
     value: '',
     normalizer: (entity, name, value) => Normalizer.string(value),
@@ -46,7 +53,7 @@ const userAttributeConfigs:UserAttributeConfigs = {
 
 export class UserEntity extends Entity<UserAttributeConfigs> {
 
-  public constructor(attrs: Partial<Attributes<UserAttributeConfigs>> = {}) {
+  public constructor(attrs: Partial<RawAttributes<UserAttributeConfigs>> = {}) {
     super(userAttributeConfigs, attrs);
   }
 

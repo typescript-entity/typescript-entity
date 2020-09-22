@@ -7,9 +7,9 @@ export interface StaticAttributeConfig<T extends AttributeType, A extends Attrib
   validator?: Validator<T, A>;
 };
 
-export type Normalizer<T extends AttributeType, A extends AttributeConfigs> = (entity: Entity<A>, name: keyof A, value: any) => T;
+export type Normalizer<T extends AttributeType, A extends AttributeConfigs> = (entity: Entity<A>, name: keyof A, value: NonNullable<any>) => T;
 
-export type Validator<T extends AttributeType, A extends AttributeConfigs> = (entity: Entity<A>, name: keyof A, value: T) => boolean;
+export type Validator<T extends AttributeType, A extends AttributeConfigs> = (entity: Entity<A>, name: keyof A, value: NonNullable<T>) => boolean;
 
 export interface DynamicAttributeConfig<T extends AttributeType, A extends AttributeConfigs> {
   value: (entity: Entity<A>, name: keyof A) => T | undefined;
@@ -23,7 +23,7 @@ export type Attributes<A extends AttributeConfigs> = {
   [K in keyof A]: ResolvedAttributeType<A[K]>;
 };
 
-export type AttributeType = string | string[] | number | number[] | boolean | boolean[];
+export type AttributeType = Exclude<any, Function>;
 
 export type AttributeName<A extends AttributeConfigs> = keyof A;
 

@@ -6,7 +6,7 @@ export default abstract class Entity<A extends AttributeConfigs> {
 
   private attributeConfigs: A;
 
-  public constructor(attributeConfigs: A, attrs: Partial<Attributes<A>> = {}) {
+  public constructor(attributeConfigs: A, attrs: Partial<RawAttributes<A>> = {}) {
     this.attributeConfigs = attributeConfigs;
     this.fill(cloneDeep(attrs), true, true, true);
   }
@@ -44,7 +44,7 @@ export default abstract class Entity<A extends AttributeConfigs> {
 
   public normalizeAttr<K extends keyof A>(name: K, value?: any): ResolvedAttributeType<A[K]> {
     const attrConfig:AttributeConfig<any, A> = this.attributeConfigs[name];
-    return attrConfig && 'function' === typeof attrConfig.normalizer ? attrConfig.normalizer(this, name, value) : value;
+    return undefined !== attrConfig && undefined !== value && 'function' === typeof attrConfig.normalizer ? attrConfig.normalizer(this, name, value) : value;
   }
 
   public normalizeAttrs<R extends Partial<RawAttributes<A>>>(attrs: R) {
@@ -58,7 +58,7 @@ export default abstract class Entity<A extends AttributeConfigs> {
 
   public validateAttr<K extends keyof A>(name: K, value?: ResolvedAttributeType<A[K]>, throwOnInvalid = false) {
     const attrConfig:AttributeConfig<any, A> = this.attributeConfigs[name];
-    if (!attrConfig || 'function' !== typeof attrConfig.validator || attrConfig.validator(this, name, value)) {
+    if (undefined === attrConfig || undefined === value || 'function' !== typeof attrConfig.validator || attrConfig.validator(this, name, value)) {
       return true;
     }
     if (throwOnInvalid) {

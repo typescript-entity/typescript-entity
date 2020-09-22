@@ -1,7 +1,7 @@
 import { AttributeConfigs, AttributeName, Attributes, RawAttributes, ResolvedAttributeType } from './Type';
 export default abstract class Entity<A extends AttributeConfigs> {
     private attributeConfigs;
-    constructor(attributeConfigs: A, attrs?: Partial<Attributes<A>>);
+    constructor(attributeConfigs: A, attrs?: Partial<RawAttributes<A>>);
     attr<K extends AttributeName<A>>(name: K): ResolvedAttributeType<A[K]>;
     attrs(): Attributes<A>;
     fill(attrs: Partial<RawAttributes<A>>, normalize?: boolean, validate?: boolean, allowReadonly?: boolean): this;

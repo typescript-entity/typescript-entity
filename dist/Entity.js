@@ -34,7 +34,7 @@ class Entity {
     }
     normalizeAttr(name, value) {
         const attrConfig = this.attributeConfigs[name];
-        return attrConfig && 'function' === typeof attrConfig.normalizer ? attrConfig.normalizer(this, name, value) : value;
+        return undefined !== attrConfig && undefined !== value && 'function' === typeof attrConfig.normalizer ? attrConfig.normalizer(this, name, value) : value;
     }
     normalizeAttrs(attrs) {
         return Object.entries(attrs)
@@ -43,7 +43,7 @@ class Entity {
     }
     validateAttr(name, value, throwOnInvalid = false) {
         const attrConfig = this.attributeConfigs[name];
-        if (!attrConfig || 'function' !== typeof attrConfig.validator || attrConfig.validator(this, name, value)) {
+        if (undefined === attrConfig || undefined === value || 'function' !== typeof attrConfig.validator || attrConfig.validator(this, name, value)) {
             return true;
         }
         if (throwOnInvalid) {
