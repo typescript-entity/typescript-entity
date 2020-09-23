@@ -1,38 +1,42 @@
-import Entity from './Entity';
-
-export interface StaticAttributeConfig<T extends AttributeType, A extends AttributeConfigs> {
-  value?: T;
-  readonly?: boolean;
-  normalizer?: Normalizer<T, A>;
-  validator?: Validator<T, A>;
+export interface AttributeConfig<AV extends AttributeValue> {
+  value: AV;
+  readonly?: AV extends AttributeValueFn<any> ? true : boolean;
+  normalizer?: AttributeNormalizerFn<InferredAttributeValue<AV>>;
+  validator?: AttributeValidatorFn<InferredAttributeValue<AV>>;
 };
 
-export type Normalizer<T extends AttributeType, A extends AttributeConfigs> = (entity: Entity<A>, name: keyof A, value: NonNullable<any>) => T;
-
-export type Validator<T extends AttributeType, A extends AttributeConfigs> = (entity: Entity<A>, name: keyof A, value: NonNullable<T>) => boolean;
-
-export interface DynamicAttributeConfig<T extends AttributeType, A extends AttributeConfigs> {
-  value: (entity: Entity<A>, name: keyof A) => T | undefined;
+export type AttributeConfigs<AN extends string> = {
+  [K in AN]: AttributeConfig<any>;
 };
 
-export type AttributeConfig<T extends AttributeType, A extends AttributeConfigs> = StaticAttributeConfig<T, A> | DynamicAttributeConfig<T, A>;
+export type AttributeValue = any;
 
-export interface AttributeConfigs {};
+export type AttributeValueFn<AV extends AttributeValue> = () => AV;
 
-export type Attributes<A extends AttributeConfigs> = {
-  [K in keyof A]: ResolvedAttributeType<A[K]>;
+export type AttributeNormalizerFn<AV extends AttributeValue> = (value: any) => AV;
+
+export type AttributeValidatorFn<AV extends AttributeValue> = (value: NonNullable<AV>) => boolean;
+
+export type EntityInterface<AC extends AttributeConfigs<any>> = InferredAttributeValues<AC>;
+
+export type Entries<T> = { [K in keyof T]: [ K, T[K] ] }[keyof T][];
+
+export type InferredAttributeValue<AV extends AttributeValue | AttributeValueFn<any>> = AV extends AttributeValueFn<any> ? ReturnType<AV> : AV;
+
+export type InferredAttributeValues<AC extends AttributeConfigs<any>> = {
+  [K in keyof AC]: InferredAttributeValue<AC[K]['value']>;
 };
 
-export type AttributeType = Exclude<any, Function>;
+export type InitialAttributes<AC extends AttributeConfigs<any>> = Partial<RawWritableAttributes<AC, true>>;
 
-export type AttributeName<A extends AttributeConfigs> = keyof A;
+export type WritableAttributeConfigs<AC extends AttributeConfigs<any>, AllowReadonly extends boolean = false> = Pick<AC, { [K in keyof AC]: AC[K]['value'] extends AttributeValueFn<any> ? never : AC[K]['readonly'] extends true ? AllowReadonly extends true ? K : never : K }[keyof AC]>
 
-export type ResolvedAttributeType<A extends AttributeConfig<any, any>> = A extends DynamicAttributeConfig<any, any> ? ReturnType<A['value']> : A['value'];
+export type WritableAttributes<AC extends AttributeConfigs<any>, AllowReadonly extends boolean = false> = InferredAttributeValues<WritableAttributeConfigs<AC, AllowReadonly>>;
 
-export type RawAttributes<A extends AttributeConfigs> = {
-  [K in keyof Attributes<A>]: any;
-};
+export type RawWritableAttributes<AC extends AttributeConfigs<any>, AllowReadonly extends boolean = false> = Record<keyof WritableAttributeConfigs<AC, AllowReadonly>, any>;
 
-export type Entries<O> = {
-  [K in keyof O]: [K, O[K]];
-}[keyof O][];
+export type WithNormalizer<AC extends AttributeConfig<any>> = AC & Required<Pick<AC, 'normalizer'>>;
+
+export type WithReadonly<AC extends AttributeConfig<any>> = AC & { readonly: true };
+
+export type WithValidator<AC extends AttributeConfig<any>> = AC & Required<Pick<AC, 'validator'>>;

@@ -1,80 +1,84 @@
 import { cloneDeep } from 'lodash';
-import { InvalidAttributeError, NonwritableAttributeError } from './Error';
-import { AttributeConfig, AttributeConfigs, AttributeName, Attributes, Entries, RawAttributes, ResolvedAttributeType } from './Type';
+import { FunctionAttributeError, InvalidAttributeError, ReadonlyAttributeError } from './Error';
+import { AttributeConfigs, AttributeNormalizerFn, AttributeValidatorFn, Entries, InferredAttributeValue, InferredAttributeValues, InitialAttributes, RawWritableAttributes, WritableAttributes } from './Type';
 
-export default abstract class Entity<A extends AttributeConfigs> {
+export default abstract class Entity<AC extends AttributeConfigs<any>> {
 
-  private attributeConfigs: A;
+  protected attrConfigs: AC;
 
-  public constructor(attributeConfigs: A, attrs: Partial<RawAttributes<A>> = {}) {
-    this.attributeConfigs = attributeConfigs;
-    this.fill(cloneDeep(attrs), true, true, true);
+  constructor(attrConfigs: AC, initialAttrs: InitialAttributes<AC> = {}) {
+    this.attrConfigs = Object.entries(attrConfigs).reduce((attrs, [ name, attrConfig ]) => ({
+      ...attrs,
+      [name]: {
+        ...attrConfig,
+        value: 'function' === typeof attrConfig.value ? attrConfig.value : cloneDeep(attrConfig.value),
+      },
+    }), {}) as AC;
+    this.fill(initialAttrs, true);
   }
 
-  public attr<K extends AttributeName<A>>(name: K): ResolvedAttributeType<A[K]> {
-    const attrConfig:AttributeConfig<any, A> = this.attributeConfigs[name];
-    return 'function' === typeof attrConfig.value ? attrConfig.value(this, name) : attrConfig.value;
-  }
-
-  public attrs() {
-    return (Object.keys(this.attributeConfigs) as AttributeName<A>[]).reduce((accumulator, name) => ({
-      ...accumulator,
-      [name]: this.attr(name),
-    }), {}) as Attributes<A>;
-  }
-
-  public fill(attrs: Partial<RawAttributes<A>>, normalize = true, validate = true, allowReadonly = false) {
-    if (normalize) {
-      attrs = this.normalizeAttrs(attrs);
+  public normalize<K extends keyof AC, AV extends InferredAttributeValue<AC[K]['value']>>(name: K, value: any): ReturnType<AttributeNormalizerFn<AV>> {
+    if ('function' !== typeof this.attrConfigs[name]['normalizer']) {
+      return value;
     }
-    if (validate) {
-      this.validateAttrs(attrs, true);
+    return this.attrConfigs[name]['normalizer']!.call(this, value);
+  }
+
+  public validate<K extends keyof AC, AV extends InferredAttributeValue<AC[K]['value']>>(name: K, value: AV): ReturnType<AttributeValidatorFn<AV>> {
+    if (undefined === value || 'function' !== typeof this.attrConfigs[name]['validator']) {
+      return true;
     }
-    (Object.entries(attrs) as Entries<Partial<Attributes<A>>>)
-      .filter(([ name ]) => !!this.attributeConfigs[name])
-      .forEach(([ name, value ]) => {
-        const attrConfig:AttributeConfig<any, A> = this.attributeConfigs[name];
-        if ((!allowReadonly && attrConfig.readonly) || 'function' === typeof attrConfig.value) {
-          throw new NonwritableAttributeError(this, name, value);
-        }
-        attrConfig.value = value;
-      });
+    return this.attrConfigs[name]['validator']!.call(this, value);
+  }
+
+  public all() {
+    return Object.keys(this.attrConfigs).reduce((attrs, name) => ({
+      ...attrs,
+      [name]: this.get(name),
+    }), {}) as InferredAttributeValues<AC>;
+  }
+
+  public get<K extends keyof AC>(name: K): InferredAttributeValue<AC[K]['value']> {
+    return 'function' === typeof this.attrConfigs[name]['value']
+      ? this.attrConfigs[name]['value'].call(this)
+      : this.attrConfigs[name]['value'];
+  }
+
+  public set<K extends keyof RawWritableAttributes<AC, R>, R extends boolean = false>(name: K, value: any, allowReadonly?: R) {
+    value = this.normalize(name, value);
+    if (!this.validate(name, value)) {
+      throw new InvalidAttributeError<AC>(this, name, value);
+    }
+    return this.setDangerously(name, value, allowReadonly);
+  }
+
+  public setDangerously<A extends WritableAttributes<AC, R>, K extends keyof A, R extends boolean = false>(name: K, value: A[K], allowReadonly?: R) {
+    if ('function' === typeof this.attrConfigs[name]['value']) {
+      throw new FunctionAttributeError<AC>(this, name, value);
+    }
+    if (!allowReadonly && this.attrConfigs[name]['readonly']) {
+      throw new ReadonlyAttributeError<AC>(this, name, value);
+    }
+    this.attrConfigs[name]['value'] = value;
     return this;
   }
 
-  public normalizeAttr<K extends keyof A>(name: K, value?: any): ResolvedAttributeType<A[K]> {
-    const attrConfig:AttributeConfig<any, A> = this.attributeConfigs[name];
-    return undefined !== attrConfig && undefined !== value && 'function' === typeof attrConfig.normalizer ? attrConfig.normalizer(this, name, value) : value;
+  public fill<A extends RawWritableAttributes<AC, R>, R extends boolean = false>(attrs: Partial<A>, allowReadonly?: R) {
+    (Object.entries(attrs) as Entries<A>).forEach(([ name, value ]) => {
+      this.set(name as any, value, allowReadonly);
+    });
+    return this;
   }
 
-  public normalizeAttrs<R extends Partial<RawAttributes<A>>>(attrs: R) {
-    return (Object.entries(attrs) as Entries<RawAttributes<A>>)
-      .filter(([ name ]) => !!this.attributeConfigs[name])
-      .reduce((acc, [ name, value ]) => ({
-        ...acc,
-        [name]: this.normalizeAttr(name, value),
-      }), {} as Pick<Attributes<A>, Extract<keyof Attributes<A>, keyof R>>);
+  public fillDangerously<A extends WritableAttributes<AC, R>, R extends boolean = false>(attrs: Partial<A>, allowReadonly?: R) {
+    (Object.entries(attrs) as Entries<A>).forEach(([ name, value ]) => {
+      this.setDangerously(name as any, value, allowReadonly);
+    });
+    return this;
   }
 
-  public validateAttr<K extends keyof A>(name: K, value?: ResolvedAttributeType<A[K]>, throwOnInvalid = false) {
-    const attrConfig:AttributeConfig<any, A> = this.attributeConfigs[name];
-    if (undefined === attrConfig || undefined === value || 'function' !== typeof attrConfig.validator || attrConfig.validator(this, name, value)) {
-      return true;
-    }
-    if (throwOnInvalid) {
-      throw new InvalidAttributeError(this, name, value);
-    }
-    return false;
-  }
-
-  public validateAttrs(attrs: Partial<Attributes<A>>, throwOnInvalid = false) {
-    return !!(Object.entries(attrs) as Entries<Attributes<A>>)
-      .filter(([ name ]) => !!this.attributeConfigs[name])
-      .find(([ name, value ]) => !this.validateAttr(name, value, throwOnInvalid));
-  }
-
-  toJSON() {
-    return this.attrs();
+  public toJSON() {
+    return this.all();
   }
 
 }

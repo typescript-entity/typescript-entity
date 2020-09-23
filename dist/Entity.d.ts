@@ -1,13 +1,14 @@
-import { AttributeConfigs, AttributeName, Attributes, RawAttributes, ResolvedAttributeType } from './Type';
-export default abstract class Entity<A extends AttributeConfigs> {
-    private attributeConfigs;
-    constructor(attributeConfigs: A, attrs?: Partial<RawAttributes<A>>);
-    attr<K extends AttributeName<A>>(name: K): ResolvedAttributeType<A[K]>;
-    attrs(): Attributes<A>;
-    fill(attrs: Partial<RawAttributes<A>>, normalize?: boolean, validate?: boolean, allowReadonly?: boolean): this;
-    normalizeAttr<K extends keyof A>(name: K, value?: any): ResolvedAttributeType<A[K]>;
-    normalizeAttrs<R extends Partial<RawAttributes<A>>>(attrs: R): Pick<Attributes<A>, Extract<keyof A, keyof R>>;
-    validateAttr<K extends keyof A>(name: K, value?: ResolvedAttributeType<A[K]>, throwOnInvalid?: boolean): boolean;
-    validateAttrs(attrs: Partial<Attributes<A>>, throwOnInvalid?: boolean): boolean;
-    toJSON(): Attributes<A>;
+import { AttributeConfigs, AttributeNormalizerFn, AttributeValidatorFn, InferredAttributeValue, InferredAttributeValues, InitialAttributes, RawWritableAttributes, WritableAttributes } from './Type';
+export default abstract class Entity<AC extends AttributeConfigs<any>> {
+    protected attrConfigs: AC;
+    constructor(attrConfigs: AC, initialAttrs?: InitialAttributes<AC>);
+    normalize<K extends keyof AC, AV extends InferredAttributeValue<AC[K]['value']>>(name: K, value: any): ReturnType<AttributeNormalizerFn<AV>>;
+    validate<K extends keyof AC, AV extends InferredAttributeValue<AC[K]['value']>>(name: K, value: AV): ReturnType<AttributeValidatorFn<AV>>;
+    all(): InferredAttributeValues<AC>;
+    get<K extends keyof AC>(name: K): InferredAttributeValue<AC[K]['value']>;
+    set<K extends keyof RawWritableAttributes<AC, R>, R extends boolean = false>(name: K, value: any, allowReadonly?: R): this;
+    setDangerously<A extends WritableAttributes<AC, R>, K extends keyof A, R extends boolean = false>(name: K, value: A[K], allowReadonly?: R): this;
+    fill<A extends RawWritableAttributes<AC, R>, R extends boolean = false>(attrs: Partial<A>, allowReadonly?: R): this;
+    fillDangerously<A extends WritableAttributes<AC, R>, R extends boolean = false>(attrs: Partial<A>, allowReadonly?: R): this;
+    toJSON(): InferredAttributeValues<AC>;
 }

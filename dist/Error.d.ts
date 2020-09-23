@@ -1,14 +1,18 @@
 import Entity from './Entity';
 import { AttributeConfigs } from './Type';
-export declare abstract class AttributeError<A extends AttributeConfigs> extends Error {
-    entity: Entity<A>;
-    attrName: keyof A;
+export declare abstract class AttributeError<AC extends AttributeConfigs<any>> extends Error {
+    entity: Entity<AC>;
+    attrName: keyof AC;
     attrValue: any;
-    constructor(message: string, entity: Entity<A>, attrName: keyof A, attrValue: any);
+    constructor(message: string, entity: Entity<AC>, attrName: keyof AC, attrValue: any);
 }
-export declare class InvalidAttributeError<A extends AttributeConfigs> extends AttributeError<A> {
-    constructor(entity: Entity<A>, attrName: keyof A, attrValue: any, message?: string);
+export declare class InvalidAttributeError<AC extends AttributeConfigs<any>> extends AttributeError<AC> {
+    constructor(entity: Entity<AC>, attrName: keyof AC, attrValue: any, message?: string);
 }
-export declare class NonwritableAttributeError<A extends AttributeConfigs> extends AttributeError<A> {
-    constructor(entity: Entity<A>, attrName: keyof A, attrValue: any, message?: string);
+export declare class NonWritableAttributeError<AC extends AttributeConfigs<any>> extends AttributeError<AC> {
+    constructor(entity: Entity<AC>, attrName: keyof AC, attrValue: any, message?: string);
+}
+export declare class FunctionAttributeError<AC extends AttributeConfigs<any>> extends NonWritableAttributeError<AC> {
+}
+export declare class ReadonlyAttributeError<AC extends AttributeConfigs<any>> extends NonWritableAttributeError<AC> {
 }
