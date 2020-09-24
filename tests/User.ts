@@ -1,19 +1,19 @@
-import { AttributeConfig, Entity, EntityInterface, InitialAttributes, WithNormalizer, WithReadonly, WithValidator } from '@typescript-entity/core';
+import { AttrConfig, AttrInitialValues, Entity, EntityInterface } from '@typescript-entity/core';
 import * as Normalizers from '@typescript-entity/normalizers';
 import * as Validators from '@typescript-entity/validators';
 
-export type UserAttributes = {
-  date_of_birth: WithNormalizer<WithValidator<AttributeConfig<Date>>>;
-  email: WithNormalizer<WithValidator<AttributeConfig<string>>>;
-  email_domain: AttributeConfig<() => string>;
-  username: WithNormalizer<WithValidator<AttributeConfig<string>>>;
-  uuid: WithReadonly<WithNormalizer<WithValidator<AttributeConfig<string | undefined>>>>;
-  verified: WithNormalizer<WithValidator<AttributeConfig<boolean>>>;
+export type UserAttrConfigs = {
+  date_of_birth: AttrConfig<Date>;
+  email: AttrConfig<string>;
+  email_domain: AttrConfig<() => string>;
+  username: AttrConfig<string>;
+  uuid: AttrConfig<string | undefined>;
+  verified: AttrConfig<boolean>;
 };
 
-export type UserInterface = EntityInterface<UserAttributes>;
+export type UserInterface = EntityInterface<UserAttrConfigs>;
 
-export const ATTRIBUTE_CONFIGS:UserAttributes = {
+export const USER_ATTR_CONFIGS:UserAttrConfigs = {
   date_of_birth: {
     value: new Date(0),
     normalizer: Normalizers.date,
@@ -40,15 +40,15 @@ export const ATTRIBUTE_CONFIGS:UserAttributes = {
   },
   verified: {
     value: false,
-    normalizer: Normalizers.boolean,
+    // TODO: normalizer: Normalizers.boolean,
     validator: Validators.boolean,
   },
 };
 
-export class User extends Entity<UserAttributes> implements UserInterface {
+export class User extends Entity<UserAttrConfigs> implements UserInterface {
 
-  constructor(initialAttrs: InitialAttributes<UserAttributes> = {}) {
-    super(ATTRIBUTE_CONFIGS, initialAttrs);
+  constructor(initialAttrs: AttrInitialValues<UserAttrConfigs> = {}) {
+    super(USER_ATTR_CONFIGS, initialAttrs);
   }
 
   get date_of_birth(): Date {

@@ -1,4 +1,4 @@
-import { AttrReadonlyError, AttrValueFnError, AttrValueInvalidError } from '@typescript-entity/core';
+import { AttrReadonlyError, AttrUnregisteredError, AttrValueFnError, AttrValueInvalidError } from '@typescript-entity/core';
 import { User } from './User';
 
 test('an entity can be constructed with default values', () => {
@@ -61,19 +61,21 @@ test('an entity cannot be filled with readonly values later', () => {
 
 });
 
-test('an entity cannot be constructed with values for dynamic attributes', () => {
+test('an entity cannot be constructed with values for function attributes', () => {
 
   expect(() => {
-    new User({ email_domain: 'foo.com' });
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    new User({ email_domain: 'foo.com' } as any);
   }).toThrow(AttrValueFnError);
 
 });
 
-test('an entity cannot be filled with values for dynamic attributes later', () => {
+test('an entity cannot be filled with values for function attributes later', () => {
 
   const user = new User();
   expect(() => {
-    user.fill({ email_domain: 'foo.com' });
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    user.fill({ email_domain: 'foo.com' } as any);
   }).toThrow(AttrValueFnError);
 
 });
@@ -84,5 +86,24 @@ test('an entity cannot be filled with invalid values later', () => {
   expect(() => {
     user.fill({ username: 'abc' });
   }).toThrow(AttrValueInvalidError);
+
+});
+
+test('an entity cannot be constructed with values for unregistered attributes', () => {
+
+  expect(() => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    new User({ foo: 'bar' } as any);
+  }).toThrow(AttrUnregisteredError);
+
+});
+
+test('an entity cannot be filled with values for unregistered attributes later', () => {
+
+  const user = new User();
+  expect(() => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    user.fill({ foo: 'bar' } as any);
+  }).toThrow(AttrUnregisteredError);
 
 });

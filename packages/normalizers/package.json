@@ -18,11 +18,11 @@
   "main": "build/index.ts",
   "types": "build/index.d.ts",
   "dependencies": {
-    "lodash-es": "4",
+    "lodash": "4",
     "validator": "13"
   },
   "devDependencies": {
-    "@types/lodash-es": "4",
+    "@types/lodash": "4",
     "@types/node": "14",
     "@types/validator": "13",
     "rimraf": "3",

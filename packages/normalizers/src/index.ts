@@ -1,8 +1,4 @@
-import baseCamelcase from 'lodash-es/camelCase';
-import baseCapitalize from 'lodash-es/capitalize';
-import baseCeil from 'lodash-es/ceil';
-import baseFloor from 'lodash-es/floor';
-import baseRound from 'lodash-es/round';
+import { camelCase as baseCamelcase, capitalize as baseCapitalize, ceil as baseCeil, floor as baseFloor, round as baseRound } from 'lodash';
 import validator from 'validator';
 
 export const boolean = (value: unknown): boolean => 'boolean' === typeof value ? value : validator.toBoolean(string(value));

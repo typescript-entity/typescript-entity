@@ -1,4 +1,4 @@
-import cloneDeep from 'lodash-es/cloneDeep';
+import { cloneDeep } from 'lodash';
 import { AttrReadonlyError, AttrUnregisteredError, AttrValueFnError, AttrValueInvalidError } from './Error';
 import { AttrConfigs, AttrIncomingValues, AttrIncomingValuesUntyped, AttrInferredValue, AttrInferredValues, AttrInitialValues, AttrNormalizerFn, AttrValidatorFn, AttrValue, AttrValueFn } from './Type';
 
@@ -43,15 +43,24 @@ export default abstract class Entity<C extends AttrConfigs> {
     this.fill(initialAttrs, true);
   }
 
+  protected attrConfig<K extends keyof C>(name: K): C[K] {
+    if (!attrRegisteredTypeGuard(this.attrConfigs, name)) {
+      throw new AttrUnregisteredError<C>(this, name);
+    }
+    return this.attrConfigs[name];
+  }
+
   public normalize<K extends keyof C, I extends AttrInferredValue<C[K]['value']>>(name: K, value: unknown): ReturnType<AttrNormalizerFn<I>> {
-    return attrNormalizerFnTypeGuard<I>(this.attrConfigs[name].normalizer)
-      ? (this.attrConfigs[name].normalizer as AttrNormalizerFn<I>).call(this, value)
+    const config = this.attrConfig(name);
+    return attrNormalizerFnTypeGuard<I>(config.normalizer)
+      ? config.normalizer.call(this, value)
       : value as I;
   }
 
   public validate<K extends keyof C, I extends AttrInferredValue<C[K]['value']>>(name: K, value: I): ReturnType<AttrValidatorFn<I>> {
-    return attrValidatorFnTypeGuard(this.attrConfigs[name].validator)
-      ? (this.attrConfigs[name].validator as AttrValidatorFn<I>).call(this, value)
+    const config = this.attrConfig(name);
+    return attrValidatorFnTypeGuard(config.validator)
+      ? config.validator.call(this, value)
       : true;
   }
 
@@ -63,9 +72,10 @@ export default abstract class Entity<C extends AttrConfigs> {
   }
 
   public get<K extends keyof C, V extends C[K]['value'], I extends AttrInferredValue<V>>(name: K): I {
-    return attrValueFnTypeGuard(this.attrConfigs[name].value)
-      ? this.attrConfigs[name].value.call(this)
-      : this.attrConfigs[name].value;
+    const config = this.attrConfig(name);
+    return attrValueFnTypeGuard(config.value)
+      ? config.value.call(this)
+      : config.value;
   }
 
   public set<K extends keyof AttrIncomingValuesUntyped<C, R>, R extends boolean = false>(name: K, value: unknown, allowReadonly?: R): this {
@@ -78,22 +88,20 @@ export default abstract class Entity<C extends AttrConfigs> {
 
   public fill<A extends AttrIncomingValuesUntyped<C, R>, R extends boolean = false>(attrs: Partial<A>, allowReadonly?: R): this {
     (Object.entries(attrs) as Entries<A>).forEach(([ name, value ]) => {
-      this.set(name as keyof AttrIncomingValuesUntyped<C, R>, value, allowReadonly);
+      this.set(name as keyof AttrIncomingValuesUntyped<C, R>, value, allowReadonly); // TODO: Why the need for hinting?
     });
     return this;
   }
 
   public setDangerously<A extends AttrIncomingValues<C, R>, K extends keyof A, R extends boolean = false>(name: K, value: A[K], allowReadonly?: R): this {
-    if (!attrRegisteredTypeGuard(this.attrConfigs, name)) {
-      throw new AttrUnregisteredError<C>(this, name as keyof C, value);
+    const config = this.attrConfig(name as keyof C); // TODO: Why the need for hinting?
+    if (attrValueFnTypeGuard(config.value)) {
+      throw new AttrValueFnError<C>(this, name as keyof C, value); // TODO: Why the need for hinting?
     }
-    if ('function' === typeof this.attrConfigs[name].value) {
-      throw new AttrValueFnError<C>(this, name, value);
+    if (config.readonly && !allowReadonly) {
+      throw new AttrReadonlyError<C>(this, name as keyof C, value); // TODO: Why the need for hinting?
     }
-    if (!allowReadonly && this.attrConfigs[name].readonly) {
-      throw new AttrReadonlyError<C>(this, name, value);
-    }
-    this.attrConfigs[name].value = value;
+    config.value = value;
     return this;
   }
 

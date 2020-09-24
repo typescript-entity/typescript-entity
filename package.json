@@ -31,8 +31,7 @@
   },
   "jest": {
     "moduleNameMapper": {
-      "@typescript-entity/(.*)$": "<rootDir>/packages/$1/src",
-      "lodash-es": "lodash"
+      "^@typescript-entity/(.*)$": "<rootDir>/packages/$1/src"
     },
     "preset": "ts-jest",
     "testEnvironment": "node",
