@@ -1,6 +1,6 @@
 {
   "name": "@typescript-entity/core",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "Typed entity library with attribute sanitization and validation.",
   "homepage": "https://github.com/apancutt/typescript-entity/packages/core#readme",
   "bugs": {
