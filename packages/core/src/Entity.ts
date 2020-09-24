@@ -4,16 +4,12 @@ import { AttrConfigs, AttrIncomingValues, AttrIncomingValuesUntyped, AttrInferre
 
 type Entries<T> = { [K in keyof T]: [ K, T[K] ] }[keyof T][];
 
-function functionTypeGuard<FunctionType = (...args:unknown[]) => unknown>(arg?: unknown): arg is FunctionType {
-  return 'function' === typeof arg;
+function functionTypeGuard<FunctionType>(fn?: unknown): fn is FunctionType {
+  return 'function' === typeof fn;
 }
 
 function attrRegisteredTypeGuard<C extends AttrConfigs>(attrConfigs: C, name?: unknown): name is keyof C {
-  return (
-    ('string' === typeof name && name in attrConfigs)
-    || ('number' === typeof name && name in attrConfigs)
-    || ('symbol' === typeof name && name in attrConfigs)
-  );
+  return ('string' === typeof name || 'number' === typeof name || 'symbol' === typeof name) && name in attrConfigs;
 }
 
 function attrValueFnTypeGuard<V extends AttrValue>(value: unknown): value is AttrValueFn<V> {
