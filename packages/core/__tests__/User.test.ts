@@ -6,7 +6,7 @@ test('an entity can be constructed with default values', () => {
   const user = new User();
   expect(user).toBeInstanceOf(User);
   expect(user.date_of_birth).toBeInstanceOf(Date);
-  expect(user.date_of_birth!.toISOString()).toBe('1970-01-01T00:00:00.000Z');
+  expect(user.date_of_birth.toISOString()).toBe('1970-01-01T00:00:00.000Z');
   expect(user.email).toBe('');
   expect(user.email_domain).toBe('');
   expect(user.username).toBe('');
@@ -25,7 +25,7 @@ test('an entity can be constructed with custom values', () => {
     verified: true,
   });
   expect(user.date_of_birth).toBeInstanceOf(Date);
-  expect(user.date_of_birth!.toISOString()).toBe('2000-01-01T00:00:00.000Z');
+  expect(user.date_of_birth.toISOString()).toBe('2000-01-01T00:00:00.000Z');
   expect(user.email).toBe('foo@example.com');
   expect(user.email_domain).toBe('example.com');
   expect(user.username).toBe('foobar');
@@ -44,7 +44,7 @@ test('an entity can be filled with custom values later', () => {
     verified: true,
   });
   expect(user.date_of_birth).toBeInstanceOf(Date);
-  expect(user.date_of_birth!.toISOString()).toBe('2000-01-01T00:00:00.000Z');
+  expect(user.date_of_birth.toISOString()).toBe('2000-01-01T00:00:00.000Z');
   expect(user.email).toBe('foo@example.com');
   expect(user.email_domain).toBe('example.com');
   expect(user.username).toBe('foobar');

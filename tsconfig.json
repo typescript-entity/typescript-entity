@@ -1,15 +1,9 @@
 {
+  "extends": "./tsconfig.build.json",
   "compilerOptions": {
-    "declaration": true,
-    "forceConsistentCasingInFileNames": true,
-    "module": "CommonJS",
-    "noImplicitReturns": true,
-    "noUnusedLocals": true,
-    "strict": true,
-    "target": "ES6"
-  },
-  "include": [
-    "__tests__/**/*",
-    "src/**/*"
-  ]
+    "baseUrl": "./packages",
+    "paths": {
+      "@typescript-entity/*": ["*/src"]
+    }
+  }
 }

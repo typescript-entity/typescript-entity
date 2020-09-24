@@ -1,9 +1,15 @@
 {
-  "extends": "./tsconfig.json",
   "compilerOptions": {
-    "outDir": "dist/"
+    "declaration": true,
+    "forceConsistentCasingInFileNames": true,
+    "module": "CommonJS",
+    "noImplicitReturns": true,
+    "noUnusedLocals": true,
+    "strict": true,
+    "target": "ES6"
   },
-  "include": [
-    "src/**/*"
+  "exclude": [
+    "build",
+    "node_modules"
   ]
 }

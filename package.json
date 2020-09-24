@@ -1,57 +1,23 @@
 {
-  "name": "typescript-entity",
-  "version": "1.0.0",
-  "description": "Typed entity library with attribute sanitization and validation.",
-  "keywords": [
-    "typescript",
-    "entity",
-    "sanitize",
-    "sanitization",
-    "validate",
-    "validation"
+  "private": true,
+  "workspaces": [
+    "packages/*"
   ],
-  "homepage": "https://github.com/apancutt/typescript-entity#readme",
-  "bugs": {
-    "url": "https://github.com/apancutt/typescript-entity/issues"
-  },
-  "author": "Adam Pancutt <adam@pancutt.com>",
-  "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/apancutt/typescript-entity.git"
-  },
-  "files": [
-    "dist/**/*"
-  ],
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
-  "dependencies": {
-    "lodash": "4",
-    "validator": "13"
-  },
   "devDependencies": {
-    "@types/jest": "26",
-    "@types/lodash": "4",
-    "@types/node": "14",
-    "@types/validator": "13",
-    "jest": "26",
-    "rimraf": "3",
-    "ts-jest": "26",
-    "tslint": "6",
-    "tslint-config-airbnb": "5",
+    "@typescript-eslint/eslint-plugin": "4",
+    "@typescript-eslint/parser": "4",
+    "eslint": "7",
     "typescript": "4"
   },
-  "scripts": {
-    "prebuild": "rimraf ./dist/",
-    "build": "tsc -p tsconfig.build.json",
-    "build:watch": "yarn run build --watch",
-    "test": "jest",
-    "test:watch": "yarn run test --watch",
-    "lint": "tslint --project tsconfig.build.json"
-  },
-  "jest": {
-    "preset": "ts-jest",
-    "testEnvironment": "node",
-    "testRegex": "/__tests__/.*\\.test\\.(ts|tsx|js)$"
+  "eslintConfig": {
+    "root": true,
+    "parser": "@typescript-eslint/parser",
+    "plugins": [
+      "@typescript-eslint"
+    ],
+    "extends": [
+      "eslint:recommended",
+      "plugin:@typescript-eslint/recommended"
+    ]
   }
 }

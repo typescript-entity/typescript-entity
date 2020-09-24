@@ -15,7 +15,7 @@ export const ATTRIBUTE_CONFIGS:UserAttributes = {
   date_of_birth: {
     value: new Date(0),
     normalizer: Normalizer.date,
-    validator: (value) => value < new Date(),
+    validator: (value: Date): boolean => value < new Date(),
   },
   email: {
     value: '',
@@ -23,18 +23,18 @@ export const ATTRIBUTE_CONFIGS:UserAttributes = {
     validator: Validator.email,
   },
   email_domain: {
-    value: function(this: User) { return this.email.split('@', 2)[1] || '' },
+    value: function(this: User): string { return this.email.split('@', 2)[1] || '' },
   },
   uuid: {
     value: undefined,
     normalizer: Normalizer.lowercase,
-    validator: (value) => Validator.uuid(value),
+    validator: (value: string): boolean => Validator.uuid(value),
     readonly: true,
   },
   username: {
     value: '',
     normalizer: Normalizer.string,
-    validator: (value) => Validator.string(value, { min: 5 }),
+    validator: (value: string): boolean => Validator.string(value, { min: 5 }),
   },
   verified: {
     value: false,
@@ -49,44 +49,44 @@ export class User extends Entity<UserAttributes> implements UserInterface {
     super(ATTRIBUTE_CONFIGS, initialAttrs);
   }
 
-  get date_of_birth() {
+  get date_of_birth(): Date {
     return this.get('date_of_birth');
   }
 
-  set date_of_birth(value) {
+  set date_of_birth(value: Date) {
     this.set('date_of_birth', value);
   }
 
-  get email() {
+  get email(): string {
     return this.get('email');
   }
 
-  set email(value) {
+  set email(value: string) {
     this.set('email', value);
   }
 
-  get email_domain() {
+  get email_domain(): string {
     return this.get('email_domain');
   }
 
-  get uuid() {
+  get uuid(): string | undefined {
     return this.get('uuid');
   }
 
-  get username() {
+  get username(): string {
     return this.get('username');
   }
 
-  set username(value) {
+  set username(value: string) {
     this.set('username', value);
   }
 
-  get verified() {
+  get verified(): boolean {
     return this.get('verified');
   }
 
-  set verified(value) {
+  set verified(value: boolean) {
     this.set('verified', value);
   }
 
-};
+}
