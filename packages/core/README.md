@@ -1,11 +1,11 @@
-# typescript-entity
+# @typescript-entity/core
 
 Typed entity library with attribute sanitization and validation.
 
 ## Installation
 
 ```shell
-yarn add typescript-entity
+yarn add @typescript-entity/core
 ```
 
 ## Usage

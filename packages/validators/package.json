@@ -1,8 +1,8 @@
 {
-  "name": "@typescript-entity/core",
+  "name": "@typescript-entity/validators",
   "version": "1.0.0",
-  "description": "Typed entity library with attribute sanitization and validation.",
-  "homepage": "https://github.com/apancutt/typescript-entity/packages/core#readme",
+  "description": "Validator functions for use with @typescript-entity/core.",
+  "homepage": "https://github.com/apancutt/typescript-entity/packages/validators#readme",
   "bugs": {
     "url": "https://github.com/apancutt/typescript-entity/issues"
   },
@@ -18,13 +18,17 @@
   "main": "build/index.js",
   "types": "build/index.d.ts",
   "dependencies": {
-    "lodash": ">=4.17.19"
+    "@typescript-entity/normalizers": "0",
+    "validator": "13"
   },
   "devDependencies": {
-    "@types/lodash": "4",
     "@types/node": "14",
+    "@types/validator": "13",
     "rimraf": "3",
     "typescript": "4"
+  },
+  "peerDependencies": {
+    "@typescript-entity/core": "0"
   },
   "scripts": {
     "prebuild": "rimraf ./build/",

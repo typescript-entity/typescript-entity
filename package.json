@@ -4,10 +4,20 @@
     "packages/*"
   ],
   "devDependencies": {
+    "@typescript-entity/core": "0",
+    "@typescript-entity/normalizers": "0",
+    "@typescript-entity/validators": "0",
     "@typescript-eslint/eslint-plugin": "4",
     "@typescript-eslint/parser": "4",
+    "@types/jest": "26",
     "eslint": "7",
+    "jest": "26",
+    "ts-jest": "26",
     "typescript": "4"
+  },
+  "scripts": {
+    "test": "jest",
+    "test:watch": "yarn run test --watch"
   },
   "eslintConfig": {
     "root": true,
@@ -19,5 +29,10 @@
       "eslint:recommended",
       "plugin:@typescript-eslint/recommended"
     ]
+  },
+  "jest": {
+    "preset": "ts-jest",
+    "testEnvironment": "node",
+    "testRegex": "/__tests__/.*\\.test\\.(ts|tsx|js)$"
   }
 }

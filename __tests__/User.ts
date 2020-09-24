@@ -1,4 +1,6 @@
-import { AttributeConfig, Entity, EntityInterface, InitialAttributes, Normalizer, Validator, WithNormalizer, WithReadonly, WithValidator } from '../src/';
+import { AttributeConfig, Entity, EntityInterface, InitialAttributes, WithNormalizer, WithReadonly, WithValidator } from '@typescript-entity/core';
+import { * as Normalizers } from '@typescript-entity/normalizers';
+import { * as Validators } from '@typescript-entity/validators';
 
 export type UserAttributes = {
   date_of_birth: WithNormalizer<WithValidator<AttributeConfig<Date>>>;
