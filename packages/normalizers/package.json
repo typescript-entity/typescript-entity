@@ -1,6 +1,6 @@
 {
   "name": "@typescript-entity/normalizers",
-  "version": "0.0.1",
+  "version": "0.0.0",
   "description": "Normalizer functions for use with @typescript-entity/core.",
   "homepage": "https://github.com/apancutt/typescript-entity/packages/normalizers#readme",
   "bugs": {

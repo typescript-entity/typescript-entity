@@ -1,6 +1,6 @@
 {
   "name": "@typescript-entity/validators",
-  "version": "0.0.1",
+  "version": "0.0.0",
   "description": "Validator functions for use with @typescript-entity/core.",
   "homepage": "https://github.com/apancutt/typescript-entity/packages/validators#readme",
   "bugs": {
