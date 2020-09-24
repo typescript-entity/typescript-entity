@@ -1,6 +1,6 @@
 import { AttributeConfig, Entity, EntityInterface, InitialAttributes, WithNormalizer, WithReadonly, WithValidator } from '@typescript-entity/core';
-import { * as Normalizers } from '@typescript-entity/normalizers';
-import { * as Validators } from '@typescript-entity/validators';
+import * as Normalizers from '@typescript-entity/normalizers';
+import * as Validators from '@typescript-entity/validators';
 
 export type UserAttributes = {
   date_of_birth: WithNormalizer<WithValidator<AttributeConfig<Date>>>;
@@ -16,32 +16,32 @@ export type UserInterface = EntityInterface<UserAttributes>;
 export const ATTRIBUTE_CONFIGS:UserAttributes = {
   date_of_birth: {
     value: new Date(0),
-    normalizer: Normalizer.date,
+    normalizer: Normalizers.date,
     validator: (value: Date): boolean => value < new Date(),
   },
   email: {
     value: '',
-    normalizer: Normalizer.string,
-    validator: Validator.email,
+    normalizer: Normalizers.string,
+    validator: Validators.email,
   },
   email_domain: {
     value: function(this: User): string { return this.email.split('@', 2)[1] || '' },
   },
   uuid: {
     value: undefined,
-    normalizer: Normalizer.lowercase,
-    validator: (value: string): boolean => Validator.uuid(value),
+    normalizer: Normalizers.lowercase,
+    validator: (value: string): boolean => Validators.uuid(value),
     readonly: true,
   },
   username: {
     value: '',
-    normalizer: Normalizer.string,
-    validator: (value: string): boolean => Validator.string(value, { min: 5 }),
+    normalizer: Normalizers.string,
+    validator: (value: string): boolean => Validators.string(value, { min: 5 }),
   },
   verified: {
     value: false,
-    normalizer: Normalizer.boolean,
-    validator: Validator.boolean,
+    normalizer: Normalizers.boolean,
+    validator: Validators.boolean,
   },
 };
 

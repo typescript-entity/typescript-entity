@@ -16,6 +16,7 @@
     "typescript": "4"
   },
   "scripts": {
+    "lint": "eslint --ext .js,.jsx,.ts,.tsx tests packages/*/src",
     "test": "jest",
     "test:watch": "yarn run test --watch"
   },
@@ -31,8 +32,11 @@
     ]
   },
   "jest": {
+    "moduleNameMapper": {
+      "@typescript-entity/(.*)$": "<rootDir>/packages/$1/src"
+    },
     "preset": "ts-jest",
     "testEnvironment": "node",
-    "testRegex": "/__tests__/.*\\.test\\.(ts|tsx|js)$"
+    "testRegex": "/tests/.*\\.test\\.(ts|tsx)$"
   }
 }

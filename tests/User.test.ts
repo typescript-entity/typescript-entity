@@ -1,5 +1,5 @@
+import { FunctionAttributeError, InvalidAttributeError, ReadonlyAttributeError } from '@typescript-entity/core';
 import { User } from './User';
-import { FunctionAttributeError, InvalidAttributeError, ReadonlyAttributeError } from '../src/Error';
 
 test('an entity can be constructed with default values', () => {
 

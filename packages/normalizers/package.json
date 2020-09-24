@@ -13,10 +13,9 @@
     "url": "git+https://github.com/apancutt/typescript-entity.git"
   },
   "files": [
-    "build/**/*"
+    "src/"
   ],
-  "main": "build/index.js",
-  "types": "build/index.d.ts",
+  "main": "index.ts",
   "dependencies": {
     "lodash": ">=4.17.19",
     "validator": "13"
@@ -34,7 +33,6 @@
   "scripts": {
     "prebuild": "rimraf ./build/",
     "build": "tsc -p tsconfig.build.json",
-    "build:watch": "yarn run build --watch",
-    "eslint": "eslint --ext .js,.jsx,.ts,.tsx src __tests__"
+    "build:watch": "yarn run build --watch"
   }
 }

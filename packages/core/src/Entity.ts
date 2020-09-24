@@ -17,9 +17,9 @@ export default abstract class Entity<AC extends AttributeConfigs<any>> {
     this.fill(initialAttrs, true);
   }
 
-  public normalize<K extends keyof AC, AV extends InferredAttributeValue<AC[K]['value']>>(name: K, value: any): ReturnType<AttributeNormalizerFn<AV>> {
+  public normalize<K extends keyof AC, AV extends InferredAttributeValue<AC[K]['value']>>(name: K, value: unknown): ReturnType<AttributeNormalizerFn<AV>> {
     if ('function' !== typeof this.attrConfigs[name]['normalizer']) {
-      return value;
+      return value as AV;
     }
     return this.attrConfigs[name]['normalizer']!.call(this, value);
   }
@@ -31,7 +31,7 @@ export default abstract class Entity<AC extends AttributeConfigs<any>> {
     return this.attrConfigs[name]['validator']!.call(this, value);
   }
 
-  public all() {
+  public all(): InferredAttributeValues<AC> {
     return Object.keys(this.attrConfigs).reduce((attrs, name) => ({
       ...attrs,
       [name]: this.get(name),
@@ -44,7 +44,7 @@ export default abstract class Entity<AC extends AttributeConfigs<any>> {
       : this.attrConfigs[name]['value'];
   }
 
-  public set<K extends keyof RawWritableAttributes<AC, R>, R extends boolean = false>(name: K, value: any, allowReadonly?: R) {
+  public set<K extends keyof RawWritableAttributes<AC, R>, R extends boolean = false>(name: K, value: unknown, allowReadonly?: R): this {
     value = this.normalize(name, value);
     if (!this.validate(name, value)) {
       throw new InvalidAttributeError<AC>(this, name, value);
@@ -52,7 +52,7 @@ export default abstract class Entity<AC extends AttributeConfigs<any>> {
     return this.setDangerously(name, value, allowReadonly);
   }
 
-  public setDangerously<A extends WritableAttributes<AC, R>, K extends keyof A, R extends boolean = false>(name: K, value: A[K], allowReadonly?: R) {
+  public setDangerously<A extends WritableAttributes<AC, R>, K extends keyof A, R extends boolean = false>(name: K, value: A[K], allowReadonly?: R): this {
     if ('function' === typeof this.attrConfigs[name]['value']) {
       throw new FunctionAttributeError<AC>(this, name, value);
     }
@@ -63,21 +63,21 @@ export default abstract class Entity<AC extends AttributeConfigs<any>> {
     return this;
   }
 
-  public fill<A extends RawWritableAttributes<AC, R>, R extends boolean = false>(attrs: Partial<A>, allowReadonly?: R) {
+  public fill<A extends RawWritableAttributes<AC, R>, R extends boolean = false>(attrs: Partial<A>, allowReadonly?: R): this {
     (Object.entries(attrs) as Entries<A>).forEach(([ name, value ]) => {
       this.set(name as any, value, allowReadonly);
     });
     return this;
   }
 
-  public fillDangerously<A extends WritableAttributes<AC, R>, R extends boolean = false>(attrs: Partial<A>, allowReadonly?: R) {
+  public fillDangerously<A extends WritableAttributes<AC, R>, R extends boolean = false>(attrs: Partial<A>, allowReadonly?: R): this {
     (Object.entries(attrs) as Entries<A>).forEach(([ name, value ]) => {
       this.setDangerously(name as any, value, allowReadonly);
     });
     return this;
   }
 
-  public toJSON() {
+  public toJSON(): InferredAttributeValues<AC> {
     return this.all();
   }
 
