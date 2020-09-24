@@ -18,7 +18,7 @@
   "main": "build/index.ts",
   "types": "build/index.d.ts",
   "dependencies": {
-    "lodash": "4"
+    "lodash": "^4.17.20"
   },
   "devDependencies": {
     "@types/lodash": "4",
