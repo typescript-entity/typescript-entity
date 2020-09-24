@@ -1,4 +1,4 @@
-import { FunctionAttributeError, InvalidAttributeError, ReadonlyAttributeError } from '@typescript-entity/core';
+import { AttrReadonlyError, AttrValueFnError, AttrValueInvalidError } from '@typescript-entity/core';
 import { User } from './User';
 
 test('an entity can be constructed with default values', () => {
@@ -56,20 +56,16 @@ test('an entity cannot be filled with readonly values later', () => {
 
   const user = new User();
   expect(() => {
-    user.fill({
-      uuid: '7a2d2178-37da-4f5c-bb05-5f6819ff6ecd',
-    } as any);
-  }).toThrow(ReadonlyAttributeError);
+    user.fill({ uuid: '7a2d2178-37da-4f5c-bb05-5f6819ff6ecd' });
+  }).toThrow(AttrReadonlyError);
 
 });
 
 test('an entity cannot be constructed with values for dynamic attributes', () => {
 
   expect(() => {
-    new User({
-      email_domain: 'foo.com',
-    } as any);
-  }).toThrow(FunctionAttributeError);
+    new User({ email_domain: 'foo.com' });
+  }).toThrow(AttrValueFnError);
 
 });
 
@@ -77,10 +73,8 @@ test('an entity cannot be filled with values for dynamic attributes later', () =
 
   const user = new User();
   expect(() => {
-    user.fill({
-      email_domain: 'foo.com',
-    } as any);
-  }).toThrow(FunctionAttributeError);
+    user.fill({ email_domain: 'foo.com' });
+  }).toThrow(AttrValueFnError);
 
 });
 
@@ -88,9 +82,7 @@ test('an entity cannot be filled with invalid values later', () => {
 
   const user = new User();
   expect(() => {
-    user.fill({
-      username: 'abc',
-    });
-  }).toThrow(InvalidAttributeError);
+    user.fill({ username: 'abc' });
+  }).toThrow(AttrValueInvalidError);
 
 });

@@ -1,13 +1,13 @@
 import Entity from './Entity';
-import { AttributeConfigs } from './Type';
+import { AttrConfigs } from './Type';
 
-export abstract class AttributeError<AC extends AttributeConfigs<any>> extends Error {
+export abstract class AttrError<C extends AttrConfigs> extends Error {
 
-  public entity: Entity<AC>;
-  public attrName: keyof AC;
+  public entity: Entity<C>;
+  public attrName: keyof C;
   public attrValue: unknown;
 
-  constructor(message: string, entity: Entity<AC>, attrName: keyof AC, attrValue: unknown) {
+  constructor(message: string, entity: Entity<C>, attrName: keyof C, attrValue: unknown) {
     super(message);
     this.entity = entity;
     this.attrName = attrName;
@@ -16,18 +16,20 @@ export abstract class AttributeError<AC extends AttributeConfigs<any>> extends E
 
 }
 
-export class InvalidAttributeError<AC extends AttributeConfigs<any>> extends AttributeError<AC> {
-  constructor(entity: Entity<AC>, attrName: keyof AC, attrValue: unknown, message?: string) {
+export class AttrValueInvalidError<C extends AttrConfigs> extends AttrError<C> {
+  constructor(entity: Entity<C>, attrName: keyof C, attrValue: unknown, message?: string) {
     super(message || `Invalid value provided for ${entity.constructor.name}.${attrName}: ${attrValue}`, entity, attrName, attrValue);
   }
 }
 
-export class NonWritableAttributeError<AC extends AttributeConfigs<any>> extends AttributeError<AC> {
-  constructor(entity: Entity<AC>, attrName: keyof AC, attrValue: unknown, message?: string) {
+export class AttrNonWritableError<C extends AttrConfigs> extends AttrError<C> {
+  constructor(entity: Entity<C>, attrName: keyof C, attrValue: unknown, message?: string) {
     super(message || `Cannot set value for non-writable attribute ${entity.constructor.name}.${attrName}: ${attrValue}`, entity, attrName, attrValue);
   }
 }
 
-export class FunctionAttributeError<AC extends AttributeConfigs<any>> extends NonWritableAttributeError<AC> {}
+export class AttrReadonlyError<C extends AttrConfigs> extends AttrNonWritableError<C> {}
 
-export class ReadonlyAttributeError<AC extends AttributeConfigs<any>> extends NonWritableAttributeError<AC> {}
+export class AttrUnregisteredError<C extends AttrConfigs> extends AttrNonWritableError<C> {}
+
+export class AttrValueFnError<C extends AttrConfigs> extends AttrNonWritableError<C> {}
