@@ -1,4 +1,4 @@
-import { cloneDeep } from 'lodash';
+import cloneDeep from 'lodash-es/cloneDeep';
 import { AttrReadonlyError, AttrUnregisteredError, AttrValueFnError, AttrValueInvalidError } from './Error';
 import { AttrConfigs, AttrIncomingValues, AttrIncomingValuesUntyped, AttrInferredValue, AttrInferredValues, AttrInitialValues, AttrNormalizerFn, AttrValidatorFn, AttrValue, AttrValueFn } from './Type';
 

@@ -13,9 +13,10 @@
     "url": "git+https://github.com/apancutt/typescript-entity.git"
   },
   "files": [
-    "src/"
+    "build/"
   ],
   "main": "index.ts",
+  "types": "index.d.ts",
   "dependencies": {
     "@typescript-entity/normalizers": "0",
     "validator": "13"
@@ -30,8 +31,7 @@
     "@typescript-entity/core": "0"
   },
   "scripts": {
-    "prebuild": "rimraf ./build/",
-    "build": "tsc -p tsconfig.build.json",
-    "build:watch": "yarn run build --watch"
+    "prebuild": "rimraf ./build",
+    "build": "tsc -p tsconfig.build.json"
   }
 }

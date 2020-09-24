@@ -13,15 +13,16 @@
     "url": "git+https://github.com/apancutt/typescript-entity.git"
   },
   "files": [
-    "src/"
+    "build/"
   ],
   "main": "index.ts",
+  "types": "index.d.ts",
   "dependencies": {
-    "lodash": ">=4.17.19",
+    "lodash-es": "4",
     "validator": "13"
   },
   "devDependencies": {
-    "@types/lodash": "4",
+    "@types/lodash-es": "4",
     "@types/node": "14",
     "@types/validator": "13",
     "rimraf": "3",
@@ -31,8 +32,7 @@
     "@typescript-entity/core": "0"
   },
   "scripts": {
-    "prebuild": "rimraf ./build/",
-    "build": "tsc -p tsconfig.build.json",
-    "build:watch": "yarn run build --watch"
+    "prebuild": "rimraf ./build",
+    "build": "tsc -p tsconfig.build.json"
   }
 }

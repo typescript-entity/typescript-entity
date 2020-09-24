@@ -4,9 +4,6 @@
     "packages/*"
   ],
   "devDependencies": {
-    "@typescript-entity/core": "0",
-    "@typescript-entity/normalizers": "0",
-    "@typescript-entity/validators": "0",
     "@typescript-eslint/eslint-plugin": "4",
     "@typescript-eslint/parser": "4",
     "@types/jest": "26",
@@ -18,7 +15,8 @@
   "scripts": {
     "lint": "eslint --ext .js,.jsx,.ts,.tsx tests packages/*/src",
     "test": "jest",
-    "test:watch": "yarn run test --watch"
+    "test:watch": "yarn run test --watch",
+    "build": "for i in `ls ./packages`; do cd packages/$i; echo \"Building package: ${i}\"; yarn run build; cd ../../; done"
   },
   "eslintConfig": {
     "root": true,
