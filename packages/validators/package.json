@@ -15,8 +15,8 @@
   "files": [
     "build/"
   ],
-  "main": "index.ts",
-  "types": "index.d.ts",
+  "main": "build/index.ts",
+  "types": "build/index.d.ts",
   "dependencies": {
     "@typescript-entity/normalizers": "0",
     "validator": "13"
