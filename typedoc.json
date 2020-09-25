@@ -1,7 +1,0 @@
-{
-  "name": "@typescript-entity",
-  "mode": "modules",
-  "out": "./docs",
-  "theme": "default",
-  "external-modulemap": ".*packages\/([^\/]+)\/.*"
-}

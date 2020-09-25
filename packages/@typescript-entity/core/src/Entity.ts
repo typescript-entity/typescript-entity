@@ -29,9 +29,9 @@ export default abstract class Entity<C extends AttrConfigs> {
   protected attrConfigs: C;
 
   /**
-   * Creates a new `Entity` instance. The `attrConfigs` defines the attributes available on the
-   * `Entity` instance along with default values for required attributes. Initial attribute values
-   * can be set on the instance via `initialAttrs`, and while these are not normalized nor
+   * Creates a new [[`Entity`]] instance. The `attrConfigs` defines the attributes available on the
+   * [[`Entity`]] instance along with default values for required attributes. Initial attribute
+   * values can be set on the instance via `initialAttrs`, and while these are not normalized nor
    * validated, they will bypass any `readonly` settings.
    *
    * @param attrConfigs
@@ -52,7 +52,7 @@ export default abstract class Entity<C extends AttrConfigs> {
    * Normalizes a value using the normalizer function provided in the attribute configs. The
    * normalizer function is not called if `value` is `null` or `undefined`. While Typescript takes
    * care of ensuring type safety, it may be appropriate to perform casting within your normalizer
-   * functions in cases where your `Entity` classes are used outside of Typescript.
+   * functions in cases where your [[`Entity`]] classes are used outside of Typescript.
    *
    * @param name
    * @param value
@@ -74,7 +74,7 @@ export default abstract class Entity<C extends AttrConfigs> {
    * Validates a `value` using the validator function provided in the attribute configs. The
    * validator function is not called if `value` is `null` or `undefined`. While Typescript takes
    * care of ensuring type safety, it may be appropriate to perform type-checking within your
-   * validator functions in cases where your `Entity` classes are used outside of Typescript.
+   * validator functions in cases where your [[`Entity`]] classes are used outside of Typescript.
    *
    * @param name
    * @param value
@@ -93,7 +93,7 @@ export default abstract class Entity<C extends AttrConfigs> {
   }
 
   /**
-   * Returns all attribute names and values on the `Entity` instance.
+   * Returns all attribute names and values on the [[`Entity`]] instance.
    */
   public all(): AttrInferredValues<C> {
     return <AttrInferredValues<C>>Object.keys(this.attrConfigs).reduce((attrs, name) => ({
@@ -167,7 +167,7 @@ export default abstract class Entity<C extends AttrConfigs> {
    * Sets multiple attribute values. If a provided attribute is non-writable (is a value function or
    * is marked as `readonly` and `allowReadonly` is `false`) then the attribute is silently ignored.
    *
-   * @see Entity.set()
+   * @see [[`Entity.set`]]
    * @param attrs
    * @param allowReadonly
    */
@@ -192,7 +192,7 @@ export default abstract class Entity<C extends AttrConfigs> {
    * provided `attrs` value types are invalid, but in JavaScript environments this function should
    * be used with extra caution.
    *
-   * @see Entity.setDangerously()
+   * @see [[`Entity.setDangerously`]]
    * @param attrs
    * @param allowReadonly
    */
@@ -211,7 +211,7 @@ export default abstract class Entity<C extends AttrConfigs> {
   }
 
   /**
-   * Returns a string representation of the `Entity` instance.
+   * Returns a string representation of the [[`Entity`]] instance.
    */
   public toString(): string
   {
@@ -219,8 +219,8 @@ export default abstract class Entity<C extends AttrConfigs> {
   }
 
   /**
-   * Returns the attribute names and values that should be included when stringifying the `Entity`
-   * instance into JSON form.
+   * Returns the attribute names and values that should be included when stringifying the
+   * [[`Entity`]] instance into JSON form.
    */
   public toJSON(): AttrInferredValues<C> {
     return this.all();
