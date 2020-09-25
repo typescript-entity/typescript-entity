@@ -47,15 +47,18 @@ export default abstract class Entity<C extends AttrConfigs> {
   }
 
   public normalize<K extends keyof C, I extends AttrInferredValue<C[K]['value']>>(name: K, value: unknown): ReturnType<AttrNormalizerFn<I>> {
+    if (null === value) {
+      value = undefined;
+    }
     const config = this.attrConfig(name);
-    return attrNormalizerFnTypeGuard<I>(config.normalizer)
+    return (attrNormalizerFnTypeGuard<I>(config.normalizer) && undefined !== value)
       ? config.normalizer.call(this, value)
       : value as I;
   }
 
   public validate<K extends keyof C, I extends AttrInferredValue<C[K]['value']>>(name: K, value: I): ReturnType<AttrValidatorFn<I>> {
     const config = this.attrConfig(name);
-    return attrValidatorFnTypeGuard(config.validator)
+    return (attrValidatorFnTypeGuard(config.validator) && undefined !== value)
       ? config.validator.call(this, value)
       : true;
   }

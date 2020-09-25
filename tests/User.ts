@@ -30,7 +30,7 @@ export const USER_ATTR_CONFIGS:UserAttrConfigs = {
   uuid: {
     value: undefined,
     normalizer: Normalizers.lowercase,
-    validator: (value: string): boolean => Validators.uuid(value),
+    validator: Validators.uuid,
     readonly: true,
   },
   username: {
@@ -40,7 +40,7 @@ export const USER_ATTR_CONFIGS:UserAttrConfigs = {
   },
   verified: {
     value: false,
-    // TODO: normalizer: Normalizers.boolean,
+    normalizer: Normalizers.boolean,
     validator: Validators.boolean,
   },
 };

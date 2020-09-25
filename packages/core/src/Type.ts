@@ -5,9 +5,9 @@ export interface AttrConfigs {
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export interface AttrConfig<V extends AttrValue | AttrValueFn = any> {
   value: V;
-  readonly?: V extends AttrValueFn ? never : boolean;
-  normalizer?: V extends AttrValueFn ? never : AttrNormalizerFn<V>;
-  validator?: V extends AttrValueFn ? never : AttrValidatorFn<V>;
+  readonly?: boolean;
+  normalizer?: AttrNormalizerFn<V>;
+  validator?: AttrValidatorFn<V>;
 }
 
 export type AttrValue = any;
@@ -17,7 +17,7 @@ export type AttrValueFn<V extends AttrValue = AttrValue> = () => V;
 
 export type AttrNormalizerFn<V extends AttrValue> = (value: unknown) => V;
 
-export type AttrValidatorFn<V extends AttrValue> = (value: V) => boolean;
+export type AttrValidatorFn<V extends AttrValue> = (value: NonNullable<V>) => boolean;
 
 export type AttrInferredValue<V extends AttrValue> = V extends AttrValueFn ? ReturnType<V> : V;
 
