@@ -171,7 +171,7 @@
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/apancutt/typescript-entity/blob/b36eb60/packages/@typescript-entity/core/src/Entity.ts#L29">packages/@typescript-entity/core/src/Entity.ts:29</a></li>
+								<li>Defined in <a href="https://github.com/apancutt/typescript-entity/blob/a5f9722/packages/@typescript-entity/core/src/Entity.ts#L29">packages/@typescript-entity/core/src/Entity.ts:29</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -179,7 +179,7 @@
 								<p>Creates a new <a href="../modules/_typescript_entity_core.html#entity"><code>Entity</code></a> instance. The <code>attrConfigs</code> defines the attributes available on the
 									<a href="../modules/_typescript_entity_core.html#entity"><code>Entity</code></a> instance along with default values for required attributes. Initial attribute
 									values can be set on the instance via <code>initialAttrs</code>, and while these are not normalized nor
-								validated, they will bypass any <code>readonly</code> settings.</p>
+								validated, they will bypass any <code>readOnly</code> settings.</p>
 							</div>
 						</div>
 						<h4 class="tsd-parameters-title">Parameters</h4>
@@ -208,7 +208,7 @@
 				<div class="tsd-signature tsd-kind-icon">attr<wbr>Configs<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">C</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/apancutt/typescript-entity/blob/b36eb60/packages/@typescript-entity/core/src/Entity.ts#L29">packages/@typescript-entity/core/src/Entity.ts:29</a></li>
+						<li>Defined in <a href="https://github.com/apancutt/typescript-entity/blob/a5f9722/packages/@typescript-entity/core/src/Entity.ts#L29">packages/@typescript-entity/core/src/Entity.ts:29</a></li>
 					</ul>
 				</aside>
 			</section>
@@ -225,7 +225,7 @@
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/apancutt/typescript-entity/blob/b36eb60/packages/@typescript-entity/core/src/Entity.ts#L98">packages/@typescript-entity/core/src/Entity.ts:98</a></li>
+								<li>Defined in <a href="https://github.com/apancutt/typescript-entity/blob/a5f9722/packages/@typescript-entity/core/src/Entity.ts#L98">packages/@typescript-entity/core/src/Entity.ts:98</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -241,19 +241,19 @@
 				<a name="fill" class="tsd-anchor"></a>
 				<h3>fill</h3>
 				<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter">
-					<li class="tsd-signature tsd-kind-icon">fill&lt;A, R&gt;<span class="tsd-signature-symbol">(</span>attrs<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Partial</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">A</span><span class="tsd-signature-symbol">&gt;</span>, allowReadonly<span class="tsd-signature-symbol">?: </span><a href="" class="tsd-signature-type">R</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">this</span></li>
+					<li class="tsd-signature tsd-kind-icon">fill&lt;A, R&gt;<span class="tsd-signature-symbol">(</span>attrs<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Partial</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">A</span><span class="tsd-signature-symbol">&gt;</span>, allowReadOnly<span class="tsd-signature-symbol">?: </span><a href="" class="tsd-signature-type">R</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">this</span></li>
 				</ul>
 				<ul class="tsd-descriptions">
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/apancutt/typescript-entity/blob/b36eb60/packages/@typescript-entity/core/src/Entity.ts#L198">packages/@typescript-entity/core/src/Entity.ts:198</a></li>
+								<li>Defined in <a href="https://github.com/apancutt/typescript-entity/blob/a5f9722/packages/@typescript-entity/core/src/Entity.ts#L198">packages/@typescript-entity/core/src/Entity.ts:198</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
 							<div class="lead">
 								<p>Sets multiple attribute values. If a provided attribute is non-writable (is a value function or
-								is marked as <code>readonly</code> and <code>allowReadonly</code> is <code>false</code>) then the attribute is silently ignored.</p>
+								is marked as <code>readOnly</code> and <code>allowReadOnly</code> is <code>false</code>) then the attribute is silently ignored.</p>
 							</div>
 							<dl class="tsd-comment-tags">
 								<dt>see</dt>
@@ -276,7 +276,7 @@
 								<h5>attrs: <span class="tsd-signature-type">Partial</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">A</span><span class="tsd-signature-symbol">&gt;</span></h5>
 							</li>
 							<li>
-								<h5><span class="tsd-flag ts-flagOptional">Optional</span> allowReadonly: <a href="" class="tsd-signature-type">R</a></h5>
+								<h5><span class="tsd-flag ts-flagOptional">Optional</span> allowReadOnly: <a href="" class="tsd-signature-type">R</a></h5>
 								<div class="tsd-comment tsd-typography">
 								</div>
 							</li>
@@ -289,19 +289,19 @@
 				<a name="filldangerously" class="tsd-anchor"></a>
 				<h3>fill<wbr>Dangerously</h3>
 				<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter">
-					<li class="tsd-signature tsd-kind-icon">fill<wbr>Dangerously&lt;A, R&gt;<span class="tsd-signature-symbol">(</span>attrs<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Partial</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">A</span><span class="tsd-signature-symbol">&gt;</span>, allowReadonly<span class="tsd-signature-symbol">?: </span><a href="" class="tsd-signature-type">R</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">this</span></li>
+					<li class="tsd-signature tsd-kind-icon">fill<wbr>Dangerously&lt;A, R&gt;<span class="tsd-signature-symbol">(</span>attrs<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Partial</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">A</span><span class="tsd-signature-symbol">&gt;</span>, allowReadOnly<span class="tsd-signature-symbol">?: </span><a href="" class="tsd-signature-type">R</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">this</span></li>
 				</ul>
 				<ul class="tsd-descriptions">
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/apancutt/typescript-entity/blob/b36eb60/packages/@typescript-entity/core/src/Entity.ts#L223">packages/@typescript-entity/core/src/Entity.ts:223</a></li>
+								<li>Defined in <a href="https://github.com/apancutt/typescript-entity/blob/a5f9722/packages/@typescript-entity/core/src/Entity.ts#L223">packages/@typescript-entity/core/src/Entity.ts:223</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
 							<div class="lead">
 								<p>Sets multiple attribute values without normalization nor validation. If a provided attribute is
-									non-writable (is a value function or is marked as <code>readonly</code> and <code>allowReadonly</code> is <code>false</code>)
+									non-writable (is a value function or is marked as <code>readOnly</code> and <code>allowReadOnly</code> is <code>false</code>)
 									then the attribute is silently ignored. In TypeScript, calling this function will fail if the
 									provided <code>attrs</code> value types are invalid, but in JavaScript environments this function should
 								be used with extra caution.</p>
@@ -327,7 +327,7 @@
 								<h5>attrs: <span class="tsd-signature-type">Partial</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">A</span><span class="tsd-signature-symbol">&gt;</span></h5>
 							</li>
 							<li>
-								<h5><span class="tsd-flag ts-flagOptional">Optional</span> allowReadonly: <a href="" class="tsd-signature-type">R</a></h5>
+								<h5><span class="tsd-flag ts-flagOptional">Optional</span> allowReadOnly: <a href="" class="tsd-signature-type">R</a></h5>
 								<div class="tsd-comment tsd-typography">
 								</div>
 							</li>
@@ -346,7 +346,7 @@
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/apancutt/typescript-entity/blob/b36eb60/packages/@typescript-entity/core/src/Entity.ts#L135">packages/@typescript-entity/core/src/Entity.ts:135</a></li>
+								<li>Defined in <a href="https://github.com/apancutt/typescript-entity/blob/a5f9722/packages/@typescript-entity/core/src/Entity.ts#L135">packages/@typescript-entity/core/src/Entity.ts:135</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -389,7 +389,7 @@
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/apancutt/typescript-entity/blob/b36eb60/packages/@typescript-entity/core/src/Entity.ts#L108">packages/@typescript-entity/core/src/Entity.ts:108</a></li>
+								<li>Defined in <a href="https://github.com/apancutt/typescript-entity/blob/a5f9722/packages/@typescript-entity/core/src/Entity.ts#L108">packages/@typescript-entity/core/src/Entity.ts:108</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -411,7 +411,7 @@
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/apancutt/typescript-entity/blob/b36eb60/packages/@typescript-entity/core/src/Entity.ts#L60">packages/@typescript-entity/core/src/Entity.ts:60</a></li>
+								<li>Defined in <a href="https://github.com/apancutt/typescript-entity/blob/a5f9722/packages/@typescript-entity/core/src/Entity.ts#L60">packages/@typescript-entity/core/src/Entity.ts:60</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -450,19 +450,19 @@
 				<a name="set" class="tsd-anchor"></a>
 				<h3>set</h3>
 				<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter">
-					<li class="tsd-signature tsd-kind-icon">set&lt;K, R&gt;<span class="tsd-signature-symbol">(</span>name<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">K</span>, value<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">unknown</span>, allowReadonly<span class="tsd-signature-symbol">?: </span><a href="" class="tsd-signature-type">R</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">this</span></li>
+					<li class="tsd-signature tsd-kind-icon">set&lt;K, R&gt;<span class="tsd-signature-symbol">(</span>name<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">K</span>, value<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">unknown</span>, allowReadOnly<span class="tsd-signature-symbol">?: </span><a href="" class="tsd-signature-type">R</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">this</span></li>
 				</ul>
 				<ul class="tsd-descriptions">
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/apancutt/typescript-entity/blob/b36eb60/packages/@typescript-entity/core/src/Entity.ts#L154">packages/@typescript-entity/core/src/Entity.ts:154</a></li>
+								<li>Defined in <a href="https://github.com/apancutt/typescript-entity/blob/a5f9722/packages/@typescript-entity/core/src/Entity.ts#L154">packages/@typescript-entity/core/src/Entity.ts:154</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
 							<div class="lead">
 								<p>Sets the <code>value</code> of the specified attribute <code>name</code>. If the attribute is configured with a value
-									function or is <code>readonly</code> (unless <code>allowReadonly</code> is set to <code>true</code>) then an error is thrown.
+									function or is <code>readOnly</code> (unless <code>allowReadOnly</code> is set to <code>true</code>) then an error is thrown.
 									The <code>value</code> provided will be normalized and validated. If validation fails an error is thrown
 								and the attribute is unchanged.</p>
 							</div>
@@ -485,7 +485,7 @@
 								<h5>value: <span class="tsd-signature-type">unknown</span></h5>
 							</li>
 							<li>
-								<h5><span class="tsd-flag ts-flagOptional">Optional</span> allowReadonly: <a href="" class="tsd-signature-type">R</a></h5>
+								<h5><span class="tsd-flag ts-flagOptional">Optional</span> allowReadOnly: <a href="" class="tsd-signature-type">R</a></h5>
 								<div class="tsd-comment tsd-typography">
 								</div>
 							</li>
@@ -498,19 +498,19 @@
 				<a name="setdangerously" class="tsd-anchor"></a>
 				<h3>set<wbr>Dangerously</h3>
 				<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter">
-					<li class="tsd-signature tsd-kind-icon">set<wbr>Dangerously&lt;A, K, R&gt;<span class="tsd-signature-symbol">(</span>name<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">K</span>, value<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">A</span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">K</span><span class="tsd-signature-symbol">]</span>, allowReadonly<span class="tsd-signature-symbol">?: </span><a href="" class="tsd-signature-type">R</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">this</span></li>
+					<li class="tsd-signature tsd-kind-icon">set<wbr>Dangerously&lt;A, K, R&gt;<span class="tsd-signature-symbol">(</span>name<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">K</span>, value<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">A</span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">K</span><span class="tsd-signature-symbol">]</span>, allowReadOnly<span class="tsd-signature-symbol">?: </span><a href="" class="tsd-signature-type">R</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">this</span></li>
 				</ul>
 				<ul class="tsd-descriptions">
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/apancutt/typescript-entity/blob/b36eb60/packages/@typescript-entity/core/src/Entity.ts#L176">packages/@typescript-entity/core/src/Entity.ts:176</a></li>
+								<li>Defined in <a href="https://github.com/apancutt/typescript-entity/blob/a5f9722/packages/@typescript-entity/core/src/Entity.ts#L176">packages/@typescript-entity/core/src/Entity.ts:176</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
 							<div class="lead">
 								<p>Sets the <code>value</code> of the specified attribute <code>name</code>. If the attribute is configured with a value
-									function or is <code>readonly</code> (unless <code>allowReadonly</code> is set to <code>true</code>) then an error is thrown.
+									function or is <code>readOnly</code> (unless <code>allowReadOnly</code> is set to <code>true</code>) then an error is thrown.
 									The <code>value</code> provided will not be normalized nor validated. In TypeScript, calling this function
 									will fail if the provided <code>value</code> type is invalid, but in JavaScript environments this function
 								should be used with extra caution.</p>
@@ -537,7 +537,7 @@
 								<h5>value: <span class="tsd-signature-type">A</span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">K</span><span class="tsd-signature-symbol">]</span></h5>
 							</li>
 							<li>
-								<h5><span class="tsd-flag ts-flagOptional">Optional</span> allowReadonly: <a href="" class="tsd-signature-type">R</a></h5>
+								<h5><span class="tsd-flag ts-flagOptional">Optional</span> allowReadOnly: <a href="" class="tsd-signature-type">R</a></h5>
 								<div class="tsd-comment tsd-typography">
 								</div>
 							</li>
@@ -556,7 +556,7 @@
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/apancutt/typescript-entity/blob/b36eb60/packages/@typescript-entity/core/src/Entity.ts#L252">packages/@typescript-entity/core/src/Entity.ts:252</a></li>
+								<li>Defined in <a href="https://github.com/apancutt/typescript-entity/blob/a5f9722/packages/@typescript-entity/core/src/Entity.ts#L252">packages/@typescript-entity/core/src/Entity.ts:252</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -580,7 +580,7 @@
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/apancutt/typescript-entity/blob/b36eb60/packages/@typescript-entity/core/src/Entity.ts#L242">packages/@typescript-entity/core/src/Entity.ts:242</a></li>
+								<li>Defined in <a href="https://github.com/apancutt/typescript-entity/blob/a5f9722/packages/@typescript-entity/core/src/Entity.ts#L242">packages/@typescript-entity/core/src/Entity.ts:242</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -607,7 +607,7 @@
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/apancutt/typescript-entity/blob/b36eb60/packages/@typescript-entity/core/src/Entity.ts#L82">packages/@typescript-entity/core/src/Entity.ts:82</a></li>
+								<li>Defined in <a href="https://github.com/apancutt/typescript-entity/blob/a5f9722/packages/@typescript-entity/core/src/Entity.ts#L82">packages/@typescript-entity/core/src/Entity.ts:82</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -652,7 +652,7 @@
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/apancutt/typescript-entity/blob/b36eb60/packages/@typescript-entity/core/src/Entity.ts#L120">packages/@typescript-entity/core/src/Entity.ts:120</a></li>
+								<li>Defined in <a href="https://github.com/apancutt/typescript-entity/blob/a5f9722/packages/@typescript-entity/core/src/Entity.ts#L120">packages/@typescript-entity/core/src/Entity.ts:120</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
