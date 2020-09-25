@@ -1,22 +1,22 @@
 {
   "private": true,
   "workspaces": [
-    "packages/*"
+    "packages/@typescript-entity/*"
   ],
   "devDependencies": {
+    "@types/jest": "26",
     "@typescript-eslint/eslint-plugin": "4",
     "@typescript-eslint/parser": "4",
-    "@types/jest": "26",
     "eslint": "7",
     "jest": "26",
     "ts-jest": "26",
     "typescript": "4"
   },
   "scripts": {
-    "lint": "eslint --ext .js,.jsx,.ts,.tsx tests packages/*/src",
+    "lint": "eslint --ext .js,.jsx,.ts,.tsx tests packages/*/*/src",
     "test": "jest",
     "test:watch": "yarn run test --watch",
-    "build": "for i in `ls ./packages`; do cd packages/$i; echo \"Building package: ${i}\"; yarn run build; cd ../../; done"
+    "build": "for i in `ls ./packages/@typescript-entity`; do cd packages/@typescript-entity/$i; echo \"Building package: @typescript-entity/${i}\"; yarn run build; cd ../../../; done"
   },
   "eslintConfig": {
     "root": true,
@@ -31,7 +31,7 @@
   },
   "jest": {
     "moduleNameMapper": {
-      "^@typescript-entity/(.*)$": "<rootDir>/packages/$1/src"
+      "^(@typescript-entity/.*)$": "<rootDir>/packages/$1/src"
     },
     "preset": "ts-jest",
     "testEnvironment": "node",

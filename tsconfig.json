@@ -3,7 +3,7 @@
   "compilerOptions": {
     "baseUrl": "./packages",
     "paths": {
-      "@typescript-entity/*": ["*/src"]
+      "@typescript-entity/*": ["@typescript-entity/*/src"]
     }
   }
 }

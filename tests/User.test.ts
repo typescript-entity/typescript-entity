@@ -1,4 +1,4 @@
-import { AttrReadonlyError, AttrUnregisteredError, AttrValueFnError, AttrValueInvalidError } from '@typescript-entity/core';
+import { AttrUnregisteredError, AttrValueInvalidError } from '@typescript-entity/core';
 import { User } from './User';
 
 test('an entity can be constructed with default values', () => {
@@ -49,34 +49,6 @@ test('an entity can be filled with custom values later', () => {
   expect(user.email_domain).toBe('example.com');
   expect(user.username).toBe('foobar');
   expect(user.verified).toBe(true);
-
-});
-
-test('an entity cannot be filled with readonly values later', () => {
-
-  const user = new User();
-  expect(() => {
-    user.fill({ uuid: '7a2d2178-37da-4f5c-bb05-5f6819ff6ecd' });
-  }).toThrow(AttrReadonlyError);
-
-});
-
-test('an entity cannot be constructed with values for function attributes', () => {
-
-  expect(() => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    new User({ email_domain: 'foo.com' } as any);
-  }).toThrow(AttrValueFnError);
-
-});
-
-test('an entity cannot be filled with values for function attributes later', () => {
-
-  const user = new User();
-  expect(() => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    user.fill({ email_domain: 'foo.com' } as any);
-  }).toThrow(AttrValueFnError);
 
 });
 
