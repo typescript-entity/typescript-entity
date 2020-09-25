@@ -5,6 +5,7 @@ export interface AttrConfigs {
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export interface AttrConfig<V = AttrValue> {
   value: V;
+  hidden?: boolean;
   readonly?: V extends AttrValueFn<any> ? never : boolean;
   normalizer?: V extends AttrValueFn<any> ? never : AttrNormalizerFn<V>;
   validator?: V extends AttrValueFn<any> ? never : AttrValidatorFn<V>;
@@ -24,6 +25,14 @@ export type AttrInferredValue<V> = V extends AttrValueFn<AttrValue> ? ReturnType
 export type AttrInferredValues<C extends AttrConfigs> = {
   [K in keyof C]: AttrInferredValue<C[K]['value']>;
 };
+
+export type AttrHiddenConfigs<C extends AttrConfigs> = Pick<C, {
+  [K in keyof C]: C[K]['hidden'] extends true ? K : never;
+}[keyof C]>;
+
+export type AttrVisibleConfigs<C extends AttrConfigs> = Pick<C, {
+  [K in keyof C]: C[K]['hidden'] extends true ? never : K;
+}[keyof C]>;
 
 export type AttrWritableConfigs<C extends AttrConfigs, AllowReadonly extends boolean = false> = Pick<C, {
   [K in keyof C]: C[K]['value'] extends AttrValueFn<C[K]['value']> ? never : C[K]['readonly'] extends true ? AllowReadonly extends true ? K : never : K;

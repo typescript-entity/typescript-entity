@@ -1,6 +1,6 @@
 import { cloneDeep } from 'lodash';
 import { AttrNonWritableError, AttrReadonlyError, AttrUnregisteredError, AttrValueFnError, AttrValueInvalidError } from './Error';
-import { AttrConfigs, AttrIncomingValues, AttrIncomingValuesUntyped, AttrInferredValue, AttrInferredValues, AttrInitialValues, AttrNormalizerFn, AttrValidatorFn, AttrValue, AttrValueFn } from './Type';
+import { AttrConfigs, AttrHiddenConfigs, AttrIncomingValues, AttrIncomingValuesUntyped, AttrInferredValue, AttrInferredValues, AttrInitialValues, AttrNormalizerFn, AttrValidatorFn, AttrValue, AttrValueFn, AttrVisibleConfigs } from './Type';
 
 type Entries<T> = { [K in keyof T]: [ K, T[K] ] }[keyof T][];
 
@@ -96,10 +96,34 @@ export default abstract class Entity<C extends AttrConfigs> {
    * Returns all attribute names and values on the [[`Entity`]] instance.
    */
   public all(): AttrInferredValues<C> {
-    return <AttrInferredValues<C>>Object.keys(this.attrConfigs).reduce((attrs, name) => ({
+    return Object.keys(this.attrConfigs).reduce((attrs, name) => ({
       ...attrs,
       [name]: this.get(name),
-    }), {});
+    }), {}) as AttrInferredValues<C>;
+  }
+
+  /**
+   * Returns all hidden attribute names and values on the [[`Entity`]] instance.
+   */
+  public hidden(): AttrInferredValues<AttrHiddenConfigs<C>> {
+    return Object.keys(this.attrConfigs)
+      .filter((name) => this.attrConfigs[name].hidden)
+      .reduce((attrs, name) => ({
+        ...attrs,
+        [name]: this.get(name),
+      }), {}) as AttrInferredValues<AttrHiddenConfigs<C>>;
+  }
+
+  /**
+   * Returns all visible attribute names and values on the [[`Entity`]] instance.
+   */
+  public visible(): AttrInferredValues<AttrVisibleConfigs<C>> {
+    return Object.keys(this.attrConfigs)
+      .filter((name) => !this.attrConfigs[name].hidden)
+      .reduce((attrs, name) => ({
+        ...attrs,
+        [name]: this.get(name),
+      }), {}) as AttrInferredValues<AttrVisibleConfigs<C>>;
   }
 
   /**
@@ -220,10 +244,11 @@ export default abstract class Entity<C extends AttrConfigs> {
 
   /**
    * Returns the attribute names and values that should be included when stringifying the
-   * [[`Entity`]] instance into JSON form.
+   * [[`Entity`]] instance into JSON form. By default, this means all attributes that are not
+   * explicity configured as `hidden`.
    */
-  public toJSON(): AttrInferredValues<C> {
-    return this.all();
+  public toJSON(): AttrInferredValues<AttrVisibleConfigs<C>> {
+    return this.visible();
   }
 
 }

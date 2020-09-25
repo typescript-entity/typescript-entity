@@ -83,7 +83,7 @@ test('an entity cannot be filled with values for unregistered attributes later',
 test('an entity can be exported as JSON', () => {
 
   const user = new User();
-  const attrs = user.all();
+  const attrs = user.visible();
   expect(JSON.stringify(user)).toBe(JSON.stringify(attrs));
   expect(String(user)).toBe(JSON.stringify(attrs));
 
