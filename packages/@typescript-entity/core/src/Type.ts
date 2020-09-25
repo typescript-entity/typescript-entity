@@ -35,7 +35,7 @@ export type AttrVisibleConfigs<C extends AttrConfigs> = Pick<C, {
 }[keyof C]>;
 
 export type AttrWritableConfigs<C extends AttrConfigs, AllowReadonly extends boolean = false> = Pick<C, {
-  [K in keyof C]: C[K]['value'] extends AttrValueFn<C[K]['value']> ? never : C[K]['readonly'] extends true ? AllowReadonly extends true ? K : never : K;
+  [K in keyof C]: C[K]['value'] extends AttrValueFn<AttrValue> ? never : C[K]['readonly'] extends true ? AllowReadonly extends true ? K : never : K;
 }[keyof C]>;
 
 export type AttrIncomingValues<C extends AttrConfigs, AllowReadonly extends boolean = false> = AttrInferredValues<AttrWritableConfigs<C, AllowReadonly>>;

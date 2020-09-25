@@ -1,21 +1,21 @@
-import { AttrUnregisteredError, AttrValueInvalidError } from '@typescript-entity/core';
+import { AttrReadonlyError, AttrUnregisteredError, AttrValueFnError, AttrValueInvalidError } from '@typescript-entity/core';
 import { User } from './User';
 
-test('an entity can be constructed with default values', () => {
+test('an Entity can be constructed with default values', () => {
 
   const user = new User();
   expect(user).toBeInstanceOf(User);
   expect(user.date_of_birth).toBeInstanceOf(Date);
-  expect(user.date_of_birth.toISOString()).toBe('1970-01-01T00:00:00.000Z');
-  expect(user.email).toBe('');
-  expect(user.email_domain).toBe('');
-  expect(user.username).toBe('');
-  expect(user.uuid).toBe(undefined);
-  expect(user.verified).toBe(false);
+  expect(user.date_of_birth.toISOString()).toStrictEqual('1970-01-01T00:00:00.000Z');
+  expect(user.email).toStrictEqual('');
+  expect(user.email_domain).toStrictEqual('');
+  expect(user.username).toStrictEqual('');
+  expect(user.uuid).toStrictEqual(undefined);
+  expect(user.verified).toStrictEqual(false);
 
 });
 
-test('an entity can be constructed with custom values', () => {
+test('an Entity can be constructed with custom values', () => {
 
   const user = new User({
     date_of_birth: '2000-01-01',
@@ -25,16 +25,16 @@ test('an entity can be constructed with custom values', () => {
     verified: true,
   });
   expect(user.date_of_birth).toBeInstanceOf(Date);
-  expect(user.date_of_birth.toISOString()).toBe('2000-01-01T00:00:00.000Z');
-  expect(user.email).toBe('foo@example.com');
-  expect(user.email_domain).toBe('example.com');
-  expect(user.username).toBe('foobar');
-  expect(user.uuid).toBe('7a2d2178-37da-4f5c-bb05-5f6819ff6ecd');
-  expect(user.verified).toBe(true);
+  expect(user.date_of_birth.toISOString()).toStrictEqual('2000-01-01T00:00:00.000Z');
+  expect(user.email).toStrictEqual('foo@example.com');
+  expect(user.email_domain).toStrictEqual('example.com');
+  expect(user.username).toStrictEqual('foobar');
+  expect(user.uuid).toStrictEqual('7a2d2178-37da-4f5c-bb05-5f6819ff6ecd');
+  expect(user.verified).toStrictEqual(true);
 
 });
 
-test('an entity can be filled with custom values later', () => {
+test('an Entity can be filled with custom values later', () => {
 
   const user = new User();
   user.fill({
@@ -44,15 +44,15 @@ test('an entity can be filled with custom values later', () => {
     verified: true,
   });
   expect(user.date_of_birth).toBeInstanceOf(Date);
-  expect(user.date_of_birth.toISOString()).toBe('2000-01-01T00:00:00.000Z');
-  expect(user.email).toBe('foo@example.com');
-  expect(user.email_domain).toBe('example.com');
-  expect(user.username).toBe('foobar');
-  expect(user.verified).toBe(true);
+  expect(user.date_of_birth.toISOString()).toStrictEqual('2000-01-01T00:00:00.000Z');
+  expect(user.email).toStrictEqual('foo@example.com');
+  expect(user.email_domain).toStrictEqual('example.com');
+  expect(user.username).toStrictEqual('foobar');
+  expect(user.verified).toStrictEqual(true);
 
 });
 
-test('an entity cannot be filled with invalid values later', () => {
+test('an Entity cannot be filled with invalid values later', () => {
 
   const user = new User();
   expect(() => {
@@ -61,7 +61,7 @@ test('an entity cannot be filled with invalid values later', () => {
 
 });
 
-test('an entity cannot be constructed with values for unregistered attributes', () => {
+test('an Entity cannot be constructed with values for unregistered attributes', () => {
 
   expect(() => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -70,7 +70,7 @@ test('an entity cannot be constructed with values for unregistered attributes', 
 
 });
 
-test('an entity cannot be filled with values for unregistered attributes later', () => {
+test('an Entity cannot be filled with values for unregistered attributes later', () => {
 
   const user = new User();
   expect(() => {
@@ -80,11 +80,62 @@ test('an entity cannot be filled with values for unregistered attributes later',
 
 });
 
-test('an entity can be exported as JSON', () => {
+test('an Entity cannot be have values set for non-writable attributes', () => {
 
   const user = new User();
-  const attrs = user.visible();
-  expect(JSON.stringify(user)).toBe(JSON.stringify(attrs));
-  expect(String(user)).toBe(JSON.stringify(attrs));
+  expect(() => {
+    user.set('uuid', '7a2d2178-37da-4f5c-bb05-5f6819ff6ecd'); // TODO: This should not allow UUID
+  }).toThrow(AttrReadonlyError);
+  expect(() => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    user.set('email_domain' as any, 'google.com');
+  }).toThrow(AttrValueFnError);
+
+});
+
+test('an Entity can be filled with values for non-writable attributes without error', () => {
+
+  const user = new User({ uuid: '7a2d2178-37da-4f5c-bb05-5f6819ff6ecd' });
+  const originalUuid = user.uuid;
+  const originalEmailDomain = user.email_domain;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  user.fill({ uuid: '6290be99-deef-4229-8ee0-250fc893d07f', email_domain: 'google.com' } as any);
+  expect(user.uuid).toStrictEqual(originalUuid);
+  expect(user.email_domain).toStrictEqual(originalEmailDomain);
+
+});
+
+test('an Entity can expose all attributes', () => {
+
+  const user = new User();
+  expect(Object.keys(user.all())).not.toStrictEqual([ 'date_of_birth', 'email', 'email_domain', 'username', 'uuid', 'verified' ]);
+
+});
+
+test('an Entity can expose all visible attributes', () => {
+
+  const user = new User();
+  expect(Object.keys(user.visible())).toStrictEqual([ 'date_of_birth', 'email', 'email_domain', 'username', 'verified' ]);
+
+});
+
+test('an Entity can expose all hidden attributes', () => {
+
+  const user = new User();
+  expect(Object.keys(user.hidden())).toStrictEqual([ 'uuid' ]);
+
+});
+
+test('an Entity must expose only visible attributes in JSON form', () => {
+
+  const user = new User();
+  expect(JSON.stringify(user)).toStrictEqual(JSON.stringify(user.visible()));
+
+});
+
+test('an Entity can be cast to a JSON string', () => {
+
+  const user = new User();
+  expect(String(user)).toStrictEqual(JSON.stringify(user.toJSON()));
 
 });

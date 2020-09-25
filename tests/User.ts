@@ -29,9 +29,10 @@ export const USER_ATTR_CONFIGS:UserAttrConfigs = {
   },
   uuid: {
     value: undefined,
+    hidden: true,
+    readonly: true,
     normalizer: Normalizers.lowercase,
     validator: Validators.uuid,
-    readonly: true,
   },
   username: {
     value: '',
