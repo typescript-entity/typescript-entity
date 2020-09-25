@@ -1,5 +1,5 @@
 import { cloneDeep } from 'lodash';
-import { AttrNonWritableError, AttrReadOnlyError, AttrUnregisteredError, AttrValueFnError, AttrValueInvalidError } from './Error';
+import { AttrReadOnlyError, AttrRestrictedError, AttrUnregisteredError, AttrValueFnError, AttrValueInvalidError } from './Error';
 import { AttrConfigs, AttrHiddenConfigs, AttrIncomingValues, AttrIncomingValuesUntyped, AttrInferredValue, AttrInferredValues, AttrInitialValues, AttrNormalizerFn, AttrValidatorFn, AttrValue, AttrValueFn, AttrVisibleConfigs } from './Type';
 
 type Entries<T> = { [K in keyof T]: [ K, T[K] ] }[keyof T][];
@@ -188,7 +188,7 @@ export default abstract class Entity<C extends AttrConfigs> {
   }
 
   /**
-   * Sets multiple attribute values. If a provided attribute is non-writable (is a value function or
+   * Sets multiple attribute values. If a provided attribute is restricted (is a value function or
    * is marked as `readOnly` and `allowReadOnly` is `false`) then the attribute is silently ignored.
    *
    * @see [[`Entity.set`]]
@@ -200,8 +200,8 @@ export default abstract class Entity<C extends AttrConfigs> {
       try {
         this.set(name, value, allowReadOnly);
       } catch (err) {
-        // Silently ignore errors when trying to set non-writable attributes
-        if (!(err instanceof AttrNonWritableError)) {
+        // Silently ignore errors when trying to set restricted attributes
+        if (!(err instanceof AttrRestrictedError)) {
           throw err;
         }
       }
@@ -211,7 +211,7 @@ export default abstract class Entity<C extends AttrConfigs> {
 
   /**
    * Sets multiple attribute values without normalization nor validation. If a provided attribute is
-   * non-writable (is a value function or is marked as `readOnly` and `allowReadOnly` is `false`)
+   * restricted (is a value function or is marked as `readOnly` and `allowReadOnly` is `false`)
    * then the attribute is silently ignored. In TypeScript, calling this function will fail if the
    * provided `attrs` value types are invalid, but in JavaScript environments this function should
    * be used with extra caution.
@@ -225,8 +225,8 @@ export default abstract class Entity<C extends AttrConfigs> {
       try {
         this.setDangerously(name, value, allowReadOnly);
       } catch (err) {
-        // Silently ignore errors when trying to set non-writable attributes
-        if (!(err instanceof AttrNonWritableError)) {
+        // Silently ignore errors when trying to set restricted attributes
+        if (!(err instanceof AttrRestrictedError)) {
           throw err;
         }
       }

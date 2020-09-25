@@ -80,7 +80,7 @@ test('an Entity cannot be filled with values for unregistered attributes later',
 
 });
 
-test('an Entity cannot be have values set for non-writable attributes', () => {
+test('an Entity cannot be have values set for restricted attributes', () => {
 
   const user = new User();
   expect(() => {
@@ -94,7 +94,7 @@ test('an Entity cannot be have values set for non-writable attributes', () => {
 
 });
 
-test('an Entity can be filled with values for non-writable attributes without error', () => {
+test('an Entity can be filled with values for restricted attributes without error', () => {
 
   const user = new User({ uuid: '7a2d2178-37da-4f5c-bb05-5f6819ff6ecd' });
   const originalUuid = user.uuid;

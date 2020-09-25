@@ -34,17 +34,17 @@ export type AttrVisibleConfigs<C extends AttrConfigs> = Pick<C, {
   [K in keyof C]: C[K]['hidden'] extends true ? never : K;
 }[keyof C]>;
 
-export type AttrWritableConfigs<C extends AttrConfigs, AllowReadOnly extends boolean = false> = Pick<C, {
+export type AttrUnrestrictedConfigs<C extends AttrConfigs, AllowReadOnly extends boolean = false> = Pick<C, {
   [K in keyof C]: C[K]['value'] extends AttrValueFn<AttrValue> ? never : C[K]['readOnly'] extends true ? AllowReadOnly extends true ? K : never : K;
 }[keyof C]>;
 
-export type AttrIncomingValues<C extends AttrConfigs, AllowReadOnly extends boolean = false> = AttrInferredValues<AttrWritableConfigs<C, AllowReadOnly>>;
+export type AttrIncomingValues<C extends AttrConfigs, AllowReadOnly extends boolean = false> = AttrInferredValues<AttrUnrestrictedConfigs<C, AllowReadOnly>>;
 
-export type AttrIncomingValuesUntyped<C extends AttrConfigs, AllowReadOnly extends boolean = false> = AttrUntypedValues<AttrWritableConfigs<C, AllowReadOnly>>;
+export type AttrIncomingValuesUntyped<C extends AttrConfigs, AllowReadOnly extends boolean = false> = AttrUntypedValues<AttrUnrestrictedConfigs<C, AllowReadOnly>>;
 
 export type AttrUntypedValues<C extends AttrConfigs> = Record<keyof C, unknown>;
 
-export type AttrInitialValues<C extends AttrConfigs> = Partial<AttrUntypedValues<AttrWritableConfigs<C, true>>>;
+export type AttrInitialValues<C extends AttrConfigs> = Partial<AttrUntypedValues<AttrUnrestrictedConfigs<C, true>>>;
 
 export type EntityInterface<C extends AttrConfigs> = AttrInferredValues<C>;
 

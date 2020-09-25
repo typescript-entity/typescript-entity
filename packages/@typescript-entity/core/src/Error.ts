@@ -31,15 +31,15 @@ export class AttrValueInvalidError<C extends AttrConfigs> extends AttrValueError
   }
 }
 
-export class AttrNonWritableError<C extends AttrConfigs> extends AttrValueError<C> {
+export class AttrRestrictedError<C extends AttrConfigs> extends AttrValueError<C> {
   constructor(entity: Entity<C>, attrName: keyof C, attrValue: unknown, message?: string) {
-    super(message || `Cannot set value for non-writable attribute ${entity.constructor.name}.${attrName}: ${attrValue}`, entity, attrName, attrValue);
+    super(message || `Cannot set value for restricted attribute ${entity.constructor.name}.${attrName}: ${attrValue}`, entity, attrName, attrValue);
   }
 }
 
-export class AttrReadOnlyError<C extends AttrConfigs> extends AttrNonWritableError<C> {}
+export class AttrReadOnlyError<C extends AttrConfigs> extends AttrRestrictedError<C> {}
 
-export class AttrValueFnError<C extends AttrConfigs> extends AttrNonWritableError<C> {}
+export class AttrValueFnError<C extends AttrConfigs> extends AttrRestrictedError<C> {}
 
 export class AttrUnregisteredError<C extends AttrConfigs> extends AttrError<C> {
   constructor(entity: Entity<C>, attrName: string | number | symbol, message?: string) {
