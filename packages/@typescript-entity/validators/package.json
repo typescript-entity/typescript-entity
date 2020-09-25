@@ -1,6 +1,6 @@
 {
   "name": "@typescript-entity/validators",
-  "version": "0.0.2-alpha.0",
+  "version": "0.0.3-alpha.0",
   "description": "Validator functions for use with @typescript-entity/core.",
   "homepage": "https://github.com/apancutt/typescript-entity/packages/validators#readme",
   "bugs": {
@@ -21,7 +21,7 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "dependencies": {
-    "@typescript-entity/normalizers": "^0.0.2-alpha.0",
+    "@typescript-entity/normalizers": "^0.0.3-alpha.0",
     "validator": "13"
   },
   "devDependencies": {
