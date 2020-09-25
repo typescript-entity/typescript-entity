@@ -1,4 +1,5 @@
 {
+  "name": "root",
   "private": true,
   "workspaces": [
     "packages/@typescript-entity/*"
@@ -10,6 +11,7 @@
     "@typescript-eslint/parser": "4",
     "eslint": "7",
     "jest": "26",
+    "lerna": "3",
     "ts-jest": "26",
     "typedoc": "0",
     "typedoc-plugin-nojekyll": "^1.0.1",
@@ -20,7 +22,7 @@
     "test": "jest",
     "test:watch": "yarn run test --watch",
     "prebuild": "yarn run lint && yarn run test",
-    "build": "for i in `ls ./packages/@typescript-entity`; do cd packages/@typescript-entity/$i; echo \"Building package: @typescript-entity/${i}\"; yarn run build; cd ../../../; done",
+    "build": "lerna run build --stream",
     "postbuild": "yarn run docs",
     "predocs": "rimraf ./docs",
     "docs": "typedoc --excludeNotExported --mode \"modules\" --name \"@typescript-entity\" --out \"./docs\" --readme \"none\" --external-modulemap \".*packages\\/(@typescript-entity\\/[^\\/]+)\\/.*\" --exclude \"packages\\/@typescript-entity\\/core\\/src\\/index.ts\" ./packages"
