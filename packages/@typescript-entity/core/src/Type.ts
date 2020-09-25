@@ -47,3 +47,13 @@ export type AttrUntypedValues<C extends AttrConfigs> = Record<keyof C, unknown>;
 export type AttrInitialValues<C extends AttrConfigs> = Partial<AttrUntypedValues<AttrWritableConfigs<C, true>>>;
 
 export type EntityInterface<C extends AttrConfigs> = AttrInferredValues<C>;
+
+export type AsOptional<A extends AttrConfig> = Omit<A, 'value'> & { value: A['value'] | undefined };
+
+export type AsHidden<A extends AttrConfig> = A & { hidden: true };
+
+export type AsReadonly<A extends AttrConfig> = A & { readonly: true };
+
+export type WithNormalizer<A extends AttrConfig> = A & Pick<Required<A>, 'normalizer'>;
+
+export type WithValidator<A extends AttrConfig> = A & Pick<Required<A>, 'validator'>;

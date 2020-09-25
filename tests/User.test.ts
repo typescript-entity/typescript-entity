@@ -84,7 +84,8 @@ test('an Entity cannot be have values set for non-writable attributes', () => {
 
   const user = new User();
   expect(() => {
-    user.set('uuid', '7a2d2178-37da-4f5c-bb05-5f6819ff6ecd'); // TODO: This should not allow UUID
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    user.set('uuid' as any, '7a2d2178-37da-4f5c-bb05-5f6819ff6ecd');
   }).toThrow(AttrReadonlyError);
   expect(() => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
