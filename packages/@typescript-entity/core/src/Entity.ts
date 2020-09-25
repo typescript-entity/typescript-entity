@@ -236,6 +236,8 @@ export default abstract class Entity<C extends AttrConfigs> {
 
   /**
    * Returns a string representation of the [[`Entity`]] instance.
+   *
+   * @see [[`Entity.toJSON`]]
    */
   public toString(): string
   {

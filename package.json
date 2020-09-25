@@ -20,6 +20,7 @@
     "test": "jest",
     "test:watch": "yarn run test --watch",
     "build": "for i in `ls ./packages/@typescript-entity`; do cd packages/@typescript-entity/$i; echo \"Building package: @typescript-entity/${i}\"; yarn run build; cd ../../../; done",
+    "postbuild": "yarn run docs",
     "predocs": "rimraf ./docs",
     "docs": "typedoc --excludeNotExported --mode \"modules\" --name \"@typescript-entity\" --out \"./docs\" --readme \"none\" --theme \"minimal\" --external-modulemap \".*packages\\/(@typescript-entity\\/[^\\/]+)\\/.*\" ./packages"
   },
