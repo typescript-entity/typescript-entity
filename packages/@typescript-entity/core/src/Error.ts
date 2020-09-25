@@ -37,7 +37,7 @@ export class AttrNonWritableError<C extends AttrConfigs> extends AttrValueError<
   }
 }
 
-export class AttrReadonlyError<C extends AttrConfigs> extends AttrNonWritableError<C> {}
+export class AttrReadOnlyError<C extends AttrConfigs> extends AttrNonWritableError<C> {}
 
 export class AttrValueFnError<C extends AttrConfigs> extends AttrNonWritableError<C> {}
 

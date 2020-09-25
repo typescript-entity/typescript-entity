@@ -1,4 +1,4 @@
-import { AttrReadonlyError, AttrUnregisteredError, AttrValueFnError, AttrValueInvalidError } from '@typescript-entity/core';
+import { AttrReadOnlyError, AttrUnregisteredError, AttrValueFnError, AttrValueInvalidError } from '@typescript-entity/core';
 import { User } from './User';
 
 test('an Entity can be constructed with default values', () => {
@@ -86,7 +86,7 @@ test('an Entity cannot be have values set for non-writable attributes', () => {
   expect(() => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     user.set('uuid' as any, '7a2d2178-37da-4f5c-bb05-5f6819ff6ecd');
-  }).toThrow(AttrReadonlyError);
+  }).toThrow(AttrReadOnlyError);
   expect(() => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     user.set('email_domain' as any, 'google.com');

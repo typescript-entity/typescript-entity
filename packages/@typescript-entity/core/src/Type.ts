@@ -6,7 +6,7 @@ export interface AttrConfigs {
 export interface AttrConfig<V = AttrValue> {
   value: V;
   hidden?: boolean;
-  readonly?: V extends AttrValueFn<any> ? never : boolean;
+  readOnly?: V extends AttrValueFn<any> ? never : boolean;
   normalizer?: V extends AttrValueFn<any> ? never : AttrNormalizerFn<V>;
   validator?: V extends AttrValueFn<any> ? never : AttrValidatorFn<V>;
 }
@@ -34,13 +34,13 @@ export type AttrVisibleConfigs<C extends AttrConfigs> = Pick<C, {
   [K in keyof C]: C[K]['hidden'] extends true ? never : K;
 }[keyof C]>;
 
-export type AttrWritableConfigs<C extends AttrConfigs, AllowReadonly extends boolean = false> = Pick<C, {
-  [K in keyof C]: C[K]['value'] extends AttrValueFn<AttrValue> ? never : C[K]['readonly'] extends true ? AllowReadonly extends true ? K : never : K;
+export type AttrWritableConfigs<C extends AttrConfigs, AllowReadOnly extends boolean = false> = Pick<C, {
+  [K in keyof C]: C[K]['value'] extends AttrValueFn<AttrValue> ? never : C[K]['readOnly'] extends true ? AllowReadOnly extends true ? K : never : K;
 }[keyof C]>;
 
-export type AttrIncomingValues<C extends AttrConfigs, AllowReadonly extends boolean = false> = AttrInferredValues<AttrWritableConfigs<C, AllowReadonly>>;
+export type AttrIncomingValues<C extends AttrConfigs, AllowReadOnly extends boolean = false> = AttrInferredValues<AttrWritableConfigs<C, AllowReadOnly>>;
 
-export type AttrIncomingValuesUntyped<C extends AttrConfigs, AllowReadonly extends boolean = false> = AttrUntypedValues<AttrWritableConfigs<C, AllowReadonly>>;
+export type AttrIncomingValuesUntyped<C extends AttrConfigs, AllowReadOnly extends boolean = false> = AttrUntypedValues<AttrWritableConfigs<C, AllowReadOnly>>;
 
 export type AttrUntypedValues<C extends AttrConfigs> = Record<keyof C, unknown>;
 
@@ -52,7 +52,7 @@ export type AsOptional<A extends AttrConfig> = Omit<A, 'value'> & { value: A['va
 
 export type AsHidden<A extends AttrConfig> = A & { hidden: true };
 
-export type AsReadonly<A extends AttrConfig> = A & { readonly: true };
+export type AsReadOnly<A extends AttrConfig> = A & { readOnly: true };
 
 export type WithNormalizer<A extends AttrConfig> = A & Pick<Required<A>, 'normalizer'>;
 

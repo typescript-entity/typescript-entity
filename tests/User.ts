@@ -1,4 +1,4 @@
-import { AsHidden, AsOptional, AsReadonly, AttrConfig, AttrInitialValues, Entity, EntityInterface, WithNormalizer, WithValidator } from '@typescript-entity/core';
+import { AsHidden, AsOptional, AsReadOnly, AttrConfig, AttrInitialValues, Entity, EntityInterface, WithNormalizer, WithValidator } from '@typescript-entity/core';
 import * as Normalizers from '@typescript-entity/normalizers';
 import * as Validators from '@typescript-entity/validators';
 
@@ -6,7 +6,7 @@ export type DateOfBirthAttrConfig = WithValidator<WithNormalizer<AttrConfig<Date
 export type EmailAttrConfig = WithValidator<WithNormalizer<AttrConfig<string>>>;
 export type EmailDomainAttrConfig = AttrConfig<() => string>;
 export type UsernameAttrConfig = WithValidator<WithNormalizer<AttrConfig<string>>>;
-export type UUIDAttrConfig = AsOptional<AsReadonly<AsHidden<WithValidator<WithNormalizer<AttrConfig<string>>>>>>;
+export type UUIDAttrConfig = AsOptional<AsReadOnly<AsHidden<WithValidator<WithNormalizer<AttrConfig<string>>>>>>;
 // TODO: export type VerifiedAttrConfig = WithValidator<WithNormalizer<AttrConfig<boolean>>>;
 export type VerifiedAttrConfig = WithValidator<AttrConfig<boolean>>;
 
@@ -38,7 +38,7 @@ export const USER_ATTR_CONFIGS:UserAttrConfigs = {
   uuid: {
     value: undefined,
     hidden: true,
-    readonly: true,
+    readOnly: true,
     normalizer: Normalizers.lowercase,
     validator: Validators.uuid,
   },

@@ -1,5 +1,5 @@
 import { cloneDeep } from 'lodash';
-import { AttrNonWritableError, AttrReadonlyError, AttrUnregisteredError, AttrValueFnError, AttrValueInvalidError } from './Error';
+import { AttrNonWritableError, AttrReadOnlyError, AttrUnregisteredError, AttrValueFnError, AttrValueInvalidError } from './Error';
 import { AttrConfigs, AttrHiddenConfigs, AttrIncomingValues, AttrIncomingValuesUntyped, AttrInferredValue, AttrInferredValues, AttrInitialValues, AttrNormalizerFn, AttrValidatorFn, AttrValue, AttrValueFn, AttrVisibleConfigs } from './Type';
 
 type Entries<T> = { [K in keyof T]: [ K, T[K] ] }[keyof T][];
@@ -32,7 +32,7 @@ export default abstract class Entity<C extends AttrConfigs> {
    * Creates a new [[`Entity`]] instance. The `attrConfigs` defines the attributes available on the
    * [[`Entity`]] instance along with default values for required attributes. Initial attribute
    * values can be set on the instance via `initialAttrs`, and while these are not normalized nor
-   * validated, they will bypass any `readonly` settings.
+   * validated, they will bypass any `readOnly` settings.
    *
    * @param attrConfigs
    * @param initialAttrs
@@ -143,15 +143,15 @@ export default abstract class Entity<C extends AttrConfigs> {
 
   /**
    * Sets the `value` of the specified attribute `name`. If the attribute is configured with a value
-   * function or is `readonly` (unless `allowReadonly` is set to `true`) then an error is thrown.
+   * function or is `readOnly` (unless `allowReadOnly` is set to `true`) then an error is thrown.
    * The `value` provided will be normalized and validated. If validation fails an error is thrown
    * and the attribute is unchanged.
    *
    * @param name
    * @param value
-   * @param allowReadonly
+   * @param allowReadOnly
    */
-  public set<K extends keyof AttrIncomingValuesUntyped<C, R>, R extends boolean = false>(name: K, value: unknown, allowReadonly?: R): this {
+  public set<K extends keyof AttrIncomingValuesUntyped<C, R>, R extends boolean = false>(name: K, value: unknown, allowReadOnly?: R): this {
     if (!attrRegisteredTypeGuard(this.attrConfigs, name)) {
       throw new AttrUnregisteredError<C>(this, name);
     }
@@ -159,29 +159,29 @@ export default abstract class Entity<C extends AttrConfigs> {
     if (!this.validate(name, normalized)) {
       throw new AttrValueInvalidError<C>(this, name, normalized);
     }
-    return this.setDangerously(name, normalized, allowReadonly);
+    return this.setDangerously(name, normalized, allowReadOnly);
   }
 
   /**
    * Sets the `value` of the specified attribute `name`. If the attribute is configured with a value
-   * function or is `readonly` (unless `allowReadonly` is set to `true`) then an error is thrown.
+   * function or is `readOnly` (unless `allowReadOnly` is set to `true`) then an error is thrown.
    * The `value` provided will not be normalized nor validated. In TypeScript, calling this function
    * will fail if the provided `value` type is invalid, but in JavaScript environments this function
    * should be used with extra caution.
    *
    * @param name
    * @param value
-   * @param allowReadonly
+   * @param allowReadOnly
    */
-  public setDangerously<A extends AttrIncomingValues<C, R>, K extends keyof A, R extends boolean = false>(name: K, value: A[K], allowReadonly?: R): this {
+  public setDangerously<A extends AttrIncomingValues<C, R>, K extends keyof A, R extends boolean = false>(name: K, value: A[K], allowReadOnly?: R): this {
     if (!attrRegisteredTypeGuard(this.attrConfigs, name)) {
       throw new AttrUnregisteredError<C>(this, name);
     }
     if (attrValueFnTypeGuard<A[K]>(this.attrConfigs[name].value)) {
       throw new AttrValueFnError<C>(this, name, value);
     }
-    if (this.attrConfigs[name].readonly && !allowReadonly) {
-      throw new AttrReadonlyError<C>(this, name, value);
+    if (this.attrConfigs[name].readOnly && !allowReadOnly) {
+      throw new AttrReadOnlyError<C>(this, name, value);
     }
     this.attrConfigs[name].value = value;
     return this;
@@ -189,16 +189,16 @@ export default abstract class Entity<C extends AttrConfigs> {
 
   /**
    * Sets multiple attribute values. If a provided attribute is non-writable (is a value function or
-   * is marked as `readonly` and `allowReadonly` is `false`) then the attribute is silently ignored.
+   * is marked as `readOnly` and `allowReadOnly` is `false`) then the attribute is silently ignored.
    *
    * @see [[`Entity.set`]]
    * @param attrs
-   * @param allowReadonly
+   * @param allowReadOnly
    */
-  public fill<A extends AttrIncomingValuesUntyped<C, R>, R extends boolean = false>(attrs: Partial<A>, allowReadonly?: R): this {
+  public fill<A extends AttrIncomingValuesUntyped<C, R>, R extends boolean = false>(attrs: Partial<A>, allowReadOnly?: R): this {
     (Object.entries(attrs) as Entries<AttrIncomingValuesUntyped<C, R>>).forEach(([ name, value ]) => { // TODO: Entries<A>
       try {
-        this.set(name, value, allowReadonly);
+        this.set(name, value, allowReadOnly);
       } catch (err) {
         // Silently ignore errors when trying to set non-writable attributes
         if (!(err instanceof AttrNonWritableError)) {
@@ -211,19 +211,19 @@ export default abstract class Entity<C extends AttrConfigs> {
 
   /**
    * Sets multiple attribute values without normalization nor validation. If a provided attribute is
-   * non-writable (is a value function or is marked as `readonly` and `allowReadonly` is `false`)
+   * non-writable (is a value function or is marked as `readOnly` and `allowReadOnly` is `false`)
    * then the attribute is silently ignored. In TypeScript, calling this function will fail if the
    * provided `attrs` value types are invalid, but in JavaScript environments this function should
    * be used with extra caution.
    *
    * @see [[`Entity.setDangerously`]]
    * @param attrs
-   * @param allowReadonly
+   * @param allowReadOnly
    */
-  public fillDangerously<A extends AttrIncomingValues<C, R>, R extends boolean = false>(attrs: Partial<A>, allowReadonly?: R): this {
+  public fillDangerously<A extends AttrIncomingValues<C, R>, R extends boolean = false>(attrs: Partial<A>, allowReadOnly?: R): this {
     (Object.entries(attrs) as Entries<A>).forEach(([ name, value ]) => {
       try {
-        this.setDangerously(name, value, allowReadonly);
+        this.setDangerously(name, value, allowReadOnly);
       } catch (err) {
         // Silently ignore errors when trying to set non-writable attributes
         if (!(err instanceof AttrNonWritableError)) {
