@@ -42,7 +42,7 @@ export class AttrReadonlyError<C extends AttrConfigs> extends AttrNonWritableErr
 export class AttrValueFnError<C extends AttrConfigs> extends AttrNonWritableError<C> {}
 
 export class AttrUnregisteredError<C extends AttrConfigs> extends AttrError<C> {
-  constructor(entity: Entity<C>, attrName: unknown, message?: string) {
-    super(message || `Entity ${entity.constructor.name} does not contain an named attribute ${attrName}`, entity, attrName as keyof C);
+  constructor(entity: Entity<C>, attrName: string | number | symbol, message?: string) {
+    super(message || `Entity ${entity.constructor.name} does not contain an named attribute ${String(attrName)}`, entity, attrName as keyof C);
   }
 }

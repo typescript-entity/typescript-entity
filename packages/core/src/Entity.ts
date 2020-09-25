@@ -4,7 +4,7 @@ import { AttrConfigs, AttrIncomingValues, AttrIncomingValuesUntyped, AttrInferre
 
 type Entries<T> = { [K in keyof T]: [ K, T[K] ] }[keyof T][];
 
-function functionTypeGuard<FunctionType>(fn?: unknown): fn is FunctionType {
+function functionTypeGuard<FunctionType>(fn: unknown): fn is FunctionType {
   return 'function' === typeof fn;
 }
 
@@ -16,11 +16,11 @@ function attrValueFnTypeGuard<V extends AttrValue>(value: unknown): value is Att
   return functionTypeGuard<AttrValueFn<V>>(value);
 }
 
-function attrNormalizerFnTypeGuard<V extends AttrValue>(normalizer?: unknown): normalizer is AttrNormalizerFn<V> {
+function attrNormalizerFnTypeGuard<V extends AttrValue>(normalizer: unknown): normalizer is AttrNormalizerFn<V> {
   return functionTypeGuard<AttrNormalizerFn<V>>(normalizer);
 }
 
-function attrValidatorFnTypeGuard<V extends AttrValue>(validator?: unknown): validator is AttrValidatorFn<V> {
+function attrValidatorFnTypeGuard<V extends AttrValue>(validator: unknown): validator is AttrValidatorFn<V> {
   return functionTypeGuard<AttrValidatorFn<V>>(validator);
 }
 
@@ -29,7 +29,7 @@ export default abstract class Entity<C extends AttrConfigs> {
   protected attrConfigs: C;
 
   constructor(attrConfigs: C, initialAttrs: AttrInitialValues<C> = {}) {
-    this.attrConfigs = Object.entries(attrConfigs).reduce((attrs, [ name, attrConfig ]) => ({
+    this.attrConfigs = (Object.entries(attrConfigs) as Entries<C>).reduce((attrs, [ name, attrConfig ]) => ({
       ...attrs,
       [name]: {
         ...attrConfig,
@@ -39,45 +39,52 @@ export default abstract class Entity<C extends AttrConfigs> {
     this.fill(initialAttrs, true);
   }
 
-  protected attrConfig<K extends keyof C>(name: K): C[K] {
+  public normalize<K extends keyof C, I extends AttrInferredValue<C[K]['value']>>(name: K, value: unknown): ReturnType<AttrNormalizerFn<I>> {
     if (!attrRegisteredTypeGuard(this.attrConfigs, name)) {
       throw new AttrUnregisteredError<C>(this, name);
     }
-    return this.attrConfigs[name];
-  }
-
-  public normalize<K extends keyof C, I extends AttrInferredValue<C[K]['value']>>(name: K, value: unknown): ReturnType<AttrNormalizerFn<I>> {
-    if (null === value) {
-      value = undefined;
+    if (null === value || undefined === value) {
+      return undefined as I;
     }
-    const config = this.attrConfig(name);
-    return (attrNormalizerFnTypeGuard<I>(config.normalizer) && undefined !== value)
-      ? config.normalizer.call(this, value)
+    const fn = this.attrConfigs[name].normalizer;
+    return (undefined !== fn && attrNormalizerFnTypeGuard<I>(fn))
+      ? fn.call(this, value)
       : value as I;
   }
 
   public validate<K extends keyof C, I extends AttrInferredValue<C[K]['value']>>(name: K, value: I): ReturnType<AttrValidatorFn<I>> {
-    const config = this.attrConfig(name);
-    return (attrValidatorFnTypeGuard(config.validator) && undefined !== value)
-      ? config.validator.call(this, value)
+    if (!attrRegisteredTypeGuard(this.attrConfigs, name)) {
+      throw new AttrUnregisteredError<C>(this, name);
+    }
+    if (undefined === value) {
+      return true;
+    }
+    const fn = this.attrConfigs[name].validator;
+    return (undefined !== fn && attrValidatorFnTypeGuard<I>(fn))
+      ? fn.call(this, value)
       : true;
   }
 
   public all(): AttrInferredValues<C> {
-    return Object.keys(this.attrConfigs).reduce((attrs, name) => ({
+    return <AttrInferredValues<C>>Object.keys(this.attrConfigs).reduce((attrs, name) => ({
       ...attrs,
       [name]: this.get(name),
-    }), {}) as AttrInferredValues<C>;
+    }), {});
   }
 
   public get<K extends keyof C, V extends C[K]['value'], I extends AttrInferredValue<V>>(name: K): I {
-    const config = this.attrConfig(name);
-    return attrValueFnTypeGuard(config.value)
-      ? config.value.call(this)
-      : config.value;
+    if (!attrRegisteredTypeGuard(this.attrConfigs, name)) {
+      throw new AttrUnregisteredError<C>(this, name);
+    }
+    return (undefined !== this.attrConfigs[name].value && attrValueFnTypeGuard<I>(this.attrConfigs[name].value))
+      ? this.attrConfigs[name].value.call(this)
+      : this.attrConfigs[name].value;
   }
 
   public set<K extends keyof AttrIncomingValuesUntyped<C, R>, R extends boolean = false>(name: K, value: unknown, allowReadonly?: R): this {
+    if (!attrRegisteredTypeGuard(this.attrConfigs, name)) {
+      throw new AttrUnregisteredError<C>(this, name);
+    }
     const normalized = this.normalize(name, value);
     if (!this.validate(name, normalized)) {
       throw new AttrValueInvalidError<C>(this, name, normalized);
@@ -85,22 +92,24 @@ export default abstract class Entity<C extends AttrConfigs> {
     return this.setDangerously(name, normalized, allowReadonly);
   }
 
-  public fill<A extends AttrIncomingValuesUntyped<C, R>, R extends boolean = false>(attrs: Partial<A>, allowReadonly?: R): this {
-    (Object.entries(attrs) as Entries<A>).forEach(([ name, value ]) => {
-      this.set(name as keyof AttrIncomingValuesUntyped<C, R>, value, allowReadonly); // TODO: Why the need for hinting?
-    });
+  public setDangerously<A extends AttrIncomingValues<C, R>, K extends keyof A, R extends boolean = false>(name: K, value: A[K], allowReadonly?: R): this {
+    if (!attrRegisteredTypeGuard(this.attrConfigs, name)) {
+      throw new AttrUnregisteredError<C>(this, name);
+    }
+    if (attrValueFnTypeGuard<A[K]>(this.attrConfigs[name].value)) {
+      throw new AttrValueFnError<C>(this, name, value);
+    }
+    if (this.attrConfigs[name].readonly && !allowReadonly) {
+      throw new AttrReadonlyError<C>(this, name, value);
+    }
+    this.attrConfigs[name].value = value;
     return this;
   }
 
-  public setDangerously<A extends AttrIncomingValues<C, R>, K extends keyof A, R extends boolean = false>(name: K, value: A[K], allowReadonly?: R): this {
-    const config = this.attrConfig(name as keyof C); // TODO: Why the need for hinting?
-    if (attrValueFnTypeGuard(config.value)) {
-      throw new AttrValueFnError<C>(this, name as keyof C, value); // TODO: Why the need for hinting?
-    }
-    if (config.readonly && !allowReadonly) {
-      throw new AttrReadonlyError<C>(this, name as keyof C, value); // TODO: Why the need for hinting?
-    }
-    config.value = value;
+  public fill<A extends AttrIncomingValuesUntyped<C, R>, R extends boolean = false>(attrs: Partial<A>, allowReadonly?: R): this {
+    (Object.entries(attrs) as Entries<AttrIncomingValuesUntyped<C, R>>).forEach(([ name, value ]) => { // TODO: Entries<A>
+      this.set(name, value, allowReadonly);
+    });
     return this;
   }
 

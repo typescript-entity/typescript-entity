@@ -40,7 +40,7 @@ export const USER_ATTR_CONFIGS:UserAttrConfigs = {
   },
   verified: {
     value: false,
-    normalizer: Normalizers.boolean,
+    // TODO: normalizer: Normalizers.boolean,
     validator: Validators.boolean,
   },
 };
