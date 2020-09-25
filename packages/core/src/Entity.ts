@@ -1,5 +1,5 @@
 import { cloneDeep } from 'lodash';
-import { AttrReadonlyError, AttrUnregisteredError, AttrValueFnError, AttrValueInvalidError } from './Error';
+import { AttrNonWritableError, AttrReadonlyError, AttrUnregisteredError, AttrValueFnError, AttrValueInvalidError } from './Error';
 import { AttrConfigs, AttrIncomingValues, AttrIncomingValuesUntyped, AttrInferredValue, AttrInferredValues, AttrInitialValues, AttrNormalizerFn, AttrValidatorFn, AttrValue, AttrValueFn } from './Type';
 
 type Entries<T> = { [K in keyof T]: [ K, T[K] ] }[keyof T][];
@@ -29,10 +29,10 @@ export default abstract class Entity<C extends AttrConfigs> {
   protected attrConfigs: C;
 
   /**
-   * Creates a new Entity instance. The attrConfigs defines the attributes available on the Entity
-   * along with default values for non-undefinable attributes. Initial attribute key/values can be
-   * set on the instance via the initialAttrs parameter, and while these are not normalized nor
-   * validated, will bypass any readonly settings.
+   * Creates a new `Entity` instance. The `attrConfigs` defines the attributes available on the
+   * `Entity` instance along with default values for required attributes. Initial attribute values
+   * can be set on the instance via `initialAttrs`, and while these are not normalized nor
+   * validated, they will bypass any `readonly` settings.
    *
    * @param attrConfigs
    * @param initialAttrs
@@ -50,9 +50,9 @@ export default abstract class Entity<C extends AttrConfigs> {
 
   /**
    * Normalizes a value using the normalizer function provided in the attribute configs. The
-   * normalizer function is not called if the value is nullish. While Typescript takes care of
-   * ensuring type safety, it may be appropriate to performing casting within your normalizer
-   * functions in cases where your Entities are used outside of Typescript.
+   * normalizer function is not called if `value` is `null` or `undefined`. While Typescript takes
+   * care of ensuring type safety, it may be appropriate to perform casting within your normalizer
+   * functions in cases where your `Entity` classes are used outside of Typescript.
    *
    * @param name
    * @param value
@@ -71,10 +71,10 @@ export default abstract class Entity<C extends AttrConfigs> {
   }
 
   /**
-   * Validates a value using the validator function provided in the attribute configs. The
-   * validator function is not called if the value is nullish. While Typescript takes care of
-   * ensuring type safety, it may be appropriate to performing type-checking within your validator
-   * functions in cases where your Entities are used outside of Typescript.
+   * Validates a `value` using the validator function provided in the attribute configs. The
+   * validator function is not called if `value` is `null` or `undefined`. While Typescript takes
+   * care of ensuring type safety, it may be appropriate to perform type-checking within your
+   * validator functions in cases where your `Entity` classes are used outside of Typescript.
    *
    * @param name
    * @param value
@@ -93,7 +93,7 @@ export default abstract class Entity<C extends AttrConfigs> {
   }
 
   /**
-   * Returns the key/value pairs for all attributes on the Entity instance.
+   * Returns all attribute names and values on the `Entity` instance.
    */
   public all(): AttrInferredValues<C> {
     return <AttrInferredValues<C>>Object.keys(this.attrConfigs).reduce((attrs, name) => ({
@@ -103,7 +103,7 @@ export default abstract class Entity<C extends AttrConfigs> {
   }
 
   /**
-   * Returns the value of the specified attribute name. If the attribute is configured with a
+   * Returns the value of the specified attribute `name`. If the attribute is configured with a
    * value function then the return value of this function is returned.
    *
    * @param name
@@ -118,10 +118,10 @@ export default abstract class Entity<C extends AttrConfigs> {
   }
 
   /**
-   * Sets the value of the specified attribute name. If the attribute is configured with a value
-   * function or is readonly (unless allowReadonly is set to true) then an error is thrown. The
-   * value provided will be normalized and validated. If the validation fails an error is thrown and
-   * the attribute value is unchanged.
+   * Sets the `value` of the specified attribute `name`. If the attribute is configured with a value
+   * function or is `readonly` (unless `allowReadonly` is set to `true`) then an error is thrown.
+   * The `value` provided will be normalized and validated. If validation fails an error is thrown
+   * and the attribute is unchanged.
    *
    * @param name
    * @param value
@@ -139,9 +139,11 @@ export default abstract class Entity<C extends AttrConfigs> {
   }
 
   /**
-   * Sets the value of the specified attribute name. If the attribute is configured with a value
-   * function or is readonly (unless allowReadonly is set to true) then an error is thrown. The
-   * value provided will not be normalized nor validated.
+   * Sets the `value` of the specified attribute `name`. If the attribute is configured with a value
+   * function or is `readonly` (unless `allowReadonly` is set to `true`) then an error is thrown.
+   * The `value` provided will not be normalized nor validated. In TypeScript, calling this function
+   * will fail if the provided `value` type is invalid, but in JavaScript environments this function
+   * should be used with extra caution.
    *
    * @param name
    * @param value
@@ -162,7 +164,8 @@ export default abstract class Entity<C extends AttrConfigs> {
   }
 
   /**
-   * Sets multiple attribute values. See `Entity.set()` for more details.
+   * Sets multiple attribute values. If a provided attribute is non-writable (is a value function or
+   * is marked as `readonly` and `allowReadonly` is `false`) then the attribute is silently ignored.
    *
    * @see Entity.set()
    * @param attrs
@@ -170,13 +173,24 @@ export default abstract class Entity<C extends AttrConfigs> {
    */
   public fill<A extends AttrIncomingValuesUntyped<C, R>, R extends boolean = false>(attrs: Partial<A>, allowReadonly?: R): this {
     (Object.entries(attrs) as Entries<AttrIncomingValuesUntyped<C, R>>).forEach(([ name, value ]) => { // TODO: Entries<A>
-      this.set(name, value, allowReadonly);
+      try {
+        this.set(name, value, allowReadonly);
+      } catch (err) {
+        // Silently ignore errors when trying to set non-writable attributes
+        if (!(err instanceof AttrNonWritableError)) {
+          throw err;
+        }
+      }
     });
     return this;
   }
 
   /**
-   * Sets multiple attribute values without normalization nor validation.
+   * Sets multiple attribute values without normalization nor validation. If a provided attribute is
+   * non-writable (is a value function or is marked as `readonly` and `allowReadonly` is `false`)
+   * then the attribute is silently ignored. In TypeScript, calling this function will fail if the
+   * provided `attrs` value types are invalid, but in JavaScript environments this function should
+   * be used with extra caution.
    *
    * @see Entity.setDangerously()
    * @param attrs
@@ -184,13 +198,20 @@ export default abstract class Entity<C extends AttrConfigs> {
    */
   public fillDangerously<A extends AttrIncomingValues<C, R>, R extends boolean = false>(attrs: Partial<A>, allowReadonly?: R): this {
     (Object.entries(attrs) as Entries<A>).forEach(([ name, value ]) => {
-      this.setDangerously(name, value, allowReadonly);
+      try {
+        this.setDangerously(name, value, allowReadonly);
+      } catch (err) {
+        // Silently ignore errors when trying to set non-writable attributes
+        if (!(err instanceof AttrNonWritableError)) {
+          throw err;
+        }
+      }
     });
     return this;
   }
 
   /**
-   * Returns a string representation of the Entity instance.
+   * Returns a string representation of the `Entity` instance.
    */
   public toString(): string
   {
@@ -198,8 +219,7 @@ export default abstract class Entity<C extends AttrConfigs> {
   }
 
   /**
-   * Returns the attribute key/value pairs that should be included when the instance is stringified
-   * into JSON form.
+   * Returns the attribute names and values that should be included in JSON form.
    */
   public toJSON(): AttrInferredValues<C> {
     return this.all();
