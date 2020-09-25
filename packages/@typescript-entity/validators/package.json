@@ -16,10 +16,10 @@
     "access": "public"
   },
   "files": [
-    "build/"
+    "dist/"
   ],
-  "main": "build/index.ts",
-  "types": "build/index.d.ts",
+  "main": "dist/index.ts",
+  "types": "dist/index.d.ts",
   "dependencies": {
     "@typescript-entity/normalizers": "^0.0.1-alpha.0",
     "validator": "13"
@@ -34,7 +34,7 @@
     "@typescript-entity/core": "0"
   },
   "scripts": {
-    "prebuild": "rimraf ./build",
+    "prebuild": "rimraf ./dist",
     "build": "tsc -p tsconfig.build.json"
   }
 }
