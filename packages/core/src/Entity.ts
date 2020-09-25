@@ -219,7 +219,8 @@ export default abstract class Entity<C extends AttrConfigs> {
   }
 
   /**
-   * Returns the attribute names and values that should be included in JSON form.
+   * Returns the attribute names and values that should be included when stringifying the `Entity`
+   * instance into JSON form.
    */
   public toJSON(): AttrInferredValues<C> {
     return this.all();
