@@ -18,7 +18,7 @@
   "files": [
     "dist/"
   ],
-  "main": "dist/index.ts",
+  "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "dependencies": {
     "@typescript-entity/normalizers": "^0.0.2-alpha.0",

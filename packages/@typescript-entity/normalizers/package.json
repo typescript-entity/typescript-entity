@@ -18,7 +18,7 @@
   "files": [
     "dist/"
   ],
-  "main": "dist/index.ts",
+  "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "dependencies": {
     "lodash": "^4.17.20",
