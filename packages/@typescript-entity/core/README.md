@@ -10,7 +10,7 @@ yarn add @typescript-entity/core
 
 ## Usage
 
-See the example [User](./__tests__/User.ts) entity and the corresponding [test](./__tests__/User.test.ts) for usage examples.
+See the example [User](../../../tests/User.ts) entity and the corresponding [test](../../../tests/User.test.ts) for usage examples.
 
 ## Motivation
 
