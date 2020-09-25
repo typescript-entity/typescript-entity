@@ -12,6 +12,7 @@
     "jest": "26",
     "ts-jest": "26",
     "typedoc": "0",
+    "typedoc-plugin-nojekyll": "^1.0.1",
     "typescript": "4"
   },
   "scripts": {
