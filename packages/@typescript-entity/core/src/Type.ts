@@ -16,11 +16,11 @@ export type AttrValue = any;
 
 export type AttrValueFn<V extends AttrValue> = () => V;
 
-export type AttrNormalizerFn<V> = (value: unknown) => [V] extends [boolean] ? boolean : V; // See: https://github.com/microsoft/TypeScript/issues/30029
+export type AttrNormalizerFn<V> = (value: unknown) => AttrInferredValue<V>;
 
 export type AttrValidatorFn<V> = (value: NonNullable<V>) => boolean;
 
-export type AttrInferredValue<V> = V extends AttrValueFn<AttrValue> ? ReturnType<V> : V;
+export type AttrInferredValue<V> = V extends AttrValueFn<AttrValue> ? ReturnType<V> : [V] extends [boolean] ? boolean : V; // See: https://github.com/microsoft/TypeScript/issues/30029
 
 export type AttrInferredValues<C extends AttrConfigs> = {
   [K in keyof C]: AttrInferredValue<C[K]['value']>;
