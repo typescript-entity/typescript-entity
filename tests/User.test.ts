@@ -18,7 +18,7 @@ test('an Entity can be constructed with default values', () => {
 test('an Entity can be constructed with custom values', () => {
 
   const user = new User({
-    date_of_birth: '2000-01-01',
+    date_of_birth: new Date('2000-01-01'),
     email: 'foo@example.com',
     username: 'foobar',
     uuid: '7a2d2178-37da-4f5c-bb05-5f6819ff6ecd',
@@ -38,7 +38,7 @@ test('an Entity can be filled with custom values later', () => {
 
   const user = new User();
   user.fill({
-    date_of_birth: '2000-01-01',
+    date_of_birth: new Date('2000-01-01'),
     email: 'foo@example.com',
     username: 'foobar',
     verified: true,
@@ -138,5 +138,14 @@ test('an Entity can be cast to a JSON string', () => {
 
   const user = new User();
   expect(String(user)).toStrictEqual(JSON.stringify(user.toJSON()));
+
+});
+
+test('an Entity can be filled with values from a JSON string', () => {
+
+  const user = (new User()).fromJSON('{"uuid":"7a2d2178-37da-4f5c-bb05-5f6819ff6ecd","date_of_birth":"2000-01-01"}');
+  expect(user.uuid).toStrictEqual('7a2d2178-37da-4f5c-bb05-5f6819ff6ecd');
+  expect(user.date_of_birth).toBeInstanceOf(Date);
+  expect(user.date_of_birth.toISOString()).toStrictEqual('2000-01-01T00:00:00.000Z');
 
 });

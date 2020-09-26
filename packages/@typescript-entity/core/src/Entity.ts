@@ -1,6 +1,6 @@
 import { cloneDeep } from 'lodash';
 import { AttrReadOnlyError, AttrRestrictedError, AttrUnregisteredError, AttrValueFnError, AttrValueInvalidError } from './Error';
-import { AttrConfigs, AttrHiddenConfigs, AttrIncomingValues, AttrIncomingValuesUntyped, AttrInferredValue, AttrInferredValues, AttrInitialValues, AttrNormalizerFn, AttrValidatorFn, AttrValue, AttrValueFn, AttrVisibleConfigs } from './Type';
+import { AttrConfigs, AttrHiddenConfigs, AttrIncomingValues, AttrInferredValue, AttrInferredValues, AttrInitialValues, AttrNormalizerFn, AttrValidatorFn, AttrValue, AttrValueFn, AttrVisibleConfigs } from './Type';
 
 type Entries<T> = { [K in keyof T]: [ K, T[K] ] }[keyof T][];
 
@@ -31,21 +31,20 @@ export default abstract class Entity<C extends AttrConfigs> {
   /**
    * Creates a new [[`Entity`]] instance. The `attrConfigs` defines the attributes available on the
    * [[`Entity`]] instance along with default values for required attributes. Initial attribute
-   * values can be set on the instance via `initialAttrs`, and while these are not normalized nor
-   * validated, they will bypass any `readOnly` settings.
+   * values (including values for `readonly` attributes) can be provided in `attrs`.
    *
    * @param attrConfigs
-   * @param initialAttrs
+   * @param attrs
    */
-  constructor(attrConfigs: C, initialAttrs: AttrInitialValues<C> = {}) {
-    this.attrConfigs = (Object.entries(attrConfigs) as Entries<C>).reduce((attrs, [ name, attrConfig ]) => ({
-      ...attrs,
+  constructor(attrConfigs: C, attrs: AttrInitialValues<C> = {}) {
+    this.attrConfigs = (Object.entries(attrConfigs) as Entries<C>).reduce((attrConfigs, [ name, attrConfig ]) => ({
+      ...attrConfigs,
       [name]: {
         ...attrConfig,
         value: 'function' === typeof attrConfig.value ? attrConfig.value : cloneDeep(attrConfig.value),
       },
     }), {}) as C;
-    this.fill(initialAttrs, true);
+    this.fill(attrs, true);
   }
 
   /**
@@ -151,7 +150,7 @@ export default abstract class Entity<C extends AttrConfigs> {
    * @param value
    * @param allowReadOnly
    */
-  public set<K extends keyof AttrIncomingValuesUntyped<C, R>, R extends boolean = false>(name: K, value: unknown, allowReadOnly?: R): this {
+  public set<K extends keyof AttrIncomingValues<C, R>, R extends boolean = false>(name: K, value: unknown, allowReadOnly?: R): this {
     if (!attrRegisteredTypeGuard(this.attrConfigs, name)) {
       throw new AttrUnregisteredError<C>(this, name);
     }
@@ -195,8 +194,8 @@ export default abstract class Entity<C extends AttrConfigs> {
    * @param attrs
    * @param allowReadOnly
    */
-  public fill<A extends AttrIncomingValuesUntyped<C, R>, R extends boolean = false>(attrs: Partial<A>, allowReadOnly?: R): this {
-    (Object.entries(attrs) as Entries<AttrIncomingValuesUntyped<C, R>>).forEach(([ name, value ]) => { // TODO: Entries<A>
+  public fill<A extends AttrIncomingValues<C, R>, R extends boolean = false>(attrs: Partial<A>, allowReadOnly?: R): this {
+    (Object.entries(attrs) as Entries<AttrIncomingValues<C, R>>).forEach(([ name, value ]) => { // TODO: Entries<A>
       try {
         this.set(name, value, allowReadOnly);
       } catch (err) {
@@ -251,6 +250,19 @@ export default abstract class Entity<C extends AttrConfigs> {
    */
   public toJSON(): AttrInferredValues<AttrVisibleConfigs<C>> {
     return this.visible();
+  }
+
+  /**
+   * Sets multiple attribute values (including values for `readonly` attributes) from JSON data.
+   * When using this function, be sure to implement any necessary normalizer functions in your
+   * attribute configurations where primitives need to be casted to objects, e.g. where a date
+   * string should be cast to a `Date` object.
+   *
+   * @see [[`Entity.fill`]]
+   * @param json
+   */
+  public fromJSON(json: string): this {
+    return this.fill(JSON.parse(json), true);
   }
 
 }

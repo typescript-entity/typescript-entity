@@ -40,11 +40,7 @@ export type AttrUnrestrictedConfigs<C extends AttrConfigs, AllowReadOnly extends
 
 export type AttrIncomingValues<C extends AttrConfigs, AllowReadOnly extends boolean = false> = AttrInferredValues<AttrUnrestrictedConfigs<C, AllowReadOnly>>;
 
-export type AttrIncomingValuesUntyped<C extends AttrConfigs, AllowReadOnly extends boolean = false> = AttrUntypedValues<AttrUnrestrictedConfigs<C, AllowReadOnly>>;
-
-export type AttrUntypedValues<C extends AttrConfigs> = Record<keyof C, unknown>;
-
-export type AttrInitialValues<C extends AttrConfigs> = Partial<AttrUntypedValues<AttrUnrestrictedConfigs<C, true>>>;
+export type AttrInitialValues<C extends AttrConfigs> = Partial<AttrIncomingValues<C, true>>;
 
 export type EntityInterface<C extends AttrConfigs> = AttrInferredValues<C>;
 
