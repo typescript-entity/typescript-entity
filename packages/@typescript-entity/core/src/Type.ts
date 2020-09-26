@@ -16,7 +16,7 @@ export type AttrValue = any;
 
 export type AttrValueFn<V extends AttrValue> = () => V;
 
-export type AttrNormalizerFn<V> = (value: unknown) => V;
+export type AttrNormalizerFn<V> = (value: unknown) => [V] extends [boolean] ? boolean : V; // See: https://github.com/microsoft/TypeScript/issues/30029
 
 export type AttrValidatorFn<V> = (value: NonNullable<V>) => boolean;
 

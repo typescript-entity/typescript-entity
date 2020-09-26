@@ -7,8 +7,7 @@ export type EmailAttrConfig = WithValidator<WithNormalizer<AttrConfig<string>>>;
 export type EmailDomainAttrConfig = AttrConfig<() => string>;
 export type UsernameAttrConfig = WithValidator<WithNormalizer<AttrConfig<string>>>;
 export type UUIDAttrConfig = AsOptional<AsReadOnly<AsHidden<WithValidator<WithNormalizer<AttrConfig<string>>>>>>;
-// TODO: export type VerifiedAttrConfig = WithValidator<WithNormalizer<AttrConfig<boolean>>>;
-export type VerifiedAttrConfig = WithValidator<AttrConfig<boolean>>;
+export type VerifiedAttrConfig = WithValidator<WithNormalizer<AttrConfig<boolean>>>;
 
 export type UserAttrConfigs = {
   date_of_birth: DateOfBirthAttrConfig;
@@ -49,7 +48,7 @@ export const USER_ATTR_CONFIGS:UserAttrConfigs = {
   },
   verified: {
     value: false,
-    // TODO: normalizer: Normalizers.boolean,
+    normalizer: Normalizers.boolean,
     validator: Validators.boolean,
   },
 };
