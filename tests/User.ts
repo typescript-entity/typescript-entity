@@ -1,13 +1,14 @@
 import { AsHidden, AsOptional, AsReadOnly, AttrConfig, AttrInitialValues, Entity, EntityInterface, WithNormalizer, WithValidator } from '@typescript-entity/core';
 import * as Normalizers from '@typescript-entity/normalizers';
+import * as Sanitizers from '@typescript-entity/sanitizers';
 import * as Validators from '@typescript-entity/validators';
 
-export type DateOfBirthAttrConfig = WithValidator<WithNormalizer<AttrConfig<Date>>>;
-export type EmailAttrConfig = WithValidator<WithNormalizer<AttrConfig<string>>>;
+export type DateOfBirthAttrConfig = WithValidator<AttrConfig<Date>>;
+export type EmailAttrConfig = WithValidator<AttrConfig<string>>;
 export type EmailDomainAttrConfig = AttrConfig<() => string>;
-export type UsernameAttrConfig = WithValidator<WithNormalizer<AttrConfig<string>>>;
+export type UsernameAttrConfig = WithValidator<AttrConfig<string>>;
 export type UUIDAttrConfig = AsOptional<AsReadOnly<AsHidden<WithValidator<WithNormalizer<AttrConfig<string>>>>>>;
-export type VerifiedAttrConfig = WithValidator<WithNormalizer<AttrConfig<boolean>>>;
+export type VerifiedAttrConfig = WithValidator<AttrConfig<boolean>>;
 
 export type UserAttrConfigs = {
   date_of_birth: DateOfBirthAttrConfig;
@@ -23,12 +24,12 @@ export type UserInterface = EntityInterface<UserAttrConfigs>;
 export const USER_ATTR_CONFIGS:UserAttrConfigs = {
   date_of_birth: {
     value: new Date(0),
-    normalizer: Normalizers.date,
+    sanitizer: Sanitizers.date,
     validator: (value: Date): boolean => value < new Date(),
   },
   email: {
     value: '',
-    normalizer: Normalizers.string,
+    sanitizer: Sanitizers.string,
     validator: Validators.email,
   },
   email_domain: {
@@ -38,17 +39,18 @@ export const USER_ATTR_CONFIGS:UserAttrConfigs = {
     value: undefined,
     hidden: true,
     readOnly: true,
+    sanitizer: Sanitizers.string,
     normalizer: Normalizers.lowercase,
     validator: Validators.uuid,
   },
   username: {
     value: '',
-    normalizer: Normalizers.string,
+    sanitizer: Sanitizers.string,
     validator: (value: string): boolean => Validators.string(value, { min: 5 }),
   },
   verified: {
     value: false,
-    normalizer: Normalizers.boolean,
+    sanitizer: Sanitizers.boolean,
     validator: Validators.boolean,
   },
 };

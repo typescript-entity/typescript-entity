@@ -1,0 +1,39 @@
+{
+  "name": "@typescript-entity/sanitizers",
+  "version": "0.0.3-alpha.0",
+  "description": "Sanitizer functions for use with @typescript-entity/core.",
+  "homepage": "https://github.com/apancutt/typescript-entity/packages/sanitizers#readme",
+  "bugs": {
+    "url": "https://github.com/apancutt/typescript-entity/issues"
+  },
+  "author": "Adam Pancutt <adam@pancutt.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/apancutt/typescript-entity.git"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "dist/"
+  ],
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "dependencies": {
+    "validator": "13"
+  },
+  "devDependencies": {
+    "@types/node": "14",
+    "@types/validator": "13",
+    "rimraf": "3",
+    "typescript": "4"
+  },
+  "peerDependencies": {
+    "@typescript-entity/core": "0"
+  },
+  "scripts": {
+    "prebuild": "rimraf ./dist",
+    "build": "tsc -p tsconfig.build.json"
+  }
+}

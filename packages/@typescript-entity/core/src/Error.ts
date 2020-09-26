@@ -1,48 +1,58 @@
 import Entity from './Entity';
-import { AttrConfigs } from './Type';
+import { Configs } from './Type';
 
-export abstract class AttrError<C extends AttrConfigs> extends Error {
+export abstract class EntityError<C extends Configs> extends Error {
 
   public entity: Entity<C>;
-  public attrName: keyof C;
 
-  constructor(message: string, entity: Entity<C>, attrName: keyof C) {
+  constructor(entity: Entity<C>, message?: string) {
     super(message);
     this.entity = entity;
+  }
+
+}
+export abstract class AttrError<C extends Configs> extends EntityError<C> {
+
+  public attrName: keyof C;
+
+  constructor(entity: Entity<C>, attrName: keyof C, message?: string) {
+    super(entity, message);
     this.attrName = attrName;
   }
 
 }
 
-export abstract class AttrValueError<C extends AttrConfigs> extends AttrError<C> {
+export abstract class RestrictedAttrError<C extends Configs> extends AttrError<C> {
+  constructor(entity: Entity<C>, attrName: keyof C, message?: string) {
+    super(entity, attrName, message || `Attribute "${entity.constructor.name}.${attrName}" is restricted`);
+  }
+}
+
+export class FnAttrError<C extends Configs> extends RestrictedAttrError<C> {
+  constructor(entity: Entity<C>, attrName: keyof C, message?: string) {
+    super(entity, attrName, message || `Attribute "${entity.constructor.name}.${attrName}" is a function attribute`);
+  }
+}
+
+export class ReadOnlyAttrError<C extends Configs> extends RestrictedAttrError<C> {
+  constructor(entity: Entity<C>, attrName: keyof C, message?: string) {
+    super(entity, attrName, message || `Attribute "${entity.constructor.name}.${attrName}" is read-only`);
+  }
+}
+
+export abstract class AttrValueError<C extends Configs> extends AttrError<C> {
 
   public attrValue: unknown;
 
-  constructor(message: string, entity: Entity<C>, attrName: keyof C, attrValue: unknown) {
-    super(message, entity, attrName);
+  constructor(entity: Entity<C>, attrName: keyof C, attrValue: unknown, message?: string) {
+    super(entity, attrName, message);
     this.attrValue = attrValue;
   }
 
 }
 
-export class AttrValueInvalidError<C extends AttrConfigs> extends AttrValueError<C> {
+export class InvalidAttrValueError<C extends Configs> extends AttrValueError<C> {
   constructor(entity: Entity<C>, attrName: keyof C, attrValue: unknown, message?: string) {
-    super(message || `Invalid value provided for ${entity.constructor.name}.${attrName}: ${attrValue}`, entity, attrName, attrValue);
-  }
-}
-
-export class AttrRestrictedError<C extends AttrConfigs> extends AttrValueError<C> {
-  constructor(entity: Entity<C>, attrName: keyof C, attrValue: unknown, message?: string) {
-    super(message || `Cannot set value for restricted attribute ${entity.constructor.name}.${attrName}: ${attrValue}`, entity, attrName, attrValue);
-  }
-}
-
-export class AttrReadOnlyError<C extends AttrConfigs> extends AttrRestrictedError<C> {}
-
-export class AttrValueFnError<C extends AttrConfigs> extends AttrRestrictedError<C> {}
-
-export class AttrUnregisteredError<C extends AttrConfigs> extends AttrError<C> {
-  constructor(entity: Entity<C>, attrName: string | number | symbol, message?: string) {
-    super(message || `Entity ${entity.constructor.name} does not contain an named attribute ${String(attrName)}`, entity, attrName as keyof C);
+    super(entity, attrName, attrValue, message || `Attribute "${entity.constructor.name}.${attrName}" received an invalid value`);
   }
 }

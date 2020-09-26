@@ -1,50 +1,41 @@
 import { cloneDeep } from 'lodash';
-import { AttrReadOnlyError, AttrRestrictedError, AttrUnregisteredError, AttrValueFnError, AttrValueInvalidError } from './Error';
-import { AttrConfigs, AttrHiddenConfigs, AttrIncomingValues, AttrInferredValue, AttrInferredValues, AttrInitialValues, AttrNormalizerFn, AttrValidatorFn, AttrValue, AttrValueFn, AttrVisibleConfigs } from './Type';
+import { InvalidAttrValueError, ReadOnlyAttrError, RestrictedAttrError } from './Error';
+import { Attrs, Configs, EntityConstructorAttrs, FillableAttrs, FnConfig, HiddenAttrs, NormalizerFn, SanitizerFn, UnsanitizedAttrs, ValidatorFn, ValueAttrs, ValueConfig, VisibleAttrs, WritableAttrs } from './Type';
 
 type Entries<T> = { [K in keyof T]: [ K, T[K] ] }[keyof T][];
 
-function functionTypeGuard<FunctionType>(fn: unknown): fn is FunctionType {
-  return 'function' === typeof fn;
-}
+export default abstract class Entity<C extends Configs> {
 
-function attrRegisteredTypeGuard<C extends AttrConfigs>(attrConfigs: C, name?: unknown): name is keyof C {
-  return ('string' === typeof name || 'number' === typeof name || 'symbol' === typeof name) && name in attrConfigs;
-}
-
-function attrValueFnTypeGuard<V extends AttrValue>(value: unknown): value is AttrValueFn<V> {
-  return functionTypeGuard<AttrValueFn<V>>(value);
-}
-
-function attrNormalizerFnTypeGuard<V extends AttrValue>(normalizer: unknown): normalizer is AttrNormalizerFn<V> {
-  return functionTypeGuard<AttrNormalizerFn<V>>(normalizer);
-}
-
-function attrValidatorFnTypeGuard<V extends AttrValue>(validator: unknown): validator is AttrValidatorFn<V> {
-  return functionTypeGuard<AttrValidatorFn<V>>(validator);
-}
-
-export default abstract class Entity<C extends AttrConfigs> {
-
-  protected attrConfigs: C;
+  protected configs: C;
 
   /**
    * Creates a new [[`Entity`]] instance. The `attrConfigs` defines the attributes available on the
    * [[`Entity`]] instance along with default values for required attributes. Initial attribute
    * values (including values for `readonly` attributes) can be provided in `attrs`.
    *
-   * @param attrConfigs
+   * @param configs
    * @param attrs
    */
-  constructor(attrConfigs: C, attrs: AttrInitialValues<C> = {}) {
-    this.attrConfigs = (Object.entries(attrConfigs) as Entries<C>).reduce((attrConfigs, [ name, attrConfig ]) => ({
-      ...attrConfigs,
+  constructor(configs: C, attrs: EntityConstructorAttrs<C> = {}) {
+    this.configs = (Object.entries(configs) as Entries<C>).reduce((configs, [ name, config ]) => ({
+      ...configs,
       [name]: {
-        ...attrConfig,
-        value: 'function' === typeof attrConfig.value ? attrConfig.value : cloneDeep(attrConfig.value),
+        ...config,
+        ...('value' in config ? { value: cloneDeep(config.value) } : {}),
       },
     }), {}) as C;
     this.fill(attrs, true);
+  }
+
+  /**
+   * Sanitizes a value using the sanitizer function provided in the attribute configs. This function
+   * should be used when handling attributes values where type assurance is not guaranteed.
+   *
+   * @param name
+   * @param value
+   */
+  public sanitize<K extends keyof ValueAttrs<C>, T extends ValueAttrs<C>[K]>(name: K, value: unknown): ReturnType<SanitizerFn<T>> {
+    return (this.configs[name].sanitizer as SanitizerFn<T>).call(this, value);
   }
 
   /**
@@ -56,17 +47,10 @@ export default abstract class Entity<C extends AttrConfigs> {
    * @param name
    * @param value
    */
-  public normalize<K extends keyof C, I extends AttrInferredValue<C[K]['value']>>(name: K, value: unknown): ReturnType<AttrNormalizerFn<I>> {
-    if (!attrRegisteredTypeGuard(this.attrConfigs, name)) {
-      throw new AttrUnregisteredError<C>(this, name);
-    }
-    if (null === value || undefined === value) {
-      return undefined as I;
-    }
-    const fn = this.attrConfigs[name].normalizer;
-    return (undefined !== fn && attrNormalizerFnTypeGuard<I>(fn))
-      ? fn.call(this, value)
-      : value as I;
+  public normalize<K extends keyof ValueAttrs<C>, T extends ValueAttrs<C>[K]>(name: K, value: T): ReturnType<NormalizerFn<T>> {
+    return (undefined !== value && null !== value && 'function' === typeof this.configs[name].normalizer)
+      ? (this.configs[name].normalizer as NormalizerFn<T>).call(this, value)
+      : value;
   }
 
   /**
@@ -78,51 +62,10 @@ export default abstract class Entity<C extends AttrConfigs> {
    * @param name
    * @param value
    */
-  public validate<K extends keyof C, I extends AttrInferredValue<C[K]['value']>>(name: K, value: I): ReturnType<AttrValidatorFn<I>> {
-    if (!attrRegisteredTypeGuard(this.attrConfigs, name)) {
-      throw new AttrUnregisteredError<C>(this, name);
-    }
-    if (undefined === value) {
-      return true;
-    }
-    const fn = this.attrConfigs[name].validator;
-    return (undefined !== fn && attrValidatorFnTypeGuard<I>(fn))
-      ? fn.call(this, value)
+  public validate<K extends keyof ValueAttrs<C>, T extends ValueAttrs<C>[K]>(name: K, value: T): ReturnType<ValidatorFn<T>> {
+    return (undefined !== value && null !== value && 'function' === typeof this.configs[name].validator)
+      ? (this.configs[name].validator as ValidatorFn<T>).call(this, value)
       : true;
-  }
-
-  /**
-   * Returns all attribute names and values on the [[`Entity`]] instance.
-   */
-  public all(): AttrInferredValues<C> {
-    return Object.keys(this.attrConfigs).reduce((attrs, name) => ({
-      ...attrs,
-      [name]: this.get(name),
-    }), {}) as AttrInferredValues<C>;
-  }
-
-  /**
-   * Returns all hidden attribute names and values on the [[`Entity`]] instance.
-   */
-  public hidden(): AttrInferredValues<AttrHiddenConfigs<C>> {
-    return Object.keys(this.attrConfigs)
-      .filter((name) => this.attrConfigs[name].hidden)
-      .reduce((attrs, name) => ({
-        ...attrs,
-        [name]: this.get(name),
-      }), {}) as AttrInferredValues<AttrHiddenConfigs<C>>;
-  }
-
-  /**
-   * Returns all visible attribute names and values on the [[`Entity`]] instance.
-   */
-  public visible(): AttrInferredValues<AttrVisibleConfigs<C>> {
-    return Object.keys(this.attrConfigs)
-      .filter((name) => !this.attrConfigs[name].hidden)
-      .reduce((attrs, name) => ({
-        ...attrs,
-        [name]: this.get(name),
-      }), {}) as AttrInferredValues<AttrVisibleConfigs<C>>;
   }
 
   /**
@@ -131,76 +74,100 @@ export default abstract class Entity<C extends AttrConfigs> {
    *
    * @param name
    */
-  public get<K extends keyof C, V extends C[K]['value'], I extends AttrInferredValue<V>>(name: K): I {
-    if (!attrRegisteredTypeGuard(this.attrConfigs, name)) {
-      throw new AttrUnregisteredError<C>(this, name);
-    }
-    return (undefined !== this.attrConfigs[name].value && attrValueFnTypeGuard<I>(this.attrConfigs[name].value))
-      ? this.attrConfigs[name].value.call(this)
-      : this.attrConfigs[name].value;
+  public get<K extends keyof Attrs<C>, T extends Attrs<C>[K]>(name: K): T {
+    return 'fn' in this.configs[name]
+      ? (this.configs[name] as FnConfig<T>).fn.call(this)
+      : (this.configs[name] as ValueConfig<T>).value;
+  }
+
+  /**
+   * Returns the values of the specified attribute `names`. If an attribute is configured with a
+   * value function then the return value of this function is returned.
+   *
+   * @param names
+   */
+  public some(names: (keyof Attrs<C>)[]): Partial<Attrs<C>> {
+    return names.reduce((attrs, name) => ({
+      ...attrs,
+      [name]: this.get(name),
+    }), {}) as Partial<Attrs<C>>;
+  }
+
+  /**
+   * Returns all attributes.
+   */
+  public all(): Attrs<C> {
+    return this.some(Object.keys(this.configs)) as Attrs<C>;
+  }
+
+  /**
+   * Returns all attributes configured as `hidden`.
+   */
+  public hidden(): HiddenAttrs<C> {
+    return this.some(Object.keys(this.configs).filter((name) => this.configs[name].hidden)) as HiddenAttrs<C>;
+  }
+
+  /**
+   * Returns all attributes not configured as `hidden`.
+   */
+  public visible(): VisibleAttrs<C> {
+    return this.some(Object.keys(this.configs).filter((name) => !this.configs[name].hidden)) as VisibleAttrs<C>;
   }
 
   /**
    * Sets the `value` of the specified attribute `name`. If the attribute is configured with a value
-   * function or is `readOnly` (unless `allowReadOnly` is set to `true`) then an error is thrown.
-   * The `value` provided will be normalized and validated. If validation fails an error is thrown
-   * and the attribute is unchanged.
+   * function, or is `readOnly` and `allowReadOnly` is `false`, then an error is thrown. The `value`
+   * provided will be normalized and validated. If validation fails an error is thrown and the
+   * attribute remains unmodified.
    *
    * @param name
    * @param value
    * @param allowReadOnly
    */
-  public set<K extends keyof AttrIncomingValues<C, R>, R extends boolean = false>(name: K, value: unknown, allowReadOnly?: R): this {
-    if (!attrRegisteredTypeGuard(this.attrConfigs, name)) {
-      throw new AttrUnregisteredError<C>(this, name);
+  public set<K extends keyof FillableAttrs<C, R>, T extends FillableAttrs<C, R>[K], R extends boolean = false>(name: K, value: T, allowReadOnly?: R): this {
+    const resolvedName = allowReadOnly ? name as unknown as keyof ValueAttrs<C> : name as unknown as keyof WritableAttrs<C>;
+    const config = this.configs[resolvedName];
+    if (config.readOnly && !allowReadOnly) {
+      throw new ReadOnlyAttrError(this, resolvedName);
     }
-    const normalized = this.normalize(name, value);
-    if (!this.validate(name, normalized)) {
-      throw new AttrValueInvalidError<C>(this, name, normalized);
+    value = this.normalize(resolvedName, value);
+    if (!this.validate(resolvedName, value)) {
+      throw new InvalidAttrValueError(this, resolvedName, value);
     }
-    return this.setDangerously(name, normalized, allowReadOnly);
-  }
-
-  /**
-   * Sets the `value` of the specified attribute `name`. If the attribute is configured with a value
-   * function or is `readOnly` (unless `allowReadOnly` is set to `true`) then an error is thrown.
-   * The `value` provided will not be normalized nor validated. In TypeScript, calling this function
-   * will fail if the provided `value` type is invalid, but in JavaScript environments this function
-   * should be used with extra caution.
-   *
-   * @param name
-   * @param value
-   * @param allowReadOnly
-   */
-  public setDangerously<A extends AttrIncomingValues<C, R>, K extends keyof A, R extends boolean = false>(name: K, value: A[K], allowReadOnly?: R): this {
-    if (!attrRegisteredTypeGuard(this.attrConfigs, name)) {
-      throw new AttrUnregisteredError<C>(this, name);
-    }
-    if (attrValueFnTypeGuard<A[K]>(this.attrConfigs[name].value)) {
-      throw new AttrValueFnError<C>(this, name, value);
-    }
-    if (this.attrConfigs[name].readOnly && !allowReadOnly) {
-      throw new AttrReadOnlyError<C>(this, name, value);
-    }
-    this.attrConfigs[name].value = value;
+    config.value = value;
     return this;
   }
 
   /**
-   * Sets multiple attribute values. If a provided attribute is restricted (is a value function or
-   * is marked as `readOnly` and `allowReadOnly` is `false`) then the attribute is silently ignored.
+   * Sets the `value` of the specified attribute `name`. If the attribute is configured with a value
+   * function, or is `readOnly` and `allowReadOnly` is `false`, then an error is thrown. The `value`
+   * provided will be sanitized, normalized and validated. If validation fails an error is thrown
+   * and the attribute remains unmodified.
    *
-   * @see [[`Entity.set`]]
+   * @param name
+   * @param value
+   * @param allowReadOnly
+   */
+  public setRaw<K extends keyof FillableAttrs<C, R>, T extends FillableAttrs<C, R>[K], R extends boolean = false>(name: K, value: unknown, allowReadOnly?: R): this {
+    return this.set(name, (this.configs[name as keyof C] as ValueConfig<T>).sanitizer.call(this, value), allowReadOnly);
+  }
+
+  /**
+   * Sets the values for the specified `attrs` key/value pairs. If an attribute is configured with a
+   * value function, or is `readOnly` and `allowReadOnly` is `false`, then the attribute is ignored.
+   * The values provided will be normalized and validated. If validation fails an error is thrown
+   * and the affected attribute and any remaining attributes remain unmodified.
+   *
    * @param attrs
    * @param allowReadOnly
    */
-  public fill<A extends AttrIncomingValues<C, R>, R extends boolean = false>(attrs: Partial<A>, allowReadOnly?: R): this {
-    (Object.entries(attrs) as Entries<AttrIncomingValues<C, R>>).forEach(([ name, value ]) => { // TODO: Entries<A>
+  public fill<R extends boolean = false>(attrs: Partial<FillableAttrs<C, R>>, allowReadOnly?: R): this {
+    (Object.entries(attrs) as Entries<FillableAttrs<C, R>>).forEach(([ name, value ]) => {
       try {
         this.set(name, value, allowReadOnly);
       } catch (err) {
         // Silently ignore errors when trying to set restricted attributes
-        if (!(err instanceof AttrRestrictedError)) {
+        if (!(err instanceof RestrictedAttrError)) {
           throw err;
         }
       }
@@ -209,28 +176,23 @@ export default abstract class Entity<C extends AttrConfigs> {
   }
 
   /**
-   * Sets multiple attribute values without normalization nor validation. If a provided attribute is
-   * restricted (is a value function or is marked as `readOnly` and `allowReadOnly` is `false`)
-   * then the attribute is silently ignored. In TypeScript, calling this function will fail if the
-   * provided `attrs` value types are invalid, but in JavaScript environments this function should
-   * be used with extra caution.
+   * Sets the values for the specified `attrs` key/value pairs. If an attribute is configured with a
+   * value function, or is `readOnly` and `allowReadOnly` is `false`, then the attribute is ignored.
+   * The values provided will be sanitized, normalized and validated. If validation fails an error
+   * is thrown and the affected attribute and any remaining attributes remain unmodified.
    *
-   * @see [[`Entity.setDangerously`]]
    * @param attrs
    * @param allowReadOnly
    */
-  public fillDangerously<A extends AttrIncomingValues<C, R>, R extends boolean = false>(attrs: Partial<A>, allowReadOnly?: R): this {
-    (Object.entries(attrs) as Entries<A>).forEach(([ name, value ]) => {
-      try {
-        this.setDangerously(name, value, allowReadOnly);
-      } catch (err) {
-        // Silently ignore errors when trying to set restricted attributes
-        if (!(err instanceof AttrRestrictedError)) {
-          throw err;
-        }
-      }
-    });
-    return this;
+  public fillRaw<R extends boolean = false>(attrs: Partial<UnsanitizedAttrs<C, R>>, allowReadOnly?: R): this {
+    const sanitized: Partial<FillableAttrs<C, R>> = (Object.entries(attrs) as Entries<UnsanitizedAttrs<C, R>>).reduce((attrs, [ name, value ]) => {
+      const resolvedName = allowReadOnly ? name as unknown as keyof ValueAttrs<C> : name as unknown as keyof WritableAttrs<C>;
+      return {
+        ...attrs,
+        [resolvedName]: this.sanitize(resolvedName, value),
+      };
+    }, {});
+    return this.fillRaw(sanitized, allowReadOnly);
   }
 
   /**
@@ -244,25 +206,22 @@ export default abstract class Entity<C extends AttrConfigs> {
   }
 
   /**
-   * Returns the attribute names and values that should be included when stringifying the
-   * [[`Entity`]] instance into JSON form. By default, this means all attributes that are not
-   * explicity configured as `hidden`.
+   * Returns the attributes to be included when stringifying this instance to JSON form.
+   *
+   * @see [[`Entity.visible`]]
    */
-  public toJSON(): AttrInferredValues<AttrVisibleConfigs<C>> {
+  public toJSON(): VisibleAttrs<C> {
     return this.visible();
   }
 
   /**
-   * Sets multiple attribute values (including values for `readonly` attributes) from JSON data.
-   * When using this function, be sure to implement any necessary normalizer functions in your
-   * attribute configurations where primitives need to be casted to objects, e.g. where a date
-   * string should be cast to a `Date` object.
+   * Imports attributes from a JSON string.
    *
-   * @see [[`Entity.fill`]]
+   * @see [[`Entity.fillRaw`]]
    * @param json
    */
   public fromJSON(json: string): this {
-    return this.fill(JSON.parse(json), true);
+    return this.fillRaw(JSON.parse(json), true);
   }
 
 }
