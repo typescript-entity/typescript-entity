@@ -1,33 +1,33 @@
 import { ValueConfig, WithNormalizer, WithValidator } from '@typescript-entity/core';
-import * as Normalizers from '@typescript-entity/normalizers';
-import * as Sanitizers from '@typescript-entity/sanitizers';
-import * as Validators from '@typescript-entity/validators';
+import { lowercase as lowercaseNormalizer } from '@typescript-entity/normalizers';
+import { date as dateSanitizer, string as stringSanitizer } from '@typescript-entity/sanitizers';
+import { email as emailValidator, url as urlValidator, uuid as uuidValidator } from '@typescript-entity/validators';
 
 export type DateOfBirthConfig = WithValidator<ValueConfig<Date>>;
-export const DATE_OF_BIRTH: DateOfBirthConfig = {
+export const DateOfBirthConfig: DateOfBirthConfig = {
   value: new Date(0),
-  sanitizer: Sanitizers.date,
+  sanitizer: dateSanitizer,
   validator: (value: Date): boolean => value < new Date(),
 };
 
 export type EmailConfig = WithValidator<ValueConfig<string>>;
-export const EMAIL: EmailConfig = {
+export const EmailConfig: EmailConfig = {
   value: '',
-  sanitizer: Sanitizers.string,
-  validator: Validators.email,
+  sanitizer: stringSanitizer,
+  validator: emailValidator,
 };
 
 export type URLConfig = WithValidator<ValueConfig<string>>;
-export const URL: URLConfig = {
+export const URLConfig: URLConfig = {
   value: '',
-  sanitizer: Sanitizers.string,
-  validator: Validators.url,
+  sanitizer: stringSanitizer,
+  validator: urlValidator,
 };
 
 export type UUID4Config = WithValidator<WithNormalizer<ValueConfig<string>>>;
-export const UUID4: UUID4Config = {
+export const UUID4Config: UUID4Config = {
   value: '',
-  sanitizer: Sanitizers.string,
-  normalizer: Normalizers.lowercase,
-  validator: Validators.uuid,
+  sanitizer: stringSanitizer,
+  normalizer: lowercaseNormalizer,
+  validator: uuidValidator,
 };
