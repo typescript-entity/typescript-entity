@@ -17,6 +17,13 @@ export const EMAIL: EmailConfig = {
   validator: Validators.email,
 };
 
+export type URLConfig = WithValidator<ValueConfig<string>>;
+export const URL: URLConfig = {
+  value: '',
+  sanitizer: Sanitizers.string,
+  validator: Validators.url,
+};
+
 export type UUID4Config = WithValidator<WithNormalizer<ValueConfig<string>>>;
 export const UUID4: UUID4Config = {
   value: '',
