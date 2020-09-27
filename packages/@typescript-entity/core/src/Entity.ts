@@ -107,9 +107,9 @@ export default abstract class Entity<C extends Configs> {
   }
 
   /**
-   * Sets the `value` of the specified attribute `name`. The `value` provided will be normalized and
-   * validated. If validation fails an error is thrown and the attribute remains unmodified. Values
-   * for `readOnly` attributes can be provided if `allowReadOnly` is set to `true`.
+   * Sets the `value` for the specified attribute `name`. The `value` provided will be normalized
+   * and validated. If validation fails an error is thrown and the attribute remains unmodified.
+   * Values for `readOnly` attributes can be provided if `allowReadOnly` is set to `true`.
    *
    * @param name
    * @param value
@@ -127,10 +127,10 @@ export default abstract class Entity<C extends Configs> {
   }
 
   /**
-   * Sets the `value` of the specified attribute `name`. The `value` provided will be sanitized,
-   * normalized and validated. If validation fails an error is thrown and the attribute remains
-   * unmodified. Values for `readOnly` attributes can be provided if `allowReadOnly` is set to
-   * `true`.
+   * Sets the `value` of an arbitrary type for the specified attribute `name`. The `value` provided
+   * will be sanitized, normalized and validated. If validation fails an error is thrown and the
+   * attribute remains unmodified. Values for `readOnly` attributes can be provided if
+   * `allowReadOnly` is set to `true`.
    *
    * @param name
    * @param value
@@ -157,10 +157,10 @@ export default abstract class Entity<C extends Configs> {
   }
 
   /**
-   * Sets multiple attribute values from the provided `attrs`. The values provided will be
-   * sanitized, normalized and validated. If validation fails an error is thrown and the attribute -
-   * and any subsequent attributes - remain unchanged. Values for `readOnly` attributes can be
-   * provided if `allowReadOnly` is set to `true`.
+   * Sets multiple attribute values of arbitrary types from the provided `attrs`. The values
+   * provided will be sanitized, normalized and validated. If validation fails an error is thrown
+   * and the attribute - and any subsequent attributes - remain unchanged. Values for `readOnly`
+   * attributes can be provided if `allowReadOnly` is set to `true`.
    *
    * @param attrs
    * @param allowReadOnly
@@ -177,11 +177,11 @@ export default abstract class Entity<C extends Configs> {
   }
 
   /**
-   * Sets multiple attribute values from the provided `json` string. Values for unregistered
-   * attributes, and those configured with value functions, are ignored. The values provided will be
-   * sanitized, normalized and validated. If validation fails an error is thrown and the attribute -
-   * and any subsequent attributes - remain unchanged. Values for `readOnly` attributes can be
-   * provided if `allowReadOnly` is set to `true`.
+   * Sets multiple attribute values of arbitrary types from the provided `json` string. The values
+   * provided will be sanitized, normalized and validated. If validation fails an error is thrown
+   * and the attribute - and any subsequent attributes - remain unchanged. Values for `readOnly`
+   * attributes can be provided if `allowReadOnly` is set to `true`. Values for unregistered
+   * attributes, and those configured with value functions, are ignored.
    *
    * @param json
    */
