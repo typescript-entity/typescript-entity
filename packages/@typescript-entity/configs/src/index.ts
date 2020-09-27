@@ -4,71 +4,71 @@ import { toBoolean, toDate, toFloat, toInteger, toNumber, toString } from '@type
 import { isAfter, isBefore, isEmail, isFloat, isInteger, isURL, isUUID } from '@typescript-entity/validators';
 
 export type BooleanConfig = ValueConfig<boolean>;
-export const BooleanConfig: BooleanConfig = {
+export const booleanConfig: BooleanConfig = {
   value: false,
   sanitizer: toBoolean,
 };
 
 export type DateConfig = ValueConfig<Date>;
-export const DateConfig: DateConfig = {
+export const dateConfig: DateConfig = {
   value: new Date(),
   sanitizer: toDate,
 };
 
 export type NumberConfig = ValueConfig<number>;
-export const NumberConfig: NumberConfig = {
+export const numberConfig: NumberConfig = {
   value: 0,
   sanitizer: toNumber,
 };
 
 export type IntegerConfig = NumberConfig;
-export const IntegerConfig: IntegerConfig = {
-  ...NumberConfig,
+export const integerConfig: IntegerConfig = {
+  ...numberConfig,
   sanitizer: toInteger,
   validator: isInteger,
 };
 
 export type FloatConfig = NumberConfig;
-export const FloatConfig: FloatConfig = {
-  ...NumberConfig,
+export const floatConfig: FloatConfig = {
+  ...numberConfig,
   sanitizer: toFloat,
   validator: isFloat,
 };
 
 export type StringConfig = ValueConfig<string>;
-export const StringConfig: StringConfig = {
+export const stringConfig: StringConfig = {
   value: '',
   sanitizer: toString,
 };
 
 export type DateInPastConfig = WithValidator<DateConfig>;
-export const DateInPastConfig: DateInPastConfig = {
-  ...DateConfig,
+export const dateInPastConfig: DateInPastConfig = {
+  ...dateConfig,
   validator: isBefore,
 };
 
 export type DateInFutureConfig = WithValidator<DateConfig>;
-export const DateInFutureConfig: DateInFutureConfig = {
-  ...DateConfig,
+export const dateInFutureConfig: DateInFutureConfig = {
+  ...dateConfig,
   validator: isAfter,
 };
 
 export type EmailConfig = WithValidator<ValueConfig<string>>;
-export const EmailConfig: EmailConfig = {
+export const emailConfig: EmailConfig = {
   value: '',
   sanitizer: toString,
   validator: isEmail,
 };
 
 export type URLConfig = WithValidator<ValueConfig<string>>;
-export const URLConfig: URLConfig = {
+export const urlConfig: URLConfig = {
   value: '',
   sanitizer: toString,
   validator: isURL,
 };
 
 export type UUID4Config = WithValidator<WithNormalizer<ValueConfig<string>>>;
-export const UUID4Config: UUID4Config = {
+export const uuid4Config: UUID4Config = {
   value: '',
   sanitizer: toString,
   normalizer: lowercase,
