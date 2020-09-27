@@ -1,6 +1,6 @@
 # @typescript-entity/sanitizers
 
-Sanitizer functions for use with [@typescript-entity/core](../core/).
+Sanitizer functions for use with [@typescript-entity/core](https://www.npmjs.com/package/@typescript-entity/core).
 
 ## Installation
 
