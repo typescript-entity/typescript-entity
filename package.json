@@ -20,10 +20,13 @@
   "scripts": {
     "lint": "eslint --ext .js,.jsx,.ts,.tsx tests packages/*/*/src",
     "test": "jest",
+    "prebuild": "yarn run lint && yarn run test",
     "build": "lerna run build --stream",
     "postbuild": "yarn run docs",
     "predocs": "rimraf ./docs",
-    "docs": "typedoc --excludeNotExported --mode \"modules\" --name \"@typescript-entity\" --out \"./docs\" --readme \"./README.md\" --external-modulemap \".*packages\\/(@typescript-entity\\/[^\\/]+)\\/.*\" --exclude \"packages\\/@typescript-entity\\/core\\/src\\/index.ts\" ./packages"
+    "docs": "typedoc --excludeNotExported --mode \"modules\" --name \"@typescript-entity\" --out \"./docs\" --readme \"./README.md\" --external-modulemap \".*packages\\/(@typescript-entity\\/[^\\/]+)\\/.*\" --exclude \"packages\\/@typescript-entity\\/core\\/src\\/index.ts\" ./packages",
+    "prepublish": "yarn run build",
+    "publish": "lerna publish"
   },
   "eslintConfig": {
     "root": true,

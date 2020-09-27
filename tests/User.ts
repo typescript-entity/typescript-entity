@@ -1,21 +1,21 @@
 import { AsHidden, AsOptional, AsReadOnly, Entity, EntityConstructorAttrs, EntityInterface, FnConfig, ValueConfig, WithValidator } from '@typescript-entity/core';
-import { DateOfBirthConfig, EmailConfig, UUID4Config } from '@typescript-entity/configs';
-import { boolean as booleanSanitizer, string as stringSanitizer } from '@typescript-entity/sanitizers';
-import { boolean as booleanValidator, string as stringValidator } from '@typescript-entity/validators';
+import { DateInPastConfig, EmailConfig, UUID4Config } from '@typescript-entity/configs';
+import { toBoolean, toString } from '@typescript-entity/sanitizers';
+import { isLength } from '@typescript-entity/validators';
 
 export type UserConfigs = {
-  date_of_birth: DateOfBirthConfig & ThisType<User>;
+  date_of_birth: DateInPastConfig & ThisType<User>;
   email: EmailConfig & ThisType<User>;
   email_domain: FnConfig<string> & ThisType<User>;
   username: WithValidator<ValueConfig<string>> & ThisType<User>;
   uuid: AsHidden<AsReadOnly<AsOptional<UUID4Config>>> & ThisType<User>;
-  verified: WithValidator<ValueConfig<boolean>> & ThisType<User>;
+  verified: ValueConfig<boolean> & ThisType<User>;
 };
 
 export class User extends Entity<UserConfigs> implements EntityInterface<UserConfigs> {
 
   public static readonly CONFIGS: UserConfigs = {
-    date_of_birth: DateOfBirthConfig,
+    date_of_birth: DateInPastConfig,
     email: EmailConfig,
     email_domain: {
       fn: function(this: User): string { return this.email.split('@', 2)[1] || '' },
@@ -28,13 +28,12 @@ export class User extends Entity<UserConfigs> implements EntityInterface<UserCon
     },
     username: {
       value: '',
-      sanitizer: stringSanitizer,
-      validator: (value: string): boolean => stringValidator(value, { min: 5 }),
+      sanitizer: toString,
+      validator: (value: string): boolean => isLength(value, { min: 5 }),
     },
     verified: {
       value: false,
-      sanitizer: booleanSanitizer,
-      validator: booleanValidator,
+      sanitizer: toBoolean,
     },
   };
 

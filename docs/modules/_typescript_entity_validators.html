@@ -83,13 +83,14 @@
 						<section class="tsd-index-section ">
 							<h3>Functions</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-function tsd-parent-kind-module"><a href="_typescript_entity_validators.html#boolean" class="tsd-kind-icon">boolean</a></li>
-								<li class="tsd-kind-function tsd-parent-kind-module"><a href="_typescript_entity_validators.html#email" class="tsd-kind-icon">email</a></li>
-								<li class="tsd-kind-function tsd-parent-kind-module"><a href="_typescript_entity_validators.html#float" class="tsd-kind-icon">float</a></li>
-								<li class="tsd-kind-function tsd-parent-kind-module"><a href="_typescript_entity_validators.html#integer" class="tsd-kind-icon">integer</a></li>
-								<li class="tsd-kind-function tsd-parent-kind-module"><a href="_typescript_entity_validators.html#string" class="tsd-kind-icon">string</a></li>
-								<li class="tsd-kind-function tsd-parent-kind-module"><a href="_typescript_entity_validators.html#url" class="tsd-kind-icon">url</a></li>
-								<li class="tsd-kind-function tsd-parent-kind-module"><a href="_typescript_entity_validators.html#uuid" class="tsd-kind-icon">uuid</a></li>
+								<li class="tsd-kind-function tsd-parent-kind-module"><a href="_typescript_entity_validators.html#isafter" class="tsd-kind-icon">is<wbr>After</a></li>
+								<li class="tsd-kind-function tsd-parent-kind-module"><a href="_typescript_entity_validators.html#isbefore" class="tsd-kind-icon">is<wbr>Before</a></li>
+								<li class="tsd-kind-function tsd-parent-kind-module"><a href="_typescript_entity_validators.html#isemail" class="tsd-kind-icon">is<wbr>Email</a></li>
+								<li class="tsd-kind-function tsd-parent-kind-module"><a href="_typescript_entity_validators.html#isfloat" class="tsd-kind-icon">is<wbr>Float</a></li>
+								<li class="tsd-kind-function tsd-parent-kind-module"><a href="_typescript_entity_validators.html#isinteger" class="tsd-kind-icon">is<wbr>Integer</a></li>
+								<li class="tsd-kind-function tsd-parent-kind-module"><a href="_typescript_entity_validators.html#islength" class="tsd-kind-icon">is<wbr>Length</a></li>
+								<li class="tsd-kind-function tsd-parent-kind-module"><a href="_typescript_entity_validators.html#isurl" class="tsd-kind-icon">isURL</a></li>
+								<li class="tsd-kind-function tsd-parent-kind-module"><a href="_typescript_entity_validators.html#isuuid" class="tsd-kind-icon">isUUID</a></li>
 							</ul>
 						</section>
 					</div>
@@ -98,22 +99,25 @@
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Functions</h2>
 				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-module">
-					<a name="boolean" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagConst">Const</span> boolean</h3>
+					<a name="isafter" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagConst">Const</span> is<wbr>After</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-module">
-						<li class="tsd-signature tsd-kind-icon">boolean<span class="tsd-signature-symbol">(</span>value<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
+						<li class="tsd-signature tsd-kind-icon">is<wbr>After<span class="tsd-signature-symbol">(</span>value<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Date</span>, date<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">Date</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/apancutt/typescript-entity/blob/24cd730/packages/@typescript-entity/validators/src/index.ts#L4">packages/@typescript-entity/validators/src/index.ts:4</a></li>
+									<li>Defined in <a href="https://github.com/apancutt/typescript-entity/blob/5cc8948/packages/@typescript-entity/validators/src/index.ts#L4">packages/@typescript-entity/validators/src/index.ts:4</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>value: <span class="tsd-signature-type">boolean</span></h5>
+									<h5>value: <span class="tsd-signature-type">Date</span></h5>
+								</li>
+								<li>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> date: <span class="tsd-signature-type">Date</span></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
@@ -121,16 +125,42 @@
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-module">
-					<a name="email" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagConst">Const</span> email</h3>
+					<a name="isbefore" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagConst">Const</span> is<wbr>Before</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-module">
-						<li class="tsd-signature tsd-kind-icon">email<span class="tsd-signature-symbol">(</span>value<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, options<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">IsEmailOptions</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
+						<li class="tsd-signature tsd-kind-icon">is<wbr>Before<span class="tsd-signature-symbol">(</span>value<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Date</span>, date<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">Date</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/apancutt/typescript-entity/blob/24cd730/packages/@typescript-entity/validators/src/index.ts#L6">packages/@typescript-entity/validators/src/index.ts:6</a></li>
+									<li>Defined in <a href="https://github.com/apancutt/typescript-entity/blob/5cc8948/packages/@typescript-entity/validators/src/index.ts#L6">packages/@typescript-entity/validators/src/index.ts:6</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>value: <span class="tsd-signature-type">Date</span></h5>
+								</li>
+								<li>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> date: <span class="tsd-signature-type">Date</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-module">
+					<a name="isemail" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagConst">Const</span> is<wbr>Email</h3>
+					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-module">
+						<li class="tsd-signature tsd-kind-icon">is<wbr>Email<span class="tsd-signature-symbol">(</span>value<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, options<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">IsEmailOptions</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/apancutt/typescript-entity/blob/5cc8948/packages/@typescript-entity/validators/src/index.ts#L8">packages/@typescript-entity/validators/src/index.ts:8</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -147,16 +177,16 @@
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-module">
-					<a name="float" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagConst">Const</span> float</h3>
+					<a name="isfloat" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagConst">Const</span> is<wbr>Float</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-module">
-						<li class="tsd-signature tsd-kind-icon">float<span class="tsd-signature-symbol">(</span>value<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, options<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">IsFloatOptions</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
+						<li class="tsd-signature tsd-kind-icon">is<wbr>Float<span class="tsd-signature-symbol">(</span>value<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, options<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">IsFloatOptions</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/apancutt/typescript-entity/blob/24cd730/packages/@typescript-entity/validators/src/index.ts#L8">packages/@typescript-entity/validators/src/index.ts:8</a></li>
+									<li>Defined in <a href="https://github.com/apancutt/typescript-entity/blob/5cc8948/packages/@typescript-entity/validators/src/index.ts#L10">packages/@typescript-entity/validators/src/index.ts:10</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -173,16 +203,16 @@
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-module">
-					<a name="integer" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagConst">Const</span> integer</h3>
+					<a name="isinteger" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagConst">Const</span> is<wbr>Integer</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-module">
-						<li class="tsd-signature tsd-kind-icon">integer<span class="tsd-signature-symbol">(</span>value<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, options<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">IsIntOptions</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
+						<li class="tsd-signature tsd-kind-icon">is<wbr>Integer<span class="tsd-signature-symbol">(</span>value<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, options<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">IsIntOptions</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/apancutt/typescript-entity/blob/24cd730/packages/@typescript-entity/validators/src/index.ts#L10">packages/@typescript-entity/validators/src/index.ts:10</a></li>
+									<li>Defined in <a href="https://github.com/apancutt/typescript-entity/blob/5cc8948/packages/@typescript-entity/validators/src/index.ts#L12">packages/@typescript-entity/validators/src/index.ts:12</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -199,16 +229,16 @@
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-module">
-					<a name="string" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagConst">Const</span> string</h3>
+					<a name="islength" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagConst">Const</span> is<wbr>Length</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-module">
-						<li class="tsd-signature tsd-kind-icon">string<span class="tsd-signature-symbol">(</span>value<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, options<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">IsLengthOptions</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
+						<li class="tsd-signature tsd-kind-icon">is<wbr>Length<span class="tsd-signature-symbol">(</span>value<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, options<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">IsLengthOptions</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/apancutt/typescript-entity/blob/24cd730/packages/@typescript-entity/validators/src/index.ts#L12">packages/@typescript-entity/validators/src/index.ts:12</a></li>
+									<li>Defined in <a href="https://github.com/apancutt/typescript-entity/blob/5cc8948/packages/@typescript-entity/validators/src/index.ts#L14">packages/@typescript-entity/validators/src/index.ts:14</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -225,16 +255,16 @@
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-module">
-					<a name="url" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagConst">Const</span> url</h3>
+					<a name="isurl" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagConst">Const</span> isURL</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-module">
-						<li class="tsd-signature tsd-kind-icon">url<span class="tsd-signature-symbol">(</span>value<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, options<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">validator.IsURLOptions</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
+						<li class="tsd-signature tsd-kind-icon">isURL<span class="tsd-signature-symbol">(</span>value<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, options<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">validator.IsURLOptions</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/apancutt/typescript-entity/blob/24cd730/packages/@typescript-entity/validators/src/index.ts#L14">packages/@typescript-entity/validators/src/index.ts:14</a></li>
+									<li>Defined in <a href="https://github.com/apancutt/typescript-entity/blob/5cc8948/packages/@typescript-entity/validators/src/index.ts#L16">packages/@typescript-entity/validators/src/index.ts:16</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -251,16 +281,16 @@
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-module">
-					<a name="uuid" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagConst">Const</span> uuid</h3>
+					<a name="isuuid" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagConst">Const</span> isUUID</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-module">
-						<li class="tsd-signature tsd-kind-icon">uuid<span class="tsd-signature-symbol">(</span>value<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, version<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">validator.UUIDVersion</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
+						<li class="tsd-signature tsd-kind-icon">isUUID<span class="tsd-signature-symbol">(</span>value<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, version<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">validator.UUIDVersion</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/apancutt/typescript-entity/blob/24cd730/packages/@typescript-entity/validators/src/index.ts#L16">packages/@typescript-entity/validators/src/index.ts:16</a></li>
+									<li>Defined in <a href="https://github.com/apancutt/typescript-entity/blob/5cc8948/packages/@typescript-entity/validators/src/index.ts#L18">packages/@typescript-entity/validators/src/index.ts:18</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -321,25 +351,28 @@
 						<a href="_typescript_entity_validators.html" class="tsd-kind-icon">@typescript-<wbr>entity/validators</a>
 						<ul>
 							<li class=" tsd-kind-function tsd-parent-kind-module">
-								<a href="_typescript_entity_validators.html#boolean" class="tsd-kind-icon">boolean</a>
+								<a href="_typescript_entity_validators.html#isafter" class="tsd-kind-icon">is<wbr>After</a>
 							</li>
 							<li class=" tsd-kind-function tsd-parent-kind-module">
-								<a href="_typescript_entity_validators.html#email" class="tsd-kind-icon">email</a>
+								<a href="_typescript_entity_validators.html#isbefore" class="tsd-kind-icon">is<wbr>Before</a>
 							</li>
 							<li class=" tsd-kind-function tsd-parent-kind-module">
-								<a href="_typescript_entity_validators.html#float" class="tsd-kind-icon">float</a>
+								<a href="_typescript_entity_validators.html#isemail" class="tsd-kind-icon">is<wbr>Email</a>
 							</li>
 							<li class=" tsd-kind-function tsd-parent-kind-module">
-								<a href="_typescript_entity_validators.html#integer" class="tsd-kind-icon">integer</a>
+								<a href="_typescript_entity_validators.html#isfloat" class="tsd-kind-icon">is<wbr>Float</a>
 							</li>
 							<li class=" tsd-kind-function tsd-parent-kind-module">
-								<a href="_typescript_entity_validators.html#string" class="tsd-kind-icon">string</a>
+								<a href="_typescript_entity_validators.html#isinteger" class="tsd-kind-icon">is<wbr>Integer</a>
 							</li>
 							<li class=" tsd-kind-function tsd-parent-kind-module">
-								<a href="_typescript_entity_validators.html#url" class="tsd-kind-icon">url</a>
+								<a href="_typescript_entity_validators.html#islength" class="tsd-kind-icon">is<wbr>Length</a>
 							</li>
 							<li class=" tsd-kind-function tsd-parent-kind-module">
-								<a href="_typescript_entity_validators.html#uuid" class="tsd-kind-icon">uuid</a>
+								<a href="_typescript_entity_validators.html#isurl" class="tsd-kind-icon">isURL</a>
+							</li>
+							<li class=" tsd-kind-function tsd-parent-kind-module">
+								<a href="_typescript_entity_validators.html#isuuid" class="tsd-kind-icon">isUUID</a>
 							</li>
 						</ul>
 					</li>
