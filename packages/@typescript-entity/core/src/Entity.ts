@@ -21,7 +21,7 @@ export default abstract class Entity<C extends Configs> {
       ...configs,
       [name]: {
         ...config,
-        ...('value' in config ? { value: cloneDeep(config.value) } : {}),
+        ...('value' in config ? { value: cloneDeep((config as ValueConfig).value) } : {}),
       },
     }), {}) as C;
     this.fill(attrs, true);
@@ -34,7 +34,8 @@ export default abstract class Entity<C extends Configs> {
    * @param value
    */
   public sanitize<K extends keyof ValueAttrs<C>, T extends ValueAttrs<C>[K]>(name: K, value: unknown): ReturnType<SanitizerFn<T>> {
-    return (this.configs[name].sanitizer as SanitizerFn<T>).call(this, value);
+    const config = this.configs[name] as ValueConfig<T>;
+    return config.sanitizer.call(this, value);
   }
 
   /**
@@ -44,8 +45,9 @@ export default abstract class Entity<C extends Configs> {
    * @param value
    */
   public normalize<K extends keyof ValueAttrs<C>, T extends ValueAttrs<C>[K]>(name: K, value: T): ReturnType<NormalizerFn<T>> {
-    return (undefined !== value && null !== value && 'function' === typeof this.configs[name].normalizer)
-      ? (this.configs[name].normalizer as NormalizerFn<T>).call(this, value)
+    const config = this.configs[name] as ValueConfig<T>;
+    return (undefined !== value && null !== value && undefined !== config.normalizer)
+      ? config.normalizer.call(this, value)
       : value;
   }
 
@@ -56,8 +58,9 @@ export default abstract class Entity<C extends Configs> {
    * @param value
    */
   public validate<K extends keyof ValueAttrs<C>, T extends ValueAttrs<C>[K]>(name: K, value: T): ReturnType<ValidatorFn<T>> {
-    return (undefined !== value && null !== value && 'function' === typeof this.configs[name].validator)
-      ? (this.configs[name].validator as ValidatorFn<T>).call(this, value)
+    const config = this.configs[name] as ValueConfig<T>;
+    return (undefined !== value && null !== value && undefined !== config.validator)
+      ? config.validator.call(this, value)
       : true;
   }
 
@@ -117,7 +120,7 @@ export default abstract class Entity<C extends Configs> {
    */
   public set<K extends keyof FillableAttrs<C, R>, T extends FillableAttrs<C, R>[K], R extends boolean = false>(name: K, value: T, allowReadOnly?: R): this {
     const resolvedName = allowReadOnly ? name as unknown as keyof ValueAttrs<C> : name as unknown as keyof WritableAttrs<C>;
-    const config = this.configs[resolvedName];
+    const config = this.configs[resolvedName] as ValueConfig<T>;
     value = this.normalize(resolvedName, value);
     if (!this.validate(resolvedName, value)) {
       throw new InvalidAttrValueError(this, resolvedName, value);
@@ -137,7 +140,9 @@ export default abstract class Entity<C extends Configs> {
    * @param allowReadOnly
    */
   public setRaw<K extends keyof FillableAttrs<C, R>, T extends FillableAttrs<C, R>[K], R extends boolean = false>(name: K, value: unknown, allowReadOnly?: R): this {
-    return this.set(name, (this.configs[name as keyof C] as ValueConfig<T>).sanitizer.call(this, value), allowReadOnly);
+    const resolvedName = allowReadOnly ? name as unknown as keyof ValueAttrs<C> : name as unknown as keyof WritableAttrs<C>;
+    const config = this.configs[resolvedName] as ValueConfig<T>;
+    return this.set(name, config.sanitizer.call(this, value), allowReadOnly);
   }
 
   /**
@@ -187,7 +192,13 @@ export default abstract class Entity<C extends Configs> {
    */
   public fillJSON(json: string, allowReadOnly = false): this {
     const attrs = Object.entries(JSON.parse(json))
-      .filter(([ name ]) => name in this.configs && 'value' in this.configs[name] && (!this.configs[name].readOnly || allowReadOnly))
+      .filter(([ name ]) => {
+        if (!(name in this.configs) || !('value' in this.configs[name])) {
+          return false;
+        }
+        const config = this.configs[name] as ValueConfig;
+        return !config.readOnly || allowReadOnly;
+      })
       .reduce((attrs, [ name, value ]) => ({
         ...attrs,
         [name]: value,

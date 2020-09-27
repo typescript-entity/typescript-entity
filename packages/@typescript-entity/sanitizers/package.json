@@ -2,7 +2,7 @@
   "name": "@typescript-entity/sanitizers",
   "version": "0.1.0-alpha.0",
   "description": "Sanitizer functions for use with @typescript-entity/core.",
-  "homepage": "https://github.com/apancutt/typescript-entity/packages/sanitizers#readme",
+  "homepage": "https://github.com/apancutt/typescript-entity/packages/@typescript-entity/sanitizers#readme",
   "bugs": {
     "url": "https://github.com/apancutt/typescript-entity/issues"
   },
@@ -24,7 +24,6 @@
     "validator": "13"
   },
   "devDependencies": {
-    "@types/node": "14",
     "@types/validator": "13",
     "rimraf": "3",
     "typescript": "4"

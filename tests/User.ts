@@ -1,45 +1,28 @@
-import { AsHidden, AsOptional, AsReadOnly, Entity, EntityConstructorAttrs, EntityInterface, FnConfig, ValueConfig, WithNormalizer, WithValidator } from '@typescript-entity/core';
-import * as Normalizers from '@typescript-entity/normalizers';
+import { AsHidden, AsOptional, AsReadOnly, Entity, EntityConstructorAttrs, EntityInterface, FnConfig, ValueConfig, WithValidator } from '@typescript-entity/core';
+import * as AttrConfigs from '@typescript-entity/attrconfigs';
 import * as Sanitizers from '@typescript-entity/sanitizers';
 import * as Validators from '@typescript-entity/validators';
 
-export type DateOfBirthConfig = WithValidator<ValueConfig<Date>>;
-export type EmailConfig = WithValidator<ValueConfig<string>>;
-export type EmailDomainConfig = FnConfig<string>;
-export type UsernameConfig = WithValidator<ValueConfig<string>>;
-export type UUIDConfig = AsOptional<AsReadOnly<AsHidden<WithValidator<WithNormalizer<ValueConfig<string>>>>>>;
-export type VerifiedConfig = WithValidator<ValueConfig<boolean>>;
-
 export type Configs = {
-  date_of_birth: DateOfBirthConfig & ThisType<User>;
-  email: EmailConfig & ThisType<User>;
-  email_domain: EmailDomainConfig & ThisType<User>;
-  username: UsernameConfig & ThisType<User>;
-  uuid: UUIDConfig & ThisType<User>;
-  verified: VerifiedConfig & ThisType<User>;
+  date_of_birth: AttrConfigs.DateOfBirthConfig & ThisType<User>;
+  email: AttrConfigs.EmailConfig & ThisType<User>;
+  email_domain: FnConfig<string> & ThisType<User>;
+  username: WithValidator<ValueConfig<string>> & ThisType<User>;
+  uuid: AsHidden<AsReadOnly<AsOptional<AttrConfigs.UUID4Config>>> & ThisType<User>;
+  verified: WithValidator<ValueConfig<boolean>> & ThisType<User>;
 };
 
 export const CONFIGS:Configs = {
-  date_of_birth: {
-    value: new Date(0),
-    sanitizer: Sanitizers.date,
-    validator: (value: Date): boolean => value < new Date(),
-  },
-  email: {
-    value: '',
-    sanitizer: Sanitizers.string,
-    validator: Validators.email,
-  },
+  date_of_birth: AttrConfigs.DATE_OF_BIRTH,
+  email: AttrConfigs.EMAIL,
   email_domain: {
     fn: function(this: User): string { return this.email.split('@', 2)[1] || '' },
   },
   uuid: {
+    ...AttrConfigs.UUID4,
     value: undefined,
     hidden: true,
     readOnly: true,
-    sanitizer: Sanitizers.string,
-    normalizer: Normalizers.lowercase,
-    validator: Validators.uuid,
   },
   username: {
     value: '',

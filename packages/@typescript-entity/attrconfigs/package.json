@@ -1,8 +1,8 @@
 {
-  "name": "@typescript-entity/validators",
+  "name": "@typescript-entity/attrconfigs",
   "version": "0.1.0-alpha.0",
-  "description": "Validator functions for use with @typescript-entity/core.",
-  "homepage": "https://github.com/apancutt/typescript-entity/packages/@typescript-entity/validators#readme",
+  "description": "Attribute configurations for use with @typescript-entity/core.",
+  "homepage": "https://github.com/apancutt/typescript-entity/packages/@typescript-entity/attrconfigs#readme",
   "bugs": {
     "url": "https://github.com/apancutt/typescript-entity/issues"
   },
@@ -21,11 +21,11 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "dependencies": {
+    "@typescript-entity/normalizers": "^0.1.0-alpha.0",
     "@typescript-entity/sanitizers": "^0.1.0-alpha.0",
-    "validator": "13"
+    "@typescript-entity/validators": "^0.1.0-alpha.0"
   },
   "devDependencies": {
-    "@types/validator": "13",
     "rimraf": "3",
     "typescript": "4"
   },
