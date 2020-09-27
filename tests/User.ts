@@ -1,25 +1,25 @@
 import { AsHidden, AsOptional, AsReadOnly, Entity, EntityConstructorAttrs, EntityInterface, FnConfig, ValueConfig, WithValidator } from '@typescript-entity/core';
-import * as AttrConfigs from '@typescript-entity/attrconfigs';
+import { DateOfBirthConfig, DATE_OF_BIRTH, EMAIL, EmailConfig, UUID4, UUID4Config } from '@typescript-entity/configs';
 import * as Sanitizers from '@typescript-entity/sanitizers';
 import * as Validators from '@typescript-entity/validators';
 
 export type Configs = {
-  date_of_birth: AttrConfigs.DateOfBirthConfig & ThisType<User>;
-  email: AttrConfigs.EmailConfig & ThisType<User>;
+  date_of_birth: DateOfBirthConfig & ThisType<User>;
+  email: EmailConfig & ThisType<User>;
   email_domain: FnConfig<string> & ThisType<User>;
   username: WithValidator<ValueConfig<string>> & ThisType<User>;
-  uuid: AsHidden<AsReadOnly<AsOptional<AttrConfigs.UUID4Config>>> & ThisType<User>;
+  uuid: AsHidden<AsReadOnly<AsOptional<UUID4Config>>> & ThisType<User>;
   verified: WithValidator<ValueConfig<boolean>> & ThisType<User>;
 };
 
 export const CONFIGS:Configs = {
-  date_of_birth: AttrConfigs.DATE_OF_BIRTH,
-  email: AttrConfigs.EMAIL,
+  date_of_birth: DATE_OF_BIRTH,
+  email: EMAIL,
   email_domain: {
     fn: function(this: User): string { return this.email.split('@', 2)[1] || '' },
   },
   uuid: {
-    ...AttrConfigs.UUID4,
+    ...UUID4,
     value: undefined,
     hidden: true,
     readOnly: true,
