@@ -1,9 +1,9 @@
-# @typescript-entity/normalizers
+# @typescript-entity/sanitizers
 
-Normalizer functions for use with [@typescript-entity/core](../core/).
+Sanitizer functions for use with [@typescript-entity/core](../core/).
 
 ## Installation
 
 ```shell
-yarn add @typescript-entity/normalizers
+yarn add @typescript-entity/core @typescript-entity/sanitizers
 ```
