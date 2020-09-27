@@ -21,13 +21,13 @@ export interface FnConfig<T = Type> extends Config {
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type Type = any;
 
-export type Fn<T = Type> = () => T;
+export type Fn<T extends Type = Type> = () => T;
 
-export type SanitizerFn<T = Type> = (value: unknown) => T;
+export type SanitizerFn<T extends Type = Type> = (value: unknown) => T;
 
-export type NormalizerFn<T = Type> = (value: NonNullable<T>) => T;
+export type NormalizerFn<T extends Type = Type> = (value: NonNullable<T>) => T;
 
-export type ValidatorFn<T = Type> = (value: NonNullable<T>) => boolean;
+export type ValidatorFn<T extends Type = Type> = (value: NonNullable<T>) => boolean;
 
 export type Attrs<C extends Configs> = {
   [K in keyof C]: C[K] extends ValueConfig ? C[K]['value'] : C[K] extends FnConfig ? ReturnType<C[K]['fn']> : never;
@@ -65,7 +65,15 @@ export type NormalizableAttrs<C extends Configs> = ValueAttrs<C>;
 
 export type ValidatableAttrs<C extends Configs> = ValueAttrs<C>;
 
-export type AsOptional<A extends ValueConfig> = Omit<A, 'value'> & { value: A['value'] | undefined };
+type OptionalKeysBuilder<A, B> = { [K in keyof A & keyof B]: A[K] extends B[K] ? never : K };
+
+type OptionalKeys<T> = OptionalKeysBuilder<T, Required<T>>[keyof T];
+
+export type AsOptional<A extends ValueConfig, T = NonNullable<A['value']> | undefined, B extends ValueConfig<T> = ValueConfig<T>> =
+  Omit<A, 'value' | 'normalizer' | 'sanitizer' | 'sanitizer'>
+  & Pick<B, 'value' | 'sanitizer'>
+  & Pick<'normalizer' extends OptionalKeys<A> ? B : Required<B>, 'normalizer'>
+  & Pick<'validator' extends OptionalKeys<A> ? B : Required<B>, 'validator'>;
 
 export type AsHidden<A extends ValueConfig> = A & { hidden: true };
 
@@ -84,3 +92,14 @@ export type FillableAttrs<C extends Configs, AllowReadOnly extends boolean = fal
 export type EntityConstructorAttrs<C extends Configs> = Partial<ValueAttrs<C>>;
 
 export type EntityInterface<C extends Configs> = Attrs<C>;
+
+type A = AsOptional<ValueConfig<string>>;
+//type B = WithNormalizer<ValueConfig<string>>;
+//type Foo = AsOptional<A>;
+
+const f: A = {
+  value: 'asf',
+  sanitizer: (v: unknown): string => String(v),
+  normalizer: (v: string): string | undefined => v || undefined,
+};
+console.log(f);
