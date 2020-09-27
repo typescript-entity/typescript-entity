@@ -1,5 +1,5 @@
 import { AsHidden, AsOptional, AsReadOnly, Entity, EntityConstructorAttrs, EntityInterface, FnConfig, ValueConfig, WithValidator } from '@typescript-entity/core';
-import { DateInPastConfig, EmailConfig, UUID4Config } from '@typescript-entity/configs';
+import { dateInPastConfig, DateInPastConfig, emailConfig, EmailConfig, uuid4Config, UUID4Config } from '@typescript-entity/configs';
 import { toBoolean, toString } from '@typescript-entity/sanitizers';
 import { isLength } from '@typescript-entity/validators';
 
@@ -15,13 +15,13 @@ export type UserConfigs = {
 export class User extends Entity<UserConfigs> implements EntityInterface<UserConfigs> {
 
   public static readonly CONFIGS: UserConfigs = {
-    date_of_birth: DateInPastConfig,
-    email: EmailConfig,
+    date_of_birth: dateInPastConfig,
+    email: emailConfig,
     email_domain: {
       fn: function(this: User): string { return this.email.split('@', 2)[1] || '' },
     },
     uuid: {
-      ...UUID4Config,
+      ...uuid4Config,
       value: undefined,
       hidden: true,
       readOnly: true,
