@@ -91,4 +91,4 @@ export type FillableAttrs<C extends Configs, AllowReadOnly extends boolean = fal
 
 export type EntityConstructorAttrs<C extends Configs> = Partial<ValueAttrs<C>>;
 
-export type EntityInterace<C extends Configs> = Attrs<C>;
+export type EntityInterface<C extends Configs> = Attrs<C>;

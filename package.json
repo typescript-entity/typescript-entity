@@ -21,7 +21,6 @@
     "lint": "eslint --ext .js,.jsx,.ts,.tsx tests packages/*/*/src",
     "test": "jest",
     "test:watch": "yarn run test --watch",
-    "prebuild": "yarn run lint && yarn run test",
     "build": "lerna run build --stream",
     "postbuild": "yarn run docs",
     "predocs": "rimraf ./docs",

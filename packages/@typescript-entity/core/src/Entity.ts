@@ -1,5 +1,5 @@
 import { cloneDeep } from 'lodash';
-import { InvalidAttrValueError, ReadOnlyAttrError, RestrictedAttrError } from './Error';
+import { InvalidAttrValueError } from './Error';
 import { Attrs, Configs, EntityConstructorAttrs, FillableAttrs, FnConfig, HiddenAttrs, NormalizerFn, SanitizerFn, UnsanitizedAttrs, ValidatorFn, ValueAttrs, ValueConfig, VisibleAttrs, WritableAttrs } from './Type';
 
 type Entries<T> = { [K in keyof T]: [ K, T[K] ] }[keyof T][];
@@ -127,9 +127,6 @@ export default abstract class Entity<C extends Configs> {
   public set<K extends keyof FillableAttrs<C, R>, T extends FillableAttrs<C, R>[K], R extends boolean = false>(name: K, value: T, allowReadOnly?: R): this {
     const resolvedName = allowReadOnly ? name as unknown as keyof ValueAttrs<C> : name as unknown as keyof WritableAttrs<C>;
     const config = this.configs[resolvedName];
-    if (config.readOnly && !allowReadOnly) {
-      throw new ReadOnlyAttrError(this, resolvedName);
-    }
     value = this.normalize(resolvedName, value);
     if (!this.validate(resolvedName, value)) {
       throw new InvalidAttrValueError(this, resolvedName, value);
@@ -153,24 +150,16 @@ export default abstract class Entity<C extends Configs> {
   }
 
   /**
-   * Sets the values for the specified `attrs` key/value pairs. If an attribute is configured with a
-   * value function, or is `readOnly` and `allowReadOnly` is `false`, then the attribute is ignored.
-   * The values provided will be normalized and validated. If validation fails an error is thrown
-   * and the affected attribute and any remaining attributes remain unmodified.
+   * Sets the values for the specified `attrs` key/value pairs. The values provided will be
+   * normalized and validated. If validation fails an error is thrown and the affected attribute and
+   * any remaining attributes remain unmodified.
    *
    * @param attrs
    * @param allowReadOnly
    */
   public fill<R extends boolean = false>(attrs: Partial<FillableAttrs<C, R>>, allowReadOnly?: R): this {
     (Object.entries(attrs) as Entries<FillableAttrs<C, R>>).forEach(([ name, value ]) => {
-      try {
-        this.set(name, value, allowReadOnly);
-      } catch (err) {
-        // Silently ignore errors when trying to set restricted attributes
-        if (!(err instanceof RestrictedAttrError)) {
-          throw err;
-        }
-      }
+      this.set(name, value, allowReadOnly);
     });
     return this;
   }
@@ -192,7 +181,7 @@ export default abstract class Entity<C extends Configs> {
         [resolvedName]: this.sanitize(resolvedName, value),
       };
     }, {});
-    return this.fillRaw(sanitized, allowReadOnly);
+    return this.fill(sanitized, allowReadOnly);
   }
 
   /**
@@ -215,13 +204,20 @@ export default abstract class Entity<C extends Configs> {
   }
 
   /**
-   * Imports attributes from a JSON string.
+   * Imports attributes from a JSON string. Removes unregistered attributes and those configured
+   * with value functions before sanitizing, normalizing and validating incoming values.
    *
    * @see [[`Entity.fillRaw`]]
    * @param json
    */
   public fromJSON(json: string): this {
-    return this.fillRaw(JSON.parse(json), true);
+    const attrs = Object.entries(JSON.parse(json))
+      .filter(([ name ]) => name in this.configs && 'value' in this.configs[name])
+      .reduce((attrs, [ name, value ]) => ({
+        ...attrs,
+        [name]: value,
+      }), {});
+    return this.fillRaw(attrs, true);
   }
 
 }

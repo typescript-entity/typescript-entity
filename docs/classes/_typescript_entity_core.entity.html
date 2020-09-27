@@ -71,7 +71,7 @@
 				<h3>Type parameters</h3>
 				<ul class="tsd-type-parameters">
 					<li>
-						<h4>C<span class="tsd-signature-symbol">: </span><a href="../interfaces/_typescript_entity_core.attrconfigs.html" class="tsd-signature-type">AttrConfigs</a></h4>
+						<h4>C<span class="tsd-signature-symbol">: </span><a href="../interfaces/_typescript_entity_core.configs.html" class="tsd-signature-type">Configs</a></h4>
 					</li>
 				</ul>
 			</section>
@@ -96,7 +96,7 @@
 						<section class="tsd-index-section tsd-is-private-protected">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-protected"><a href="_typescript_entity_core.entity.html#attrconfigs" class="tsd-kind-icon">attr<wbr>Configs</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-protected"><a href="_typescript_entity_core.entity.html#configs" class="tsd-kind-icon">configs</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
@@ -104,12 +104,15 @@
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_typescript_entity_core.entity.html#all" class="tsd-kind-icon">all</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter"><a href="_typescript_entity_core.entity.html#fill" class="tsd-kind-icon">fill</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter"><a href="_typescript_entity_core.entity.html#filldangerously" class="tsd-kind-icon">fill<wbr>Dangerously</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter"><a href="_typescript_entity_core.entity.html#fillraw" class="tsd-kind-icon">fill<wbr>Raw</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_typescript_entity_core.entity.html#fromjson" class="tsd-kind-icon">fromJSON</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter"><a href="_typescript_entity_core.entity.html#get" class="tsd-kind-icon">get</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_typescript_entity_core.entity.html#hidden" class="tsd-kind-icon">hidden</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter"><a href="_typescript_entity_core.entity.html#normalize" class="tsd-kind-icon">normalize</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter"><a href="_typescript_entity_core.entity.html#sanitize" class="tsd-kind-icon">sanitize</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter"><a href="_typescript_entity_core.entity.html#set" class="tsd-kind-icon">set</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter"><a href="_typescript_entity_core.entity.html#setdangerously" class="tsd-kind-icon">set<wbr>Dangerously</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter"><a href="_typescript_entity_core.entity.html#setraw" class="tsd-kind-icon">set<wbr>Raw</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_typescript_entity_core.entity.html#some" class="tsd-kind-icon">some</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_typescript_entity_core.entity.html#tojson" class="tsd-kind-icon">toJSON</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_typescript_entity_core.entity.html#tostring" class="tsd-kind-icon">to<wbr>String</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter"><a href="_typescript_entity_core.entity.html#validate" class="tsd-kind-icon">validate</a></li>
@@ -125,30 +128,29 @@
 					<a name="constructor" class="tsd-anchor"></a>
 					<h3>constructor</h3>
 					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">new <wbr>Entity<span class="tsd-signature-symbol">(</span>attrConfigs<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">C</span>, initialAttrs<span class="tsd-signature-symbol">?: </span><a href="../modules/_typescript_entity_core.html#attrinitialvalues" class="tsd-signature-type">AttrInitialValues</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">C</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_typescript_entity_core.entity.html" class="tsd-signature-type">Entity</a></li>
+						<li class="tsd-signature tsd-kind-icon">new <wbr>Entity<span class="tsd-signature-symbol">(</span>configs<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">C</span>, attrs<span class="tsd-signature-symbol">?: </span><a href="../modules/_typescript_entity_core.html#entityconstructorattrs" class="tsd-signature-type">EntityConstructorAttrs</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">C</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_typescript_entity_core.entity.html" class="tsd-signature-type">Entity</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/apancutt/typescript-entity/blob/4d0c31f/packages/@typescript-entity/core/src/Entity.ts#L29">packages/@typescript-entity/core/src/Entity.ts:29</a></li>
+									<li>Defined in <a href="https://github.com/apancutt/typescript-entity/blob/d22aac8/packages/@typescript-entity/core/src/Entity.ts#L9">packages/@typescript-entity/core/src/Entity.ts:9</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
 									<p>Creates a new <a href="_typescript_entity_core.entity.html"><code>Entity</code></a> instance. The <code>attrConfigs</code> defines the attributes available on the
 										<a href="_typescript_entity_core.entity.html"><code>Entity</code></a> instance along with default values for required attributes. Initial attribute
-										values can be set on the instance via <code>initialAttrs</code>, and while these are not normalized nor
-									validated, they will bypass any <code>readOnly</code> settings.</p>
+									values (including values for <code>readonly</code> attributes) can be provided in <code>attrs</code>.</p>
 								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>attrConfigs: <span class="tsd-signature-type">C</span></h5>
+									<h5>configs: <span class="tsd-signature-type">C</span></h5>
 								</li>
 								<li>
-									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> initialAttrs: <a href="../modules/_typescript_entity_core.html#attrinitialvalues" class="tsd-signature-type">AttrInitialValues</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">C</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> = {}</span></h5>
+									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> attrs: <a href="../modules/_typescript_entity_core.html#entityconstructorattrs" class="tsd-signature-type">EntityConstructorAttrs</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">C</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> = {}</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<div class="lead">
 										</div>
@@ -163,12 +165,12 @@
 			<section class="tsd-panel-group tsd-member-group tsd-is-private-protected">
 				<h2>Properties</h2>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-protected">
-					<a name="attrconfigs" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagProtected">Protected</span> attr<wbr>Configs</h3>
-					<div class="tsd-signature tsd-kind-icon">attr<wbr>Configs<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">C</span></div>
+					<a name="configs" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagProtected">Protected</span> configs</h3>
+					<div class="tsd-signature tsd-kind-icon">configs<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">C</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/apancutt/typescript-entity/blob/4d0c31f/packages/@typescript-entity/core/src/Entity.ts#L29">packages/@typescript-entity/core/src/Entity.ts:29</a></li>
+							<li>Defined in <a href="https://github.com/apancutt/typescript-entity/blob/d22aac8/packages/@typescript-entity/core/src/Entity.ts#L9">packages/@typescript-entity/core/src/Entity.ts:9</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -179,21 +181,21 @@
 					<a name="all" class="tsd-anchor"></a>
 					<h3>all</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">all<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../modules/_typescript_entity_core.html#attrinferredvalues" class="tsd-signature-type">AttrInferredValues</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">C</span><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">all<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../modules/_typescript_entity_core.html#attrs" class="tsd-signature-type">Attrs</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">C</span><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/apancutt/typescript-entity/blob/4d0c31f/packages/@typescript-entity/core/src/Entity.ts#L98">packages/@typescript-entity/core/src/Entity.ts:98</a></li>
+									<li>Defined in <a href="https://github.com/apancutt/typescript-entity/blob/d22aac8/packages/@typescript-entity/core/src/Entity.ts#L99">packages/@typescript-entity/core/src/Entity.ts:99</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Returns all attribute names and values on the <a href="_typescript_entity_core.entity.html"><code>Entity</code></a> instance.</p>
+									<p>Returns all attributes.</p>
 								</div>
 							</div>
-							<h4 class="tsd-returns-title">Returns <a href="../modules/_typescript_entity_core.html#attrinferredvalues" class="tsd-signature-type">AttrInferredValues</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">C</span><span class="tsd-signature-symbol">&gt;</span></h4>
+							<h4 class="tsd-returns-title">Returns <a href="../modules/_typescript_entity_core.html#attrs" class="tsd-signature-type">Attrs</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">C</span><span class="tsd-signature-symbol">&gt;</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -201,31 +203,24 @@
 					<a name="fill" class="tsd-anchor"></a>
 					<h3>fill</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter">
-						<li class="tsd-signature tsd-kind-icon">fill&lt;A, R&gt;<span class="tsd-signature-symbol">(</span>attrs<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Partial</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">A</span><span class="tsd-signature-symbol">&gt;</span>, allowReadOnly<span class="tsd-signature-symbol">?: </span><a href="" class="tsd-signature-type">R</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">this</span></li>
+						<li class="tsd-signature tsd-kind-icon">fill&lt;R&gt;<span class="tsd-signature-symbol">(</span>attrs<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Partial</span><span class="tsd-signature-symbol">&lt;</span><a href="../modules/_typescript_entity_core.html#fillableattrs" class="tsd-signature-type">FillableAttrs</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">C</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">R</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span>, allowReadOnly<span class="tsd-signature-symbol">?: </span><a href="" class="tsd-signature-type">R</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">this</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/apancutt/typescript-entity/blob/4d0c31f/packages/@typescript-entity/core/src/Entity.ts#L198">packages/@typescript-entity/core/src/Entity.ts:198</a></li>
+									<li>Defined in <a href="https://github.com/apancutt/typescript-entity/blob/d22aac8/packages/@typescript-entity/core/src/Entity.ts#L160">packages/@typescript-entity/core/src/Entity.ts:160</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Sets multiple attribute values. If a provided attribute is restricted (is a value function or
-									is marked as <code>readOnly</code> and <code>allowReadOnly</code> is <code>false</code>) then the attribute is silently ignored.</p>
+									<p>Sets the values for the specified <code>attrs</code> key/value pairs. The values provided will be
+										normalized and validated. If validation fails an error is thrown and the affected attribute and
+									any remaining attributes remain unmodified.</p>
 								</div>
-								<dl class="tsd-comment-tags">
-									<dt>see</dt>
-									<dd><p><a href="_typescript_entity_core.entity.html#set"><code>Entity.set</code></a></p>
-									</dd>
-								</dl>
 							</div>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
 							<ul class="tsd-type-parameters">
-								<li>
-									<h4>A<span class="tsd-signature-symbol">: </span><a href="../modules/_typescript_entity_core.html#attrincomingvaluesuntyped" class="tsd-signature-type">AttrIncomingValuesUntyped</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">C</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">R</span><span class="tsd-signature-symbol">&gt;</span></h4>
-								</li>
 								<li>
 									<h4>R<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span> = <span class="tsd-signature-type">false</span></h4>
 								</li>
@@ -233,7 +228,7 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>attrs: <span class="tsd-signature-type">Partial</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">A</span><span class="tsd-signature-symbol">&gt;</span></h5>
+									<h5>attrs: <span class="tsd-signature-type">Partial</span><span class="tsd-signature-symbol">&lt;</span><a href="../modules/_typescript_entity_core.html#fillableattrs" class="tsd-signature-type">FillableAttrs</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">C</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">R</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span></h5>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> allowReadOnly: <a href="" class="tsd-signature-type">R</a></h5>
@@ -246,37 +241,28 @@
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter">
-					<a name="filldangerously" class="tsd-anchor"></a>
-					<h3>fill<wbr>Dangerously</h3>
+					<a name="fillraw" class="tsd-anchor"></a>
+					<h3>fill<wbr>Raw</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter">
-						<li class="tsd-signature tsd-kind-icon">fill<wbr>Dangerously&lt;A, R&gt;<span class="tsd-signature-symbol">(</span>attrs<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Partial</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">A</span><span class="tsd-signature-symbol">&gt;</span>, allowReadOnly<span class="tsd-signature-symbol">?: </span><a href="" class="tsd-signature-type">R</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">this</span></li>
+						<li class="tsd-signature tsd-kind-icon">fill<wbr>Raw&lt;R&gt;<span class="tsd-signature-symbol">(</span>attrs<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Partial</span><span class="tsd-signature-symbol">&lt;</span><a href="../modules/_typescript_entity_core.html#unsanitizedattrs" class="tsd-signature-type">UnsanitizedAttrs</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">C</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">R</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span>, allowReadOnly<span class="tsd-signature-symbol">?: </span><a href="" class="tsd-signature-type">R</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">this</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/apancutt/typescript-entity/blob/4d0c31f/packages/@typescript-entity/core/src/Entity.ts#L223">packages/@typescript-entity/core/src/Entity.ts:223</a></li>
+									<li>Defined in <a href="https://github.com/apancutt/typescript-entity/blob/d22aac8/packages/@typescript-entity/core/src/Entity.ts#L176">packages/@typescript-entity/core/src/Entity.ts:176</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Sets multiple attribute values without normalization nor validation. If a provided attribute is
-										restricted (is a value function or is marked as <code>readOnly</code> and <code>allowReadOnly</code> is <code>false</code>)
-										then the attribute is silently ignored. In TypeScript, calling this function will fail if the
-										provided <code>attrs</code> value types are invalid, but in JavaScript environments this function should
-									be used with extra caution.</p>
+									<p>Sets the values for the specified <code>attrs</code> key/value pairs. If an attribute is configured with a
+										value function, or is <code>readOnly</code> and <code>allowReadOnly</code> is <code>false</code>, then the attribute is ignored.
+										The values provided will be sanitized, normalized and validated. If validation fails an error
+									is thrown and the affected attribute and any remaining attributes remain unmodified.</p>
 								</div>
-								<dl class="tsd-comment-tags">
-									<dt>see</dt>
-									<dd><p><a href="_typescript_entity_core.entity.html#setdangerously"><code>Entity.setDangerously</code></a></p>
-									</dd>
-								</dl>
 							</div>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
 							<ul class="tsd-type-parameters">
-								<li>
-									<h4>A<span class="tsd-signature-symbol">: </span><a href="../modules/_typescript_entity_core.html#attrincomingvalues" class="tsd-signature-type">AttrIncomingValues</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">C</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">R</span><span class="tsd-signature-symbol">&gt;</span></h4>
-								</li>
 								<li>
 									<h4>R<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span> = <span class="tsd-signature-type">false</span></h4>
 								</li>
@@ -284,10 +270,46 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>attrs: <span class="tsd-signature-type">Partial</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">A</span><span class="tsd-signature-symbol">&gt;</span></h5>
+									<h5>attrs: <span class="tsd-signature-type">Partial</span><span class="tsd-signature-symbol">&lt;</span><a href="../modules/_typescript_entity_core.html#unsanitizedattrs" class="tsd-signature-type">UnsanitizedAttrs</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">C</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">R</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span></h5>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> allowReadOnly: <a href="" class="tsd-signature-type">R</a></h5>
+									<div class="tsd-comment tsd-typography">
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">this</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="fromjson" class="tsd-anchor"></a>
+					<h3>fromJSON</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">fromJSON<span class="tsd-signature-symbol">(</span>json<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">this</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/apancutt/typescript-entity/blob/d22aac8/packages/@typescript-entity/core/src/Entity.ts#L213">packages/@typescript-entity/core/src/Entity.ts:213</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Imports attributes from a JSON string. Removes unregistered attributes and those configured
+									with value functions before sanitizing, normalizing and validating incoming values.</p>
+								</div>
+								<dl class="tsd-comment-tags">
+									<dt>see</dt>
+									<dd><p><a href="_typescript_entity_core.entity.html#fillraw"><code>Entity.fillRaw</code></a></p>
+									</dd>
+								</dl>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>json: <span class="tsd-signature-type">string</span></h5>
 									<div class="tsd-comment tsd-typography">
 									</div>
 								</li>
@@ -300,13 +322,13 @@
 					<a name="get" class="tsd-anchor"></a>
 					<h3>get</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter">
-						<li class="tsd-signature tsd-kind-icon">get&lt;K, V, I&gt;<span class="tsd-signature-symbol">(</span>name<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">K</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">I</span></li>
+						<li class="tsd-signature tsd-kind-icon">get&lt;K, T&gt;<span class="tsd-signature-symbol">(</span>name<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">K</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/apancutt/typescript-entity/blob/4d0c31f/packages/@typescript-entity/core/src/Entity.ts#L135">packages/@typescript-entity/core/src/Entity.ts:135</a></li>
+									<li>Defined in <a href="https://github.com/apancutt/typescript-entity/blob/d22aac8/packages/@typescript-entity/core/src/Entity.ts#L77">packages/@typescript-entity/core/src/Entity.ts:77</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -318,13 +340,10 @@
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
 							<ul class="tsd-type-parameters">
 								<li>
-									<h4>K<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">keyof </span><span class="tsd-signature-type">C</span></h4>
+									<h4>K<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">keyof </span><a href="../modules/_typescript_entity_core.html#attrs" class="tsd-signature-type">Attrs</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">C</span><span class="tsd-signature-symbol">&gt;</span></h4>
 								</li>
 								<li>
-									<h4>V<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">C</span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">K</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"value"</span><span class="tsd-signature-symbol">]</span></h4>
-								</li>
-								<li>
-									<h4>I<span class="tsd-signature-symbol">: </span><a href="../modules/_typescript_entity_core.html#attrinferredvalue" class="tsd-signature-type">AttrInferredValue</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">V</span><span class="tsd-signature-symbol">&gt;</span></h4>
+									<h4>T<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Attrs</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">C</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">K</span><span class="tsd-signature-symbol">]</span></h4>
 								</li>
 							</ul>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -335,7 +354,7 @@
 									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">I</span></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">T</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -343,21 +362,21 @@
 					<a name="hidden" class="tsd-anchor"></a>
 					<h3>hidden</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">hidden<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../modules/_typescript_entity_core.html#attrinferredvalues" class="tsd-signature-type">AttrInferredValues</a><span class="tsd-signature-symbol">&lt;</span><a href="../modules/_typescript_entity_core.html#attrhiddenconfigs" class="tsd-signature-type">AttrHiddenConfigs</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">C</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">hidden<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../modules/_typescript_entity_core.html#hiddenattrs" class="tsd-signature-type">HiddenAttrs</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">C</span><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/apancutt/typescript-entity/blob/4d0c31f/packages/@typescript-entity/core/src/Entity.ts#L108">packages/@typescript-entity/core/src/Entity.ts:108</a></li>
+									<li>Defined in <a href="https://github.com/apancutt/typescript-entity/blob/d22aac8/packages/@typescript-entity/core/src/Entity.ts#L106">packages/@typescript-entity/core/src/Entity.ts:106</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Returns all hidden attribute names and values on the <a href="_typescript_entity_core.entity.html"><code>Entity</code></a> instance.</p>
+									<p>Returns all attributes configured as <code>hidden</code>.</p>
 								</div>
 							</div>
-							<h4 class="tsd-returns-title">Returns <a href="../modules/_typescript_entity_core.html#attrinferredvalues" class="tsd-signature-type">AttrInferredValues</a><span class="tsd-signature-symbol">&lt;</span><a href="../modules/_typescript_entity_core.html#attrhiddenconfigs" class="tsd-signature-type">AttrHiddenConfigs</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">C</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span></h4>
+							<h4 class="tsd-returns-title">Returns <a href="../modules/_typescript_entity_core.html#hiddenattrs" class="tsd-signature-type">HiddenAttrs</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">C</span><span class="tsd-signature-symbol">&gt;</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -365,13 +384,13 @@
 					<a name="normalize" class="tsd-anchor"></a>
 					<h3>normalize</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter">
-						<li class="tsd-signature tsd-kind-icon">normalize&lt;K, I&gt;<span class="tsd-signature-symbol">(</span>name<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">K</span>, value<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">unknown</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">ReturnType</span><span class="tsd-signature-symbol">&lt;</span><a href="../modules/_typescript_entity_core.html#attrnormalizerfn" class="tsd-signature-type">AttrNormalizerFn</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">I</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">normalize&lt;K, T&gt;<span class="tsd-signature-symbol">(</span>name<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">K</span>, value<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">ReturnType</span><span class="tsd-signature-symbol">&lt;</span><a href="../modules/_typescript_entity_core.html#normalizerfn" class="tsd-signature-type">NormalizerFn</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/apancutt/typescript-entity/blob/4d0c31f/packages/@typescript-entity/core/src/Entity.ts#L60">packages/@typescript-entity/core/src/Entity.ts:60</a></li>
+									<li>Defined in <a href="https://github.com/apancutt/typescript-entity/blob/d22aac8/packages/@typescript-entity/core/src/Entity.ts#L50">packages/@typescript-entity/core/src/Entity.ts:50</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -385,10 +404,53 @@
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
 							<ul class="tsd-type-parameters">
 								<li>
-									<h4>K<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">keyof </span><span class="tsd-signature-type">C</span></h4>
+									<h4>K<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">keyof </span><a href="../modules/_typescript_entity_core.html#valueattrs" class="tsd-signature-type">ValueAttrs</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">C</span><span class="tsd-signature-symbol">&gt;</span></h4>
 								</li>
 								<li>
-									<h4>I<span class="tsd-signature-symbol">: </span><a href="../modules/_typescript_entity_core.html#attrinferredvalue" class="tsd-signature-type">AttrInferredValue</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">C</span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">K</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"value"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">&gt;</span></h4>
+									<h4>T<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">ValueAttrs</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">C</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">K</span><span class="tsd-signature-symbol">]</span></h4>
+								</li>
+							</ul>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>name: <span class="tsd-signature-type">K</span></h5>
+								</li>
+								<li>
+									<h5>value: <span class="tsd-signature-type">T</span></h5>
+									<div class="tsd-comment tsd-typography">
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">ReturnType</span><span class="tsd-signature-symbol">&lt;</span><a href="../modules/_typescript_entity_core.html#normalizerfn" class="tsd-signature-type">NormalizerFn</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter">
+					<a name="sanitize" class="tsd-anchor"></a>
+					<h3>sanitize</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter">
+						<li class="tsd-signature tsd-kind-icon">sanitize&lt;K, T&gt;<span class="tsd-signature-symbol">(</span>name<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">K</span>, value<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">unknown</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">ReturnType</span><span class="tsd-signature-symbol">&lt;</span><a href="../modules/_typescript_entity_core.html#sanitizerfn" class="tsd-signature-type">SanitizerFn</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/apancutt/typescript-entity/blob/d22aac8/packages/@typescript-entity/core/src/Entity.ts#L37">packages/@typescript-entity/core/src/Entity.ts:37</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Sanitizes a value using the sanitizer function provided in the attribute configs. This function
+									should be used when handling attributes values where type assurance is not guaranteed.</p>
+								</div>
+							</div>
+							<h4 class="tsd-type-parameters-title">Type parameters</h4>
+							<ul class="tsd-type-parameters">
+								<li>
+									<h4>K<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">keyof </span><a href="../modules/_typescript_entity_core.html#valueattrs" class="tsd-signature-type">ValueAttrs</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">C</span><span class="tsd-signature-symbol">&gt;</span></h4>
+								</li>
+								<li>
+									<h4>T<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">ValueAttrs</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">C</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">K</span><span class="tsd-signature-symbol">]</span></h4>
 								</li>
 							</ul>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -402,7 +464,7 @@
 									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">ReturnType</span><span class="tsd-signature-symbol">&lt;</span><a href="../modules/_typescript_entity_core.html#attrnormalizerfn" class="tsd-signature-type">AttrNormalizerFn</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">I</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">ReturnType</span><span class="tsd-signature-symbol">&lt;</span><a href="../modules/_typescript_entity_core.html#sanitizerfn" class="tsd-signature-type">SanitizerFn</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -410,27 +472,30 @@
 					<a name="set" class="tsd-anchor"></a>
 					<h3>set</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter">
-						<li class="tsd-signature tsd-kind-icon">set&lt;K, R&gt;<span class="tsd-signature-symbol">(</span>name<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">K</span>, value<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">unknown</span>, allowReadOnly<span class="tsd-signature-symbol">?: </span><a href="" class="tsd-signature-type">R</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">this</span></li>
+						<li class="tsd-signature tsd-kind-icon">set&lt;K, T, R&gt;<span class="tsd-signature-symbol">(</span>name<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">K</span>, value<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span>, allowReadOnly<span class="tsd-signature-symbol">?: </span><a href="" class="tsd-signature-type">R</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">this</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/apancutt/typescript-entity/blob/4d0c31f/packages/@typescript-entity/core/src/Entity.ts#L154">packages/@typescript-entity/core/src/Entity.ts:154</a></li>
+									<li>Defined in <a href="https://github.com/apancutt/typescript-entity/blob/d22aac8/packages/@typescript-entity/core/src/Entity.ts#L127">packages/@typescript-entity/core/src/Entity.ts:127</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
 									<p>Sets the <code>value</code> of the specified attribute <code>name</code>. If the attribute is configured with a value
-										function or is <code>readOnly</code> (unless <code>allowReadOnly</code> is set to <code>true</code>) then an error is thrown.
-										The <code>value</code> provided will be normalized and validated. If validation fails an error is thrown
-									and the attribute is unchanged.</p>
+										function, or is <code>readOnly</code> and <code>allowReadOnly</code> is <code>false</code>, then an error is thrown. The <code>value</code>
+										provided will be normalized and validated. If validation fails an error is thrown and the
+									attribute remains unmodified.</p>
 								</div>
 							</div>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
 							<ul class="tsd-type-parameters">
 								<li>
-									<h4>K<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">keyof </span><a href="../modules/_typescript_entity_core.html#attrincomingvaluesuntyped" class="tsd-signature-type">AttrIncomingValuesUntyped</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">C</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">R</span><span class="tsd-signature-symbol">&gt;</span></h4>
+									<h4>K<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">keyof </span><a href="../modules/_typescript_entity_core.html#fillableattrs" class="tsd-signature-type">FillableAttrs</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">C</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">R</span><span class="tsd-signature-symbol">&gt;</span></h4>
+								</li>
+								<li>
+									<h4>T<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">FillableAttrs</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">C</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">R</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">K</span><span class="tsd-signature-symbol">]</span></h4>
 								</li>
 								<li>
 									<h4>R<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span> = <span class="tsd-signature-type">false</span></h4>
@@ -442,7 +507,7 @@
 									<h5>name: <span class="tsd-signature-type">K</span></h5>
 								</li>
 								<li>
-									<h5>value: <span class="tsd-signature-type">unknown</span></h5>
+									<h5>value: <span class="tsd-signature-type">T</span></h5>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> allowReadOnly: <a href="" class="tsd-signature-type">R</a></h5>
@@ -455,34 +520,33 @@
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter">
-					<a name="setdangerously" class="tsd-anchor"></a>
-					<h3>set<wbr>Dangerously</h3>
+					<a name="setraw" class="tsd-anchor"></a>
+					<h3>set<wbr>Raw</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter">
-						<li class="tsd-signature tsd-kind-icon">set<wbr>Dangerously&lt;A, K, R&gt;<span class="tsd-signature-symbol">(</span>name<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">K</span>, value<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">A</span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">K</span><span class="tsd-signature-symbol">]</span>, allowReadOnly<span class="tsd-signature-symbol">?: </span><a href="" class="tsd-signature-type">R</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">this</span></li>
+						<li class="tsd-signature tsd-kind-icon">set<wbr>Raw&lt;K, T, R&gt;<span class="tsd-signature-symbol">(</span>name<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">K</span>, value<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">unknown</span>, allowReadOnly<span class="tsd-signature-symbol">?: </span><a href="" class="tsd-signature-type">R</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">this</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/apancutt/typescript-entity/blob/4d0c31f/packages/@typescript-entity/core/src/Entity.ts#L176">packages/@typescript-entity/core/src/Entity.ts:176</a></li>
+									<li>Defined in <a href="https://github.com/apancutt/typescript-entity/blob/d22aac8/packages/@typescript-entity/core/src/Entity.ts#L148">packages/@typescript-entity/core/src/Entity.ts:148</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
 									<p>Sets the <code>value</code> of the specified attribute <code>name</code>. If the attribute is configured with a value
-										function or is <code>readOnly</code> (unless <code>allowReadOnly</code> is set to <code>true</code>) then an error is thrown.
-										The <code>value</code> provided will not be normalized nor validated. In TypeScript, calling this function
-										will fail if the provided <code>value</code> type is invalid, but in JavaScript environments this function
-									should be used with extra caution.</p>
+										function, or is <code>readOnly</code> and <code>allowReadOnly</code> is <code>false</code>, then an error is thrown. The <code>value</code>
+										provided will be sanitized, normalized and validated. If validation fails an error is thrown
+									and the attribute remains unmodified.</p>
 								</div>
 							</div>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
 							<ul class="tsd-type-parameters">
 								<li>
-									<h4>A<span class="tsd-signature-symbol">: </span><a href="../modules/_typescript_entity_core.html#attrincomingvalues" class="tsd-signature-type">AttrIncomingValues</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">C</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">R</span><span class="tsd-signature-symbol">&gt;</span></h4>
+									<h4>K<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">keyof </span><a href="../modules/_typescript_entity_core.html#fillableattrs" class="tsd-signature-type">FillableAttrs</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">C</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">R</span><span class="tsd-signature-symbol">&gt;</span></h4>
 								</li>
 								<li>
-									<h4>K<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">keyof </span><span class="tsd-signature-type">A</span></h4>
+									<h4>T<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">FillableAttrs</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">C</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">R</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">K</span><span class="tsd-signature-symbol">]</span></h4>
 								</li>
 								<li>
 									<h4>R<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span> = <span class="tsd-signature-type">false</span></h4>
@@ -494,7 +558,7 @@
 									<h5>name: <span class="tsd-signature-type">K</span></h5>
 								</li>
 								<li>
-									<h5>value: <span class="tsd-signature-type">A</span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">K</span><span class="tsd-signature-symbol">]</span></h5>
+									<h5>value: <span class="tsd-signature-type">unknown</span></h5>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> allowReadOnly: <a href="" class="tsd-signature-type">R</a></h5>
@@ -507,26 +571,60 @@
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-					<a name="tojson" class="tsd-anchor"></a>
-					<h3>toJSON</h3>
+					<a name="some" class="tsd-anchor"></a>
+					<h3>some</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">toJSON<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../modules/_typescript_entity_core.html#attrinferredvalues" class="tsd-signature-type">AttrInferredValues</a><span class="tsd-signature-symbol">&lt;</span><a href="../modules/_typescript_entity_core.html#attrvisibleconfigs" class="tsd-signature-type">AttrVisibleConfigs</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">C</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">some<span class="tsd-signature-symbol">(</span>names<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">keyof </span><a href="../modules/_typescript_entity_core.html#attrs" class="tsd-signature-type">Attrs</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">C</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Partial</span><span class="tsd-signature-symbol">&lt;</span><a href="../modules/_typescript_entity_core.html#attrs" class="tsd-signature-type">Attrs</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">C</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/apancutt/typescript-entity/blob/4d0c31f/packages/@typescript-entity/core/src/Entity.ts#L252">packages/@typescript-entity/core/src/Entity.ts:252</a></li>
+									<li>Defined in <a href="https://github.com/apancutt/typescript-entity/blob/d22aac8/packages/@typescript-entity/core/src/Entity.ts#L89">packages/@typescript-entity/core/src/Entity.ts:89</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Returns the attribute names and values that should be included when stringifying the
-										<a href="_typescript_entity_core.entity.html"><code>Entity</code></a> instance into JSON form. By default, this means all attributes that are not
-									explicity configured as <code>hidden</code>.</p>
+									<p>Returns the values of the specified attribute <code>names</code>. If an attribute is configured with a
+									value function then the return value of this function is returned.</p>
 								</div>
 							</div>
-							<h4 class="tsd-returns-title">Returns <a href="../modules/_typescript_entity_core.html#attrinferredvalues" class="tsd-signature-type">AttrInferredValues</a><span class="tsd-signature-symbol">&lt;</span><a href="../modules/_typescript_entity_core.html#attrvisibleconfigs" class="tsd-signature-type">AttrVisibleConfigs</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">C</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span></h4>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>names: <span class="tsd-signature-symbol">keyof </span><a href="../modules/_typescript_entity_core.html#attrs" class="tsd-signature-type">Attrs</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">C</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">[]</span></h5>
+									<div class="tsd-comment tsd-typography">
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Partial</span><span class="tsd-signature-symbol">&lt;</span><a href="../modules/_typescript_entity_core.html#attrs" class="tsd-signature-type">Attrs</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">C</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="tojson" class="tsd-anchor"></a>
+					<h3>toJSON</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">toJSON<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../modules/_typescript_entity_core.html#visibleattrs" class="tsd-signature-type">VisibleAttrs</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">C</span><span class="tsd-signature-symbol">&gt;</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/apancutt/typescript-entity/blob/d22aac8/packages/@typescript-entity/core/src/Entity.ts#L202">packages/@typescript-entity/core/src/Entity.ts:202</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Returns the attributes to be included when stringifying this instance to JSON form.</p>
+								</div>
+								<dl class="tsd-comment-tags">
+									<dt>see</dt>
+									<dd><p><a href="_typescript_entity_core.entity.html#visible"><code>Entity.visible</code></a></p>
+									</dd>
+								</dl>
+							</div>
+							<h4 class="tsd-returns-title">Returns <a href="../modules/_typescript_entity_core.html#visibleattrs" class="tsd-signature-type">VisibleAttrs</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">C</span><span class="tsd-signature-symbol">&gt;</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -540,7 +638,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/apancutt/typescript-entity/blob/4d0c31f/packages/@typescript-entity/core/src/Entity.ts#L242">packages/@typescript-entity/core/src/Entity.ts:242</a></li>
+									<li>Defined in <a href="https://github.com/apancutt/typescript-entity/blob/d22aac8/packages/@typescript-entity/core/src/Entity.ts#L192">packages/@typescript-entity/core/src/Entity.ts:192</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -561,13 +659,13 @@
 					<a name="validate" class="tsd-anchor"></a>
 					<h3>validate</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter">
-						<li class="tsd-signature tsd-kind-icon">validate&lt;K, I&gt;<span class="tsd-signature-symbol">(</span>name<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">K</span>, value<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">I</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">ReturnType</span><span class="tsd-signature-symbol">&lt;</span><a href="../modules/_typescript_entity_core.html#attrvalidatorfn" class="tsd-signature-type">AttrValidatorFn</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">I</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">validate&lt;K, T&gt;<span class="tsd-signature-symbol">(</span>name<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">K</span>, value<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">ReturnType</span><span class="tsd-signature-symbol">&lt;</span><a href="../modules/_typescript_entity_core.html#validatorfn" class="tsd-signature-type">ValidatorFn</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/apancutt/typescript-entity/blob/4d0c31f/packages/@typescript-entity/core/src/Entity.ts#L82">packages/@typescript-entity/core/src/Entity.ts:82</a></li>
+									<li>Defined in <a href="https://github.com/apancutt/typescript-entity/blob/d22aac8/packages/@typescript-entity/core/src/Entity.ts#L65">packages/@typescript-entity/core/src/Entity.ts:65</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -581,10 +679,10 @@
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
 							<ul class="tsd-type-parameters">
 								<li>
-									<h4>K<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">keyof </span><span class="tsd-signature-type">C</span></h4>
+									<h4>K<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">keyof </span><a href="../modules/_typescript_entity_core.html#valueattrs" class="tsd-signature-type">ValueAttrs</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">C</span><span class="tsd-signature-symbol">&gt;</span></h4>
 								</li>
 								<li>
-									<h4>I<span class="tsd-signature-symbol">: </span><a href="../modules/_typescript_entity_core.html#attrinferredvalue" class="tsd-signature-type">AttrInferredValue</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">C</span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">K</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"value"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">&gt;</span></h4>
+									<h4>T<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">ValueAttrs</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">C</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">K</span><span class="tsd-signature-symbol">]</span></h4>
 								</li>
 							</ul>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -593,12 +691,12 @@
 									<h5>name: <span class="tsd-signature-type">K</span></h5>
 								</li>
 								<li>
-									<h5>value: <span class="tsd-signature-type">I</span></h5>
+									<h5>value: <span class="tsd-signature-type">T</span></h5>
 									<div class="tsd-comment tsd-typography">
 									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">ReturnType</span><span class="tsd-signature-symbol">&lt;</span><a href="../modules/_typescript_entity_core.html#attrvalidatorfn" class="tsd-signature-type">AttrValidatorFn</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">I</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">ReturnType</span><span class="tsd-signature-symbol">&lt;</span><a href="../modules/_typescript_entity_core.html#validatorfn" class="tsd-signature-type">ValidatorFn</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -606,21 +704,21 @@
 					<a name="visible" class="tsd-anchor"></a>
 					<h3>visible</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">visible<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../modules/_typescript_entity_core.html#attrinferredvalues" class="tsd-signature-type">AttrInferredValues</a><span class="tsd-signature-symbol">&lt;</span><a href="../modules/_typescript_entity_core.html#attrvisibleconfigs" class="tsd-signature-type">AttrVisibleConfigs</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">C</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">visible<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../modules/_typescript_entity_core.html#visibleattrs" class="tsd-signature-type">VisibleAttrs</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">C</span><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/apancutt/typescript-entity/blob/4d0c31f/packages/@typescript-entity/core/src/Entity.ts#L120">packages/@typescript-entity/core/src/Entity.ts:120</a></li>
+									<li>Defined in <a href="https://github.com/apancutt/typescript-entity/blob/d22aac8/packages/@typescript-entity/core/src/Entity.ts#L113">packages/@typescript-entity/core/src/Entity.ts:113</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Returns all visible attribute names and values on the <a href="_typescript_entity_core.entity.html"><code>Entity</code></a> instance.</p>
+									<p>Returns all attributes not configured as <code>hidden</code>.</p>
 								</div>
 							</div>
-							<h4 class="tsd-returns-title">Returns <a href="../modules/_typescript_entity_core.html#attrinferredvalues" class="tsd-signature-type">AttrInferredValues</a><span class="tsd-signature-symbol">&lt;</span><a href="../modules/_typescript_entity_core.html#attrvisibleconfigs" class="tsd-signature-type">AttrVisibleConfigs</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">C</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span></h4>
+							<h4 class="tsd-returns-title">Returns <a href="../modules/_typescript_entity_core.html#visibleattrs" class="tsd-signature-type">VisibleAttrs</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">C</span><span class="tsd-signature-symbol">&gt;</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -639,6 +737,9 @@
 						<a href="../modules/_typescript_entity_normalizers.html">@typescript-<wbr>entity/normalizers</a>
 					</li>
 					<li class=" tsd-kind-module">
+						<a href="../modules/_typescript_entity_sanitizers.html">@typescript-<wbr>entity/sanitizers</a>
+					</li>
+					<li class=" tsd-kind-module">
 						<a href="../modules/_typescript_entity_validators.html">@typescript-<wbr>entity/validators</a>
 					</li>
 				</ul>
@@ -654,22 +755,7 @@
 								<a href="_typescript_entity_core.attrerror.html" class="tsd-kind-icon">Attr<wbr>Error</a>
 							</li>
 							<li class=" tsd-kind-class tsd-parent-kind-module tsd-has-type-parameter">
-								<a href="_typescript_entity_core.attrreadonlyerror.html" class="tsd-kind-icon">Attr<wbr>Read<wbr>Only<wbr>Error</a>
-							</li>
-							<li class=" tsd-kind-class tsd-parent-kind-module tsd-has-type-parameter">
-								<a href="_typescript_entity_core.attrrestrictederror.html" class="tsd-kind-icon">Attr<wbr>Restricted<wbr>Error</a>
-							</li>
-							<li class=" tsd-kind-class tsd-parent-kind-module tsd-has-type-parameter">
-								<a href="_typescript_entity_core.attrunregisterederror.html" class="tsd-kind-icon">Attr<wbr>Unregistered<wbr>Error</a>
-							</li>
-							<li class=" tsd-kind-class tsd-parent-kind-module tsd-has-type-parameter">
 								<a href="_typescript_entity_core.attrvalueerror.html" class="tsd-kind-icon">Attr<wbr>Value<wbr>Error</a>
-							</li>
-							<li class=" tsd-kind-class tsd-parent-kind-module tsd-has-type-parameter">
-								<a href="_typescript_entity_core.attrvaluefnerror.html" class="tsd-kind-icon">Attr<wbr>Value<wbr>FnError</a>
-							</li>
-							<li class=" tsd-kind-class tsd-parent-kind-module tsd-has-type-parameter">
-								<a href="_typescript_entity_core.attrvalueinvaliderror.html" class="tsd-kind-icon">Attr<wbr>Value<wbr>Invalid<wbr>Error</a>
 							</li>
 							<li class="current tsd-kind-class tsd-parent-kind-module tsd-has-type-parameter">
 								<a href="_typescript_entity_core.entity.html" class="tsd-kind-icon">Entity</a>
@@ -678,7 +764,7 @@
 										<a href="_typescript_entity_core.entity.html#constructor" class="tsd-kind-icon">constructor</a>
 									</li>
 									<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-protected">
-										<a href="_typescript_entity_core.entity.html#attrconfigs" class="tsd-kind-icon">attr<wbr>Configs</a>
+										<a href="_typescript_entity_core.entity.html#configs" class="tsd-kind-icon">configs</a>
 									</li>
 									<li class=" tsd-kind-method tsd-parent-kind-class">
 										<a href="_typescript_entity_core.entity.html#all" class="tsd-kind-icon">all</a>
@@ -687,7 +773,10 @@
 										<a href="_typescript_entity_core.entity.html#fill" class="tsd-kind-icon">fill</a>
 									</li>
 									<li class=" tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter">
-										<a href="_typescript_entity_core.entity.html#filldangerously" class="tsd-kind-icon">fill<wbr>Dangerously</a>
+										<a href="_typescript_entity_core.entity.html#fillraw" class="tsd-kind-icon">fill<wbr>Raw</a>
+									</li>
+									<li class=" tsd-kind-method tsd-parent-kind-class">
+										<a href="_typescript_entity_core.entity.html#fromjson" class="tsd-kind-icon">fromJSON</a>
 									</li>
 									<li class=" tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter">
 										<a href="_typescript_entity_core.entity.html#get" class="tsd-kind-icon">get</a>
@@ -699,10 +788,16 @@
 										<a href="_typescript_entity_core.entity.html#normalize" class="tsd-kind-icon">normalize</a>
 									</li>
 									<li class=" tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter">
+										<a href="_typescript_entity_core.entity.html#sanitize" class="tsd-kind-icon">sanitize</a>
+									</li>
+									<li class=" tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter">
 										<a href="_typescript_entity_core.entity.html#set" class="tsd-kind-icon">set</a>
 									</li>
 									<li class=" tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter">
-										<a href="_typescript_entity_core.entity.html#setdangerously" class="tsd-kind-icon">set<wbr>Dangerously</a>
+										<a href="_typescript_entity_core.entity.html#setraw" class="tsd-kind-icon">set<wbr>Raw</a>
+									</li>
+									<li class=" tsd-kind-method tsd-parent-kind-class">
+										<a href="_typescript_entity_core.entity.html#some" class="tsd-kind-icon">some</a>
 									</li>
 									<li class=" tsd-kind-method tsd-parent-kind-class">
 										<a href="_typescript_entity_core.entity.html#tojson" class="tsd-kind-icon">toJSON</a>
@@ -718,11 +813,20 @@
 									</li>
 								</ul>
 							</li>
-							<li class=" tsd-kind-interface tsd-parent-kind-module tsd-has-type-parameter">
-								<a href="../interfaces/_typescript_entity_core.attrconfig.html" class="tsd-kind-icon">Attr<wbr>Config</a>
+							<li class=" tsd-kind-class tsd-parent-kind-module tsd-has-type-parameter">
+								<a href="_typescript_entity_core.entityerror.html" class="tsd-kind-icon">Entity<wbr>Error</a>
+							</li>
+							<li class=" tsd-kind-class tsd-parent-kind-module tsd-has-type-parameter">
+								<a href="_typescript_entity_core.invalidattrvalueerror.html" class="tsd-kind-icon">Invalid<wbr>Attr<wbr>Value<wbr>Error</a>
 							</li>
 							<li class=" tsd-kind-interface tsd-parent-kind-module">
-								<a href="../interfaces/_typescript_entity_core.attrconfigs.html" class="tsd-kind-icon">Attr<wbr>Configs</a>
+								<a href="../interfaces/_typescript_entity_core.configs.html" class="tsd-kind-icon">Configs</a>
+							</li>
+							<li class=" tsd-kind-interface tsd-parent-kind-module tsd-has-type-parameter">
+								<a href="../interfaces/_typescript_entity_core.fnconfig.html" class="tsd-kind-icon">Fn<wbr>Config</a>
+							</li>
+							<li class=" tsd-kind-interface tsd-parent-kind-module tsd-has-type-parameter">
+								<a href="../interfaces/_typescript_entity_core.valueconfig.html" class="tsd-kind-icon">Value<wbr>Config</a>
 							</li>
 							<li class=" tsd-kind-type-alias tsd-parent-kind-module tsd-has-type-parameter">
 								<a href="../modules/_typescript_entity_core.html#ashidden" class="tsd-kind-icon">As<wbr>Hidden</a>
@@ -734,52 +838,70 @@
 								<a href="../modules/_typescript_entity_core.html#asreadonly" class="tsd-kind-icon">As<wbr>Read<wbr>Only</a>
 							</li>
 							<li class=" tsd-kind-type-alias tsd-parent-kind-module tsd-has-type-parameter">
-								<a href="../modules/_typescript_entity_core.html#attrhiddenconfigs" class="tsd-kind-icon">Attr<wbr>Hidden<wbr>Configs</a>
+								<a href="../modules/_typescript_entity_core.html#attrs" class="tsd-kind-icon">Attrs</a>
 							</li>
 							<li class=" tsd-kind-type-alias tsd-parent-kind-module tsd-has-type-parameter">
-								<a href="../modules/_typescript_entity_core.html#attrincomingvalues" class="tsd-kind-icon">Attr<wbr>Incoming<wbr>Values</a>
-							</li>
-							<li class=" tsd-kind-type-alias tsd-parent-kind-module tsd-has-type-parameter">
-								<a href="../modules/_typescript_entity_core.html#attrincomingvaluesuntyped" class="tsd-kind-icon">Attr<wbr>Incoming<wbr>Values<wbr>Untyped</a>
-							</li>
-							<li class=" tsd-kind-type-alias tsd-parent-kind-module tsd-has-type-parameter">
-								<a href="../modules/_typescript_entity_core.html#attrinferredvalue" class="tsd-kind-icon">Attr<wbr>Inferred<wbr>Value</a>
-							</li>
-							<li class=" tsd-kind-type-alias tsd-parent-kind-module tsd-has-type-parameter">
-								<a href="../modules/_typescript_entity_core.html#attrinferredvalues" class="tsd-kind-icon">Attr<wbr>Inferred<wbr>Values</a>
-							</li>
-							<li class=" tsd-kind-type-alias tsd-parent-kind-module tsd-has-type-parameter">
-								<a href="../modules/_typescript_entity_core.html#attrinitialvalues" class="tsd-kind-icon">Attr<wbr>Initial<wbr>Values</a>
-							</li>
-							<li class=" tsd-kind-type-alias tsd-parent-kind-module tsd-has-type-parameter">
-								<a href="../modules/_typescript_entity_core.html#attrnormalizerfn" class="tsd-kind-icon">Attr<wbr>Normalizer<wbr>Fn</a>
-							</li>
-							<li class=" tsd-kind-type-alias tsd-parent-kind-module tsd-has-type-parameter">
-								<a href="../modules/_typescript_entity_core.html#attrunrestrictedconfigs" class="tsd-kind-icon">Attr<wbr>Unrestricted<wbr>Configs</a>
-							</li>
-							<li class=" tsd-kind-type-alias tsd-parent-kind-module tsd-has-type-parameter">
-								<a href="../modules/_typescript_entity_core.html#attruntypedvalues" class="tsd-kind-icon">Attr<wbr>Untyped<wbr>Values</a>
-							</li>
-							<li class=" tsd-kind-type-alias tsd-parent-kind-module tsd-has-type-parameter">
-								<a href="../modules/_typescript_entity_core.html#attrvalidatorfn" class="tsd-kind-icon">Attr<wbr>Validator<wbr>Fn</a>
-							</li>
-							<li class=" tsd-kind-type-alias tsd-parent-kind-module">
-								<a href="../modules/_typescript_entity_core.html#attrvalue" class="tsd-kind-icon">Attr<wbr>Value</a>
-							</li>
-							<li class=" tsd-kind-type-alias tsd-parent-kind-module tsd-has-type-parameter">
-								<a href="../modules/_typescript_entity_core.html#attrvaluefn" class="tsd-kind-icon">Attr<wbr>Value<wbr>Fn</a>
-							</li>
-							<li class=" tsd-kind-type-alias tsd-parent-kind-module tsd-has-type-parameter">
-								<a href="../modules/_typescript_entity_core.html#attrvisibleconfigs" class="tsd-kind-icon">Attr<wbr>Visible<wbr>Configs</a>
+								<a href="../modules/_typescript_entity_core.html#entityconstructorattrs" class="tsd-kind-icon">Entity<wbr>Constructor<wbr>Attrs</a>
 							</li>
 							<li class=" tsd-kind-type-alias tsd-parent-kind-module tsd-has-type-parameter">
 								<a href="../modules/_typescript_entity_core.html#entityinterface" class="tsd-kind-icon">Entity<wbr>Interface</a>
 							</li>
 							<li class=" tsd-kind-type-alias tsd-parent-kind-module tsd-has-type-parameter">
+								<a href="../modules/_typescript_entity_core.html#fillableattrs" class="tsd-kind-icon">Fillable<wbr>Attrs</a>
+							</li>
+							<li class=" tsd-kind-type-alias tsd-parent-kind-module tsd-has-type-parameter">
+								<a href="../modules/_typescript_entity_core.html#fn" class="tsd-kind-icon">Fn</a>
+							</li>
+							<li class=" tsd-kind-type-alias tsd-parent-kind-module tsd-has-type-parameter">
+								<a href="../modules/_typescript_entity_core.html#fnattrs" class="tsd-kind-icon">Fn<wbr>Attrs</a>
+							</li>
+							<li class=" tsd-kind-type-alias tsd-parent-kind-module tsd-has-type-parameter">
+								<a href="../modules/_typescript_entity_core.html#hiddenattrs" class="tsd-kind-icon">Hidden<wbr>Attrs</a>
+							</li>
+							<li class=" tsd-kind-type-alias tsd-parent-kind-module tsd-has-type-parameter">
+								<a href="../modules/_typescript_entity_core.html#normalizableattrs" class="tsd-kind-icon">Normalizable<wbr>Attrs</a>
+							</li>
+							<li class=" tsd-kind-type-alias tsd-parent-kind-module tsd-has-type-parameter">
+								<a href="../modules/_typescript_entity_core.html#normalizerfn" class="tsd-kind-icon">Normalizer<wbr>Fn</a>
+							</li>
+							<li class=" tsd-kind-type-alias tsd-parent-kind-module tsd-has-type-parameter">
+								<a href="../modules/_typescript_entity_core.html#readonlyattrs" class="tsd-kind-icon">Read<wbr>Only<wbr>Attrs</a>
+							</li>
+							<li class=" tsd-kind-type-alias tsd-parent-kind-module tsd-has-type-parameter">
+								<a href="../modules/_typescript_entity_core.html#sanitizableattrs" class="tsd-kind-icon">Sanitizable<wbr>Attrs</a>
+							</li>
+							<li class=" tsd-kind-type-alias tsd-parent-kind-module tsd-has-type-parameter">
+								<a href="../modules/_typescript_entity_core.html#sanitizerfn" class="tsd-kind-icon">Sanitizer<wbr>Fn</a>
+							</li>
+							<li class=" tsd-kind-type-alias tsd-parent-kind-module">
+								<a href="../modules/_typescript_entity_core.html#type" class="tsd-kind-icon">Type</a>
+							</li>
+							<li class=" tsd-kind-type-alias tsd-parent-kind-module tsd-has-type-parameter">
+								<a href="../modules/_typescript_entity_core.html#unsanitizedattrs" class="tsd-kind-icon">Unsanitized<wbr>Attrs</a>
+							</li>
+							<li class=" tsd-kind-type-alias tsd-parent-kind-module tsd-has-type-parameter">
+								<a href="../modules/_typescript_entity_core.html#validatableattrs" class="tsd-kind-icon">Validatable<wbr>Attrs</a>
+							</li>
+							<li class=" tsd-kind-type-alias tsd-parent-kind-module tsd-has-type-parameter">
+								<a href="../modules/_typescript_entity_core.html#validatorfn" class="tsd-kind-icon">Validator<wbr>Fn</a>
+							</li>
+							<li class=" tsd-kind-type-alias tsd-parent-kind-module tsd-has-type-parameter">
+								<a href="../modules/_typescript_entity_core.html#valueattrs" class="tsd-kind-icon">Value<wbr>Attrs</a>
+							</li>
+							<li class=" tsd-kind-type-alias tsd-parent-kind-module tsd-has-type-parameter">
+								<a href="../modules/_typescript_entity_core.html#visibleattrs" class="tsd-kind-icon">Visible<wbr>Attrs</a>
+							</li>
+							<li class=" tsd-kind-type-alias tsd-parent-kind-module tsd-has-type-parameter">
 								<a href="../modules/_typescript_entity_core.html#withnormalizer" class="tsd-kind-icon">With<wbr>Normalizer</a>
 							</li>
 							<li class=" tsd-kind-type-alias tsd-parent-kind-module tsd-has-type-parameter">
+								<a href="../modules/_typescript_entity_core.html#withsanitizer" class="tsd-kind-icon">With<wbr>Sanitizer</a>
+							</li>
+							<li class=" tsd-kind-type-alias tsd-parent-kind-module tsd-has-type-parameter">
 								<a href="../modules/_typescript_entity_core.html#withvalidator" class="tsd-kind-icon">With<wbr>Validator</a>
+							</li>
+							<li class=" tsd-kind-type-alias tsd-parent-kind-module tsd-has-type-parameter">
+								<a href="../modules/_typescript_entity_core.html#writableattrs" class="tsd-kind-icon">Writable<wbr>Attrs</a>
 							</li>
 						</ul>
 					</li>
@@ -787,6 +909,9 @@
 				<ul class="after-current">
 					<li class=" tsd-kind-module">
 						<a href="../modules/_typescript_entity_normalizers.html" class="tsd-kind-icon">@typescript-<wbr>entity/normalizers</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="../modules/_typescript_entity_sanitizers.html" class="tsd-kind-icon">@typescript-<wbr>entity/sanitizers</a>
 					</li>
 					<li class=" tsd-kind-module">
 						<a href="../modules/_typescript_entity_validators.html" class="tsd-kind-icon">@typescript-<wbr>entity/validators</a>

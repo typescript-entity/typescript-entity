@@ -21,7 +21,7 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "dependencies": {
-    "@typescript-entity/normalizers": "^0.0.3-alpha.0",
+    "@typescript-entity/sanitizers": "^0.0.3-alpha.0",
     "validator": "13"
   },
   "devDependencies": {

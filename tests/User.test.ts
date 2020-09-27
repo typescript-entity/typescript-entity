@@ -1,5 +1,6 @@
-import { AttrReadOnlyError, AttrUnregisteredError, AttrValueFnError, AttrValueInvalidError } from '@typescript-entity/core';
-import { User } from './User';
+import { Attrs, InvalidAttrValueError } from '@typescript-entity/core';
+
+import { User, UserConfigs } from './User';
 
 test('an Entity can be constructed with default values', () => {
 
@@ -52,100 +53,131 @@ test('an Entity can be filled with custom values later', () => {
 
 });
 
+test('an Entity can be filled with read-only attributes later', () => {
+
+  const user = new User();
+  user.fill({ uuid: '7a2d2178-37da-4f5c-bb05-5f6819ff6ecd' }, true);
+  expect(user.uuid).toStrictEqual('7a2d2178-37da-4f5c-bb05-5f6819ff6ecd');
+
+});
+
+test('an Entity cannot be constructed with invalid values', () => {
+
+  expect(() => {
+    new User({ username: 'abc' });
+  }).toThrow(InvalidAttrValueError);
+
+});
+
 test('an Entity cannot be filled with invalid values later', () => {
 
   const user = new User();
   expect(() => {
     user.fill({ username: 'abc' });
-  }).toThrow(AttrValueInvalidError);
-
-});
-
-test('an Entity cannot be constructed with values for unregistered attributes', () => {
-
-  expect(() => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    new User({ foo: 'bar' } as any);
-  }).toThrow(AttrUnregisteredError);
-
-});
-
-test('an Entity cannot be filled with values for unregistered attributes later', () => {
-
-  const user = new User();
-  expect(() => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    user.fill({ foo: 'bar' } as any);
-  }).toThrow(AttrUnregisteredError);
-
-});
-
-test('an Entity cannot be have values set for restricted attributes', () => {
-
-  const user = new User();
-  expect(() => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    user.set('uuid' as any, '7a2d2178-37da-4f5c-bb05-5f6819ff6ecd');
-  }).toThrow(AttrReadOnlyError);
-  expect(() => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    user.set('email_domain' as any, 'google.com');
-  }).toThrow(AttrValueFnError);
-
-});
-
-test('an Entity can be filled with values for restricted attributes without error', () => {
-
-  const user = new User({ uuid: '7a2d2178-37da-4f5c-bb05-5f6819ff6ecd' });
-  const originalUuid = user.uuid;
-  const originalEmailDomain = user.email_domain;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  user.fill({ uuid: '6290be99-deef-4229-8ee0-250fc893d07f', email_domain: 'google.com' } as any);
-  expect(user.uuid).toStrictEqual(originalUuid);
-  expect(user.email_domain).toStrictEqual(originalEmailDomain);
+  }).toThrow(InvalidAttrValueError);
 
 });
 
 test('an Entity can expose all attributes', () => {
 
-  const user = new User();
-  expect(Object.keys(user.all())).not.toStrictEqual([ 'date_of_birth', 'email', 'email_domain', 'username', 'uuid', 'verified' ]);
+  const attrs = {
+    date_of_birth: new Date('2000-01-01'),
+    email: 'foo@example.com',
+    username: 'foobar',
+    uuid: '7a2d2178-37da-4f5c-bb05-5f6819ff6ecd',
+    verified: true,
+  };
+  const expected = {
+    ...attrs,
+    email_domain: 'example.com',
+  };
+  const user = new User(attrs);
+  expect(user.all()).toStrictEqual(expected);
+
+});
+
+test('an Entity can expose some attributes', () => {
+
+  const attrs = {
+    date_of_birth: new Date('2000-01-01'),
+    email: 'foo@example.com',
+    username: 'foobar',
+    uuid: '7a2d2178-37da-4f5c-bb05-5f6819ff6ecd',
+    verified: true,
+  };
+  const expected = {
+    username: attrs.username,
+    verified: attrs.verified,
+  };
+  const user = new User(attrs);
+  expect(user.some(Object.keys(expected) as (keyof Attrs<UserConfigs>)[])).toStrictEqual(expected);
 
 });
 
 test('an Entity can expose all visible attributes', () => {
 
-  const user = new User();
-  expect(Object.keys(user.visible())).toStrictEqual([ 'date_of_birth', 'email', 'email_domain', 'username', 'verified' ]);
+  const attrs = {
+    date_of_birth: new Date('2000-01-01'),
+    email: 'foo@example.com',
+    username: 'foobar',
+    uuid: '7a2d2178-37da-4f5c-bb05-5f6819ff6ecd',
+    verified: true,
+  };
+  const expected = {
+    date_of_birth: attrs.date_of_birth,
+    email: attrs.email,
+    email_domain: 'example.com',
+    username: attrs.username,
+    verified: attrs.verified,
+  };
+  const user = new User(attrs);
+  expect(user.visible()).toStrictEqual(expected);
 
 });
 
 test('an Entity can expose all hidden attributes', () => {
 
-  const user = new User();
-  expect(Object.keys(user.hidden())).toStrictEqual([ 'uuid' ]);
+  const attrs = {
+    date_of_birth: new Date('2000-01-01'),
+    email: 'foo@example.com',
+    username: 'foobar',
+    uuid: '7a2d2178-37da-4f5c-bb05-5f6819ff6ecd',
+    verified: true,
+  };
+  const expected = {
+    uuid: attrs.uuid,
+  };
+  const user = new User(attrs);
+  expect(user.hidden()).toStrictEqual(expected);
 
 });
 
-test('an Entity must expose only visible attributes in JSON form', () => {
+test('an Entity can expose all visible attributes when cast to string', () => {
 
-  const user = new User();
-  expect(JSON.stringify(user)).toStrictEqual(JSON.stringify(user.visible()));
-
-});
-
-test('an Entity can be cast to a JSON string', () => {
-
-  const user = new User();
-  expect(String(user)).toStrictEqual(JSON.stringify(user.toJSON()));
+  const user = new User({
+    date_of_birth: new Date('2000-01-01'),
+    email: 'foo@example.com',
+    username: 'foobar',
+    uuid: '7a2d2178-37da-4f5c-bb05-5f6819ff6ecd',
+    verified: true,
+  });
+  expect(String(user)).toStrictEqual(JSON.stringify(user.visible()));
+  expect(JSON.stringify(user)).toStrictEqual(String(user));
 
 });
 
 test('an Entity can be filled with values from a JSON string', () => {
 
-  const user = (new User()).fromJSON('{"uuid":"7a2d2178-37da-4f5c-bb05-5f6819ff6ecd","date_of_birth":"2000-01-01"}');
-  expect(user.uuid).toStrictEqual('7a2d2178-37da-4f5c-bb05-5f6819ff6ecd');
-  expect(user.date_of_birth).toBeInstanceOf(Date);
-  expect(user.date_of_birth.toISOString()).toStrictEqual('2000-01-01T00:00:00.000Z');
+  const user1 = new User({
+    date_of_birth: new Date('2000-01-01'),
+    email: 'foo@example.com',
+    username: 'foobar',
+    uuid: '7a2d2178-37da-4f5c-bb05-5f6819ff6ecd',
+    verified: true,
+  });
+
+  const user2 = (new User()).fromJSON(JSON.stringify(user1.all()));
+
+  expect(user2.all()).toStrictEqual(user1.all());
 
 });

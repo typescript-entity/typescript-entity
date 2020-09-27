@@ -22,24 +22,6 @@ export abstract class AttrError<C extends Configs> extends EntityError<C> {
 
 }
 
-export abstract class RestrictedAttrError<C extends Configs> extends AttrError<C> {
-  constructor(entity: Entity<C>, attrName: keyof C, message?: string) {
-    super(entity, attrName, message || `Attribute "${entity.constructor.name}.${attrName}" is restricted`);
-  }
-}
-
-export class FnAttrError<C extends Configs> extends RestrictedAttrError<C> {
-  constructor(entity: Entity<C>, attrName: keyof C, message?: string) {
-    super(entity, attrName, message || `Attribute "${entity.constructor.name}.${attrName}" is a function attribute`);
-  }
-}
-
-export class ReadOnlyAttrError<C extends Configs> extends RestrictedAttrError<C> {
-  constructor(entity: Entity<C>, attrName: keyof C, message?: string) {
-    super(entity, attrName, message || `Attribute "${entity.constructor.name}.${attrName}" is read-only`);
-  }
-}
-
 export abstract class AttrValueError<C extends Configs> extends AttrError<C> {
 
   public attrValue: unknown;

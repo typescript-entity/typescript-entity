@@ -1,16 +1,16 @@
-import { AsHidden, AsOptional, AsReadOnly, AttrConfig, AttrInitialValues, Entity, EntityInterface, WithNormalizer, WithValidator } from '@typescript-entity/core';
+import { AsHidden, AsOptional, AsReadOnly, Entity, EntityConstructorAttrs, EntityInterface, FnConfig, ValueConfig, WithNormalizer, WithValidator } from '@typescript-entity/core';
 import * as Normalizers from '@typescript-entity/normalizers';
 import * as Sanitizers from '@typescript-entity/sanitizers';
 import * as Validators from '@typescript-entity/validators';
 
-export type DateOfBirthAttrConfig = WithValidator<AttrConfig<Date>>;
-export type EmailAttrConfig = WithValidator<AttrConfig<string>>;
-export type EmailDomainAttrConfig = AttrConfig<() => string>;
-export type UsernameAttrConfig = WithValidator<AttrConfig<string>>;
-export type UUIDAttrConfig = AsOptional<AsReadOnly<AsHidden<WithValidator<WithNormalizer<AttrConfig<string>>>>>>;
-export type VerifiedAttrConfig = WithValidator<AttrConfig<boolean>>;
+export type DateOfBirthAttrConfig = WithValidator<ValueConfig<Date>>;
+export type EmailAttrConfig = WithValidator<ValueConfig<string>>;
+export type EmailDomainAttrConfig = FnConfig<string>;
+export type UsernameAttrConfig = WithValidator<ValueConfig<string>>;
+export type UUIDAttrConfig = AsOptional<AsReadOnly<AsHidden<WithValidator<WithNormalizer<ValueConfig<string>>>>>>;
+export type VerifiedAttrConfig = WithValidator<ValueConfig<boolean>>;
 
-export type UserAttrConfigs = {
+export type UserConfigs = {
   date_of_birth: DateOfBirthAttrConfig;
   email: EmailAttrConfig;
   email_domain: EmailDomainAttrConfig;
@@ -19,9 +19,9 @@ export type UserAttrConfigs = {
   verified: VerifiedAttrConfig;
 };
 
-export type UserInterface = EntityInterface<UserAttrConfigs>;
+export type UserInterface = EntityInterface<UserConfigs>;
 
-export const USER_ATTR_CONFIGS:UserAttrConfigs = {
+export const UserConfigs:UserConfigs = {
   date_of_birth: {
     value: new Date(0),
     sanitizer: Sanitizers.date,
@@ -33,7 +33,7 @@ export const USER_ATTR_CONFIGS:UserAttrConfigs = {
     validator: Validators.email,
   },
   email_domain: {
-    value: function(this: User): string { return this.email.split('@', 2)[1] || '' },
+    fn: function(this: User): string { return this.email.split('@', 2)[1] || '' },
   },
   uuid: {
     value: undefined,
@@ -55,10 +55,10 @@ export const USER_ATTR_CONFIGS:UserAttrConfigs = {
   },
 };
 
-export class User extends Entity<UserAttrConfigs> implements UserInterface {
+export class User extends Entity<UserConfigs> implements UserInterface {
 
-  constructor(initialAttrs: AttrInitialValues<UserAttrConfigs> = {}) {
-    super(USER_ATTR_CONFIGS, initialAttrs);
+  constructor(initialAttrs: EntityConstructorAttrs<UserConfigs> = {}) {
+    super(UserConfigs, initialAttrs);
   }
 
   get date_of_birth(): Date {
