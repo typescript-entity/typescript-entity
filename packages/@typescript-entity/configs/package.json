@@ -1,6 +1,6 @@
 {
   "name": "@typescript-entity/configs",
-  "version": "0.1.0-alpha.7",
+  "version": "0.1.0-alpha.8",
   "description": "Attribute configurations for use with @typescript-entity/core.",
   "homepage": "https://github.com/apancutt/typescript-entity/tree/master/packages/%40typescript-entity/configs#readme",
   "bugs": {
