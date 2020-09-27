@@ -24,9 +24,7 @@
     "build": "lerna run build --stream",
     "postbuild": "yarn run docs",
     "predocs": "rimraf ./docs",
-    "docs": "typedoc --excludeNotExported --mode \"modules\" --name \"@typescript-entity\" --out \"./docs\" --readme \"./README.md\" --external-modulemap \".*packages\\/(@typescript-entity\\/[^\\/]+)\\/.*\" --exclude \"packages\\/@typescript-entity\\/core\\/src\\/index.ts\" ./packages",
-    "prepublish": "yarn run build",
-    "publish": "lerna publish"
+    "docs": "typedoc --excludeNotExported --mode \"modules\" --name \"@typescript-entity\" --out \"./docs\" --readme \"./README.md\" --external-modulemap \".*packages\\/(@typescript-entity\\/[^\\/]+)\\/.*\" --exclude \"packages\\/@typescript-entity\\/core\\/src\\/index.ts\" ./packages"
   },
   "eslintConfig": {
     "root": true,
