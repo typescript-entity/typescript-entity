@@ -1,6 +1,6 @@
 # @typescript-entity/core
 
-Typed entity library with attribute sanitization and validation.
+Typed entity library with attribute sanitization, normalization and validation.
 
 ## Installation
 
