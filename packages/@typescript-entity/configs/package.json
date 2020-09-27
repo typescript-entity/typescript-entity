@@ -1,6 +1,6 @@
 {
   "name": "@typescript-entity/configs",
-  "version": "0.1.0-alpha.6",
+  "version": "0.1.0-alpha.7",
   "description": "Attribute configurations for use with @typescript-entity/core.",
   "homepage": "https://github.com/apancutt/typescript-entity/tree/master/packages/%40typescript-entity/configs#readme",
   "bugs": {
@@ -22,9 +22,9 @@
   "types": "dist/index.d.ts",
   "dependencies": {
     "@typescript-entity/core": "^0.1.0-alpha.4",
-    "@typescript-entity/normalizers": "^0.1.0-alpha.6",
-    "@typescript-entity/sanitizers": "^0.1.0-alpha.4",
-    "@typescript-entity/validators": "^0.1.0-alpha.5"
+    "@typescript-entity/normalizers": "^0.1.0-alpha.7",
+    "@typescript-entity/sanitizers": "^0.1.0-alpha.7",
+    "@typescript-entity/validators": "^0.1.0-alpha.7"
   },
   "devDependencies": {
     "rimraf": "3",
