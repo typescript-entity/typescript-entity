@@ -21,12 +21,12 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "dependencies": {
+    "@types/lodash": "4",
+    "@types/validator": "13",
     "lodash": "^4.17.20",
     "validator": "13"
   },
   "devDependencies": {
-    "@types/lodash": "4",
-    "@types/validator": "13",
     "rimraf": "3",
     "typescript": "4"
   },

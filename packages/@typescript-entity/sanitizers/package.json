@@ -21,10 +21,10 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "dependencies": {
+    "@types/validator": "13",
     "validator": "13"
   },
   "devDependencies": {
-    "@types/validator": "13",
     "rimraf": "3",
     "typescript": "4"
   },
