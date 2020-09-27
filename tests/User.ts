@@ -10,18 +10,16 @@ export type UsernameConfig = WithValidator<ValueConfig<string>>;
 export type UUIDConfig = AsOptional<AsReadOnly<AsHidden<WithValidator<WithNormalizer<ValueConfig<string>>>>>>;
 export type VerifiedConfig = WithValidator<ValueConfig<boolean>>;
 
-export type UserConfigs = {
-  date_of_birth: DateOfBirthConfig;
-  email: EmailConfig;
-  email_domain: EmailDomainConfig;
-  username: UsernameConfig;
-  uuid: UUIDConfig;
-  verified: VerifiedConfig;
+export type Configs = {
+  date_of_birth: DateOfBirthConfig & ThisType<User>;
+  email: EmailConfig & ThisType<User>;
+  email_domain: EmailDomainConfig & ThisType<User>;
+  username: UsernameConfig & ThisType<User>;
+  uuid: UUIDConfig & ThisType<User>;
+  verified: VerifiedConfig & ThisType<User>;
 };
 
-export type UserInterface = EntityInterface<UserConfigs>;
-
-export const UserConfigs:UserConfigs = {
+export const CONFIGS:Configs = {
   date_of_birth: {
     value: new Date(0),
     sanitizer: Sanitizers.date,
@@ -55,10 +53,10 @@ export const UserConfigs:UserConfigs = {
   },
 };
 
-export class User extends Entity<UserConfigs> implements UserInterface {
+export class User extends Entity<Configs> implements EntityInterface<Configs> {
 
-  constructor(initialAttrs: EntityConstructorAttrs<UserConfigs> = {}) {
-    super(UserConfigs, initialAttrs);
+  constructor(attrs: EntityConstructorAttrs<Configs> = {}) {
+    super(CONFIGS, attrs);
   }
 
   get date_of_birth(): Date {

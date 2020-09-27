@@ -7,7 +7,6 @@ interface Config {
 }
 
 export interface ValueConfig<T = Type> extends Config {
-  fn?: never;
   normalizer?: NormalizerFn<T>;
   readOnly?: boolean;
   sanitizer: SanitizerFn<T>;
@@ -17,11 +16,6 @@ export interface ValueConfig<T = Type> extends Config {
 
 export interface FnConfig<T = Type> extends Config {
   fn: Fn<T>;
-  normalizer?: never;
-  readOnly?: never;
-  sanitizer?: never;
-  validator?: never;
-  value?: never;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -57,8 +51,8 @@ type FnConfigs<C extends Configs> = Pick<C, {
 }[keyof C]>;
 export type FnAttrs<C extends Configs> = Attrs<FnConfigs<C>>;
 
-type ReadOnlyConfigs<C extends Configs, VC extends ValueConfigs<C> = ValueConfigs<C>> = Pick<VC, {
-  [K in keyof VC]: VC[K]['readOnly'] extends true ? K : never
+type ReadOnlyConfigs<C extends Configs, VC = ValueConfigs<C>> = Pick<VC, {
+  [K in keyof VC]: VC[K] extends ValueConfig ? VC[K]['readOnly'] extends true ? K : never : never;
 }[keyof VC]>;
 export type ReadOnlyAttrs<C extends Configs> = Attrs<ReadOnlyConfigs<C>>;
 
