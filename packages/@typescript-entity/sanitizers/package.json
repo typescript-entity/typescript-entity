@@ -1,6 +1,6 @@
 {
   "name": "@typescript-entity/sanitizers",
-  "version": "0.0.3-alpha.0",
+  "version": "0.1.0-alpha.0",
   "description": "Sanitizer functions for use with @typescript-entity/core.",
   "homepage": "https://github.com/apancutt/typescript-entity/packages/sanitizers#readme",
   "bugs": {
