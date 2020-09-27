@@ -143,7 +143,7 @@ export default abstract class Entity<C extends Configs> {
   /**
    * Sets multiple attribute values from the provided `attrs`. The values provided will be
    * normalized and validated. If validation fails an error is thrown and the attribute - and any
-   * subsequent attributes, remain unchanged. Values for `readOnly` attributes can be provided if
+   * subsequent attributes - remain unchanged. Values for `readOnly` attributes can be provided if
    * `allowReadOnly` is set to `true`.
    *
    * @param attrs
@@ -159,7 +159,7 @@ export default abstract class Entity<C extends Configs> {
   /**
    * Sets multiple attribute values from the provided `attrs`. The values provided will be
    * sanitized, normalized and validated. If validation fails an error is thrown and the attribute -
-   * and any subsequent attributes, remain unchanged. Values for `readOnly` attributes can be
+   * and any subsequent attributes - remain unchanged. Values for `readOnly` attributes can be
    * provided if `allowReadOnly` is set to `true`.
    *
    * @param attrs
@@ -180,7 +180,7 @@ export default abstract class Entity<C extends Configs> {
    * Sets multiple attribute values from the provided `json` string. Values for unregistered
    * attributes, and those configured with value functions, are ignored. The values provided will be
    * sanitized, normalized and validated. If validation fails an error is thrown and the attribute -
-   * and any subsequent attributes, remain unchanged. Values for `readOnly` attributes can be
+   * and any subsequent attributes - remain unchanged. Values for `readOnly` attributes can be
    * provided if `allowReadOnly` is set to `true`.
    *
    * @param json
