@@ -3,20 +3,20 @@ import * as Normalizers from '@typescript-entity/normalizers';
 import * as Sanitizers from '@typescript-entity/sanitizers';
 import * as Validators from '@typescript-entity/validators';
 
-export type DateOfBirthAttrConfig = WithValidator<ValueConfig<Date>>;
-export type EmailAttrConfig = WithValidator<ValueConfig<string>>;
-export type EmailDomainAttrConfig = FnConfig<string>;
-export type UsernameAttrConfig = WithValidator<ValueConfig<string>>;
-export type UUIDAttrConfig = AsOptional<AsReadOnly<AsHidden<WithValidator<WithNormalizer<ValueConfig<string>>>>>>;
-export type VerifiedAttrConfig = WithValidator<ValueConfig<boolean>>;
+export type DateOfBirthConfig = WithValidator<ValueConfig<Date>>;
+export type EmailConfig = WithValidator<ValueConfig<string>>;
+export type EmailDomainConfig = FnConfig<string>;
+export type UsernameConfig = WithValidator<ValueConfig<string>>;
+export type UUIDConfig = AsOptional<AsReadOnly<AsHidden<WithValidator<WithNormalizer<ValueConfig<string>>>>>>;
+export type VerifiedConfig = WithValidator<ValueConfig<boolean>>;
 
 export type UserConfigs = {
-  date_of_birth: DateOfBirthAttrConfig;
-  email: EmailAttrConfig;
-  email_domain: EmailDomainAttrConfig;
-  username: UsernameAttrConfig;
-  uuid: UUIDAttrConfig;
-  verified: VerifiedAttrConfig;
+  date_of_birth: DateOfBirthConfig;
+  email: EmailConfig;
+  email_domain: EmailDomainConfig;
+  username: UsernameConfig;
+  uuid: UUIDConfig;
+  verified: VerifiedConfig;
 };
 
 export type UserInterface = EntityInterface<UserConfigs>;
