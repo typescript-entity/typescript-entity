@@ -9,9 +9,9 @@ export default abstract class Entity<C extends Configs> {
   protected configs: C;
 
   /**
-   * Creates a new [[`Entity`]] instance. The `attrConfigs` defines the attributes available on the
-   * [[`Entity`]] instance along with default values for required attributes. Initial attribute
-   * values (including values for `readonly` attributes) can be provided in `attrs`.
+   * Creates a new [[`Entity`]] instance. The attribute `configs` define the attributes available on
+   * the [[`Entity`]] instance along with default values for any required attributes. Initial values
+   * (including values for `readOnly` attributes) can be provided in `attrs`.
    *
    * @param configs
    * @param attrs
@@ -28,8 +28,7 @@ export default abstract class Entity<C extends Configs> {
   }
 
   /**
-   * Sanitizes a value using the sanitizer function provided in the attribute configs. This function
-   * should be used when handling attributes values where type assurance is not guaranteed.
+   * Sanitizes an arbitrary `value` using the configured `sanitizer` function.
    *
    * @param name
    * @param value
@@ -39,10 +38,7 @@ export default abstract class Entity<C extends Configs> {
   }
 
   /**
-   * Normalizes a value using the normalizer function provided in the attribute configs. The
-   * normalizer function is not called if `value` is `null` or `undefined`. While Typescript takes
-   * care of ensuring type safety, it may be appropriate to perform casting within your normalizer
-   * functions in cases where your [[`Entity`]] classes are used outside of Typescript.
+   * Normalizes a non-nullish `value` using the configured `normalizer` function.
    *
    * @param name
    * @param value
@@ -54,10 +50,7 @@ export default abstract class Entity<C extends Configs> {
   }
 
   /**
-   * Validates a `value` using the validator function provided in the attribute configs. The
-   * validator function is not called if `value` is `null` or `undefined`. While Typescript takes
-   * care of ensuring type safety, it may be appropriate to perform type-checking within your
-   * validator functions in cases where your [[`Entity`]] classes are used outside of Typescript.
+   * Validates a non-nullish `value` using the configured `validator` function.
    *
    * @param name
    * @param value
@@ -81,8 +74,7 @@ export default abstract class Entity<C extends Configs> {
   }
 
   /**
-   * Returns the values of the specified attribute `names`. If an attribute is configured with a
-   * value function then the return value of this function is returned.
+   * Returns the values of the specified attribute `names`.
    *
    * @param names
    */
@@ -94,31 +86,30 @@ export default abstract class Entity<C extends Configs> {
   }
 
   /**
-   * Returns all attributes.
+   * Returns all attribute values.
    */
   public all(): Attrs<C> {
     return this.some(Object.keys(this.configs)) as Attrs<C>;
   }
 
   /**
-   * Returns all attributes configured as `hidden`.
+   * Returns the values of the attributes configured as `hidden`.
    */
   public hidden(): HiddenAttrs<C> {
     return this.some(Object.keys(this.configs).filter((name) => this.configs[name].hidden)) as HiddenAttrs<C>;
   }
 
   /**
-   * Returns all attributes not configured as `hidden`.
+   * Returns the values of the attributes not configured as `hidden`.
    */
   public visible(): VisibleAttrs<C> {
     return this.some(Object.keys(this.configs).filter((name) => !this.configs[name].hidden)) as VisibleAttrs<C>;
   }
 
   /**
-   * Sets the `value` of the specified attribute `name`. If the attribute is configured with a value
-   * function, or is `readOnly` and `allowReadOnly` is `false`, then an error is thrown. The `value`
-   * provided will be normalized and validated. If validation fails an error is thrown and the
-   * attribute remains unmodified.
+   * Sets the `value` of the specified attribute `name`. The `value` provided will be normalized and
+   * validated. If validation fails an error is thrown and the attribute remains unmodified. Values
+   * for `readOnly` attributes can be provided if `allowReadOnly` is set to `true`.
    *
    * @param name
    * @param value
@@ -136,10 +127,10 @@ export default abstract class Entity<C extends Configs> {
   }
 
   /**
-   * Sets the `value` of the specified attribute `name`. If the attribute is configured with a value
-   * function, or is `readOnly` and `allowReadOnly` is `false`, then an error is thrown. The `value`
-   * provided will be sanitized, normalized and validated. If validation fails an error is thrown
-   * and the attribute remains unmodified.
+   * Sets the `value` of the specified attribute `name`. The `value` provided will be sanitized,
+   * normalized and validated. If validation fails an error is thrown and the attribute remains
+   * unmodified. Values for `readOnly` attributes can be provided if `allowReadOnly` is set to
+   * `true`.
    *
    * @param name
    * @param value
@@ -150,9 +141,10 @@ export default abstract class Entity<C extends Configs> {
   }
 
   /**
-   * Sets the values for the specified `attrs` key/value pairs. The values provided will be
-   * normalized and validated. If validation fails an error is thrown and the affected attribute and
-   * any remaining attributes remain unmodified.
+   * Sets multiple attribute values from the provided `attrs`. The values provided will be
+   * normalized and validated. If validation fails an error is thrown and the attribute - and any
+   * subsequent attributes, remain unchanged. Values for `readOnly` attributes can be provided if
+   * `allowReadOnly` is set to `true`.
    *
    * @param attrs
    * @param allowReadOnly
@@ -165,10 +157,10 @@ export default abstract class Entity<C extends Configs> {
   }
 
   /**
-   * Sets the values for the specified `attrs` key/value pairs. If an attribute is configured with a
-   * value function, or is `readOnly` and `allowReadOnly` is `false`, then the attribute is ignored.
-   * The values provided will be sanitized, normalized and validated. If validation fails an error
-   * is thrown and the affected attribute and any remaining attributes remain unmodified.
+   * Sets multiple attribute values from the provided `attrs`. The values provided will be
+   * sanitized, normalized and validated. If validation fails an error is thrown and the attribute -
+   * and any subsequent attributes, remain unchanged. Values for `readOnly` attributes can be
+   * provided if `allowReadOnly` is set to `true`.
    *
    * @param attrs
    * @param allowReadOnly
@@ -185,9 +177,28 @@ export default abstract class Entity<C extends Configs> {
   }
 
   /**
+   * Sets multiple attribute values from the provided `json` string. Values for unregistered
+   * attributes, and those configured with value functions, are ignored. The values provided will be
+   * sanitized, normalized and validated. If validation fails an error is thrown and the attribute -
+   * and any subsequent attributes, remain unchanged. Values for `readOnly` attributes can be
+   * provided if `allowReadOnly` is set to `true`.
+   *
+   * @param json
+   */
+  public fillJSON(json: string, allowReadOnly = false): this {
+    const attrs = Object.entries(JSON.parse(json))
+      .filter(([ name ]) => name in this.configs && 'value' in this.configs[name] && (!this.configs[name].readOnly || allowReadOnly))
+      .reduce((attrs, [ name, value ]) => ({
+        ...attrs,
+        [name]: value,
+      }), {});
+    return this.fillRaw(attrs, allowReadOnly);
+  }
+
+  /**
    * Returns a string representation of the [[`Entity`]] instance.
    *
-   * @see [[`Entity.toJSON`]]
+   * @see [[`Entity.toJSON()`]]
    */
   public toString(): string
   {
@@ -197,27 +208,10 @@ export default abstract class Entity<C extends Configs> {
   /**
    * Returns the attributes to be included when stringifying this instance to JSON form.
    *
-   * @see [[`Entity.visible`]]
+   * @see [[`Entity.visible()`]]
    */
   public toJSON(): VisibleAttrs<C> {
     return this.visible();
-  }
-
-  /**
-   * Imports attributes from a JSON string. Removes unregistered attributes and those configured
-   * with value functions before sanitizing, normalizing and validating incoming values.
-   *
-   * @see [[`Entity.fillRaw`]]
-   * @param json
-   */
-  public fromJSON(json: string): this {
-    const attrs = Object.entries(JSON.parse(json))
-      .filter(([ name ]) => name in this.configs && 'value' in this.configs[name])
-      .reduce((attrs, [ name, value ]) => ({
-        ...attrs,
-        [name]: value,
-      }), {});
-    return this.fillRaw(attrs, true);
   }
 
 }

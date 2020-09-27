@@ -36,9 +36,7 @@ export type NormalizerFn<T = Type> = (value: NonNullable<T>) => T;
 export type ValidatorFn<T = Type> = (value: NonNullable<T>) => boolean;
 
 export type Attrs<C extends Configs> = {
-  [K in keyof C]: C[K] extends ValueConfig
-    ? C[K]['value'] // TODO: Remove? C['value'] extends [boolean] ? boolean : C['value'] // See: https://github.com/microsoft/TypeScript/issues/30029
-    : C[K] extends FnConfig ? ReturnType<C[K]['fn']> : never;
+  [K in keyof C]: C[K] extends ValueConfig ? C[K]['value'] : C[K] extends FnConfig ? ReturnType<C[K]['fn']> : never;
 };
 
 type HiddenConfigs<C extends Configs> = Pick<C, {
