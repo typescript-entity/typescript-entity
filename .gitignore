@@ -3,10 +3,10 @@
 .npm/
 .vscode/
 dist/
-lerna-debug.log*
+lerna-debug.log
 node_modules/
-npm-debug.log*
+npm-debug.log
 package-lock.json
-yarn-debug.log*
-yarn-error.log*
+yarn-debug.log
+yarn-error.log
 yarn.lock
