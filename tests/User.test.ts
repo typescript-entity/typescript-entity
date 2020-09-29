@@ -52,7 +52,7 @@ test('an Entity can be filled with custom values later', () => {
 test('an Entity can be filled with read-only attributes later', () => {
 
   const user = new User();
-  user.fill({ uuid: '7a2d2178-37da-4f5c-bb05-5f6819ff6ecd' }, true);
+  user.exposedFillReadOnly({ uuid: '7a2d2178-37da-4f5c-bb05-5f6819ff6ecd' });
   expect(user.uuid).toStrictEqual('7a2d2178-37da-4f5c-bb05-5f6819ff6ecd');
 
 });
@@ -162,24 +162,6 @@ test('an Entity can expose all visible attributes when cast to string', () => {
 
 });
 
-test('an Entity can be filled with values from a JSON string', () => {
-
-  const user = new User({
-    date_of_birth: new Date('2000-01-01'),
-    email: 'foo@example.com',
-    username: 'foobar',
-    uuid: '7a2d2178-37da-4f5c-bb05-5f6819ff6ecd',
-    verified: true,
-  });
-
-  const userCopy = (new User()).fillJSON(JSON.stringify(user.all()));
-  expect(userCopy.all()).toStrictEqual({
-    ...user.all(),
-    uuid: undefined,
-  });
-
-});
-
 test('an Entity can be filled with read-only values from a JSON string', () => {
 
   const user = new User({
@@ -190,7 +172,7 @@ test('an Entity can be filled with read-only values from a JSON string', () => {
     verified: true,
   });
 
-  const userCopy = (new User()).fillJSON(JSON.stringify(user.all()), true);
+  const userCopy = (new User()).fillJSON(JSON.stringify(user.all()));
   expect(userCopy.all()).toStrictEqual(user.all());
 
 });

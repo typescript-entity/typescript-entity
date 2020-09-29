@@ -1,6 +1,6 @@
 import { cloneDeep } from 'lodash';
-import { InvalidAttrValueError } from './Error';
-import { Attrs, Configs, EntityConstructorAttrs, FillableAttrs, FnConfig, HiddenAttrs, NormalizerFn, SanitizerFn, UnsanitizedAttrs, ValidatorFn, ValueAttrs, ValueConfig, VisibleAttrs, WritableAttrs } from './Type';
+import { InvalidAttrValueError } from './Errors';
+import { Attrs, Configs, EntityConstructorAttrs, HiddenAttrs, NormalizerFn, SanitizerFn, Unsanitized, ValidatorFn, NonValueFnAttrs, VisibleAttrs, WritableAttrs } from './Types';
 
 type Entries<T> = { [K in keyof T]: [ K, T[K] ] }[keyof T][];
 
@@ -21,10 +21,10 @@ export default abstract class Entity<C extends Configs> {
       ...configs,
       [name]: {
         ...config,
-        ...('value' in config ? { value: cloneDeep((config as ValueConfig).value) } : {}),
+        value: 'function' !== typeof config.value ? cloneDeep(config.value) : config.value,
       },
     }), {}) as C;
-    this.fill(attrs, true);
+    this.fillReadOnly(attrs);
   }
 
   /**
@@ -33,9 +33,8 @@ export default abstract class Entity<C extends Configs> {
    * @param name
    * @param value
    */
-  public sanitize<K extends keyof ValueAttrs<C>, T extends ValueAttrs<C>[K]>(name: K, value: unknown): ReturnType<SanitizerFn<T>> {
-    const config = this.configs[name] as ValueConfig<T>;
-    return config.sanitizer.call(this, value);
+  public sanitize<K extends keyof NonValueFnAttrs<C>>(name: K, value: unknown): ReturnType<SanitizerFn<NonValueFnAttrs<C>[K]>> {
+    return (this.configs[name].sanitizer as SanitizerFn<NonValueFnAttrs<C>[K]>).call(this, value); // TODO: why type cast?
   }
 
   /**
@@ -44,10 +43,10 @@ export default abstract class Entity<C extends Configs> {
    * @param name
    * @param value
    */
-  public normalize<K extends keyof ValueAttrs<C>, T extends ValueAttrs<C>[K]>(name: K, value: T): ReturnType<NormalizerFn<T>> {
-    const config = this.configs[name] as ValueConfig<T>;
-    return (undefined !== value && null !== value && undefined !== config.normalizer)
-      ? config.normalizer.call(this, value)
+  public normalize<K extends keyof NonValueFnAttrs<C>, V extends NonValueFnAttrs<C>[K]>(name: K, value: V): ReturnType<NormalizerFn<V>> {
+    const normalizer = this.configs[name].normalizer;
+    return (undefined !== value && null !== value && undefined !== normalizer)
+      ? normalizer.call(this, value)
       : value;
   }
 
@@ -57,10 +56,10 @@ export default abstract class Entity<C extends Configs> {
    * @param name
    * @param value
    */
-  public validate<K extends keyof ValueAttrs<C>, T extends ValueAttrs<C>[K]>(name: K, value: T): ReturnType<ValidatorFn<T>> {
-    const config = this.configs[name] as ValueConfig<T>;
-    return (undefined !== value && null !== value && undefined !== config.validator)
-      ? config.validator.call(this, value)
+  public validate<K extends keyof NonValueFnAttrs<C>, V extends NonValueFnAttrs<C>[K]>(name: K, value: V): ReturnType<ValidatorFn<V>> {
+    const validator = this.configs[name].validator;
+    return (undefined !== value && null !== value && undefined !== validator)
+      ? validator.call(this, value)
       : true;
   }
 
@@ -70,10 +69,10 @@ export default abstract class Entity<C extends Configs> {
    *
    * @param name
    */
-  public get<K extends keyof Attrs<C>, T extends Attrs<C>[K]>(name: K): T {
-    return 'fn' in this.configs[name]
-      ? (this.configs[name] as FnConfig<T>).fn.call(this)
-      : (this.configs[name] as ValueConfig<T>).value;
+  public get<K extends keyof Attrs<C>, V extends Attrs<C>[K]>(name: K): V {
+    return 'function' === typeof this.configs[name].value
+      ? this.configs[name].value.call(this)
+      : this.configs[name].value;
   }
 
   /**
@@ -81,11 +80,11 @@ export default abstract class Entity<C extends Configs> {
    *
    * @param names
    */
-  public some(names: (keyof Attrs<C>)[]): Partial<Attrs<C>> {
+  public some<K extends keyof Attrs<C>>(names: K[]): Partial<Attrs<C>> {
     return names.reduce((attrs, name) => ({
       ...attrs,
       [name]: this.get(name),
-    }), {}) as Partial<Attrs<C>>;
+    }), {});
   }
 
   /**
@@ -116,16 +115,17 @@ export default abstract class Entity<C extends Configs> {
    *
    * @param name
    * @param value
-   * @param allowReadOnly
    */
-  public set<K extends keyof FillableAttrs<C, R>, T extends FillableAttrs<C, R>[K], R extends boolean = false>(name: K, value: T, allowReadOnly?: R): this {
-    const resolvedName = allowReadOnly ? name as unknown as keyof ValueAttrs<C> : name as unknown as keyof WritableAttrs<C>;
-    const config = this.configs[resolvedName] as ValueConfig<T>;
-    value = this.normalize(resolvedName, value);
-    if (!this.validate(resolvedName, value)) {
-      throw new InvalidAttrValueError(this, resolvedName, value);
+  public set<K extends keyof WritableAttrs<C>>(name: K, value: WritableAttrs<C>[K]): this {
+    return this.setReadOnly(name, value as NonValueFnAttrs<C>[K]); // TODO: why type cast?
+  }
+
+  protected setReadOnly<K extends keyof NonValueFnAttrs<C>>(name: K, value: NonValueFnAttrs<C>[K]): this {
+    value = this.normalize(name, value);
+    if (!this.validate(name, value)) {
+      throw new InvalidAttrValueError(this, name, value);
     }
-    config.value = value;
+    this.configs[name].value = value;
     return this;
   }
 
@@ -137,12 +137,13 @@ export default abstract class Entity<C extends Configs> {
    *
    * @param name
    * @param value
-   * @param allowReadOnly
    */
-  public setRaw<K extends keyof FillableAttrs<C, R>, T extends FillableAttrs<C, R>[K], R extends boolean = false>(name: K, value: unknown, allowReadOnly?: R): this {
-    const resolvedName = allowReadOnly ? name as unknown as keyof ValueAttrs<C> : name as unknown as keyof WritableAttrs<C>;
-    const config = this.configs[resolvedName] as ValueConfig<T>;
-    return this.set(name, config.sanitizer.call(this, value), allowReadOnly);
+  public setRaw<K extends keyof Unsanitized<WritableAttrs<C>>, V extends Unsanitized<WritableAttrs<C>>[K]>(name: K, value: V): this {
+    return this.setRawReadOnly(name, value);
+  }
+
+  protected setRawReadOnly<K extends keyof Unsanitized<NonValueFnAttrs<C>>, V extends Unsanitized<NonValueFnAttrs<C>>[K]>(name: K, value: V): this {
+    return this.setReadOnly(name, this.sanitize(name, value));
   }
 
   /**
@@ -152,12 +153,18 @@ export default abstract class Entity<C extends Configs> {
    * `allowReadOnly` is set to `true`.
    *
    * @param attrs
-   * @param allowReadOnly
    */
-  public fill<R extends boolean = false>(attrs: Partial<FillableAttrs<C, R>>, allowReadOnly?: R): this {
-    (Object.entries(attrs) as Entries<FillableAttrs<C, R>>).forEach(([ name, value ]) => {
-      this.set(name, value, allowReadOnly);
-    });
+  public fill<A extends Partial<WritableAttrs<C>>>(attrs: A): this {
+    return this.fillReadOnly(attrs as unknown as Partial<NonValueFnAttrs<C>>); // TODO: why type cast?
+  }
+
+  /**
+   *
+   * @param attrs
+   */
+  protected fillReadOnly<A extends Partial<NonValueFnAttrs<C>>>(attrs: A): this {
+    (Object.entries(attrs) as Entries<NonValueFnAttrs<C>>)
+      .forEach(([ name, value ]) => this.setReadOnly(name, value));
     return this;
   }
 
@@ -168,17 +175,23 @@ export default abstract class Entity<C extends Configs> {
    * attributes can be provided if `allowReadOnly` is set to `true`.
    *
    * @param attrs
-   * @param allowReadOnly
    */
-  public fillRaw<R extends boolean = false>(attrs: Partial<UnsanitizedAttrs<C, R>>, allowReadOnly?: R): this {
-    const sanitized: Partial<FillableAttrs<C, R>> = (Object.entries(attrs) as Entries<UnsanitizedAttrs<C, R>>).reduce((attrs, [ name, value ]) => {
-      const resolvedName = allowReadOnly ? name as unknown as keyof ValueAttrs<C> : name as unknown as keyof WritableAttrs<C>;
-      return {
-        ...attrs,
-        [resolvedName]: this.sanitize(resolvedName, value),
-      };
-    }, {});
-    return this.fill(sanitized, allowReadOnly);
+  public fillRaw<A extends Partial<Unsanitized<WritableAttrs<C>>>>(attrs: A): this {
+    return this.fillRawReadOnly(attrs as unknown as Partial<Unsanitized<NonValueFnAttrs<C>>>); // TODO: why type cast?
+  }
+
+  /**
+   * Sets multiple attribute values of arbitrary types from the provided `attrs`. The values
+   * provided will be sanitized, normalized and validated. If validation fails an error is thrown
+   * and the attribute - and any subsequent attributes - remain unchanged. Values for `readOnly`
+   * attributes can be provided if `allowReadOnly` is set to `true`.
+   *
+   * @param attrs
+   */
+  protected fillRawReadOnly<A extends Partial<Unsanitized<NonValueFnAttrs<C>>>>(attrs: A): this {
+    (Object.entries(attrs) as Entries<Partial<Unsanitized<NonValueFnAttrs<C>>>>) // TODO: why type cast?
+      .forEach(([ name, value ]) => this.setRawReadOnly(name, value));
+    return this;
   }
 
   /**
@@ -190,20 +203,19 @@ export default abstract class Entity<C extends Configs> {
    *
    * @param json
    */
-  public fillJSON(json: string, allowReadOnly = false): this {
-    const attrs = Object.entries(JSON.parse(json))
-      .filter(([ name ]) => {
-        if (!(name in this.configs) || !('value' in this.configs[name])) {
-          return false;
-        }
-        const config = this.configs[name] as ValueConfig;
-        return !config.readOnly || allowReadOnly;
-      })
-      .reduce((attrs, [ name, value ]) => ({
+  public fillJSON(json: string): this {
+    return this.fillRawReadOnly(
+      (
+        (Object.entries(JSON.parse(json)) as Entries<Record<string | number | symbol, unknown>>).filter(([ name ]) => (
+          'string' === typeof name
+          && name in this.configs
+          && 'function' !== typeof this.configs[name].value
+        )) as Entries<Partial<Unsanitized<NonValueFnAttrs<C>>>>
+      ).reduce((attrs, [ name, value ]) => ({
         ...attrs,
         [name]: value,
-      }), {});
-    return this.fillRaw(attrs, allowReadOnly);
+      }), {})
+    );
   }
 
   /**
