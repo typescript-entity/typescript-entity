@@ -1,4 +1,12 @@
-dist
-node_modules
+.DS_Store
+.idea/
+.npm/
+.vscode/
+dist/
+lerna-debug.log*
+node_modules/
+npm-debug.log*
 package-lock.json
+yarn-debug.log*
+yarn-error.log*
 yarn.lock
