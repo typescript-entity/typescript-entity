@@ -2,67 +2,69 @@ import { ValueFn } from '@typescript-entity/core/src';
 import { lowercase } from '@typescript-entity/normalizers';
 import { toBoolean, toDate, toFloat, toInteger, toNumber, toString } from '@typescript-entity/sanitizers';
 import { isAfter, isBefore, isEmail, isFloat, isInteger, isURL, isUUID } from '@typescript-entity/validators';
-import { BooleanConfig, ConfigFactoryEffectiveValue, DateConfig, FnConfig, NumberConfig, StringConfig } from './Types';
+import { BooleanConfig, DateConfig, FnConfig, NumberConfig, StringConfig } from './Types';
 
 export const booleanConfig = <
   O extends boolean = false,
   H extends boolean = false,
-  R extends boolean = false,
-  T extends ConfigFactoryEffectiveValue<boolean, O> = ConfigFactoryEffectiveValue<boolean, O>
+  R extends boolean = false
 >(optional?: O, hidden?: H, readOnly?: R): BooleanConfig<O, H, R> => ({
   hidden,
   readOnly,
-  value: (optional ? undefined : false) as T,
+  value: optional ? undefined : false,
   sanitizer: optional
     ? (value: unknown): boolean | undefined => toString(value) ? toBoolean(value) : undefined
     : toBoolean,
-} as BooleanConfig<O, H, R>);
+} as unknown as BooleanConfig<O, H, R>);
 
 export const dateConfig = <
   O extends boolean = false,
   H extends boolean = false,
-  R extends boolean = false,
-  T extends ConfigFactoryEffectiveValue<Date, O> = ConfigFactoryEffectiveValue<Date, O>
+  R extends boolean = false
 >(optional?: O, hidden?: H, readOnly?: R): DateConfig<O, H, R> => ({
   hidden,
   readOnly,
-  value: (optional ? undefined : new Date(0)) as T,
+  value: optional ? undefined : new Date(0),
   sanitizer: optional
     ? (value: unknown): Date | undefined => toString(value) ? toDate(value) : undefined
     : toDate,
-} as unknown as DateConfig<O, H, R>); // TODO: why type cast?
+} as unknown as DateConfig<O, H, R>);
 
-export const fnConfig = <F extends ValueFn>(fn: F): FnConfig<ReturnType<F>> => ({
-  value: fn,
-});
+export const fnConfig = <
+  F extends ValueFn,
+  O extends boolean = false,
+  H extends boolean = false,
+  T = ReturnType<F>
+>(value: F, optional?: O, hidden?: H): FnConfig<T, O, H> => ({
+  value,
+  hidden,
+} as unknown as FnConfig<T, O, H>);
 
 export const numberConfig = <
   O extends boolean = false,
   H extends boolean = false,
-  R extends boolean = false,
-  T extends ConfigFactoryEffectiveValue<number, O> = ConfigFactoryEffectiveValue<number, O>
+  R extends boolean = false
 >(optional?: O, hidden?: H, readOnly?: R): NumberConfig<O, H, R> => ({
   hidden,
   readOnly,
-  value: (optional ? undefined : 0) as T,
+  value: optional ? undefined : 0,
   sanitizer: optional
     ? (value: unknown): number | undefined => toString(value) ? toNumber(value) : undefined
     : toNumber,
-} as unknown as NumberConfig<O, H, R>); // TODO: why type cast?
+} as unknown as NumberConfig<O, H, R>);
 
 export const stringConfig = <
   O extends boolean = false,
   H extends boolean = false,
-  R extends boolean = false,
-  T extends ConfigFactoryEffectiveValue<string, O> = ConfigFactoryEffectiveValue<string, O>
+  R extends boolean = false
 >(optional?: O, hidden?: H, readOnly?: R): StringConfig<O, H, R> => ({
   hidden,
   readOnly,
-  value: (optional ? undefined : '') as T,
+  value: optional ? undefined : '',
   sanitizer: optional
     ? (value: unknown): string | undefined => toString(value) || undefined
     : toString,
-} as unknown as StringConfig<O, H, R>); // TODO: why type cast?
+} as unknown as StringConfig<O, H, R>);
 
 export const dateInPastConfig = <
   O extends boolean = false,

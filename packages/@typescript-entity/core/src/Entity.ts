@@ -1,6 +1,6 @@
 import { cloneDeep } from 'lodash';
 import { InvalidAttrValueError } from './Errors';
-import { Attrs, Configs, EntityConstructorAttrs, HiddenAttrs, NormalizerFn, SanitizerFn, Unsanitized, ValidatorFn, NonValueFnAttrs, VisibleAttrs, WritableAttrs } from './Types';
+import { Attrs, Configs, HiddenAttrs, NormalizerFn, SanitizerFn, Unsanitized, ValidatorFn, ValueAttrs, ValueConfig, ValueFnConfig, VisibleAttrs, WritableAttrs } from './Types';
 
 type Entries<T> = { [K in keyof T]: [ K, T[K] ] }[keyof T][];
 
@@ -16,7 +16,7 @@ export default abstract class Entity<C extends Configs> {
    * @param configs
    * @param attrs
    */
-  constructor(configs: C, attrs: EntityConstructorAttrs<C> = {}) {
+  constructor(configs: C, attrs: Partial<ValueAttrs<C>> = {}) {
     this.configs = (Object.entries(configs) as Entries<C>).reduce((configs, [ name, config ]) => ({
       ...configs,
       [name]: {
@@ -33,8 +33,8 @@ export default abstract class Entity<C extends Configs> {
    * @param name
    * @param value
    */
-  public sanitize<K extends keyof NonValueFnAttrs<C>, V extends NonValueFnAttrs<C>[K]>(name: K, value: unknown): ReturnType<SanitizerFn<V>> {
-    return (this.configs[name].sanitizer as SanitizerFn<NonValueFnAttrs<C>[K]>).call(this, value); // TODO: why type cast?
+  public sanitize<K extends keyof ValueAttrs<C>, V extends ValueAttrs<C>[K]>(name: K, value: unknown): ReturnType<SanitizerFn<V>> {
+    return (this.configs[name] as ValueConfig<V>).sanitizer.call(this, value);
   }
 
   /**
@@ -43,10 +43,10 @@ export default abstract class Entity<C extends Configs> {
    * @param name
    * @param value
    */
-  public normalize<K extends keyof NonValueFnAttrs<C>, V extends NonValueFnAttrs<C>[K]>(name: K, value: V): ReturnType<NormalizerFn<V>> {
-    const normalizer = this.configs[name].normalizer;
+  public normalize<K extends keyof ValueAttrs<C>, V extends ValueAttrs<C>[K]>(name: K, value: V): ReturnType<NormalizerFn<V>> {
+    const normalizer = (this.configs[name] as ValueConfig<V>).normalizer;
     return (undefined !== value && null !== value && undefined !== normalizer)
-      ? normalizer.call(this, value)
+      ? normalizer.call(this, value as NonNullable<V>)
       : value;
   }
 
@@ -56,10 +56,10 @@ export default abstract class Entity<C extends Configs> {
    * @param name
    * @param value
    */
-  public validate<K extends keyof NonValueFnAttrs<C>, V extends NonValueFnAttrs<C>[K]>(name: K, value: V): ReturnType<ValidatorFn<V>> {
-    const validator = this.configs[name].validator;
+  public validate<K extends keyof ValueAttrs<C>, V extends ValueAttrs<C>[K]>(name: K, value: V): ReturnType<ValidatorFn<V>> {
+    const validator = (this.configs[name] as ValueConfig<V>).validator;
     return (undefined !== value && null !== value && undefined !== validator)
-      ? validator.call(this, value)
+      ? validator.call(this, value as NonNullable<V>)
       : true;
   }
 
@@ -70,9 +70,9 @@ export default abstract class Entity<C extends Configs> {
    * @param name
    */
   public get<K extends keyof Attrs<C>, V extends Attrs<C>[K]>(name: K): V {
-    return 'function' === typeof this.configs[name].value
-      ? this.configs[name].value.call(this)
-      : this.configs[name].value;
+    return 'function' === typeof this.configs[name]['value']
+      ? (this.configs[name] as ValueFnConfig<V>).value.call(this)
+      : (this.configs[name] as ValueConfig<V>).value;
   }
 
   /**
@@ -98,14 +98,16 @@ export default abstract class Entity<C extends Configs> {
    * Returns the values of the attributes configured as `hidden`.
    */
   public hidden(): HiddenAttrs<C> {
-    return this.some(Object.keys(this.configs).filter((name) => this.configs[name].hidden)) as HiddenAttrs<C>;
+    return this.some(Object.keys(this.configs)
+      .filter((name) => this.configs[name].hidden)) as HiddenAttrs<C>;
   }
 
   /**
    * Returns the values of the attributes not configured as `hidden`.
    */
   public visible(): VisibleAttrs<C> {
-    return this.some(Object.keys(this.configs).filter((name) => !this.configs[name].hidden)) as VisibleAttrs<C>;
+    return this.some(Object.keys(this.configs)
+      .filter((name) => !this.configs[name].hidden)) as VisibleAttrs<C>;
   }
 
   /**
@@ -117,15 +119,15 @@ export default abstract class Entity<C extends Configs> {
    * @param value
    */
   public set<K extends keyof WritableAttrs<C>, V extends WritableAttrs<C>[K]>(name: K, value: V): this {
-    return this.setReadOnly(name, value as NonValueFnAttrs<C>[K]); // TODO: why type cast?
+    return this.setReadOnly(name, value as ValueAttrs<C>[K]); // TODO: Unsure why value needs type assertion
   }
 
-  protected setReadOnly<K extends keyof NonValueFnAttrs<C>, V extends NonValueFnAttrs<C>[K]>(name: K, value: V): this {
+  protected setReadOnly<K extends keyof ValueAttrs<C>, V extends ValueAttrs<C>[K]>(name: K, value: V): this {
     value = this.normalize(name, value);
     if (!this.validate(name, value)) {
       throw new InvalidAttrValueError(this, name, value);
     }
-    this.configs[name].value = value;
+    (this.configs[name] as ValueConfig<V>).value = value;
     return this;
   }
 
@@ -142,7 +144,7 @@ export default abstract class Entity<C extends Configs> {
     return this.setRawReadOnly(name, value);
   }
 
-  protected setRawReadOnly<K extends keyof Unsanitized<NonValueFnAttrs<C>>, V extends Unsanitized<NonValueFnAttrs<C>>[K]>(name: K, value: V): this {
+  protected setRawReadOnly<K extends keyof Unsanitized<ValueAttrs<C>>, V extends Unsanitized<ValueAttrs<C>>[K]>(name: K, value: V): this {
     return this.setReadOnly(name, this.sanitize(name, value));
   }
 
@@ -154,17 +156,26 @@ export default abstract class Entity<C extends Configs> {
    *
    * @param attrs
    */
-  public fill<A extends WritableAttrs<C>>(attrs: Partial<A>): this {
-    return this.fillReadOnly(attrs as unknown as Partial<NonValueFnAttrs<C>>); // TODO: why type cast?
+  public fill(attrs: Partial<WritableAttrs<C>>): this {
+    return this.fillReadOnly(attrs as Partial<ValueAttrs<C>>); // TODO: Unsure why attrs needs type assertion
   }
 
   /**
    *
    * @param attrs
    */
-  protected fillReadOnly<A extends NonValueFnAttrs<C>>(attrs: Partial<A>): this {
-    (Object.entries(attrs) as Entries<NonValueFnAttrs<C>>)
-      .forEach(([ name, value ]) => this.setReadOnly(name, value));
+  protected fillReadOnly(attrs: Partial<ValueAttrs<C>>): this {
+    // Cannot assert as Entries<Partial<...>> since TS will (correctly) complain that values may be
+    // undefined, but we're mitigating against this by ignoring undefined values
+    (Object.entries(attrs) as Entries<ValueAttrs<C>>)
+      .forEach(([ name, value ]) => {
+        if (undefined !== value) {
+          // Prevent abuse of Partial<> allowing non-undefinable attributes to be set to undefined
+          // https://github.com/microsoft/TypeScript/issues/13195
+          // https://github.com/microsoft/TypeScript/issues/26438
+          this.setReadOnly(name, value);
+        }
+      });
     return this;
   }
 
@@ -176,8 +187,8 @@ export default abstract class Entity<C extends Configs> {
    *
    * @param attrs
    */
-  public fillRaw<A extends Unsanitized<WritableAttrs<C>>>(attrs: Partial<A>): this {
-    return this.fillRawReadOnly(attrs as unknown as Partial<Unsanitized<NonValueFnAttrs<C>>>); // TODO: why type cast?
+  public fillRaw(attrs: Partial<Unsanitized<WritableAttrs<C>>>): this {
+    return this.fillRaw(attrs);
   }
 
   /**
@@ -188,9 +199,16 @@ export default abstract class Entity<C extends Configs> {
    *
    * @param attrs
    */
-  protected fillRawReadOnly<A extends Unsanitized<NonValueFnAttrs<C>>>(attrs: Partial<A>): this {
-    (Object.entries(attrs) as Entries<Partial<Unsanitized<NonValueFnAttrs<C>>>>) // TODO: why type cast?
-      .forEach(([ name, value ]) => this.setRawReadOnly(name, value));
+  protected fillRawReadOnly(attrs: Partial<Unsanitized<ValueAttrs<C>>>): this {
+    (Object.entries(attrs) as Entries<Partial<Unsanitized<ValueAttrs<C>>>>)
+      .forEach(([ name, value ]) => {
+        // Prevent abuse of Partial<> allowing non-undefinable attributes to be set to undefined
+        // https://github.com/microsoft/TypeScript/issues/13195
+        // https://github.com/microsoft/TypeScript/issues/26438
+        if (undefined !== value) {
+          this.setRawReadOnly(name, value);
+        }
+      });
     return this;
   }
 
@@ -205,16 +223,16 @@ export default abstract class Entity<C extends Configs> {
    */
   public fillJSON(json: string): this {
     return this.fillRawReadOnly(
-      (
-        (Object.entries(JSON.parse(json)) as Entries<Record<string | number | symbol, unknown>>).filter(([ name ]) => (
+      Object.entries(JSON.parse(json))
+        .filter(([ name ]) => (
           'string' === typeof name
           && name in this.configs
-          && 'function' !== typeof this.configs[name].value
-        )) as Entries<Partial<Unsanitized<NonValueFnAttrs<C>>>>
-      ).reduce((attrs, [ name, value ]) => ({
-        ...attrs,
-        [name]: value,
-      }), {})
+          && 'function' !== typeof this.configs[name]['value']
+        ))
+        .reduce((attrs, [ name, value ]) => ({
+          ...attrs,
+          [name]: value,
+        }), {})
     );
   }
 

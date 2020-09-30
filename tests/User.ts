@@ -1,10 +1,17 @@
-import { booleanConfig, dateInPastConfig, emailConfig, fnConfig, stringConfig, uuid4Config } from '@typescript-entity/configs';
-import { Attr, Entity, EntityConstructorAttrs, EntityInterface, NonValueFnAttrs } from '@typescript-entity/core';
+import { booleanConfig, BooleanConfig, DateConfig, dateInPastConfig, emailConfig, fnConfig, FnConfig, stringConfig, StringConfig, uuid4Config } from '@typescript-entity/configs';
+import { Attr, Attrs, Entity, ValueAttrs } from '@typescript-entity/core';
 import { isLength } from '@typescript-entity/validators';
 
-export type UserConfigs = typeof User.CONFIGS;
+export type UserConfigs = {
+  date_of_birth: DateConfig,
+  email: StringConfig,
+  email_domain: FnConfig<string>,
+  uuid: StringConfig<true, true, true>,
+  username: StringConfig,
+  verified: BooleanConfig,
+};
 
-export class User extends Entity<UserConfigs> implements EntityInterface<UserConfigs> {
+export class User extends Entity<UserConfigs> implements Attrs<UserConfigs> {
 
   public static readonly CONFIGS = {
     date_of_birth: dateInPastConfig(),
@@ -18,7 +25,7 @@ export class User extends Entity<UserConfigs> implements EntityInterface<UserCon
     verified: booleanConfig(),
   };
 
-  constructor(attrs: EntityConstructorAttrs<UserConfigs> = {}) {
+  constructor(attrs: Partial<ValueAttrs<UserConfigs>> = {}) {
     super(User.CONFIGS, attrs);
   }
 
@@ -62,7 +69,7 @@ export class User extends Entity<UserConfigs> implements EntityInterface<UserCon
     this.set('verified', value);
   }
 
-  public exposedFillReadOnly<A extends Partial<NonValueFnAttrs<UserConfigs>>>(attrs: A): this {
+  public exposedFillReadOnly<A extends Partial<ValueAttrs<UserConfigs>>>(attrs: A): this {
     return this.fillReadOnly(attrs);
   }
 

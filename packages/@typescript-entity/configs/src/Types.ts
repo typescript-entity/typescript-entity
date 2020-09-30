@@ -1,30 +1,28 @@
-import { Config, Value, ValueFn } from '@typescript-entity/core';
-
-export type ConfigFactoryEffectiveValue<T extends Value | ValueFn, O extends boolean> = (
-  T extends ValueFn
-    ? T
-    : O extends true
-      ? NonNullable<T> | undefined
-      : NonNullable<T>
-);
+import { ValueConfig, ValueFn, ValueFnConfig } from '@typescript-entity/core';
 
 export type ConfigFactory<
-  Type extends Value | ValueFn,
+  Type,
   Optional extends boolean = false,
   Hidden extends boolean = false,
   ReadOnly extends boolean = false,
-  V extends ConfigFactoryEffectiveValue<Type, Optional> = ConfigFactoryEffectiveValue<Type, Optional>,
-  C extends Config<V> = Config<V>
+  T = Optional extends true
+    ? Type extends ValueFn
+      ? NonNullable<ReturnType<Type>> | undefined
+      : NonNullable<Type> | undefined
+    : Type extends ValueFn
+      ? NonNullable<ReturnType<Type>>
+      : NonNullable<Type>,
+  C = Type extends ValueFn ? ValueFnConfig<T> : ValueConfig<T>
 > = (
-  (Hidden extends true ? { hidden: true } : { hidden?: false })
-  & (
-    V extends ValueFn
+  (
+    C extends ValueFnConfig
       ? Omit<C, 'hidden'>
       : (
         Omit<C, 'hidden' | 'readOnly'>
         & (ReadOnly extends true ? { readOnly: true } : { readOnly?: false })
       )
   )
+  & (Hidden extends true ? { hidden: true } : { hidden?: false })
 );
 
 export type BooleanConfig<Optional extends boolean = false, Hidden extends boolean = false, ReadOnly extends boolean = false> = ConfigFactory<boolean, Optional, Hidden, ReadOnly>;
@@ -35,7 +33,7 @@ export type DateConfig<Optional extends boolean = false, Hidden extends boolean 
 
 export type DateArrayConfig<Optional extends boolean = false, Hidden extends boolean = false, ReadOnly extends boolean = false> = ConfigFactory<Date[], Optional, Hidden, ReadOnly>;
 
-export type FnConfig<Type extends Value> = ConfigFactory<() => Type>;
+export type FnConfig<Type, Optional extends boolean = false, Hidden extends boolean = false> = ConfigFactory<() => Type, Optional, Hidden>;
 
 export type NumberConfig<Optional extends boolean = false, Hidden extends boolean = false, ReadOnly extends boolean = false> = ConfigFactory<number, Optional, Hidden, ReadOnly>;
 

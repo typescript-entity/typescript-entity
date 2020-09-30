@@ -1,42 +1,39 @@
-export type Configs = Record<string, Config>;
+export interface Configs {
+  [name: string]: ValueConfig | ValueFnConfig;
+}
 
-export type Config<V extends Value | ValueFn = Value> = (
-  {
-    hidden?: boolean;
-    value: V;
-  } & (
-    V extends ValueFn
-      ? {
-        normalizer?: never;
-        readOnly?: never;
-        sanitizer?: never;
-        validator?: never;
-      }
-      : {
-        normalizer?: NormalizerFn<V>;
-        readOnly?: boolean;
-        sanitizer: SanitizerFn<V>;
-        validator?: ValidatorFn<V>;
-      }
-  )
-);
+interface Config {
+  hidden?: boolean;
+}
+
+export interface ValueConfig<V = Value> extends Config {
+  value: V;
+  normalizer?: NormalizerFn<V>;
+  readOnly?: boolean;
+  sanitizer: SanitizerFn<V>;
+  validator?: ValidatorFn<V>;
+}
+
+export interface ValueFnConfig<V = Value> extends Config {
+  value: () => V;
+}
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type Value = any;
 
-export type ValueFn<V extends Value = Value> = () => V;
+export type ValueFn<V = Value> = () => V;
 
-export type SanitizerFn<V extends Value = Value> = (value: unknown) => V;
+export type SanitizerFn<V> = (value: unknown) => V;
 
-export type NormalizerFn<V extends Value = Value> = (value: NonNullable<V>) => V;
+export type NormalizerFn<V> = (value: NonNullable<V>) => V;
 
-export type ValidatorFn<V extends Value = Value> = (value: NonNullable<V>) => boolean;
+export type ValidatorFn<V> = (value: NonNullable<V>) => boolean;
 
 export type Attrs<C extends Configs> = {
   [K in keyof C]: Attr<C, K>;
 };
 
-export type Attr<C extends Configs, K extends keyof C> = C[K]['value'] extends ValueFn ? ReturnType<C[K]['value']> : C[K]['value'];
+export type Attr<C extends Configs, K extends keyof C> = C[K] extends ValueFnConfig ? ReturnType<C[K]['value']> : C[K]['value'];
 
 export type Unsanitized<Attrs> = Record<keyof Attrs, unknown>;
 
@@ -48,14 +45,14 @@ export type VisibleAttrs<C extends Configs> = Attrs<Pick<C, {
   [K in keyof C]: C[K]['hidden'] extends true ? never : K;
 }[keyof C]>>;
 
-export type NonValueFnAttrs<C extends Configs> = Attrs<Pick<C, {
-  [K in keyof C]: C[K]['value'] extends ValueFn ? never : K;
+export type ValueAttrs<C extends Configs> = Attrs<Pick<C, {
+  [K in keyof C]: C[K] extends ValueConfig ? K : never;
 }[keyof C]>>;
 
 export type WritableAttrs<C extends Configs> = Attrs<Pick<C, {
-  [K in keyof NonValueFnAttrs<C>]: C[K]['readOnly'] extends true ? never : K;
-}[keyof NonValueFnAttrs<C>]>>;
-
-export type EntityConstructorAttrs<C extends Configs> = Partial<NonValueFnAttrs<C>>;
-
-export type EntityInterface<C extends Configs> = Attrs<C>;
+  [K in keyof C]: C[K] extends ValueConfig
+    ? C[K]['readOnly'] extends true
+      ? never
+      : K
+    : never;
+}[keyof C]>>;

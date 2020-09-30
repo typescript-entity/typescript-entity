@@ -1,5 +1,5 @@
 import Entity from './Entity';
-import { Configs } from './Types';
+import { Configs, Value } from './Types';
 
 export abstract class EntityError<C extends Configs> extends Error {
 
@@ -24,9 +24,9 @@ export abstract class AttrError<C extends Configs> extends EntityError<C> {
 
 export abstract class AttrValueError<C extends Configs> extends AttrError<C> {
 
-  public attrValue: unknown;
+  public attrValue: Value;
 
-  constructor(entity: Entity<C>, attrName: keyof C, attrValue: unknown, message?: string) {
+  constructor(entity: Entity<C>, attrName: keyof C, attrValue: Value, message?: string) {
     super(entity, attrName, message);
     this.attrValue = attrValue;
   }
@@ -34,7 +34,7 @@ export abstract class AttrValueError<C extends Configs> extends AttrError<C> {
 }
 
 export class InvalidAttrValueError<C extends Configs> extends AttrValueError<C> {
-  constructor(entity: Entity<C>, attrName: keyof C, attrValue: unknown, message?: string) {
+  constructor(entity: Entity<C>, attrName: keyof C, attrValue: Value, message?: string) {
     super(entity, attrName, attrValue, message || `Attribute "${entity.constructor.name}.${attrName}" received an invalid value`);
   }
 }
