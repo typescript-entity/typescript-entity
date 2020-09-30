@@ -99,7 +99,7 @@ export default abstract class Entity<C extends Configs> {
   }
 
   /**
-   * Returns the attributes specified in `names`.
+   * Returns the attributes included in `names`.
    *
    * @param names
    */
