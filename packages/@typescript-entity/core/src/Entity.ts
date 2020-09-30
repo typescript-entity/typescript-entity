@@ -145,7 +145,7 @@ export default abstract class Entity<C extends Configs> {
   }
 
   /**
-   * Like [[`Entity.set()`]] but allows overwriting of attributes configured as `readOnly`.
+   * Like [[`Entity.set`]] but allows overwriting of attributes configured as `readOnly`.
    *
    * @param name
    * @param value
@@ -163,8 +163,8 @@ export default abstract class Entity<C extends Configs> {
   }
 
   /**
-   * Like [[`Entity.set()`]] but accepts an arbitrary `value` which will be sanitized to the
-   * expected type using the configured `sanitizer` function.
+   * Like [[`Entity.set`]] but accepts an arbitrary `value` which will be sanitized to the expected
+   * type using the configured `sanitizer` function.
    *
    * @param name
    * @param value
@@ -174,7 +174,7 @@ export default abstract class Entity<C extends Configs> {
   }
 
   /**
-   * Like [[`Entity.setRaw()`]] but allows overwriting of attributes configured as `readOnly`.
+   * Like [[`Entity.setRaw`]] but allows overwriting of attributes configured as `readOnly`.
    *
    * @param name
    * @param value
@@ -195,7 +195,7 @@ export default abstract class Entity<C extends Configs> {
   }
 
   /**
-   * Like [[`Entity.fill()`]] but allows overwriting of attributes configured as `readOnly`.
+   * Like [[`Entity.fill`]] but allows overwriting of attributes configured as `readOnly`.
    *
    * @param attrs
    */
@@ -215,7 +215,7 @@ export default abstract class Entity<C extends Configs> {
   }
 
   /**
-   * Like [[`Entity.fill()`]] but accepts a arbitrary values which will be sanitized to the expected
+   * Like [[`Entity.fill`]] but accepts a arbitrary values which will be sanitized to the expected
    * type using the configured `sanitizer` functions.
    *
    * @param attrs
@@ -225,7 +225,7 @@ export default abstract class Entity<C extends Configs> {
   }
 
   /**
-   * Like [[`Entity.fillRaw()`]] but allows overwriting of attributes configured as `readOnly`.
+   * Like [[`Entity.fillRaw`]] but allows overwriting of attributes configured as `readOnly`.
    *
    * @param attrs
    */
@@ -245,7 +245,7 @@ export default abstract class Entity<C extends Configs> {
   /**
    * Sets multiple attributes from the provided `json` string. Unrecognised attributes, or those
    * that are configured with value functions, are ignored. The remaining attributes are passed to
-   * [[`Entity.fillRawReadOnly()`]] for sanitization, normalization and validation.
+   * [[`Entity.fillRawReadOnly`]] for sanitization, normalization and validation.
    *
    * @param json
    */
@@ -267,7 +267,7 @@ export default abstract class Entity<C extends Configs> {
   /**
    * Returns a string representation of the [[`Entity`]] instance.
    *
-   * @see [[`Entity.toJSON()`]]
+   * @see [[`Entity.toJSON`]]
    */
   public toString(): string
   {
@@ -277,7 +277,7 @@ export default abstract class Entity<C extends Configs> {
   /**
    * Returns the attributes to be included when stringifying an instance to JSON form.
    *
-   * @see [[`Entity.visible()`]]
+   * @see [[`Entity.visible`]]
    */
   public toJSON(): VisibleAttrs<C> {
     return this.visible();
