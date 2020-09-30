@@ -215,7 +215,7 @@ export default abstract class Entity<C extends Configs> {
   }
 
   /**
-   * Like [[`Entity.fill`]] but accepts a arbitrary values which will be sanitized to the expected
+   * Like [[`Entity.fill`]] but accepts arbitrary values which will be sanitized to the expected
    * type using the configured `sanitizer` functions.
    *
    * @param attrs
