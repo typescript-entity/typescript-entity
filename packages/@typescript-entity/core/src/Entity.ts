@@ -33,7 +33,7 @@ export default abstract class Entity<C extends Configs> {
    * @param name
    * @param value
    */
-  public sanitize<K extends keyof NonValueFnAttrs<C>>(name: K, value: unknown): ReturnType<SanitizerFn<NonValueFnAttrs<C>[K]>> {
+  public sanitize<K extends keyof NonValueFnAttrs<C>, V extends NonValueFnAttrs<C>[K]>(name: K, value: unknown): ReturnType<SanitizerFn<V>> {
     return (this.configs[name].sanitizer as SanitizerFn<NonValueFnAttrs<C>[K]>).call(this, value); // TODO: why type cast?
   }
 
@@ -116,11 +116,11 @@ export default abstract class Entity<C extends Configs> {
    * @param name
    * @param value
    */
-  public set<K extends keyof WritableAttrs<C>>(name: K, value: WritableAttrs<C>[K]): this {
+  public set<K extends keyof WritableAttrs<C>, V extends WritableAttrs<C>[K]>(name: K, value: V): this {
     return this.setReadOnly(name, value as NonValueFnAttrs<C>[K]); // TODO: why type cast?
   }
 
-  protected setReadOnly<K extends keyof NonValueFnAttrs<C>>(name: K, value: NonValueFnAttrs<C>[K]): this {
+  protected setReadOnly<K extends keyof NonValueFnAttrs<C>, V extends NonValueFnAttrs<C>[K]>(name: K, value: V): this {
     value = this.normalize(name, value);
     if (!this.validate(name, value)) {
       throw new InvalidAttrValueError(this, name, value);
@@ -154,7 +154,7 @@ export default abstract class Entity<C extends Configs> {
    *
    * @param attrs
    */
-  public fill<A extends Partial<WritableAttrs<C>>>(attrs: A): this {
+  public fill<A extends WritableAttrs<C>>(attrs: Partial<A>): this {
     return this.fillReadOnly(attrs as unknown as Partial<NonValueFnAttrs<C>>); // TODO: why type cast?
   }
 
@@ -162,7 +162,7 @@ export default abstract class Entity<C extends Configs> {
    *
    * @param attrs
    */
-  protected fillReadOnly<A extends Partial<NonValueFnAttrs<C>>>(attrs: A): this {
+  protected fillReadOnly<A extends NonValueFnAttrs<C>>(attrs: Partial<A>): this {
     (Object.entries(attrs) as Entries<NonValueFnAttrs<C>>)
       .forEach(([ name, value ]) => this.setReadOnly(name, value));
     return this;
@@ -176,7 +176,7 @@ export default abstract class Entity<C extends Configs> {
    *
    * @param attrs
    */
-  public fillRaw<A extends Partial<Unsanitized<WritableAttrs<C>>>>(attrs: A): this {
+  public fillRaw<A extends Unsanitized<WritableAttrs<C>>>(attrs: Partial<A>): this {
     return this.fillRawReadOnly(attrs as unknown as Partial<Unsanitized<NonValueFnAttrs<C>>>); // TODO: why type cast?
   }
 
@@ -188,7 +188,7 @@ export default abstract class Entity<C extends Configs> {
    *
    * @param attrs
    */
-  protected fillRawReadOnly<A extends Partial<Unsanitized<NonValueFnAttrs<C>>>>(attrs: A): this {
+  protected fillRawReadOnly<A extends Unsanitized<NonValueFnAttrs<C>>>(attrs: Partial<A>): this {
     (Object.entries(attrs) as Entries<Partial<Unsanitized<NonValueFnAttrs<C>>>>) // TODO: why type cast?
       .forEach(([ name, value ]) => this.setRawReadOnly(name, value));
     return this;
