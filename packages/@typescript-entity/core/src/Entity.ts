@@ -163,8 +163,7 @@ export default abstract class Entity<C extends Configs> {
   }
 
   /**
-   * Like [[`Entity.set`]] but accepts an arbitrary `value` which will be sanitized to the expected
-   * type using the configured `sanitizer` function.
+   * Like [[`Entity.set`]] but accepts an arbitrary `value` which will be sanitized first.
    *
    * @param name
    * @param value
@@ -215,8 +214,7 @@ export default abstract class Entity<C extends Configs> {
   }
 
   /**
-   * Like [[`Entity.fill`]] but accepts arbitrary values which will be sanitized to the expected
-   * type using the configured `sanitizer` functions.
+   * Like [[`Entity.fill`]] but accepts arbitrary values which will be sanitized first.
    *
    * @param attrs
    */
