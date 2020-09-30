@@ -99,7 +99,7 @@ export default abstract class Entity<C extends Configs> {
   }
 
   /**
-   * Returns the attributes specified by `names`.
+   * Returns the attributes specified in `names`.
    *
    * @param names
    */
@@ -111,7 +111,7 @@ export default abstract class Entity<C extends Configs> {
   }
 
   /**
-   * Returns all attribute.
+   * Returns all attributes.
    */
   public all(): Attrs<C> {
     return this.some(Object.keys(this.configs)) as Attrs<C>;
