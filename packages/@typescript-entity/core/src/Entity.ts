@@ -1,5 +1,5 @@
 import { cloneDeep } from 'lodash';
-import { InvalidAttrValueError } from './Errors';
+import { InvalidAttrValueError, UnknownAttrError, UnsanitizableAttrError } from './Errors';
 import { Attrs, Configs, HiddenAttrs, NormalizerFn, SanitizerFn, Unsanitized, ValidatorFn, ValueAttrs, ValueConfig, ValueFnConfig, VisibleAttrs, WritableAttrs } from './Types';
 
 type Entries<T> = { [K in keyof T]: [ K, T[K] ] }[keyof T][];
@@ -34,7 +34,14 @@ export default abstract class Entity<C extends Configs> {
    * @param value
    */
   public sanitize<K extends keyof ValueAttrs<C>, V extends ValueAttrs<C>[K]>(name: K, value: unknown): ReturnType<SanitizerFn<V>> {
-    return (this.configs[name] as ValueConfig<V>).sanitizer.call(this, value);
+    if (!(name in this.configs)) {
+      throw new UnknownAttrError(this, name);
+    }
+    const sanitizer = (this.configs[name] as ValueConfig<V>).sanitizer;
+    if (undefined === sanitizer) {
+      throw new UnsanitizableAttrError(this, name);
+    }
+    return sanitizer.call(this, value);
   }
 
   /**
@@ -44,6 +51,9 @@ export default abstract class Entity<C extends Configs> {
    * @param value
    */
   public normalize<K extends keyof ValueAttrs<C>, V extends ValueAttrs<C>[K]>(name: K, value: V): ReturnType<NormalizerFn<V>> {
+    if (!(name in this.configs)) {
+      throw new UnknownAttrError(this, name);
+    }
     const normalizer = (this.configs[name] as ValueConfig<V>).normalizer;
     return (undefined !== value && null !== value && undefined !== normalizer)
       ? normalizer.call(this, value as NonNullable<V>)
@@ -57,6 +67,9 @@ export default abstract class Entity<C extends Configs> {
    * @param value
    */
   public validate<K extends keyof ValueAttrs<C>, V extends ValueAttrs<C>[K]>(name: K, value: V): ReturnType<ValidatorFn<V>> {
+    if (!(name in this.configs)) {
+      throw new UnknownAttrError(this, name);
+    }
     const validator = (this.configs[name] as ValueConfig<V>).validator;
     return (undefined !== value && null !== value && undefined !== validator)
       ? validator.call(this, value as NonNullable<V>)
@@ -70,6 +83,9 @@ export default abstract class Entity<C extends Configs> {
    * @param name
    */
   public get<K extends keyof Attrs<C>, V extends Attrs<C>[K]>(name: K): V {
+    if (!(name in this.configs)) {
+      throw new UnknownAttrError(this, name);
+    }
     return 'function' === typeof this.configs[name]['value']
       ? (this.configs[name] as ValueFnConfig<V>).value.call(this)
       : (this.configs[name] as ValueConfig<V>).value;
@@ -123,6 +139,9 @@ export default abstract class Entity<C extends Configs> {
   }
 
   protected setReadOnly<K extends keyof ValueAttrs<C>, V extends ValueAttrs<C>[K]>(name: K, value: V): this {
+    if (!(name in this.configs)) {
+      throw new UnknownAttrError(this, name);
+    }
     value = this.normalize(name, value);
     if (!this.validate(name, value)) {
       throw new InvalidAttrValueError(this, name, value);

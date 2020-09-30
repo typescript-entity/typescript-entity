@@ -1,7 +1,7 @@
 import Entity from './Entity';
 import { Configs, Value } from './Types';
 
-export abstract class EntityError<C extends Configs> extends Error {
+export class EntityError<C extends Configs> extends Error {
 
   public entity: Entity<C>;
 
@@ -11,7 +11,7 @@ export abstract class EntityError<C extends Configs> extends Error {
   }
 
 }
-export abstract class AttrError<C extends Configs> extends EntityError<C> {
+export class AttrError<C extends Configs> extends EntityError<C> {
 
   public attrName: keyof C;
 
@@ -22,7 +22,7 @@ export abstract class AttrError<C extends Configs> extends EntityError<C> {
 
 }
 
-export abstract class AttrValueError<C extends Configs> extends AttrError<C> {
+export class AttrValueError<C extends Configs> extends AttrError<C> {
 
   public attrValue: Value;
 
@@ -33,8 +33,20 @@ export abstract class AttrValueError<C extends Configs> extends AttrError<C> {
 
 }
 
+export class UnknownAttrError<C extends Configs> extends AttrError<C> {
+  constructor(entity: Entity<C>, attrName: unknown, message?: string) {
+    super(entity, attrName as keyof C, message || `Attribute "${entity.constructor.name}.${String(attrName)}" does not exist.`);
+  }
+}
+
+export class UnsanitizableAttrError<C extends Configs> extends AttrError<C> {
+  constructor(entity: Entity<C>, attrName: keyof C, message?: string) {
+    super(entity, attrName, message || `Attribute "${entity.constructor.name}.${String(attrName)}" is not sanitizable.`);
+  }
+}
+
 export class InvalidAttrValueError<C extends Configs> extends AttrValueError<C> {
   constructor(entity: Entity<C>, attrName: keyof C, attrValue: Value, message?: string) {
-    super(entity, attrName, attrValue, message || `Attribute "${entity.constructor.name}.${attrName}" received an invalid value`);
+    super(entity, attrName, attrValue, message || `Attribute "${entity.constructor.name}.${attrName}" received an invalid value.`);
   }
 }
