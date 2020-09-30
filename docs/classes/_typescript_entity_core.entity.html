@@ -138,14 +138,15 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/apancutt/typescript-entity/blob/6afab63/packages/@typescript-entity/core/src/Entity.ts#L9">packages/@typescript-entity/core/src/Entity.ts:9</a></li>
+									<li>Defined in <a href="https://github.com/apancutt/typescript-entity/blob/6f2c992/packages/@typescript-entity/core/src/Entity.ts#L9">packages/@typescript-entity/core/src/Entity.ts:9</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
 									<p>Creates a new <a href="_typescript_entity_core.entity.html"><code>Entity</code></a> instance. The attribute <code>configs</code> define the attributes available on
-										the <a href="_typescript_entity_core.entity.html"><code>Entity</code></a> instance along with default values for any required attributes. Initial values
-									(including values for <code>readOnly</code> attributes) can be provided in <code>attrs</code>.</p>
+										the <a href="_typescript_entity_core.entity.html"><code>Entity</code></a> instance along with a default <code>value</code> for all required attributes. Default
+										values are not sanitized, normalized nor validated. Values provided via <code>attrs</code> are normalized
+									and validated, and may also include values for <code>readOnly</code> attributes.</p>
 								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -174,7 +175,7 @@
 					<div class="tsd-signature tsd-kind-icon">configs<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">C</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/apancutt/typescript-entity/blob/6afab63/packages/@typescript-entity/core/src/Entity.ts#L9">packages/@typescript-entity/core/src/Entity.ts:9</a></li>
+							<li>Defined in <a href="https://github.com/apancutt/typescript-entity/blob/6f2c992/packages/@typescript-entity/core/src/Entity.ts#L9">packages/@typescript-entity/core/src/Entity.ts:9</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -191,12 +192,12 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/apancutt/typescript-entity/blob/6afab63/packages/@typescript-entity/core/src/Entity.ts#L109">packages/@typescript-entity/core/src/Entity.ts:109</a></li>
+									<li>Defined in <a href="https://github.com/apancutt/typescript-entity/blob/6f2c992/packages/@typescript-entity/core/src/Entity.ts#L116">packages/@typescript-entity/core/src/Entity.ts:116</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Returns all attribute values.</p>
+									<p>Returns all attribute.</p>
 								</div>
 							</div>
 							<h4 class="tsd-returns-title">Returns <a href="../modules/_typescript_entity_core.html#attrs" class="tsd-signature-type">Attrs</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">C</span><span class="tsd-signature-symbol">&gt;</span></h4>
@@ -213,15 +214,14 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/apancutt/typescript-entity/blob/6afab63/packages/@typescript-entity/core/src/Entity.ts#L178">packages/@typescript-entity/core/src/Entity.ts:178</a></li>
+									<li>Defined in <a href="https://github.com/apancutt/typescript-entity/blob/6f2c992/packages/@typescript-entity/core/src/Entity.ts#L193">packages/@typescript-entity/core/src/Entity.ts:193</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Sets multiple attribute values from the provided <code>attrs</code>. The values provided will be
-										normalized and validated. If validation fails an error is thrown and the attribute - and any
-										subsequent attributes - remain unchanged. Values for <code>readOnly</code> attributes can be provided if
-									<code>allowReadOnly</code> is set to <code>true</code>.</p>
+									<p>Sets multiple attributes using the provided <code>attrs</code>. The values provided will be normalized and
+										validated. If validation fails an error is thrown and the attribute - and any subsequent
+									attributes - remain unmodified.</p>
 								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -246,16 +246,14 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/apancutt/typescript-entity/blob/6afab63/packages/@typescript-entity/core/src/Entity.ts#L243">packages/@typescript-entity/core/src/Entity.ts:243</a></li>
+									<li>Defined in <a href="https://github.com/apancutt/typescript-entity/blob/6f2c992/packages/@typescript-entity/core/src/Entity.ts#L252">packages/@typescript-entity/core/src/Entity.ts:252</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Sets multiple attribute values of arbitrary types from the provided <code>json</code> string. The values
-										provided will be sanitized, normalized and validated. If validation fails an error is thrown
-										and the attribute - and any subsequent attributes - remain unchanged. Values for <code>readOnly</code>
-										attributes can be provided if <code>allowReadOnly</code> is set to <code>true</code>. Values for unregistered
-									attributes, and those configured with value functions, are ignored.</p>
+									<p>Sets multiple attributes from the provided <code>json</code> string. Unrecognised attributes, or those
+										that are configured with value functions, are ignored. The remaining attributes are passed to
+									[[<code>Entity.fillRawReadOnly()</code>]] for sanitization, normalization and validation.</p>
 								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -280,15 +278,13 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/apancutt/typescript-entity/blob/6afab63/packages/@typescript-entity/core/src/Entity.ts#L209">packages/@typescript-entity/core/src/Entity.ts:209</a></li>
+									<li>Defined in <a href="https://github.com/apancutt/typescript-entity/blob/6f2c992/packages/@typescript-entity/core/src/Entity.ts#L223">packages/@typescript-entity/core/src/Entity.ts:223</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Sets multiple attribute values of arbitrary types from the provided <code>attrs</code>. The values
-										provided will be sanitized, normalized and validated. If validation fails an error is thrown
-										and the attribute - and any subsequent attributes - remain unchanged. Values for <code>readOnly</code>
-									attributes can be provided if <code>allowReadOnly</code> is set to <code>true</code>.</p>
+									<p>Like [[<code>Entity.fill()</code>]] but accepts a arbitrary values which will be sanitized to the expected
+									type using the configured <code>sanitizer</code> functions.</p>
 								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -313,15 +309,12 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/apancutt/typescript-entity/blob/6afab63/packages/@typescript-entity/core/src/Entity.ts#L221">packages/@typescript-entity/core/src/Entity.ts:221</a></li>
+									<li>Defined in <a href="https://github.com/apancutt/typescript-entity/blob/6f2c992/packages/@typescript-entity/core/src/Entity.ts#L232">packages/@typescript-entity/core/src/Entity.ts:232</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Sets multiple attribute values of arbitrary types from the provided <code>attrs</code>. The values
-										provided will be sanitized, normalized and validated. If validation fails an error is thrown
-										and the attribute - and any subsequent attributes - remain unchanged. Values for <code>readOnly</code>
-									attributes can be provided if <code>allowReadOnly</code> is set to <code>true</code>.</p>
+									<p>Like [[<code>Entity.fillRaw()</code>]] but allows overwriting of attributes configured as <code>readOnly</code>.</p>
 								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -346,10 +339,13 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/apancutt/typescript-entity/blob/6afab63/packages/@typescript-entity/core/src/Entity.ts#L186">packages/@typescript-entity/core/src/Entity.ts:186</a></li>
+									<li>Defined in <a href="https://github.com/apancutt/typescript-entity/blob/6f2c992/packages/@typescript-entity/core/src/Entity.ts#L202">packages/@typescript-entity/core/src/Entity.ts:202</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Like [[<code>Entity.fill()</code>]] but allows overwriting of attributes configured as <code>readOnly</code>.</p>
+								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
@@ -373,13 +369,14 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/apancutt/typescript-entity/blob/6afab63/packages/@typescript-entity/core/src/Entity.ts#L85">packages/@typescript-entity/core/src/Entity.ts:85</a></li>
+									<li>Defined in <a href="https://github.com/apancutt/typescript-entity/blob/6f2c992/packages/@typescript-entity/core/src/Entity.ts#L92">packages/@typescript-entity/core/src/Entity.ts:92</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Returns the value of the specified attribute <code>name</code>. If the attribute is configured with a
-									value function then the return value of this function is returned.</p>
+									<p>Returns the value of the specified attribute <code>name</code>. If the attribute is configured as a value
+										function then this function is executed and the resulting value is returned. The function will
+									be called with the entity instance bound to <code>this</code>.</p>
 								</div>
 							</div>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -413,12 +410,12 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/apancutt/typescript-entity/blob/6afab63/packages/@typescript-entity/core/src/Entity.ts#L116">packages/@typescript-entity/core/src/Entity.ts:116</a></li>
+									<li>Defined in <a href="https://github.com/apancutt/typescript-entity/blob/6f2c992/packages/@typescript-entity/core/src/Entity.ts#L123">packages/@typescript-entity/core/src/Entity.ts:123</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Returns the values of the attributes configured as <code>hidden</code>.</p>
+									<p>Returns the attributes configured as <code>hidden</code>.</p>
 								</div>
 							</div>
 							<h4 class="tsd-returns-title">Returns <a href="../modules/_typescript_entity_core.html#hiddenattrs" class="tsd-signature-type">HiddenAttrs</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">C</span><span class="tsd-signature-symbol">&gt;</span></h4>
@@ -435,12 +432,14 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/apancutt/typescript-entity/blob/6afab63/packages/@typescript-entity/core/src/Entity.ts#L53">packages/@typescript-entity/core/src/Entity.ts:53</a></li>
+									<li>Defined in <a href="https://github.com/apancutt/typescript-entity/blob/6f2c992/packages/@typescript-entity/core/src/Entity.ts#L57">packages/@typescript-entity/core/src/Entity.ts:57</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Normalizes a non-nullish <code>value</code> using the configured <code>normalizer</code> function.</p>
+									<p>Normalizes an non-nullish <code>value</code> using the configured <code>normalizer</code> function for the specified
+										attribute <code>name</code>. If a normalizer function has not been configured then the <code>value</code> is returned
+									as-is. The function will be called with the entity instance bound to <code>this</code>.</p>
 								</div>
 							</div>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -477,12 +476,13 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/apancutt/typescript-entity/blob/6afab63/packages/@typescript-entity/core/src/Entity.ts#L36">packages/@typescript-entity/core/src/Entity.ts:36</a></li>
+									<li>Defined in <a href="https://github.com/apancutt/typescript-entity/blob/6f2c992/packages/@typescript-entity/core/src/Entity.ts#L38">packages/@typescript-entity/core/src/Entity.ts:38</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Sanitizes an arbitrary <code>value</code> using the configured <code>sanitizer</code> function.</p>
+									<p>Sanitizes an arbitrary <code>value</code> using the configured <code>sanitizer</code> function for the specified
+									attribute <code>name</code>. The function will be called with the entity instance bound to <code>this</code>.</p>
 								</div>
 							</div>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -519,14 +519,13 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/apancutt/typescript-entity/blob/6afab63/packages/@typescript-entity/core/src/Entity.ts#L137">packages/@typescript-entity/core/src/Entity.ts:137</a></li>
+									<li>Defined in <a href="https://github.com/apancutt/typescript-entity/blob/6f2c992/packages/@typescript-entity/core/src/Entity.ts#L143">packages/@typescript-entity/core/src/Entity.ts:143</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
 									<p>Sets the <code>value</code> for the specified attribute <code>name</code>. The <code>value</code> provided will be normalized
-										and validated. If validation fails an error is thrown and the attribute remains unmodified.
-									Values for <code>readOnly</code> attributes can be provided if <code>allowReadOnly</code> is set to <code>true</code>.</p>
+									and validated. If validation fails an error is thrown and the attribute remains unmodified.</p>
 								</div>
 							</div>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -563,15 +562,13 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/apancutt/typescript-entity/blob/6afab63/packages/@typescript-entity/core/src/Entity.ts#L162">packages/@typescript-entity/core/src/Entity.ts:162</a></li>
+									<li>Defined in <a href="https://github.com/apancutt/typescript-entity/blob/6f2c992/packages/@typescript-entity/core/src/Entity.ts#L172">packages/@typescript-entity/core/src/Entity.ts:172</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Sets the <code>value</code> of an arbitrary type for the specified attribute <code>name</code>. The <code>value</code> provided
-										will be sanitized, normalized and validated. If validation fails an error is thrown and the
-										attribute remains unmodified. Values for <code>readOnly</code> attributes can be provided if
-									<code>allowReadOnly</code> is set to <code>true</code>.</p>
+									<p>Like [[<code>Entity.set()</code>]] but accepts an arbitrary <code>value</code> which will be sanitized to the
+									expected type using the configured <code>sanitizer</code> function.</p>
 								</div>
 							</div>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -608,9 +605,14 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/apancutt/typescript-entity/blob/6afab63/packages/@typescript-entity/core/src/Entity.ts#L166">packages/@typescript-entity/core/src/Entity.ts:166</a></li>
+									<li>Defined in <a href="https://github.com/apancutt/typescript-entity/blob/6f2c992/packages/@typescript-entity/core/src/Entity.ts#L182">packages/@typescript-entity/core/src/Entity.ts:182</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Like [[<code>Entity.setRaw()</code>]] but allows overwriting of attributes configured as <code>readOnly</code>.</p>
+								</div>
+							</div>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
 							<ul class="tsd-type-parameters">
 								<li>
@@ -627,6 +629,8 @@
 								</li>
 								<li>
 									<h5>value: <span class="tsd-signature-type">V</span></h5>
+									<div class="tsd-comment tsd-typography">
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">this</span></h4>
@@ -643,9 +647,14 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/apancutt/typescript-entity/blob/6afab63/packages/@typescript-entity/core/src/Entity.ts#L141">packages/@typescript-entity/core/src/Entity.ts:141</a></li>
+									<li>Defined in <a href="https://github.com/apancutt/typescript-entity/blob/6f2c992/packages/@typescript-entity/core/src/Entity.ts#L153">packages/@typescript-entity/core/src/Entity.ts:153</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Like [[<code>Entity.set()</code>]] but allows overwriting of attributes configured as <code>readOnly</code>.</p>
+								</div>
+							</div>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
 							<ul class="tsd-type-parameters">
 								<li>
@@ -662,6 +671,8 @@
 								</li>
 								<li>
 									<h5>value: <span class="tsd-signature-type">V</span></h5>
+									<div class="tsd-comment tsd-typography">
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">this</span></h4>
@@ -678,12 +689,12 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/apancutt/typescript-entity/blob/6afab63/packages/@typescript-entity/core/src/Entity.ts#L99">packages/@typescript-entity/core/src/Entity.ts:99</a></li>
+									<li>Defined in <a href="https://github.com/apancutt/typescript-entity/blob/6f2c992/packages/@typescript-entity/core/src/Entity.ts#L106">packages/@typescript-entity/core/src/Entity.ts:106</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Returns the values of the specified attribute <code>names</code>.</p>
+									<p>Returns the attributes specified by <code>names</code>.</p>
 								</div>
 							</div>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -714,12 +725,12 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/apancutt/typescript-entity/blob/6afab63/packages/@typescript-entity/core/src/Entity.ts#L273">packages/@typescript-entity/core/src/Entity.ts:273</a></li>
+									<li>Defined in <a href="https://github.com/apancutt/typescript-entity/blob/6f2c992/packages/@typescript-entity/core/src/Entity.ts#L282">packages/@typescript-entity/core/src/Entity.ts:282</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Returns the attributes to be included when stringifying this instance to JSON form.</p>
+									<p>Returns the attributes to be included when stringifying an instance to JSON form.</p>
 								</div>
 								<dl class="tsd-comment-tags">
 									<dt>see</dt>
@@ -741,7 +752,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/apancutt/typescript-entity/blob/6afab63/packages/@typescript-entity/core/src/Entity.ts#L263">packages/@typescript-entity/core/src/Entity.ts:263</a></li>
+									<li>Defined in <a href="https://github.com/apancutt/typescript-entity/blob/6f2c992/packages/@typescript-entity/core/src/Entity.ts#L272">packages/@typescript-entity/core/src/Entity.ts:272</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -768,12 +779,14 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/apancutt/typescript-entity/blob/6afab63/packages/@typescript-entity/core/src/Entity.ts#L69">packages/@typescript-entity/core/src/Entity.ts:69</a></li>
+									<li>Defined in <a href="https://github.com/apancutt/typescript-entity/blob/6f2c992/packages/@typescript-entity/core/src/Entity.ts#L75">packages/@typescript-entity/core/src/Entity.ts:75</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Validates a non-nullish <code>value</code> using the configured <code>validator</code> function.</p>
+									<p>Validates an non-nullish <code>value</code> using the configured <code>validator</code> function for the specified
+										attribute <code>name</code>. If a validator function has not been configured then <code>true</code> is returned. The
+									function will be called with the entity instance bound to <code>this</code>.</p>
 								</div>
 							</div>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -810,12 +823,12 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/apancutt/typescript-entity/blob/6afab63/packages/@typescript-entity/core/src/Entity.ts#L124">packages/@typescript-entity/core/src/Entity.ts:124</a></li>
+									<li>Defined in <a href="https://github.com/apancutt/typescript-entity/blob/6f2c992/packages/@typescript-entity/core/src/Entity.ts#L131">packages/@typescript-entity/core/src/Entity.ts:131</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Returns the values of the attributes not configured as <code>hidden</code>.</p>
+									<p>Returns the attributes not configured as <code>hidden</code>.</p>
 								</div>
 							</div>
 							<h4 class="tsd-returns-title">Returns <a href="../modules/_typescript_entity_core.html#visibleattrs" class="tsd-signature-type">VisibleAttrs</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">C</span><span class="tsd-signature-symbol">&gt;</span></h4>

@@ -10,8 +10,9 @@ export default abstract class Entity<C extends Configs> {
 
   /**
    * Creates a new [[`Entity`]] instance. The attribute `configs` define the attributes available on
-   * the [[`Entity`]] instance along with default values for any required attributes. Initial values
-   * (including values for `readOnly` attributes) can be provided in `attrs`.
+   * the [[`Entity`]] instance along with a default `value` for all required attributes. Default
+   * values are not sanitized, normalized nor validated. Values provided via `attrs` are normalized
+   * and validated, and may also include values for `readOnly` attributes.
    *
    * @param configs
    * @param attrs
@@ -28,7 +29,8 @@ export default abstract class Entity<C extends Configs> {
   }
 
   /**
-   * Sanitizes an arbitrary `value` using the configured `sanitizer` function.
+   * Sanitizes an arbitrary `value` using the configured `sanitizer` function for the specified
+   * attribute `name`. The function will be called with the entity instance bound to `this`.
    *
    * @param name
    * @param value
@@ -45,7 +47,9 @@ export default abstract class Entity<C extends Configs> {
   }
 
   /**
-   * Normalizes a non-nullish `value` using the configured `normalizer` function.
+   * Normalizes an non-nullish `value` using the configured `normalizer` function for the specified
+   * attribute `name`. If a normalizer function has not been configured then the `value` is returned
+   * as-is. The function will be called with the entity instance bound to `this`.
    *
    * @param name
    * @param value
@@ -61,7 +65,9 @@ export default abstract class Entity<C extends Configs> {
   }
 
   /**
-   * Validates a non-nullish `value` using the configured `validator` function.
+   * Validates an non-nullish `value` using the configured `validator` function for the specified
+   * attribute `name`. If a validator function has not been configured then `true` is returned. The
+   * function will be called with the entity instance bound to `this`.
    *
    * @param name
    * @param value
@@ -77,8 +83,9 @@ export default abstract class Entity<C extends Configs> {
   }
 
   /**
-   * Returns the value of the specified attribute `name`. If the attribute is configured with a
-   * value function then the return value of this function is returned.
+   * Returns the value of the specified attribute `name`. If the attribute is configured as a value
+   * function then this function is executed and the resulting value is returned. The function will
+   * be called with the entity instance bound to `this`.
    *
    * @param name
    */
@@ -92,7 +99,7 @@ export default abstract class Entity<C extends Configs> {
   }
 
   /**
-   * Returns the values of the specified attribute `names`.
+   * Returns the attributes specified by `names`.
    *
    * @param names
    */
@@ -104,14 +111,14 @@ export default abstract class Entity<C extends Configs> {
   }
 
   /**
-   * Returns all attribute values.
+   * Returns all attribute.
    */
   public all(): Attrs<C> {
     return this.some(Object.keys(this.configs)) as Attrs<C>;
   }
 
   /**
-   * Returns the values of the attributes configured as `hidden`.
+   * Returns the attributes configured as `hidden`.
    */
   public hidden(): HiddenAttrs<C> {
     return this.some(Object.keys(this.configs)
@@ -119,7 +126,7 @@ export default abstract class Entity<C extends Configs> {
   }
 
   /**
-   * Returns the values of the attributes not configured as `hidden`.
+   * Returns the attributes not configured as `hidden`.
    */
   public visible(): VisibleAttrs<C> {
     return this.some(Object.keys(this.configs)
@@ -129,7 +136,6 @@ export default abstract class Entity<C extends Configs> {
   /**
    * Sets the `value` for the specified attribute `name`. The `value` provided will be normalized
    * and validated. If validation fails an error is thrown and the attribute remains unmodified.
-   * Values for `readOnly` attributes can be provided if `allowReadOnly` is set to `true`.
    *
    * @param name
    * @param value
@@ -138,6 +144,12 @@ export default abstract class Entity<C extends Configs> {
     return this.setReadOnly(name, value as ValueAttrs<C>[K]); // TODO: Unsure why value needs type assertion
   }
 
+  /**
+   * Like [[`Entity.set()`]] but allows overwriting of attributes configured as `readOnly`.
+   *
+   * @param name
+   * @param value
+   */
   protected setReadOnly<K extends keyof ValueAttrs<C>, V extends ValueAttrs<C>[K]>(name: K, value: V): this {
     if (!(name in this.configs)) {
       throw new UnknownAttrError(this, name);
@@ -151,10 +163,8 @@ export default abstract class Entity<C extends Configs> {
   }
 
   /**
-   * Sets the `value` of an arbitrary type for the specified attribute `name`. The `value` provided
-   * will be sanitized, normalized and validated. If validation fails an error is thrown and the
-   * attribute remains unmodified. Values for `readOnly` attributes can be provided if
-   * `allowReadOnly` is set to `true`.
+   * Like [[`Entity.set()`]] but accepts an arbitrary `value` which will be sanitized to the
+   * expected type using the configured `sanitizer` function.
    *
    * @param name
    * @param value
@@ -163,15 +173,20 @@ export default abstract class Entity<C extends Configs> {
     return this.setRawReadOnly(name, value);
   }
 
+  /**
+   * Like [[`Entity.setRaw()`]] but allows overwriting of attributes configured as `readOnly`.
+   *
+   * @param name
+   * @param value
+   */
   protected setRawReadOnly<K extends keyof Unsanitized<ValueAttrs<C>>, V extends Unsanitized<ValueAttrs<C>>[K]>(name: K, value: V): this {
     return this.setReadOnly(name, this.sanitize(name, value));
   }
 
   /**
-   * Sets multiple attribute values from the provided `attrs`. The values provided will be
-   * normalized and validated. If validation fails an error is thrown and the attribute - and any
-   * subsequent attributes - remain unchanged. Values for `readOnly` attributes can be provided if
-   * `allowReadOnly` is set to `true`.
+   * Sets multiple attributes using the provided `attrs`. The values provided will be normalized and
+   * validated. If validation fails an error is thrown and the attribute - and any subsequent
+   * attributes - remain unmodified.
    *
    * @param attrs
    */
@@ -180,6 +195,7 @@ export default abstract class Entity<C extends Configs> {
   }
 
   /**
+   * Like [[`Entity.fill()`]] but allows overwriting of attributes configured as `readOnly`.
    *
    * @param attrs
    */
@@ -199,10 +215,8 @@ export default abstract class Entity<C extends Configs> {
   }
 
   /**
-   * Sets multiple attribute values of arbitrary types from the provided `attrs`. The values
-   * provided will be sanitized, normalized and validated. If validation fails an error is thrown
-   * and the attribute - and any subsequent attributes - remain unchanged. Values for `readOnly`
-   * attributes can be provided if `allowReadOnly` is set to `true`.
+   * Like [[`Entity.fill()`]] but accepts a arbitrary values which will be sanitized to the expected
+   * type using the configured `sanitizer` functions.
    *
    * @param attrs
    */
@@ -211,10 +225,7 @@ export default abstract class Entity<C extends Configs> {
   }
 
   /**
-   * Sets multiple attribute values of arbitrary types from the provided `attrs`. The values
-   * provided will be sanitized, normalized and validated. If validation fails an error is thrown
-   * and the attribute - and any subsequent attributes - remain unchanged. Values for `readOnly`
-   * attributes can be provided if `allowReadOnly` is set to `true`.
+   * Like [[`Entity.fillRaw()`]] but allows overwriting of attributes configured as `readOnly`.
    *
    * @param attrs
    */
@@ -232,11 +243,9 @@ export default abstract class Entity<C extends Configs> {
   }
 
   /**
-   * Sets multiple attribute values of arbitrary types from the provided `json` string. The values
-   * provided will be sanitized, normalized and validated. If validation fails an error is thrown
-   * and the attribute - and any subsequent attributes - remain unchanged. Values for `readOnly`
-   * attributes can be provided if `allowReadOnly` is set to `true`. Values for unregistered
-   * attributes, and those configured with value functions, are ignored.
+   * Sets multiple attributes from the provided `json` string. Unrecognised attributes, or those
+   * that are configured with value functions, are ignored. The remaining attributes are passed to
+   * [[`Entity.fillRawReadOnly()`]] for sanitization, normalization and validation.
    *
    * @param json
    */
@@ -266,7 +275,7 @@ export default abstract class Entity<C extends Configs> {
   }
 
   /**
-   * Returns the attributes to be included when stringifying this instance to JSON form.
+   * Returns the attributes to be included when stringifying an instance to JSON form.
    *
    * @see [[`Entity.visible()`]]
    */
