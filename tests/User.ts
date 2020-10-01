@@ -1,14 +1,14 @@
-import { booleanConfig, BooleanConfig, DateConfig, dateInPastConfig, emailConfig, fnConfig, FnConfig, stringConfig, StringConfig, uuid4Config } from '@typescript-entity/configs';
+import { booleanConfig, BooleanConfigFactory, DateConfigFactory, dateInPastConfig, emailConfig, fnConfig, FnConfigFactory, stringConfig, StringConfigFactory, uuid4Config } from '@typescript-entity/configs';
 import { Attr, Attrs, Entity, ValueAttrs } from '@typescript-entity/core';
 import { isLength } from '@typescript-entity/validators';
 
 export type UserConfigs = {
-  date_of_birth: DateConfig;
-  email: StringConfig;
-  email_domain: FnConfig<string>;
-  uuid: StringConfig<true, true, true>;
-  username: StringConfig;
-  verified: BooleanConfig;
+  date_of_birth: DateConfigFactory;
+  email: StringConfigFactory;
+  email_domain: FnConfigFactory<string>;
+  uuid: StringConfigFactory<true, true, true>;
+  username: StringConfigFactory;
+  verified: BooleanConfigFactory;
 };
 
 export class User extends Entity<UserConfigs> implements Attrs<UserConfigs> {
