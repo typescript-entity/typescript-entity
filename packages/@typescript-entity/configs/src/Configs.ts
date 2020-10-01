@@ -1,4 +1,4 @@
-import { ValidatorFn, ValueFn } from '@typescript-entity/core/src';
+import { ValueFn } from '@typescript-entity/core/src';
 import { lowercase } from '@typescript-entity/normalizers';
 import { toBoolean, toDate, toFloat, toInteger, toNumber, toString } from '@typescript-entity/sanitizers';
 import { isAfter, isBefore, isEmail, isFloat, isInteger, isURL, isUUID } from '@typescript-entity/validators';
