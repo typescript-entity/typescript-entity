@@ -70,70 +70,70 @@ export const dateInPastConfigFactory = <
   O extends boolean = false,
   H extends boolean = false,
   R extends boolean = false
->(optional?: O, hidden?: H, readOnly?: R): DateConfigFactory<O, H, R> => ({
+>(optional?: O, hidden?: H, readOnly?: R): DateConfigFactory<O, H, R, false, true> => ({
   ...dateConfigFactory(optional, hidden, readOnly),
   validator: isBefore,
-});
+}) as DateConfigFactory<O, H, R, false, true>;
 
 export const dateInFutureConfigFactory = <
   O extends boolean = false,
   H extends boolean = false,
   R extends boolean = false
->(optional?: O, hidden?: H, readOnly?: R): DateConfigFactory<O, H, R> => ({
+>(optional?: O, hidden?: H, readOnly?: R): DateConfigFactory<O, H, R, false, true> => ({
   ...dateConfigFactory(optional, hidden, readOnly),
   validator: isAfter,
-});
+}) as DateConfigFactory<O, H, R, false, true>;
 
 export const emailConfigFactory = <
   O extends boolean = false,
   H extends boolean = false,
   R extends boolean = false
->(optional?: O, hidden?: H, readOnly?: R): StringConfigFactory<O, H, R> => ({
+>(optional?: O, hidden?: H, readOnly?: R): StringConfigFactory<O, H, R, false, true> => ({
   ...stringConfigFactory(optional, hidden, readOnly),
   validator: isEmail,
-});
+}) as StringConfigFactory<O, H, R, false, true>;
 
 export const floatConfigFactory = <
   O extends boolean = false,
   H extends boolean = false,
   R extends boolean = false
->(optional?: O, hidden?: H, readOnly?: R): NumberConfigFactory<O, H, R> => ({
+>(optional?: O, hidden?: H, readOnly?: R): NumberConfigFactory<O, H, R, false, true> => ({
   ...numberConfigFactory(optional, hidden, readOnly),
   sanitizer: optional
     ? (value: unknown): number | undefined => toString(value) ? toFloat(value) : undefined
     : toFloat,
   validator: isFloat,
-});
+}) as NumberConfigFactory<O, H, R, false, true>;
 
 export const integerConfigFactory = <
   O extends boolean = false,
   H extends boolean = false,
   R extends boolean = false
->(optional?: O, hidden?: H, readOnly?: R): NumberConfigFactory<O, H, R> => ({
+>(optional?: O, hidden?: H, readOnly?: R): NumberConfigFactory<O, H, R, false, true> => ({
   ...numberConfigFactory(optional, hidden, readOnly),
   sanitizer: optional
     ? (value: unknown): number | undefined => toString(value) ? toInteger(value) : undefined
     : toInteger,
   validator: isInteger,
-});
+}) as NumberConfigFactory<O, H, R, false, true>;
 
 export const urlConfigFactory = <
   O extends boolean = false,
   H extends boolean = false,
   R extends boolean = false
->(optional?: O, hidden?: H, readOnly?: R): StringConfigFactory<O, H, R> => ({
+>(optional?: O, hidden?: H, readOnly?: R): StringConfigFactory<O, H, R, false, true> => ({
   ...stringConfigFactory(optional, hidden, readOnly),
   validator: isURL,
-});
+}) as StringConfigFactory<O, H, R, false, true>;
 
 export const uuid4ConfigFactory = <
   O extends boolean = false,
   H extends boolean = false,
   R extends boolean = false
->(optional?: O, hidden?: H, readOnly?: R): StringConfigFactory<O, H, R> => ({
+>(optional?: O, hidden?: H, readOnly?: R): StringConfigFactory<O, H, R, true, true> => ({
   ...stringConfigFactory(optional, hidden, readOnly),
   normalizer: optional
     ? (value: string): string | undefined => lowercase(value) || undefined
     : lowercase,
   validator: isUUID,
-});
+}) as StringConfigFactory<O, H, R, true, true>;

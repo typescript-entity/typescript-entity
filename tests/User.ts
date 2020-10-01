@@ -1,4 +1,4 @@
-import { booleanConfig, BooleanConfigFactory, DateConfigFactory, dateInPastConfig, emailConfig, fnConfig, FnConfigFactory, stringConfig, StringConfigFactory, uuid4Config } from '@typescript-entity/configs';
+import { booleanConfigFactory, BooleanConfigFactory, DateConfigFactory, dateInPastConfigFactory, emailConfigFactory, fnConfigFactory, FnConfigFactory, stringConfigFactory, StringConfigFactory, uuid4ConfigFactory } from '@typescript-entity/configs';
 import { Attr, Attrs, Entity, ValueAttrs } from '@typescript-entity/core';
 import { isLength } from '@typescript-entity/validators';
 
@@ -7,22 +7,22 @@ export type UserConfigs = {
   email: StringConfigFactory;
   email_domain: FnConfigFactory<string>;
   uuid: StringConfigFactory<true, true, true>;
-  username: StringConfigFactory;
+  username: StringConfigFactory<false, false, false, false, true>;
   verified: BooleanConfigFactory;
 };
 
 export class User extends Entity<UserConfigs> implements Attrs<UserConfigs> {
 
-  public static readonly CONFIGS = {
-    date_of_birth: dateInPastConfig(),
-    email: emailConfig(),
-    email_domain: fnConfig(function(this: User): string { return this.email.split('@', 2)[1] || '' }),
-    uuid: uuid4Config(true, true, true),
+  public static readonly CONFIGS: UserConfigs = {
+    date_of_birth: dateInPastConfigFactory(),
+    email: emailConfigFactory(),
+    email_domain: fnConfigFactory(function(this: User): string { return this.email.split('@', 2)[1] || '' }),
+    uuid: uuid4ConfigFactory(true, true, true),
     username: {
-      ...stringConfig(),
+      ...stringConfigFactory(),
       validator: (value: string): boolean => isLength(value, { min: 5 }),
     },
-    verified: booleanConfig(),
+    verified: booleanConfigFactory(),
   };
 
   constructor(attrs: Partial<ValueAttrs<UserConfigs>> = {}) {
