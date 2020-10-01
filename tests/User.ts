@@ -3,12 +3,12 @@ import { Attr, Attrs, Entity, ValueAttrs } from '@typescript-entity/core';
 import { isLength } from '@typescript-entity/validators';
 
 export type UserConfigs = {
-  date_of_birth: DateConfig,
-  email: StringConfig,
-  email_domain: FnConfig<string>,
-  uuid: StringConfig<true, true, true>,
-  username: StringConfig,
-  verified: BooleanConfig,
+  date_of_birth: DateConfig;
+  email: StringConfig;
+  email_domain: FnConfig<string>;
+  uuid: StringConfig<true, true, true>;
+  username: StringConfig;
+  verified: BooleanConfig;
 };
 
 export class User extends Entity<UserConfigs> implements Attrs<UserConfigs> {
