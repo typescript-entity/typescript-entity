@@ -162,9 +162,9 @@ export const urlConfig = <
 });
 
 export const uuidConfig = <
-  O extends boolean,
-  H extends boolean,
-  R extends boolean
+  O extends boolean = false,
+  H extends boolean = false,
+  R extends boolean = false
 >(optional?: O, hidden?: H, readOnly?: R, options: IsUUIDOptions = {}): UUIDConfigFactory<O, H, R> => ({
   ...stringConfig(optional, hidden, readOnly),
   normalizer: optional
