@@ -1,23 +1,23 @@
 import { DateInPastConfigFactory, EmailConfigFactory, UUIDConfigFactory } from '@typescript-entity/configs';
 import { BooleanConfigFactory, FnConfigFactory, StringConfigFactory } from '@typescript-entity/core';
 
-export type DateOfBirthConfig = DateInPastConfigFactory;
+export type UserDateOfBirthConfig = DateInPastConfigFactory;
 
-export type EmailConfig = EmailConfigFactory;
+export type UserEmailConfig = EmailConfigFactory;
 
-export type EmailDomainConfig = FnConfigFactory<string, true>;
+export type UserEmailDomainConfig = FnConfigFactory<string, true>;
 
-export type UUIDConfig = UUIDConfigFactory<true, true, true>;
+export type UserUUIDConfig = UUIDConfigFactory<true, true, true>;
 
-export type UsernameConfig = StringConfigFactory<false, false, false, false, true>;
+export type UserUsernameConfig = StringConfigFactory<false, false, false, false, true>;
 
-export type VerifiedConfig = BooleanConfigFactory;
+export type UserVerifiedConfig = BooleanConfigFactory;
 
 export type UserConfigs = {
-  date_of_birth: DateOfBirthConfig;
-  email: EmailConfig;
-  email_domain: EmailDomainConfig;
-  uuid: UUIDConfig;
-  username: UsernameConfig;
-  verified: VerifiedConfig;
+  date_of_birth: UserDateOfBirthConfig;
+  email: UserEmailConfig;
+  email_domain: UserEmailDomainConfig;
+  uuid: UserUUIDConfig;
+  username: UserUsernameConfig;
+  verified: UserVerifiedConfig;
 };
