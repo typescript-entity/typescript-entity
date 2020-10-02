@@ -1,6 +1,6 @@
 import { cloneDeep } from 'lodash';
 import { InvalidAttrValueError, UnknownAttrError, UnsanitizableAttrError } from './Errors';
-import { Attrs, Config, Configs, FnConfig, HiddenAttrs, NormalizerFn, SanitizerFn, Unsanitized, ValidatorFn, ValueAttrs, VisibleAttrs, WritableAttrs } from './Types';
+import { Attrs, Config, Configs, FnConfig, HiddenAttrs, NormalizerFn, SanitizerFn, Unsanitized, ValidatorFn, VisibleAttrs, WritableAttrs } from './Types';
 
 type Entries<T> = { [K in keyof T]: [ K, T[K] ] }[keyof T][];
 
@@ -17,7 +17,7 @@ export default abstract class Entity<C extends Configs> {
    * @param configs
    * @param attrs
    */
-  constructor(configs: C, attrs: Partial<ValueAttrs<C>> = {}) {
+  constructor(configs: C, attrs: Partial<WritableAttrs<C, true>> = {}) {
     this.configs = (Object.entries(configs) as Entries<C>).reduce((configs, [ name, config ]) => ({
       ...configs,
       [name]: {
@@ -35,7 +35,7 @@ export default abstract class Entity<C extends Configs> {
    * @param name
    * @param value
    */
-  public sanitize<K extends keyof ValueAttrs<C>, V extends ValueAttrs<C>[K]>(name: K, value: unknown): ReturnType<SanitizerFn<V>> {
+  public sanitize<K extends keyof WritableAttrs<C, true>, V extends WritableAttrs<C, true>[K]>(name: K, value: unknown): ReturnType<SanitizerFn<V>> {
     if (!(name in this.configs)) {
       throw new UnknownAttrError(this, name);
     }
@@ -54,7 +54,7 @@ export default abstract class Entity<C extends Configs> {
    * @param name
    * @param value
    */
-  public normalize<K extends keyof ValueAttrs<C>, V extends ValueAttrs<C>[K]>(name: K, value: V): ReturnType<NormalizerFn<V>> {
+  public normalize<K extends keyof WritableAttrs<C, true>, V extends WritableAttrs<C, true>[K]>(name: K, value: V): ReturnType<NormalizerFn<V>> {
     if (!(name in this.configs)) {
       throw new UnknownAttrError(this, name);
     }
@@ -72,7 +72,7 @@ export default abstract class Entity<C extends Configs> {
    * @param name
    * @param value
    */
-  public validate<K extends keyof ValueAttrs<C>, V extends ValueAttrs<C>[K]>(name: K, value: V): ReturnType<ValidatorFn<V>> {
+  public validate<K extends keyof WritableAttrs<C, true>, V extends WritableAttrs<C, true>[K]>(name: K, value: V): ReturnType<ValidatorFn<V>> {
     if (!(name in this.configs)) {
       throw new UnknownAttrError(this, name);
     }
@@ -150,7 +150,7 @@ export default abstract class Entity<C extends Configs> {
    * @param name
    * @param value
    */
-  protected setReadOnly<K extends keyof ValueAttrs<C>, V extends ValueAttrs<C>[K]>(name: K, value: V): this {
+  protected setReadOnly<K extends keyof WritableAttrs<C, true>, V extends WritableAttrs<C, true>[K]>(name: K, value: V): this {
     if (!(name in this.configs)) {
       throw new UnknownAttrError(this, name);
     }
@@ -178,7 +178,7 @@ export default abstract class Entity<C extends Configs> {
    * @param name
    * @param value
    */
-  protected setRawReadOnly<K extends keyof Unsanitized<ValueAttrs<C>>, V extends Unsanitized<ValueAttrs<C>>[K]>(name: K, value: V): this {
+  protected setRawReadOnly<K extends keyof Unsanitized<WritableAttrs<C, true>>, V extends Unsanitized<WritableAttrs<C, true>>[K]>(name: K, value: V): this {
     return this.setReadOnly(name, this.sanitize(name, value));
   }
 
@@ -190,7 +190,7 @@ export default abstract class Entity<C extends Configs> {
    * @param attrs
    */
   public fill(attrs: Partial<WritableAttrs<C>>): this {
-    return this.fillReadOnly(attrs as Partial<ValueAttrs<C>>); // TODO: Unsure why attrs needs type assertion
+    return this.fillReadOnly(attrs as Partial<WritableAttrs<C, true>>); // TODO: Unsure why attrs needs type assertion
   }
 
   /**
@@ -198,10 +198,10 @@ export default abstract class Entity<C extends Configs> {
    *
    * @param attrs
    */
-  protected fillReadOnly(attrs: Partial<ValueAttrs<C>>): this {
+  protected fillReadOnly(attrs: Partial<WritableAttrs<C, true>>): this {
     // Cannot assert as Entries<Partial<...>> since TS will (correctly) complain that values may be
     // undefined, but we're mitigating against this by ignoring undefined values
-    (Object.entries(attrs) as Entries<ValueAttrs<C>>)
+    (Object.entries(attrs) as Entries<WritableAttrs<C, true>>)
       .forEach(([ name, value ]) => {
         if (undefined !== value) {
           // Prevent abuse of Partial<> allowing non-undefinable attributes to be set to undefined
@@ -227,8 +227,8 @@ export default abstract class Entity<C extends Configs> {
    *
    * @param attrs
    */
-  protected fillRawReadOnly(attrs: Partial<Unsanitized<ValueAttrs<C>>>): this {
-    (Object.entries(attrs) as Entries<Partial<Unsanitized<ValueAttrs<C>>>>)
+  protected fillRawReadOnly(attrs: Partial<Unsanitized<WritableAttrs<C, true>>>): this {
+    (Object.entries(attrs) as Entries<Partial<Unsanitized<WritableAttrs<C, true>>>>)
       .forEach(([ name, value ]) => {
         // Prevent abuse of Partial<> allowing non-undefinable attributes to be set to undefined
         // https://github.com/microsoft/TypeScript/issues/13195

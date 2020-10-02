@@ -2,7 +2,7 @@ export interface Configs {
   [name: string]: Config | FnConfig;
 }
 
-export interface Config<V = Value> {
+export interface Config<V extends Value = Value> {
   hidden?: boolean;
   normalizer?: NormalizerFn<V>;
   readOnly?: boolean;
@@ -11,7 +11,7 @@ export interface Config<V = Value> {
   value: V;
 }
 
-export interface FnConfig<V = Value> {
+export interface FnConfig<V extends Value = Value> {
   hidden?: boolean;
   value: ValueFn<V>;
 }
@@ -19,7 +19,7 @@ export interface FnConfig<V = Value> {
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type Value = any;
 
-export type ValueFn<V = Value> = () => V;
+export type ValueFn<V extends Value = Value> = () => V;
 
 export type SanitizerFn<V> = (value: unknown) => V;
 
@@ -43,20 +43,18 @@ export type VisibleAttrs<C extends Configs> = Attrs<Pick<C, {
   [K in keyof C]: C[K]['hidden'] extends true ? never : K;
 }[keyof C]>>;
 
-export type ValueAttrs<C extends Configs> = Attrs<Pick<C, {
-  [K in keyof C]: C[K] extends Config ? K : never;
-}[keyof C]>>;
-
-export type WritableAttrs<C extends Configs> = Attrs<Pick<C, {
+export type WritableAttrs<C extends Configs, OverrideReadOnly extends boolean = false> = Attrs<Pick<C, {
   [K in keyof C]: C[K] extends Config
     ? C[K]['readOnly'] extends true
-      ? never
+      ? OverrideReadOnly extends true
+        ? K
+        : never
       : K
     : never;
 }[keyof C]>>;
 
 export type ConfigFactory<
-  V extends Value = Value,
+  V extends Value,
   Optional extends boolean = false,
   Hidden extends boolean = false,
   ReadOnly extends boolean = false,
@@ -77,7 +75,7 @@ export type ConfigFactory<
 );
 
 export type FnConfigFactory<
-  V extends Value = Value,
+  V extends Value,
   Optional extends boolean = false,
   Hidden extends boolean = false
 > = (

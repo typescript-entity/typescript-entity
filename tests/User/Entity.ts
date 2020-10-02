@@ -1,5 +1,5 @@
 import { booleanConfig, dateInPastConfig, emailConfig, fnConfig, stringConfig, uuidConfig } from '@typescript-entity/configs';
-import { Attr, Attrs, Entity, ValueAttrs } from '@typescript-entity/core';
+import { Attr, Attrs, Entity, WritableAttrs } from '@typescript-entity/core';
 import { isLength } from '@typescript-entity/validators';
 import { UserConfigs } from './Types';
 
@@ -17,7 +17,7 @@ export default class User extends Entity<UserConfigs> implements Attrs<UserConfi
     verified: booleanConfig(),
   };
 
-  constructor(attrs: Partial<ValueAttrs<UserConfigs>> = {}) {
+  constructor(attrs: Partial<WritableAttrs<UserConfigs, true>> = {}) {
     super(User.CONFIGS, attrs);
   }
 
@@ -61,7 +61,7 @@ export default class User extends Entity<UserConfigs> implements Attrs<UserConfi
     this.set('verified', value);
   }
 
-  public exposedFillReadOnly<A extends Partial<ValueAttrs<UserConfigs>>>(attrs: A): this {
+  public exposedFillReadOnly<A extends Partial<WritableAttrs<UserConfigs, true>>>(attrs: A): this {
     return this.fillReadOnly(attrs);
   }
 
