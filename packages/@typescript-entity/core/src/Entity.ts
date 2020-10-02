@@ -141,7 +141,7 @@ export default abstract class Entity<C extends Configs> {
    * @param value
    */
   public set<K extends keyof WritableAttrs<C>, V extends WritableAttrs<C>[K]>(name: K, value: V): this {
-    return this.setReadOnly(name, value as ValueAttrs<C>[K]); // TODO: Unsure why value needs type assertion
+    return this.setReadOnly(name, value);
   }
 
   /**
