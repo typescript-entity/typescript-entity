@@ -1,139 +1,174 @@
-import { ValueFn } from '@typescript-entity/core/src';
+import { Value, ValueFn } from '@typescript-entity/core';
 import { lowercase } from '@typescript-entity/normalizers';
 import { toBoolean, toDate, toFloat, toInteger, toNumber, toString } from '@typescript-entity/sanitizers';
-import { isAfter, isBefore, isEmail, isFloat, isInteger, isURL, isUUID } from '@typescript-entity/validators';
-import { BooleanConfigFactory, DateConfigFactory, FnConfigFactory, NumberConfigFactory, StringConfigFactory } from './Types';
+import { isAfter, IsAfterOptions, isBefore, IsBeforeOptions, isEmail, IsEmailOptions, isFloat, IsFloatOptions, isInteger, IsIntegerOptions, isNegativeFloat, IsNegativeFloatOptions, isNegativeInteger, IsNegativeIntegerOptions, isPositiveFloat, IsPositiveFloatOptions, isPositiveInteger, IsPositiveIntegerOptions, isURL, IsURLOptions, isUUID, IsUUIDOptions } from '@typescript-entity/validators';
+import { BooleanConfig, DateConfig, DateInFutureConfig, DateInPastConfig, EmailConfig, FloatConfig, FnConfig, IntegerConfig, NegativeFloatConfig, NegativeIntegerConfig, NumberConfig, PositiveFloatConfig, PositiveIntegerConfig, StringConfig, URLConfig, UUIDConfig } from './Types';
 
-export const booleanConfigFactory = <
+export const booleanConfig = <
   O extends boolean = false,
   H extends boolean = false,
   R extends boolean = false
->(optional?: O, hidden?: H, readOnly?: R): BooleanConfigFactory<O, H, R> => ({
+>(optional?: O, hidden?: H, readOnly?: R): BooleanConfig<O, H, R> => ({
   hidden,
   readOnly,
   value: optional ? undefined : false,
   sanitizer: optional
     ? (value: unknown): boolean | undefined => toString(value) ? toBoolean(value) : undefined
     : toBoolean,
-} as unknown as BooleanConfigFactory<O, H, R>);
+} as BooleanConfig<O, H, R>);
 
-export const dateConfigFactory = <
+export const dateConfig = <
   O extends boolean = false,
   H extends boolean = false,
   R extends boolean = false
->(optional?: O, hidden?: H, readOnly?: R): DateConfigFactory<O, H, R> => ({
+>(optional?: O, hidden?: H, readOnly?: R): DateConfig<O, H, R> => ({
   hidden,
   readOnly,
   value: optional ? undefined : new Date(0),
   sanitizer: optional
     ? (value: unknown): Date | undefined => toString(value) ? toDate(value) : undefined
     : toDate,
-} as unknown as DateConfigFactory<O, H, R>);
+} as DateConfig<O, H, R>);
 
-export const fnConfigFactory = <
-  F extends ValueFn,
+export const fnConfig = <
+  V extends Value,
   O extends boolean = false,
   H extends boolean = false,
-  T = ReturnType<F>
->(value: F, optional?: O, hidden?: H): FnConfigFactory<T, O, H> => ({
-  value,
+>(value: ValueFn<V>, optional?: O, hidden?: H): FnConfig<V, O, H> => ({
   hidden,
-} as unknown as FnConfigFactory<T, O, H>);
+  value,
+} as FnConfig<V, O, H>);
 
-export const numberConfigFactory = <
+export const numberConfig = <
   O extends boolean = false,
   H extends boolean = false,
   R extends boolean = false
->(optional?: O, hidden?: H, readOnly?: R): NumberConfigFactory<O, H, R> => ({
+>(optional?: O, hidden?: H, readOnly?: R): NumberConfig<O, H, R> => ({
   hidden,
   readOnly,
   value: optional ? undefined : 0,
   sanitizer: optional
     ? (value: unknown): number | undefined => toString(value) ? toNumber(value) : undefined
     : toNumber,
-} as unknown as NumberConfigFactory<O, H, R>);
+} as NumberConfig<O, H, R>);
 
-export const stringConfigFactory = <
+export const stringConfig = <
   O extends boolean = false,
   H extends boolean = false,
   R extends boolean = false
->(optional?: O, hidden?: H, readOnly?: R): StringConfigFactory<O, H, R> => ({
+>(optional?: O, hidden?: H, readOnly?: R): StringConfig<O, H, R> => ({
   hidden,
   readOnly,
   value: optional ? undefined : '',
   sanitizer: optional
     ? (value: unknown): string | undefined => toString(value) || undefined
     : toString,
-} as unknown as StringConfigFactory<O, H, R>);
+} as StringConfig<O, H, R>);
 
-export const dateInPastConfigFactory = <
+export const dateInFutureConfig = <
   O extends boolean = false,
   H extends boolean = false,
   R extends boolean = false
->(optional?: O, hidden?: H, readOnly?: R): DateConfigFactory<O, H, R, false, true> => ({
-  ...dateConfigFactory(optional, hidden, readOnly),
-  validator: isBefore,
-}) as DateConfigFactory<O, H, R, false, true>;
+>(optional?: O, hidden?: H, readOnly?: R, options: IsAfterOptions = {}): DateInFutureConfig<O, H, R> => ({
+  ...dateConfig(optional, hidden, readOnly),
+  validator: (value: Date): boolean => isAfter(value, options),
+});
 
-export const dateInFutureConfigFactory = <
+export const dateInPastConfig = <
   O extends boolean = false,
   H extends boolean = false,
   R extends boolean = false
->(optional?: O, hidden?: H, readOnly?: R): DateConfigFactory<O, H, R, false, true> => ({
-  ...dateConfigFactory(optional, hidden, readOnly),
-  validator: isAfter,
-}) as DateConfigFactory<O, H, R, false, true>;
+>(optional?: O, hidden?: H, readOnly?: R, options: IsBeforeOptions = {}): DateInPastConfig<O, H, R> => ({
+  ...dateConfig(optional, hidden, readOnly),
+  validator: (value: Date): boolean => isBefore(value, options),
+});
 
-export const emailConfigFactory = <
+export const emailConfig = <
   O extends boolean = false,
   H extends boolean = false,
   R extends boolean = false
->(optional?: O, hidden?: H, readOnly?: R): StringConfigFactory<O, H, R, false, true> => ({
-  ...stringConfigFactory(optional, hidden, readOnly),
-  validator: isEmail,
-}) as StringConfigFactory<O, H, R, false, true>;
+>(optional?: O, hidden?: H, readOnly?: R, options: IsEmailOptions = {}): EmailConfig<O, H, R> => ({
+  ...stringConfig(optional, hidden, readOnly),
+  validator: (value: string): boolean => isEmail(value, options),
+});
 
-export const floatConfigFactory = <
+export const floatConfig = <
   O extends boolean = false,
   H extends boolean = false,
   R extends boolean = false
->(optional?: O, hidden?: H, readOnly?: R): NumberConfigFactory<O, H, R, false, true> => ({
-  ...numberConfigFactory(optional, hidden, readOnly),
+>(optional?: O, hidden?: H, readOnly?: R, options: IsFloatOptions = {}): FloatConfig<O, H, R> => ({
+  ...numberConfig(optional, hidden, readOnly),
   sanitizer: optional
     ? (value: unknown): number | undefined => toString(value) ? toFloat(value) : undefined
     : toFloat,
-  validator: isFloat,
-}) as NumberConfigFactory<O, H, R, false, true>;
+  validator: (value: number): boolean => isFloat(value, options),
+} as FloatConfig<O, H, R>);
 
-export const integerConfigFactory = <
+export const integerConfig = <
   O extends boolean = false,
   H extends boolean = false,
   R extends boolean = false
->(optional?: O, hidden?: H, readOnly?: R): NumberConfigFactory<O, H, R, false, true> => ({
-  ...numberConfigFactory(optional, hidden, readOnly),
+>(optional?: O, hidden?: H, readOnly?: R, options: IsIntegerOptions = {}): IntegerConfig<O, H, R> => ({
+  ...numberConfig(optional, hidden, readOnly),
   sanitizer: optional
     ? (value: unknown): number | undefined => toString(value) ? toInteger(value) : undefined
     : toInteger,
-  validator: isInteger,
-}) as NumberConfigFactory<O, H, R, false, true>;
+    validator: (value: number): boolean => isInteger(value, options),
+} as IntegerConfig<O, H, R>);
 
-export const urlConfigFactory = <
+export const negativeFloatConfig = <
   O extends boolean = false,
   H extends boolean = false,
   R extends boolean = false
->(optional?: O, hidden?: H, readOnly?: R): StringConfigFactory<O, H, R, false, true> => ({
-  ...stringConfigFactory(optional, hidden, readOnly),
-  validator: isURL,
-}) as StringConfigFactory<O, H, R, false, true>;
+>(optional?: O, hidden?: H, readOnly?: R, options: IsNegativeFloatOptions = {}): NegativeFloatConfig<O, H, R> => ({
+  ...floatConfig(optional, hidden, readOnly),
+  validator: (value: number): boolean => isNegativeFloat(value, options),
+});
 
-export const uuid4ConfigFactory = <
+export const negativeIntegerConfig = <
   O extends boolean = false,
   H extends boolean = false,
   R extends boolean = false
->(optional?: O, hidden?: H, readOnly?: R): StringConfigFactory<O, H, R, true, true> => ({
-  ...stringConfigFactory(optional, hidden, readOnly),
+>(optional?: O, hidden?: H, readOnly?: R, options: IsNegativeIntegerOptions = {}): NegativeIntegerConfig<O, H, R> => ({
+  ...integerConfig(optional, hidden, readOnly),
+  validator: (value: number): boolean => isNegativeInteger(value, options),
+});
+
+export const positiveFloatConfig = <
+  O extends boolean = false,
+  H extends boolean = false,
+  R extends boolean = false
+>(optional?: O, hidden?: H, readOnly?: R, options: IsPositiveFloatOptions = {}): PositiveFloatConfig<O, H, R> => ({
+  ...floatConfig(optional, hidden, readOnly),
+  validator: (value: number): boolean => isPositiveFloat(value, options),
+});
+
+export const positiveIntegerConfig = <
+  O extends boolean = false,
+  H extends boolean = false,
+  R extends boolean = false
+>(optional?: O, hidden?: H, readOnly?: R, options: IsPositiveIntegerOptions = {}): PositiveIntegerConfig<O, H, R> => ({
+  ...integerConfig(optional, hidden, readOnly),
+  validator: (value: number): boolean => isPositiveInteger(value, options),
+});
+
+export const urlConfig = <
+  O extends boolean = false,
+  H extends boolean = false,
+  R extends boolean = false
+>(optional?: O, hidden?: H, readOnly?: R, options: IsURLOptions = {}): URLConfig<O, H, R> => ({
+  ...stringConfig(optional, hidden, readOnly),
+  validator: (value: string) => isURL(value, options),
+});
+
+export const uuidConfig = <
+  O extends boolean = false,
+  H extends boolean = false,
+  R extends boolean = false
+>(optional?: O, hidden?: H, readOnly?: R, options: IsUUIDOptions = {}): UUIDConfig<O, H, R> => ({
+  ...stringConfig(optional, hidden, readOnly),
   normalizer: optional
     ? (value: string): string | undefined => lowercase(value) || undefined
     : lowercase,
-  validator: isUUID,
-}) as StringConfigFactory<O, H, R, true, true>;
+    validator: (value: string) => isUUID(value, options),
+} as UUIDConfig<O, H, R>);

@@ -7,7 +7,7 @@ test('an Entity can be constructed with default values', () => {
   expect(user).toBeInstanceOf(User);
   expect(user.date_of_birth).toBeInstanceOf(Date);
   expect(user.email).toStrictEqual('');
-  expect(user.email_domain).toStrictEqual('');
+  expect(user.email_domain).toStrictEqual(undefined);
   expect(user.username).toStrictEqual('');
   expect(user.uuid).toStrictEqual(undefined);
   expect(user.verified).toStrictEqual(false);

@@ -1,19 +1,14 @@
 import { Value, ValueConfig, ValueFn, ValueFnConfig } from '@typescript-entity/core';
 
-export type ConfigFactory<
+export type Config<
   V extends Value | ValueFn,
   Optional extends boolean = false,
   Hidden extends boolean = false,
   ReadOnly extends boolean = false,
   Normalizer extends boolean = false,
   Validator extends boolean = false,
-  EffectiveValue = Optional extends true
-    ? V extends ValueFn
-      ? NonNullable<ReturnType<V>> | undefined
-      : NonNullable<V> | undefined
-    : V extends ValueFn
-      ? NonNullable<ReturnType<V>>
-      : NonNullable<V>,
+  EffectiveType extends Value = V extends ValueFn ? ReturnType<V> : V,
+  EffectiveValue extends Value = Optional extends true ? EffectiveType | undefined : EffectiveType,
   C extends V extends ValueFn
     ? ValueFnConfig<EffectiveValue>
     : ValueConfig<EffectiveValue>
@@ -21,83 +16,211 @@ export type ConfigFactory<
     ? ValueFnConfig<EffectiveValue>
     : ValueConfig<EffectiveValue>
 > = (
-  (Hidden extends true ? { hidden: true } : { hidden?: false })
-  & C extends ValueFnConfig
-    ? Omit<C, 'hidden'>
-    : (
-      Omit<C, 'hidden' | 'readOnly' | 'normalizer' | 'validator'>
-      & (ReadOnly extends true ? { readOnly: true } : { readOnly?: false })
-      & Pick<Normalizer extends true ? Required<C> : C, 'normalizer'>
-      & Pick<Validator extends true ? Required<C> : C, 'validator'>
-    )
+  /* eslint-disable @typescript-eslint/ban-types */
+  C
+  & (Hidden extends true ? { hidden: true } : {})
+  & (
+    C extends ValueConfig
+      ? (
+        (Hidden extends true ? { hidden: true } : {})
+        & (ReadOnly extends true ? { readOnly: true } : {})
+        & (Normalizer extends true ? Pick<Required<C>, 'normalizer'> : {})
+        & (Validator extends true ? Pick<Required<C>, 'validator'> : {})
+      )
+      : {}
+  )
+  /* eslint-enable @typescript-eslint/ban-types */
 );
 
-export type BooleanConfigFactory<
+export type AsOptional<C extends ValueConfig | ValueFnConfig> = Config<
+  C extends ValueFnConfig ? ReturnType<C['value']> : C['value'],
+  true,
+  C['hidden'] extends true ? true : false,
+  C extends ValueConfig ? C['readOnly'] extends true ? true : false : false,
+  C extends ValueConfig ? undefined extends C['normalizer'] ? false : true : false,
+  C extends ValueConfig ? undefined extends C['validator'] ? false : true : false
+>;
+
+export type AsHidden<C extends ValueConfig | ValueFnConfig> = Config<
+  C extends ValueFnConfig ? ReturnType<C['value']> : C['value'],
+  C extends ValueFnConfig ? undefined extends ReturnType<C['value']> ? true : false : undefined extends C['value'] ? true : false,
+  true,
+  C extends ValueConfig ? C['readOnly'] extends true ? true : false : false,
+  C extends ValueConfig ? undefined extends C['normalizer'] ? false : true : false,
+  C extends ValueConfig ? undefined extends C['validator'] ? false : true : false
+>;
+
+export type AsReadOnly<C extends ValueConfig> = Config<
+  C['value'],
+  undefined extends C['value'] ? true : false,
+  C['hidden'] extends true ? true : false,
+  true,
+  undefined extends C['normalizer'] ? false : true,
+  undefined extends C['validator'] ? false : true
+>;
+
+export type WithNormalizer<C extends ValueConfig> = Config<
+  C['value'],
+  undefined extends C['value'] ? true : false,
+  C['hidden'] extends true ? true : false,
+  C['readOnly'] extends true ? true : false,
+  true,
+  undefined extends C['validator'] ? false : true
+>;
+
+export type WithValidator<C extends ValueConfig> = Config<
+  C['value'],
+  undefined extends C['value'] ? true : false,
+  C['hidden'] extends true ? true : false,
+  C['readOnly'] extends true ? true : false,
+  undefined extends C['normalizer'] ? false : true,
+  true
+>;
+
+export type BooleanConfig<
   Optional extends boolean = false,
   Hidden extends boolean = false,
   ReadOnly extends boolean = false,
   Normalizer extends boolean = false,
   Validator extends boolean = false
-> = ConfigFactory<boolean, Optional, Hidden, ReadOnly, Normalizer, Validator>;
+> = Config<boolean, Optional, Hidden, ReadOnly, Normalizer, Validator>;
 
-export type BooleanArrayConfigFactory<
+export type BooleanArrayConfig<
   Optional extends boolean = false,
   Hidden extends boolean = false,
   ReadOnly extends boolean = false,
   Normalizer extends boolean = false,
   Validator extends boolean = false
-> = ConfigFactory<boolean[], Optional, Hidden, ReadOnly, Normalizer, Validator>;
+> = Config<boolean[], Optional, Hidden, ReadOnly, Normalizer, Validator>;
 
-export type DateConfigFactory<
+export type DateConfig<
   Optional extends boolean = false,
   Hidden extends boolean = false,
   ReadOnly extends boolean = false,
   Normalizer extends boolean = false,
   Validator extends boolean = false
-> = ConfigFactory<Date, Optional, Hidden, ReadOnly, Normalizer, Validator>;
+> = Config<Date, Optional, Hidden, ReadOnly, Normalizer, Validator>;
 
-export type DateArrayConfigFactory<
+export type DateArrayConfig<
   Optional extends boolean = false,
   Hidden extends boolean = false,
   ReadOnly extends boolean = false,
   Normalizer extends boolean = false,
   Validator extends boolean = false
-> = ConfigFactory<Date[], Optional, Hidden, ReadOnly, Normalizer, Validator>;
+> = Config<Date[], Optional, Hidden, ReadOnly, Normalizer, Validator>;
 
-export type FnConfigFactory<
+export type FnConfig<
   V extends Value,
   Optional extends boolean = false,
   Hidden extends boolean = false
-> = ConfigFactory<ValueFn<V>, Optional, Hidden>;
+> = Config<ValueFn<V>, Optional, Hidden>;
 
-export type NumberConfigFactory<
+export type NumberConfig<
   Optional extends boolean = false,
   Hidden extends boolean = false,
   ReadOnly extends boolean = false,
   Normalizer extends boolean = false,
   Validator extends boolean = false
-> = ConfigFactory<number, Optional, Hidden, ReadOnly, Normalizer, Validator>;
+> = Config<number, Optional, Hidden, ReadOnly, Normalizer, Validator>;
 
-export type NumberArrayConfigFactory<
+export type NumberArrayConfig<
   Optional extends boolean = false,
   Hidden extends boolean = false,
   ReadOnly extends boolean = false,
   Normalizer extends boolean = false,
   Validator extends boolean = false
-> = ConfigFactory<number[], Optional, Hidden, ReadOnly, Normalizer, Validator>;
+> = Config<number[], Optional, Hidden, ReadOnly, Normalizer, Validator>;
 
-export type StringConfigFactory<
+export type StringConfig<
   Optional extends boolean = false,
   Hidden extends boolean = false,
   ReadOnly extends boolean = false,
   Normalizer extends boolean = false,
   Validator extends boolean = false
-> = ConfigFactory<string, Optional, Hidden, ReadOnly, Normalizer, Validator>;
+> = Config<string, Optional, Hidden, ReadOnly, Normalizer, Validator>;
 
-export type StringArrayConfigFactory<
+export type StringArrayConfig<
   Optional extends boolean = false,
   Hidden extends boolean = false,
   ReadOnly extends boolean = false,
   Normalizer extends boolean = false,
   Validator extends boolean = false
-> = ConfigFactory<string[], Optional, Hidden, ReadOnly, Normalizer, Validator>;
+> = Config<string[], Optional, Hidden, ReadOnly, Normalizer, Validator>;
+
+export type DateInFutureConfig<
+  Optional extends boolean = false,
+  Hidden extends boolean = false,
+  ReadOnly extends boolean = false
+> = DateConfig<Optional, Hidden, ReadOnly, false, true>;
+
+export type DateInPastConfig<
+  Optional extends boolean = false,
+  Hidden extends boolean = false,
+  ReadOnly extends boolean = false
+> = DateConfig<Optional, Hidden, ReadOnly, false, true>;
+
+export type EmailConfig<
+  Optional extends boolean = false,
+  Hidden extends boolean = false,
+  ReadOnly extends boolean = false
+> = StringConfig<Optional, Hidden, ReadOnly, false, true>;
+
+export type FloatConfig<
+  Optional extends boolean = false,
+  Hidden extends boolean = false,
+  ReadOnly extends boolean = false
+> = NumberConfig<Optional, Hidden, ReadOnly, false, true>;
+
+export type IntegerConfig<
+  Optional extends boolean = false,
+  Hidden extends boolean = false,
+  ReadOnly extends boolean = false
+> = NumberConfig<Optional, Hidden, ReadOnly, false, true>;
+
+export type NegativeIntegerConfig<
+  Optional extends boolean = false,
+  Hidden extends boolean = false,
+  ReadOnly extends boolean = false
+> = IntegerConfig<Optional, Hidden, ReadOnly>;
+
+export type NegativeFloatConfig<
+  Optional extends boolean = false,
+  Hidden extends boolean = false,
+  ReadOnly extends boolean = false
+> = FloatConfig<Optional, Hidden, ReadOnly>;
+
+export type NegativeNumberConfig<
+  Optional extends boolean = false,
+  Hidden extends boolean = false,
+  ReadOnly extends boolean = false
+> = NumberConfig<Optional, Hidden, ReadOnly, false, true>;
+
+export type PositiveFloatConfig<
+  Optional extends boolean = false,
+  Hidden extends boolean = false,
+  ReadOnly extends boolean = false
+> = FloatConfig<Optional, Hidden, ReadOnly>;
+
+export type PositiveIntegerConfig<
+  Optional extends boolean = false,
+  Hidden extends boolean = false,
+  ReadOnly extends boolean = false
+> = IntegerConfig<Optional, Hidden, ReadOnly>;
+
+export type PositiveNumberConfig<
+  Optional extends boolean = false,
+  Hidden extends boolean = false,
+  ReadOnly extends boolean = false
+> = NumberConfig<Optional, Hidden, ReadOnly, false, true>;
+
+export type URLConfig<
+  Optional extends boolean = false,
+  Hidden extends boolean = false,
+  ReadOnly extends boolean = false
+> = StringConfig<Optional, Hidden, ReadOnly, false, true>;
+
+export type UUIDConfig<
+  Optional extends boolean = false,
+  Hidden extends boolean = false,
+  ReadOnly extends boolean = false
+> = StringConfig<Optional, Hidden, ReadOnly, true, true>;

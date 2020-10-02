@@ -2,19 +2,17 @@ export interface Configs {
   [name: string]: ValueConfig | ValueFnConfig;
 }
 
-interface Config {
+export interface ValueConfig<V = Value> {
   hidden?: boolean;
-}
-
-export interface ValueConfig<V = Value> extends Config {
-  value: V;
   normalizer?: NormalizerFn<V>;
   readOnly?: boolean;
   sanitizer: SanitizerFn<V>;
   validator?: ValidatorFn<V>;
+  value: V;
 }
 
-export interface ValueFnConfig<V = Value> extends Config {
+export interface ValueFnConfig<V = Value> {
+  hidden?: boolean;
   value: () => V;
 }
 
