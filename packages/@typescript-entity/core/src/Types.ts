@@ -63,13 +63,17 @@ export type ConfigFactory<
   Normalizer extends boolean = false,
   Validator extends boolean = false
 > = (
-  Config<Optional extends true ? V | undefined : V>
-  & (Hidden extends true ? { hidden: true } : { hidden?: false })
-  & (ReadOnly extends true ? { readOnly: true } : { readOnly?: false })
-  /* eslint-disable @typescript-eslint/ban-types */
-  & (Normalizer extends true ? { normalizer: NormalizerFn<V> } : {})
-  & (Validator extends true ? { validator: ValidatorFn<V> } : {})
-  /* eslint-enable @typescript-eslint/ban-types */
+  Config<Optional extends true ? V | undefined : V> extends infer C
+    ? C extends Config<Optional extends true ? V | undefined : V>
+      ? (
+        Pick<C, 'value' | 'sanitizer'>
+        & (Hidden extends true ? { hidden: true } : { hidden?: false })
+        & (ReadOnly extends true ? { readOnly: true } : { readOnly?: false })
+        & (Normalizer extends true ? Pick<Required<C>, 'normalizer'> : { normalizer?: undefined })
+        & (Validator extends true ? Pick<Required<C>, 'validator'> : { validator?: undefined })
+      )
+      : never
+    : never
 );
 
 export type FnConfigFactory<
@@ -77,15 +81,17 @@ export type FnConfigFactory<
   Optional extends boolean = false,
   Hidden extends boolean = false
 > = (
-  FnConfig<Optional extends true ? V | undefined : V>
+  Pick<FnConfig<Optional extends true ? V | undefined : V>, 'value'>
   & (Hidden extends true ? { hidden: true } : { hidden?: false })
 );
 
 export type BooleanConfigFactory<
   Optional extends boolean = false,
   Hidden extends boolean = false,
-  ReadOnly extends boolean = false
-> = ConfigFactory<boolean, Optional, Hidden, ReadOnly>;
+  ReadOnly extends boolean = false,
+  Normalizer extends boolean = false,
+  Validator extends boolean = false
+> = ConfigFactory<boolean, Optional, Hidden, ReadOnly, Normalizer, Validator>;
 
 export type BooleanArrayConfigFactory<
   Optional extends boolean = false,

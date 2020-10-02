@@ -15,7 +15,7 @@ export const booleanConfig = <
   sanitizer: optional
     ? (value: unknown): boolean | undefined => toString(value) ? toBoolean(value) : undefined
     : toBoolean,
-} as BooleanConfigFactory<O, H, R>);
+} as unknown as BooleanConfigFactory<O, H, R>);
 
 export const dateConfig = <
   O extends boolean = false,
@@ -28,7 +28,7 @@ export const dateConfig = <
   sanitizer: optional
     ? (value: unknown): Date | undefined => toString(value) ? toDate(value) : undefined
     : toDate,
-} as DateConfigFactory<O, H, R>);
+} as unknown as DateConfigFactory<O, H, R>);
 
 export const fnConfig = <
   V extends ValueFn,
@@ -50,7 +50,7 @@ export const numberConfig = <
   sanitizer: optional
     ? (value: unknown): number | undefined => toString(value) ? toNumber(value) : undefined
     : toNumber,
-} as NumberConfigFactory<O, H, R>);
+} as unknown as NumberConfigFactory<O, H, R>);
 
 export const stringConfig = <
   O extends boolean = false,
@@ -63,7 +63,7 @@ export const stringConfig = <
   sanitizer: optional
     ? (value: unknown): string | undefined => toString(value) || undefined
     : toString,
-} as StringConfigFactory<O, H, R>);
+} as unknown as StringConfigFactory<O, H, R>);
 
 export const dateInFutureConfig = <
   O extends boolean = false,
