@@ -20,9 +20,9 @@
   "scripts": {
     "lint": "eslint --ext .js,.jsx,.ts,.tsx tests packages/*/*/src",
     "test": "jest",
-    "prebuild": "yarn run lint && yarn run test",
+    "prebuild": "yarn run lint",
     "build": "lerna run build --stream",
-    "postbuild": "yarn run docs",
+    "postbuild": "yarn run test && yarn run docs",
     "predocs": "rimraf ./docs",
     "docs": "typedoc --excludeNotExported --mode \"modules\" --name \"@typescript-entity\" --out \"./docs\" --readme \"./README.md\" --external-modulemap \".*packages\\/(@typescript-entity\\/[^\\/]+)\\/.*\" --exclude \"packages\\/@typescript-entity\\/*\\/src\\/index.ts\" ./packages"
   },

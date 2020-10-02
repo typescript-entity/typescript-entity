@@ -1,8 +1,8 @@
 export interface Configs {
-  [name: string]: ValueConfig | ValueFnConfig;
+  [name: string]: Config | FnConfig;
 }
 
-export interface ValueConfig<V = Value> {
+export interface Config<V = Value> {
   hidden?: boolean;
   normalizer?: NormalizerFn<V>;
   readOnly?: boolean;
@@ -11,9 +11,9 @@ export interface ValueConfig<V = Value> {
   value: V;
 }
 
-export interface ValueFnConfig<V = Value> {
+export interface FnConfig<V = Value> {
   hidden?: boolean;
-  value: () => V;
+  value: ValueFn<V>;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -28,10 +28,10 @@ export type NormalizerFn<V> = (value: NonNullable<V>) => V;
 export type ValidatorFn<V> = (value: NonNullable<V>) => boolean;
 
 export type Attrs<C extends Configs> = {
-  [K in keyof C]: Attr<C, K>;
+  [K in keyof C]: Attr<C[K]>;
 };
 
-export type Attr<C extends Configs, K extends keyof C> = C[K] extends ValueFnConfig ? ReturnType<C[K]['value']> : C[K]['value'];
+export type Attr<C extends Config | FnConfig> = C extends FnConfig ? ReturnType<C['value']> : C['value'];
 
 export type Unsanitized<Attrs> = Record<keyof Attrs, unknown>;
 
@@ -44,13 +44,101 @@ export type VisibleAttrs<C extends Configs> = Attrs<Pick<C, {
 }[keyof C]>>;
 
 export type ValueAttrs<C extends Configs> = Attrs<Pick<C, {
-  [K in keyof C]: C[K] extends ValueConfig ? K : never;
+  [K in keyof C]: C[K] extends Config ? K : never;
 }[keyof C]>>;
 
 export type WritableAttrs<C extends Configs> = Attrs<Pick<C, {
-  [K in keyof C]: C[K] extends ValueConfig
+  [K in keyof C]: C[K] extends Config
     ? C[K]['readOnly'] extends true
       ? never
       : K
     : never;
 }[keyof C]>>;
+
+export type ConfigFactory<
+  V extends Value = Value,
+  Optional extends boolean = false,
+  Hidden extends boolean = false,
+  ReadOnly extends boolean = false,
+  Normalizer extends boolean = false,
+  Validator extends boolean = false
+> = (
+  Config<Optional extends true ? V | undefined : V>
+  & (Hidden extends true ? { hidden: true } : { hidden?: false })
+  & (ReadOnly extends true ? { readOnly: true } : { readOnly?: false })
+  /* eslint-disable @typescript-eslint/ban-types */
+  & (Normalizer extends true ? { normalizer: NormalizerFn<V> } : {})
+  & (Validator extends true ? { validator: ValidatorFn<V> } : {})
+  /* eslint-enable @typescript-eslint/ban-types */
+);
+
+export type FnConfigFactory<
+  V extends Value = Value,
+  Optional extends boolean = false,
+  Hidden extends boolean = false
+> = (
+  FnConfig<Optional extends true ? V | undefined : V>
+  & (Hidden extends true ? { hidden: true } : { hidden?: false })
+);
+
+export type BooleanConfigFactory<
+  Optional extends boolean = false,
+  Hidden extends boolean = false,
+  ReadOnly extends boolean = false
+> = ConfigFactory<boolean, Optional, Hidden, ReadOnly>;
+
+export type BooleanArrayConfigFactory<
+  Optional extends boolean = false,
+  Hidden extends boolean = false,
+  ReadOnly extends boolean = false,
+  Normalizer extends boolean = false,
+  Validator extends boolean = false
+> = ConfigFactory<boolean[], Optional, Hidden, ReadOnly, Normalizer, Validator>;
+
+export type DateConfigFactory<
+  Optional extends boolean = false,
+  Hidden extends boolean = false,
+  ReadOnly extends boolean = false,
+  Normalizer extends boolean = false,
+  Validator extends boolean = false
+> = ConfigFactory<Date, Optional, Hidden, ReadOnly, Normalizer, Validator>;
+
+export type DateArrayConfigFactory<
+  Optional extends boolean = false,
+  Hidden extends boolean = false,
+  ReadOnly extends boolean = false,
+  Normalizer extends boolean = false,
+  Validator extends boolean = false
+> = ConfigFactory<Date[], Optional, Hidden, ReadOnly, Normalizer, Validator>;
+
+export type NumberConfigFactory<
+  Optional extends boolean = false,
+  Hidden extends boolean = false,
+  ReadOnly extends boolean = false,
+  Normalizer extends boolean = false,
+  Validator extends boolean = false
+> = ConfigFactory<number, Optional, Hidden, ReadOnly, Normalizer, Validator>;
+
+export type NumberArrayConfigFactory<
+  Optional extends boolean = false,
+  Hidden extends boolean = false,
+  ReadOnly extends boolean = false,
+  Normalizer extends boolean = false,
+  Validator extends boolean = false
+> = ConfigFactory<number[], Optional, Hidden, ReadOnly, Normalizer, Validator>;
+
+export type StringConfigFactory<
+  Optional extends boolean = false,
+  Hidden extends boolean = false,
+  ReadOnly extends boolean = false,
+  Normalizer extends boolean = false,
+  Validator extends boolean = false
+> = ConfigFactory<string, Optional, Hidden, ReadOnly, Normalizer, Validator>;
+
+export type StringArrayConfigFactory<
+  Optional extends boolean = false,
+  Hidden extends boolean = false,
+  ReadOnly extends boolean = false,
+  Normalizer extends boolean = false,
+  Validator extends boolean = false
+> = ConfigFactory<string[], Optional, Hidden, ReadOnly, Normalizer, Validator>;

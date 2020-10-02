@@ -1,6 +1,6 @@
 import { cloneDeep } from 'lodash';
 import { InvalidAttrValueError, UnknownAttrError, UnsanitizableAttrError } from './Errors';
-import { Attrs, Configs, HiddenAttrs, NormalizerFn, SanitizerFn, Unsanitized, ValidatorFn, ValueAttrs, ValueConfig, ValueFnConfig, VisibleAttrs, WritableAttrs } from './Types';
+import { Attrs, Config, Configs, FnConfig, HiddenAttrs, NormalizerFn, SanitizerFn, Unsanitized, ValidatorFn, ValueAttrs, VisibleAttrs, WritableAttrs } from './Types';
 
 type Entries<T> = { [K in keyof T]: [ K, T[K] ] }[keyof T][];
 
@@ -39,7 +39,7 @@ export default abstract class Entity<C extends Configs> {
     if (!(name in this.configs)) {
       throw new UnknownAttrError(this, name);
     }
-    const sanitizer = (this.configs[name] as ValueConfig<V>).sanitizer;
+    const sanitizer = (this.configs[name] as Config<V>).sanitizer;
     if (undefined === sanitizer) {
       throw new UnsanitizableAttrError(this, name);
     }
@@ -58,7 +58,7 @@ export default abstract class Entity<C extends Configs> {
     if (!(name in this.configs)) {
       throw new UnknownAttrError(this, name);
     }
-    const normalizer = (this.configs[name] as ValueConfig<V>).normalizer;
+    const normalizer = (this.configs[name] as Config<V>).normalizer;
     return (undefined !== value && null !== value && undefined !== normalizer)
       ? normalizer.call(this, value as NonNullable<V>)
       : value;
@@ -76,7 +76,7 @@ export default abstract class Entity<C extends Configs> {
     if (!(name in this.configs)) {
       throw new UnknownAttrError(this, name);
     }
-    const validator = (this.configs[name] as ValueConfig<V>).validator;
+    const validator = (this.configs[name] as Config<V>).validator;
     return (undefined !== value && null !== value && undefined !== validator)
       ? validator.call(this, value as NonNullable<V>)
       : true;
@@ -94,8 +94,8 @@ export default abstract class Entity<C extends Configs> {
       throw new UnknownAttrError(this, name);
     }
     return 'function' === typeof this.configs[name]['value']
-      ? (this.configs[name] as ValueFnConfig<V>).value.call(this)
-      : (this.configs[name] as ValueConfig<V>).value;
+      ? (this.configs[name] as FnConfig<V>).value.call(this)
+      : (this.configs[name] as Config<V>).value;
   }
 
   /**
@@ -158,7 +158,7 @@ export default abstract class Entity<C extends Configs> {
     if (!this.validate(name, value)) {
       throw new InvalidAttrValueError(this, name, value);
     }
-    (this.configs[name] as ValueConfig<V>).value = value;
+    (this.configs[name] as Config<V>).value = value;
     return this;
   }
 

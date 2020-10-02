@@ -1,14 +1,14 @@
-import { booleanConfig, BooleanConfig, dateInPastConfig, DateInPastConfig, emailConfig, EmailConfig, fnConfig, FnConfig, stringConfig, StringConfig, uuidConfig, UUIDConfig, WithValidator } from '@typescript-entity/configs';
-import { Attr, Attrs, Entity, ValueAttrs } from '@typescript-entity/core';
+import { booleanConfig, dateInPastConfig, DateInPastConfigFactory, emailConfig, EmailConfigFactory, fnConfig, stringConfig, uuidConfig, UUIDConfigFactory } from '@typescript-entity/configs';
+import { Attr, Attrs, BooleanConfigFactory, Entity, FnConfigFactory, StringConfigFactory, ValueAttrs } from '@typescript-entity/core';
 import { isLength } from '@typescript-entity/validators';
 
 export type UserConfigs = {
-  date_of_birth: DateInPastConfig;
-  email: EmailConfig;
-  email_domain: FnConfig<string, true>;
-  uuid: UUIDConfig<true, true, true>;
-  username: WithValidator<StringConfig>;
-  verified: BooleanConfig;
+  date_of_birth: DateInPastConfigFactory;
+  email: EmailConfigFactory;
+  email_domain: FnConfigFactory<string, true>;
+  uuid: UUIDConfigFactory<true, true, true>;
+  username: StringConfigFactory<false, false, false, false, true>;
+  verified: BooleanConfigFactory;
 };
 
 export class User extends Entity<UserConfigs> implements Attrs<UserConfigs> {
@@ -29,43 +29,43 @@ export class User extends Entity<UserConfigs> implements Attrs<UserConfigs> {
     super(User.CONFIGS, attrs);
   }
 
-  get date_of_birth(): Attr<UserConfigs, 'date_of_birth'> {
+  get date_of_birth(): Attr<UserConfigs['date_of_birth']> {
     return this.get('date_of_birth');
   }
 
-  set date_of_birth(value: Attr<UserConfigs, 'date_of_birth'>) {
+  set date_of_birth(value: Attr<UserConfigs['date_of_birth']>) {
     this.set('date_of_birth', value);
   }
 
-  get email(): Attr<UserConfigs, 'email'> {
+  get email(): Attr<UserConfigs['email']> {
     return this.get('email');
   }
 
-  set email(value: Attr<UserConfigs, 'email'>) {
+  set email(value: Attr<UserConfigs['email']>) {
     this.set('email', value);
   }
 
-  get email_domain(): Attr<UserConfigs, 'email_domain'> {
+  get email_domain(): Attr<UserConfigs['email_domain']> {
     return this.get('email_domain');
   }
 
-  get uuid(): Attr<UserConfigs, 'uuid'> {
+  get uuid(): Attr<UserConfigs['uuid']> {
     return this.get('uuid');
   }
 
-  get username(): Attr<UserConfigs, 'username'> {
+  get username(): Attr<UserConfigs['username']> {
     return this.get('username');
   }
 
-  set username(value: Attr<UserConfigs, 'username'>) {
+  set username(value: Attr<UserConfigs['username']>) {
     this.set('username', value);
   }
 
-  get verified(): Attr<UserConfigs, 'verified'> {
+  get verified(): Attr<UserConfigs['verified']> {
     return this.get('verified');
   }
 
-  set verified(value: Attr<UserConfigs, 'verified'>) {
+  set verified(value: Attr<UserConfigs['verified']>) {
     this.set('verified', value);
   }
 
