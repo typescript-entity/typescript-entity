@@ -66,7 +66,260 @@
 					<h1>@typescript-entity</h1>
 				</a>
 				<p>Typed entity library with attribute sanitization, normalization and validation.</p>
-				<p>See the <a href="https://apancutt.github.io/typescript-entity/modules/_typescript_entity_core.html">Documentation for <code>@typescript/core</code></a> for more information.</p>
+				<p>Provides a low-level implementation of data objects represented as entity classes. Each entity class is assigned a collection of attribute configurations that define the value type (<code>string</code>, <code>number</code>, custom type, anything...) and other constraints such as <code>optional</code>, <code>readOnly</code> or <code>hidden</code> (from JSON representation).</p>
+				<p>Attribute values can be sanitized from raw/untrusted data (e.g. JSON or user-input) using the <code>sanitizer</code> function configured for each attribute, as well as normalized and validated by configuring an optional <code>normalizer</code> and <code>validator</code> function, respectively. Dynamic attributes can also be defined using functions which also return strictly-typed values.</p>
+				<ul>
+					<li><a href="#installation">Installation</a><ul>
+							<li><a href="#optional-packages">Optional Packages</a></li>
+						</ul>
+					</li>
+					<li><a href="#usage">Usage</a><ul>
+							<li><a href="#verbose-usage">Verbose Usage</a></li>
+							<li><a href="#simplified-usage">Simplified Usage</a></li>
+							<li><a href="#examples">Examples</a></li>
+						</ul>
+					</li>
+					<li><a href="#api-documentation">API Documentation</a></li>
+					<li><a href="#contributing">Contributing</a><ul>
+							<li><a href="#running-tests">Running Tests</a></li>
+							<li><a href="#running-build">Running Build</a></li>
+						</ul>
+					</li>
+				</ul>
+				<a href="#installation" id="installation" style="color: inherit; text-decoration: none;">
+					<h2>Installation</h2>
+				</a>
+				<p>The core functionality is provided by <a href="https://www.npmjs.com/package/@typescript-entity/core"><code>@typescript-entity/core</code></a>.</p>
+				<pre><code class="language-shell">yarn add @typescript-entity/core</code></pre>
+				<a href="#optional-packages" id="optional-packages" style="color: inherit; text-decoration: none;">
+					<h3>Optional Packages</h3>
+				</a>
+				<p>These packages can help minimize the code required for declaring common attribute configurations. They are entirely optional but you may find them useful.</p>
+				<a href="#typescript-entityconfigs" id="typescript-entityconfigs" style="color: inherit; text-decoration: none;">
+					<h5><a href="https://www.npmjs.com/package/@typescript-entity/configs"><code>@typescript-entity/configs</code></a></h5>
+				</a>
+				<p>Configuration typings and factory functions for common types of attributes.</p>
+				<pre><code class="language-shell">yarn add @typescript-entity/configs</code></pre>
+				<a href="#typescript-entitynormalizers" id="typescript-entitynormalizers" style="color: inherit; text-decoration: none;">
+					<h5><a href="https://www.npmjs.com/package/@typescript-entity/normalizers"><code>@typescript-entity/normalizers</code></a></h5>
+				</a>
+				<p>Normalizer functions for common normalization strategies.</p>
+				<pre><code class="language-shell">yarn add @typescript-entity/normalizers</code></pre>
+				<a href="#typescript-entitysanitizers" id="typescript-entitysanitizers" style="color: inherit; text-decoration: none;">
+					<h5><a href="https://www.npmjs.com/package/@typescript-entity/sanitizers"><code>@typescript-entity/sanitizers</code></a></h5>
+				</a>
+				<p>Sanitizer functions for common sanitization strategies.</p>
+				<pre><code class="language-shell">yarn add @typescript-entity/sanitizers</code></pre>
+				<a href="#typescript-entityvalidators" id="typescript-entityvalidators" style="color: inherit; text-decoration: none;">
+					<h5><a href="https://www.npmjs.com/package/@typescript-entity/validators"><code>@typescript-entity/validators</code></a></h5>
+				</a>
+				<p>Validator functions for common validation strategies.</p>
+				<pre><code class="language-shell">yarn add @typescript-entity/validators</code></pre>
+				<a href="#usage" id="usage" style="color: inherit; text-decoration: none;">
+					<h2>Usage</h2>
+				</a>
+				<a href="#verbose-usage" id="verbose-usage" style="color: inherit; text-decoration: none;">
+					<h3>Verbose Usage</h3>
+				</a>
+				<p>You may prefer to <a href="#simplified-usage">skip to Simplified Usage</a>.</p>
+				<pre><code class="language-typescript"><span class="hljs-keyword">import</span> { Attrs, BooleanConfigFactory, Entity, FnConfigFactory, NumberConfigFactory, StringConfigFactory, WritableAttrs } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@typescript-entity/core&quot;</span>;
+
+<span class="hljs-comment">// ID is a number and is optional, read-only and must have a validator function defined</span>
+<span class="hljs-keyword">type</span> IDConfig = NumberConfigFactory&lt;<span class="hljs-literal">true</span>, <span class="hljs-literal">false</span>, <span class="hljs-literal">true</span>, <span class="hljs-literal">false</span>, <span class="hljs-literal">true</span>&gt;;
+
+<span class="hljs-comment">// Name is a string and is required and must have a normalizer function defined</span>
+<span class="hljs-keyword">type</span> NameConfig = StringConfigFactory&lt;<span class="hljs-literal">false</span>, <span class="hljs-literal">false</span>, <span class="hljs-literal">false</span>, <span class="hljs-literal">true</span>&gt;;
+
+<span class="hljs-comment">// Username is a string which is simply the lowercase form of Name</span>
+<span class="hljs-keyword">type</span> UsernameConfig = FnConfigFactory&lt;<span class="hljs-built_in">string</span>&gt;;
+
+<span class="hljs-comment">// Smelly is a boolean and is required but hidden</span>
+<span class="hljs-keyword">type</span> SmellyConfig = BooleanConfigFactory&lt;<span class="hljs-literal">false</span>, <span class="hljs-literal">true</span>&gt;;
+
+<span class="hljs-keyword">type</span> PersonConfigs = {
+  id: IDConfig;
+  name: NameConfig;
+  username: UsernameConfig;
+  smelly: SmellyConfig;
+};
+
+<span class="hljs-keyword">class</span> Person <span class="hljs-keyword">extends</span> Entity&lt;PersonConfigs&gt; <span class="hljs-keyword">implements</span> Attrs&lt;PersonConfigs&gt; {
+
+  <span class="hljs-comment">// The runtime configurations are configured statically to maximize reusability but minimize the</span>
+  <span class="hljs-comment">// memory footprint. They don&#x27;t have be defined here, you may want to define them in a different</span>
+  <span class="hljs-comment">// file - just remember to update the first argument passed to the Entity constructor.</span>
+  <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">readonly</span> CONFIGS: PersonConfigs = {
+    id: {
+      value: <span class="hljs-literal">undefined</span>, <span class="hljs-comment">// The values provided in the config are used as default values</span>
+      readOnly: <span class="hljs-literal">true</span>,
+      sanitizer: (value: unknown): <span class="hljs-built_in">number</span> | <span class="hljs-function"><span class="hljs-params">undefined</span> =&gt;</span> <span class="hljs-built_in">Number</span>(value) || <span class="hljs-literal">undefined</span>,
+      validator: (value: <span class="hljs-built_in">number</span>): <span class="hljs-function"><span class="hljs-params">boolean</span> =&gt;</span> value &gt; <span class="hljs-number">0</span>,
+    },
+    name: {
+      value: <span class="hljs-string">&quot;&quot;</span>, <span class="hljs-comment">// Name was configured as a required string so can&#x27;t use undefined here</span>
+      sanitizer: (value: unknown): <span class="hljs-function"><span class="hljs-params">string</span> =&gt;</span> <span class="hljs-built_in">String</span>(value),
+      normalizer: (value: <span class="hljs-built_in">string</span>): <span class="hljs-function"><span class="hljs-params">string</span> =&gt;</span> value.trim(),
+    },
+    username: {
+      <span class="hljs-comment">// All value, sanitizer, normalizer and validator functions have the instance bound to this.</span>
+      <span class="hljs-comment">// Use TypeScript&#x27;s &quot;this parameters&quot; feature to declare it.</span>
+      value: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"><span class="hljs-built_in">this</span>: Person</span>): <span class="hljs-title">string</span> </span>{ <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>.name.toLowerCase(); },
+    },
+    smelly: {
+      value: <span class="hljs-literal">false</span>,
+      hidden: <span class="hljs-literal">true</span>,
+      sanitizer: (value: unknown): <span class="hljs-function"><span class="hljs-params">boolean</span> =&gt;</span> <span class="hljs-built_in">Boolean</span>(value),
+    },
+  };
+
+  <span class="hljs-comment">// Allow consumers to provide some/all attributes during construction to override the default</span>
+  <span class="hljs-comment">// values provided in the configs. Attributes passed to the constructor can include values for</span>
+  <span class="hljs-comment">// read-only values but not for function attributes.</span>
+  <span class="hljs-keyword">constructor</span>(<span class="hljs-params">attrs: Partial&lt;WritableAttrs&lt;PersonConfigs, <span class="hljs-literal">true</span>&gt;&gt; = {}</span>) {
+    <span class="hljs-built_in">super</span>(Person.CONFIGS, attrs);
+  }
+
+  <span class="hljs-comment">// Because we declared that Person implements Attrs&lt;PersonConfigs&gt; we have opted in to defining</span>
+  <span class="hljs-comment">// getters and setters for each attribute on the entity which makes it easier to interact with</span>
+  <span class="hljs-comment">// instances. Types do not need to be specified since they are inferred from PersonConfigs.</span>
+
+  get id() {
+    <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>.get(<span class="hljs-string">&quot;id&quot;</span>);
+  }
+
+  <span class="hljs-comment">// IDConfig is a read-only attribute so TypeScript will correctly prevent us from setting it.</span>
+  <span class="hljs-comment">//set id(value) {</span>
+  <span class="hljs-comment">//  this.set(&quot;id&quot;, value);</span>
+  <span class="hljs-comment">//}</span>
+
+  get name() {
+    <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>.get(<span class="hljs-string">&quot;name&quot;</span>);
+  }
+
+  set name(value) {
+    <span class="hljs-built_in">this</span>.set(<span class="hljs-string">&quot;name&quot;</span>, value);
+  }
+
+  get username() {
+    <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>.get(<span class="hljs-string">&quot;username&quot;</span>);
+  }
+
+  <span class="hljs-comment">// UsernameConfig is a function attribute so TypeScript will correctly prevent us from setting it.</span>
+  <span class="hljs-comment">//set username(value) {</span>
+  <span class="hljs-comment">//  this.set(&quot;username&quot;, value);</span>
+  <span class="hljs-comment">//}</span>
+
+  get smelly() {
+    <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>.get(<span class="hljs-string">&quot;smelly&quot;</span>);
+  }
+
+  set smelly(value) {
+    <span class="hljs-built_in">this</span>.set(<span class="hljs-string">&quot;smelly&quot;</span>, value);
+  }
+
+}</code></pre>
+				<a href="#simplified-usage" id="simplified-usage" style="color: inherit; text-decoration: none;">
+					<h3>Simplified Usage</h3>
+				</a>
+				<p>The <a href="#verbose-usage">example above</a> is intentionally verbose for instructional purposes. Much of it can be simplified using the optional helper packages....</p>
+				<pre><code class="language-typescript"><span class="hljs-keyword">import</span> { booleanConfig, positiveIntegerConfig, PositiveIntegerConfigFactory, stringConfig } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@typescript-entity/configs&quot;</span>;
+<span class="hljs-keyword">import</span> { Attrs, BooleanConfigFactory, Entity, FnConfigFactory, StringConfigFactory, WritableAttrs } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@typescript-entity/core&quot;</span>;
+<span class="hljs-keyword">import</span> { trim } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@typescript-entity/normalizers&quot;</span>;
+
+<span class="hljs-keyword">type</span> PersonConfigs = {
+  id: PositiveIntegerConfigFactory&lt;<span class="hljs-literal">true</span>, <span class="hljs-literal">false</span>, <span class="hljs-literal">true</span>&gt;;
+  name: StringConfigFactory&lt;<span class="hljs-literal">false</span>, <span class="hljs-literal">false</span>, <span class="hljs-literal">false</span>, <span class="hljs-literal">true</span>&gt;;
+  username: FnConfigFactory&lt;<span class="hljs-built_in">string</span>&gt;;
+  smelly: BooleanConfigFactory&lt;<span class="hljs-literal">false</span>, <span class="hljs-literal">true</span>&gt;;
+};
+
+<span class="hljs-keyword">class</span> Person <span class="hljs-keyword">extends</span> Entity&lt;PersonConfigs&gt; <span class="hljs-keyword">implements</span> Attrs&lt;PersonConfigs&gt; {
+
+  <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">readonly</span> CONFIGS: PersonConfigs = {
+    id: positiveIntegerConfig(<span class="hljs-literal">true</span>, <span class="hljs-literal">false</span>, <span class="hljs-literal">true</span>),
+    name: {
+      ...stringConfig(),
+      normalizer: trim,
+    },
+    username: {
+      value: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"><span class="hljs-built_in">this</span>: Person</span>): <span class="hljs-title">string</span> </span>{ <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>.name.toLowerCase(); },
+    },
+    smelly: booleanConfig(<span class="hljs-literal">false</span>, <span class="hljs-literal">true</span>),
+  };
+
+  <span class="hljs-keyword">constructor</span>(<span class="hljs-params">attrs: Partial&lt;WritableAttrs&lt;PersonConfigs, <span class="hljs-literal">true</span>&gt;&gt; = {}</span>) {
+    <span class="hljs-built_in">super</span>(Person.CONFIGS, attrs);
+  }
+
+  get id() {
+    <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>.get(<span class="hljs-string">&quot;id&quot;</span>);
+  }
+
+  get name() {
+    <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>.get(<span class="hljs-string">&quot;name&quot;</span>);
+  }
+
+  set name(value) {
+    <span class="hljs-built_in">this</span>.set(<span class="hljs-string">&quot;name&quot;</span>, value);
+  }
+
+  get username() {
+    <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>.get(<span class="hljs-string">&quot;username&quot;</span>);
+  }
+
+  get smelly() {
+    <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>.get(<span class="hljs-string">&quot;smelly&quot;</span>);
+  }
+
+  set smelly(value) {
+    <span class="hljs-built_in">this</span>.set(<span class="hljs-string">&quot;smelly&quot;</span>, value);
+  }
+
+}</code></pre>
+				<a href="#examples" id="examples" style="color: inherit; text-decoration: none;">
+					<h3>Examples</h3>
+				</a>
+				<pre><code class="language-typescript"><span class="hljs-keyword">const</span> person = <span class="hljs-keyword">new</span> Person();
+<span class="hljs-built_in">console</span>.log(person.id); <span class="hljs-comment">// 0</span>
+<span class="hljs-built_in">console</span>.log(person.name); <span class="hljs-comment">// &quot;&quot;</span>
+<span class="hljs-built_in">console</span>.log(person.username); <span class="hljs-comment">// &quot;&quot;</span>
+<span class="hljs-built_in">console</span>.log(person.smelly); <span class="hljs-comment">// false</span>
+<span class="hljs-built_in">console</span>.log(<span class="hljs-built_in">JSON</span>.stringify(person)); <span class="hljs-comment">// {&quot;name&quot;:&quot;&quot;,&quot;username&quot;:&quot;&quot;}</span></code></pre>
+				<pre><code class="language-typescript"><span class="hljs-keyword">const</span> bob = <span class="hljs-keyword">new</span> Person({
+  id: <span class="hljs-number">123</span>,
+  name: <span class="hljs-string">&quot;  Bob  &quot;</span>,
+  smelly: <span class="hljs-literal">true</span>,
+});
+<span class="hljs-built_in">console</span>.log(bob.id); <span class="hljs-comment">// 123</span>
+<span class="hljs-built_in">console</span>.log(bob.name); <span class="hljs-comment">// &quot;Bob&quot;</span>
+<span class="hljs-built_in">console</span>.log(bob.username); <span class="hljs-comment">// &quot;bob&quot;</span>
+<span class="hljs-built_in">console</span>.log(bob.smelly); <span class="hljs-comment">// true</span>
+<span class="hljs-built_in">console</span>.log(<span class="hljs-built_in">JSON</span>.stringify(bob)); <span class="hljs-comment">// {&quot;id&quot;:123,&quot;name&quot;:&quot;Bob&quot;,&quot;username&quot;:&quot;bob&quot;}</span></code></pre>
+				<pre><code class="language-typescript"><span class="hljs-keyword">const</span> json = <span class="hljs-string">&#x27;{&quot;id&quot;:&quot;123&quot;,&quot;name&quot;:&quot;Jane  &quot;,&quot;username&quot;:&quot;janerocks&quot;,&quot;smelly&quot;:true}&#x27;</span>;
+<span class="hljs-keyword">const</span> jane = (<span class="hljs-keyword">new</span> Person()).fillJSON(json);
+<span class="hljs-built_in">console</span>.log(jane.id); <span class="hljs-comment">// 123 (sanitized from string to number)</span>
+<span class="hljs-built_in">console</span>.log(jane.name); <span class="hljs-comment">// &quot;Jane&quot; (normalized to remove trailing whitespace)</span>
+<span class="hljs-built_in">console</span>.log(jane.username); <span class="hljs-comment">// &quot;jane&quot; (the JSON value was ignored as this is a function attr)</span>
+<span class="hljs-built_in">console</span>.log(jane.smelly); <span class="hljs-comment">// true (the JSON value was allowed even though this is a read-only attr)</span></code></pre>
+				<p>Note: extraneous values provided in JSON are silently ignored by <code>Entity.fillJSON()</code>.</p>
+				<a href="#api-documentation" id="api-documentation" style="color: inherit; text-decoration: none;">
+					<h2>API Documentation</h2>
+				</a>
+				<p>Can be found <a href="https://apancutt.github.io/typescript-entity/">here</a>.</p>
+				<a href="#contributing" id="contributing" style="color: inherit; text-decoration: none;">
+					<h2>Contributing</h2>
+				</a>
+				<p>This monorepo contains the official <code>@typescript-entity</code> packages. It is configured for use with <a href="https://classic.yarnpkg.com/en/docs/workspaces/">Yarn Workspaces</a> and <a href="https://lerna.js.org/">Lerna</a>. Linting is provided by <a href="https://eslint.org/"><code>eslint</code></a> using <a href="https://www.npmjs.com/package/@typescript-eslint/eslint-plugin"><code>@typescript-eslint/eslint-plugin</code></a> according to the <a href="https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/src/configs/eslint-recommended.ts"><code>@typescript-eslint/recommended</code></a> rules. Tests run on <a href="https://jestjs.io/"><code>jest</code></a> using <a href="https://www.npmjs.com/package/ts-jest"><code>ts-jest</code></a>. API documentation is generated using <a href="https://typedoc.org/">TypeDoc</a>.</p>
+				<a href="#running-tests" id="running-tests" style="color: inherit; text-decoration: none;">
+					<h3>Running Tests</h3>
+				</a>
+				<p>Tests reside in <a href="https://github.com/apancutt/typescript-entity/tree/master/tests"><code>./tests</code></a> and provide unit testing across all packages.</p>
+				<pre><code class="language-shell">yarn run test</code></pre>
+				<a href="#running-build" id="running-build" style="color: inherit; text-decoration: none;">
+					<h3>Running Build</h3>
+				</a>
+				<p>Building will lint, compile, test and regenerate API documentation (in that order).</p>
+				<pre><code class="language-shell">yarn run build</code></pre>
 			</div>
 		</div>
 		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
