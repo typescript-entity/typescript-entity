@@ -102,7 +102,7 @@ class Person extends Entity<PersonConfigs> implements Attrs<PersonConfigs> {
       validator: (value: number): boolean => value > 0,
     },
     name: {
-      value: "",
+      value: "", // Name was configured as a required string so can't use undefined here
       sanitizer: (value: unknown): string => String(value),
       normalizer: (value: string): string => value.trim(),
     },
