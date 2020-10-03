@@ -119,7 +119,7 @@ class Person extends Entity<PersonConfigs> implements Attrs<PersonConfigs> {
 
   // Allow consumers to provide some/all attributes during construction to override the default
   // values provided in the configs. Attributes passed to the constructor can include values for
-  // read-only values.
+  // read-only values but not for function attributes.
   constructor(attrs: Partial<WritableAttrs<PersonConfigs, true>> = {}) {
     super(Person.CONFIGS, attrs);
   }
