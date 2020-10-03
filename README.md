@@ -91,7 +91,7 @@ type PersonConfigs = {
 
 class Person extends Entity<PersonConfigs> implements Attrs<PersonConfigs> {
 
-  // The runtime configurations are configured statically to maximise reusability but minimise the
+  // The runtime configurations are configured statically to maximize reusability but minimize the
   // memory footprint. They don't have be defined here, you may want to define them in a seperate
   // file - just remember to update the first argument passed to the Entity constructor.
   public static readonly CONFIGS: PersonConfigs = {
