@@ -55,7 +55,7 @@ yarn add @typescript-entity/sanitizers
 
 ##### [`@typescript-entity/validators`](https://www.npmjs.com/package/@typescript-entity/validators)
 
-Validators functions for common validation strategies.
+Validator functions for common validation strategies.
 
 ```shell
 yarn add @typescript-entity/validators
