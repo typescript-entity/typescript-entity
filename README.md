@@ -107,7 +107,8 @@ class Person extends Entity<PersonConfigs> implements Attrs<PersonConfigs> {
       normalizer: (value: string): string => value.trim(),
     },
     username: {
-      // All value, sanitizer, normalizer and validator functions have the instance bound to this. Use TypeScript's "this parameters" feature to declare it.
+      // All value, sanitizer, normalizer and validator functions have the instance bound to this.
+      // Use TypeScript's "this parameters" feature to declare it.
       value: function(this: Person): string { return this.name.replace(" ", "").toLowerCase(); },
     },
     smelly: {
