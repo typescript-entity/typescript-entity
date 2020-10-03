@@ -133,7 +133,7 @@ class Person extends Entity<PersonConfigs> implements Attrs<PersonConfigs> {
     return this.get("id");
   }
 
-  // Since ID is read-only, TypeScript will correctly prevent us from setting it.
+  // IDConfig is a read-only attribute so TypeScript will correctly prevent us from setting it.
   //set id(value) {
   //  this.set("id", value);
   //}
@@ -150,7 +150,7 @@ class Person extends Entity<PersonConfigs> implements Attrs<PersonConfigs> {
     return this.get("username");
   }
 
-  // Since Username is a function, TypeScript will correctly prevent us from setting it.
+  // UsernameConfig is a function attribute so TypeScript will correctly prevent us from setting it.
   //set username(value) {
   //  this.set("username", value);
   //}
