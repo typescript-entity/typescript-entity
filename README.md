@@ -251,6 +251,17 @@ console.log(bob.smelly); // true
 console.log(JSON.stringify(bob)); // {"id":123,"name":"Bob","username":"bob"}
 ```
 
+```typescript
+const json = '{"id":"123","name":"Jane  ","username":"janerocks","smelly":true}';
+const jane = (new Person()).fillJSON(json);
+console.log(jane.id); // 123 (sanitized from string to number)
+console.log(jane.name); // "Jane" (normalized to remove trailing whitespace)
+console.log(jane.username); // "jane" (the JSON value was ignored as this is a function attr)
+console.log(jane.smelly); // true (the JSON value was allowed even though this is a read-only attr)
+```
+
+Note: extraneous values provided in JSON are silently ignored by `Entity.fillJSON()`.
+
 ## API Documentation
 
 Can be found [here](https://apancutt.github.io/typescript-entity/).
