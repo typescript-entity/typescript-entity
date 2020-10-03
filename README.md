@@ -68,7 +68,7 @@ yarn add @typescript-entity/validators
 You may prefer to [skip to Simplified Usage](#simplified-usage).
 
 ```typescript
-import { Attrs, BooleanConfigFactory, Entity, FnConfigFactory, NumberConfigFactory, StringConfigFactory } from "@typescript-entity/core";
+import { Attrs, BooleanConfigFactory, Entity, FnConfigFactory, NumberConfigFactory, StringConfigFactory, WritableAttrs } from "@typescript-entity/core";
 
 // ID is a number and is optional, read-only and must have a validator function defined
 type IDConfig = NumberConfigFactory<true, false, true, false, true>;
@@ -120,7 +120,7 @@ class Person extends Entity<PersonConfigs> implements Attrs<PersonConfigs> {
   // Allow consumers to provide some/all attributes during construction to override the default
   // values provided in the configs. Attributes passed to the constructor can include values for
   // read-only values.
-  constructor(attrs: Partial<Attrs<PersonConfigs>> = {}) {
+  constructor(attrs: Partial<WritableAttrs<PersonConfigs>> = {}) {
     super(Person.CONFIGS, attrs);
   }
 
@@ -171,7 +171,7 @@ The [example above](#verbose-usage) is intentionally verbose for instructional p
 
 ```typescript
 import { booleanConfig, positiveIntegerConfig, PositiveIntegerConfigFactory, stringConfig } from "@typescript-entity/configs";
-import { Attrs, BooleanConfigFactory, Entity, FnConfigFactory, StringConfigFactory } from "@typescript-entity/core";
+import { Attrs, BooleanConfigFactory, Entity, FnConfigFactory, StringConfigFactory, WritableAttrs } from "@typescript-entity/core";
 import { trim } from "@typescript-entity/normalizers";
 
 type PersonConfigs = {
@@ -195,7 +195,7 @@ class Person extends Entity<PersonConfigs> implements Attrs<PersonConfigs> {
     smelly: booleanConfig(false, true),
   };
 
-  constructor(attrs: Partial<Attrs<PersonConfigs>> = {}) {
+  constructor(attrs: Partial<WritableAttrs<PersonConfigs>> = {}) {
     super(Person.CONFIGS, attrs);
   }
 
