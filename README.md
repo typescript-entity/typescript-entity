@@ -4,7 +4,7 @@ Typed entity library with attribute sanitization, normalization and validation.
 
 Provides a low-level implementation of data objects represented as entity classes. Each entity class is assigned a collection of attribute configurations that define the value type (`string`, `number`, custom type, anything...) and other constraints such as `optional`, `readOnly` or `hidden` (from JSON representation).
 
-Attribute values can be sanitized from raw/untrusted data (e.g. JSON or user-input) using the `sanitizer` function configured for each attribute, as well as normalized and validated by configuring an optional `normalizer` and `validator` function, repspectively. Dynamic attribute values can also be defined by functions which also return strictly-typed values.
+Attribute values can be sanitized from raw/untrusted data (e.g. JSON or user-input) using the `sanitizer` function configured for each attribute, as well as normalized and validated by configuring an optional `normalizer` and `validator` function, respectively. Dynamic attributes can also be defined using functions which also return strictly-typed values.
 
 - [Installation](#installation)
   - [Optional Packages](#optional-packages)
