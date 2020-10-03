@@ -76,7 +76,7 @@ type IDConfig = NumberConfigFactory<true, false, true, false, true>;
 // Name is a string and is required and must have a normalizer function defined
 type NameConfig = StringConfigFactory<false, false, false, true>;
 
-// Username is a string computed from their Name
+// Username is a string which is simply the lowercase form of Name
 type UsernameConfig = FnConfigFactory<string>;
 
 // Smelly is a boolean and is required but hidden
@@ -109,7 +109,7 @@ class Person extends Entity<PersonConfigs> implements Attrs<PersonConfigs> {
     username: {
       // All value, sanitizer, normalizer and validator functions have the instance bound to this.
       // Use TypeScript's "this parameters" feature to declare it.
-      value: function(this: Person): string { return this.name.replace(" ", "").toLowerCase(); },
+      value: function(this: Person): string { return this.name.toLowerCase(); },
     },
     smelly: {
       value: false,
@@ -191,7 +191,7 @@ class Person extends Entity<PersonConfigs> implements Attrs<PersonConfigs> {
       normalizer: trim,
     },
     username: {
-      value: function(this: Person): string { return this.name.replace(" ", "").toLowerCase(); },
+      value: function(this: Person): string { return this.name.toLowerCase(); },
     },
     smelly: booleanConfig(false, true),
   };
