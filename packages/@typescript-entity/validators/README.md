@@ -1,9 +1,5 @@
 # @typescript-entity/validators
 
-Validator functions for use with [@typescript-entity/core](https://www.npmjs.com/package/@typescript-entity/core).
+Validators functions for common validation strategies.
 
-## Installation
-
-```shell
-yarn add @typescript-entity/core @typescript-entity/validators
-```
+For use with the [@typescript-entity](https://github.com/apancutt/typescript-entity) library.

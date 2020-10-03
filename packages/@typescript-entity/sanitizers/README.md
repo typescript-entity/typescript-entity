@@ -1,9 +1,5 @@
 # @typescript-entity/sanitizers
 
-Sanitizer functions for use with [@typescript-entity/core](https://www.npmjs.com/package/@typescript-entity/core).
+Sanitizer functions for common sanitization strategies.
 
-## Installation
-
-```shell
-yarn add @typescript-entity/core @typescript-entity/sanitizers
-```
+For use with the [@typescript-entity](https://github.com/apancutt/typescript-entity) library.

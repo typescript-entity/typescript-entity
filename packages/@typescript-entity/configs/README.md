@@ -1,9 +1,5 @@
 # @typescript-entity/configs
 
-Attribute configurations for use with [@typescript-entity/core](https://www.npmjs.com/package/@typescript-entity/core).
+Configuration typings and factory functions for common types of attributes.
 
-## Installation
-
-```shell
-yarn add @typescript-entity/core @typescript-entity/configs
-```
+For use with the [@typescript-entity](https://github.com/apancutt/typescript-entity) library.
