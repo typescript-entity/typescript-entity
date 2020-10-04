@@ -1,4 +1,4 @@
-import { BooleanConfigFactory, DateConfigFactory, FnConfigFactory, NumberConfigFactory, StringConfigFactory, ValueFn } from '@typescript-entity/core';
+import { BooleanArrayConfigFactory, BooleanConfigFactory, DateArrayConfigFactory, DateConfigFactory, FnConfigFactory, NumberArrayConfigFactory, NumberConfigFactory, StringArrayConfigFactory, StringConfigFactory, ValueFn } from '@typescript-entity/core';
 import { lowercase } from '@typescript-entity/normalizers';
 import { toBoolean, toDate, toFloat, toInteger, toNumber, toString } from '@typescript-entity/sanitizers';
 import { isAfter, IsAfterOptions, isBefore, IsBeforeOptions, isEmail, IsEmailOptions, isFloat, IsFloatOptions, isInteger, IsIntegerOptions, isNegativeFloat, IsNegativeFloatOptions, isNegativeInteger, IsNegativeIntegerOptions, isPositiveFloat, IsPositiveFloatOptions, isPositiveInteger, IsPositiveIntegerOptions, isURL, IsURLOptions, isUUID, IsUUIDOptions } from '@typescript-entity/validators';
@@ -17,6 +17,22 @@ export const booleanConfig = <
     : toBoolean,
 } as unknown as BooleanConfigFactory<O, H, R>);
 
+export const booleanArrayConfig = <
+  O extends boolean = false,
+  H extends boolean = false,
+  R extends boolean = false
+>(optional?: O, hidden?: H, readOnly?: R): BooleanArrayConfigFactory<O, H, R> => {
+  const booleanSanitizer = booleanConfig(optional, hidden, readOnly).sanitizer;
+  return {
+    hidden,
+    readOnly,
+    value: [],
+    sanitizer: optional
+      ? (values: unknown[]): (boolean | undefined)[] => values.map((value) => booleanSanitizer(value))
+      : (values: unknown[]): boolean[] => values.map((value) => booleanSanitizer(value) as boolean),
+  } as unknown as BooleanArrayConfigFactory<O, H, R>;
+};
+
 export const dateConfig = <
   O extends boolean = false,
   H extends boolean = false,
@@ -29,6 +45,22 @@ export const dateConfig = <
     ? (value: unknown): Date | undefined => toString(value) ? toDate(value) : undefined
     : toDate,
 } as unknown as DateConfigFactory<O, H, R>);
+
+export const dateArrayConfig = <
+  O extends boolean = false,
+  H extends boolean = false,
+  R extends boolean = false
+>(optional?: O, hidden?: H, readOnly?: R): DateArrayConfigFactory<O, H, R> => {
+  const dateSanitizer = dateConfig(optional, hidden, readOnly).sanitizer;
+  return {
+    hidden,
+    readOnly,
+    value: [],
+    sanitizer: optional
+      ? (values: unknown[]): (Date | undefined)[] => values.map((value) => dateSanitizer(value))
+      : (values: unknown[]): Date[] => values.map((value) => dateSanitizer(value) as Date),
+  } as unknown as DateArrayConfigFactory<O, H, R>;
+};
 
 export const fnConfig = <
   V extends ValueFn,
@@ -52,6 +84,22 @@ export const numberConfig = <
     : toNumber,
 } as unknown as NumberConfigFactory<O, H, R>);
 
+export const numberArrayConfig = <
+  O extends boolean = false,
+  H extends boolean = false,
+  R extends boolean = false
+>(optional?: O, hidden?: H, readOnly?: R): NumberArrayConfigFactory<O, H, R> => {
+  const numberSanitizer = numberConfig(optional, hidden, readOnly).sanitizer;
+  return {
+    hidden,
+    readOnly,
+    value: [],
+    sanitizer: optional
+      ? (values: unknown[]): (number | undefined)[] => values.map((value) => numberSanitizer(value))
+      : (values: unknown[]): number[] => values.map((value) => numberSanitizer(value) as number),
+  } as unknown as NumberArrayConfigFactory<O, H, R>;
+};
+
 export const stringConfig = <
   O extends boolean = false,
   H extends boolean = false,
@@ -64,6 +112,22 @@ export const stringConfig = <
     ? (value: unknown): string | undefined => toString(value) || undefined
     : toString,
 } as unknown as StringConfigFactory<O, H, R>);
+
+export const stringArrayConfig = <
+  O extends boolean = false,
+  H extends boolean = false,
+  R extends boolean = false
+>(optional?: O, hidden?: H, readOnly?: R): StringArrayConfigFactory<O, H, R> => {
+  const stringSanitizer = stringConfig(optional, hidden, readOnly).sanitizer;
+  return {
+    hidden,
+    readOnly,
+    value: [],
+    sanitizer: optional
+      ? (values: unknown[]): (string | undefined)[] => values.map((value) => stringSanitizer(value))
+      : (values: unknown[]): string[] => values.map((value) => stringSanitizer(value) as string),
+  } as unknown as StringArrayConfigFactory<O, H, R>;
+};
 
 export const dateInFutureConfig = <
   O extends boolean = false,

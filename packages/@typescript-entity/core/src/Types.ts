@@ -21,6 +21,16 @@ export type Value = any;
 
 export type ValueFn<V extends Value = Value> = () => V;
 
+export type ResolvedValue<V extends Value, Optional extends boolean = false> = (
+  Optional extends true
+    ? V extends Array<Value>
+      ? (ArrayType<V> | undefined)[]
+      : V | undefined
+    : V
+);
+
+export type ArrayType<T extends Array<Value>> = T extends (infer R)[] ? R : never;
+
 export type SanitizerFn<V> = (value: unknown) => V;
 
 export type NormalizerFn<V> = (value: NonNullable<V>) => V;
@@ -61,8 +71,8 @@ export type ConfigFactory<
   Normalizer extends boolean = false,
   Validator extends boolean = false
 > = (
-  Config<Optional extends true ? V | undefined : V> extends infer C
-    ? C extends Config<Optional extends true ? V | undefined : V>
+  Config<ResolvedValue<V, Optional>> extends infer C
+    ? C extends Config<ResolvedValue<V, Optional>>
       ? (
         Pick<C, 'value' | 'sanitizer'>
         & (Hidden extends true ? { hidden: true } : { hidden?: false })
@@ -79,7 +89,7 @@ export type FnConfigFactory<
   Optional extends boolean = false,
   Hidden extends boolean = false
 > = (
-  Pick<FnConfig<Optional extends true ? V | undefined : V>, 'value'>
+  Pick<FnConfig<ResolvedValue<V, Optional>>, 'value'>
   & (Hidden extends true ? { hidden: true } : { hidden?: false })
 );
 
