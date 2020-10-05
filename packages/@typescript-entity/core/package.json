@@ -2,15 +2,15 @@
   "name": "@typescript-entity/core",
   "version": "0.1.0-alpha.18",
   "description": "Typed entity library with attribute sanitization, normalization and validation.",
-  "homepage": "https://github.com/apancutt/typescript-entity/tree/master/packages/%40typescript-entity/core#readme",
+  "homepage": "https://github.com/typescript-entity/typescript-entity/tree/master/packages/%40typescript-entity/core#readme",
   "bugs": {
-    "url": "https://github.com/apancutt/typescript-entity/issues"
+    "url": "https://github.com/typescript-entity/typescript-entity/issues"
   },
   "author": "Adam Pancutt <adam@pancutt.com>",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/apancutt/typescript-entity.git"
+    "url": "git+https://github.com/typescript-entity/typescript-entity.git"
   },
   "publishConfig": {
     "access": "public"

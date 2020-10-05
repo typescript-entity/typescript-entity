@@ -264,7 +264,7 @@ Note: extraneous values provided in JSON are silently ignored by `Entity.fillJSO
 
 ## API Documentation
 
-Can be found [here](https://apancutt.github.io/typescript-entity/).
+Can be found [here](https://typescript-entity.github.io/typescript-entity/).
 
 ## Contributing
 
@@ -272,7 +272,7 @@ This monorepo contains the official `@typescript-entity` packages. It is configu
 
 ### Running Tests
 
-Tests reside in [`./tests`](https://github.com/apancutt/typescript-entity/tree/master/tests) and provide unit testing across all packages.
+Tests reside in [`./tests`](https://github.com/typescript-entity/typescript-entity/tree/master/tests) and provide unit testing across all packages.
 
 ```shell
 yarn run test
