@@ -1,6 +1,6 @@
-import { cloneDeep } from 'lodash';
-import { InvalidAttrValueError, UnknownAttrError, UnsanitizableAttrError } from './Errors';
-import { Attrs, Config, Configs, FnConfig, HiddenAttrs, NormalizerFn, SanitizerFn, Unsanitized, ValidatorFn, VisibleAttrs, WritableAttrs } from './Types';
+import { cloneDeep } from "lodash";
+import { InvalidAttrValueError, UnknownAttrError, UnsanitizableAttrError } from "./Errors";
+import { Attrs, Config, Configs, FnConfig, HiddenAttrs, NormalizerFn, SanitizerFn, Unsanitized, ValidatorFn, VisibleAttrs, WritableAttrs } from "./Types";
 
 type Entries<T> = { [K in keyof T]: [ K, T[K] ] }[keyof T][];
 
@@ -22,7 +22,7 @@ export default abstract class Entity<C extends Configs> {
       ...configs,
       [name]: {
         ...config,
-        value: 'function' !== typeof config.value ? cloneDeep(config.value) : config.value,
+        value: "function" !== typeof config.value ? cloneDeep(config.value) : config.value,
       },
     }), {}) as C;
     this.fillReadOnly(attrs);
@@ -93,7 +93,7 @@ export default abstract class Entity<C extends Configs> {
     if (!(name in this.configs)) {
       throw new UnknownAttrError(this, name);
     }
-    return 'function' === typeof this.configs[name]['value']
+    return "function" === typeof this.configs[name]["value"]
       ? (this.configs[name] as FnConfig<V>).value.call(this)
       : (this.configs[name] as Config<V>).value;
   }
@@ -251,9 +251,9 @@ export default abstract class Entity<C extends Configs> {
     return this.fillRawReadOnly(
       Object.entries(JSON.parse(json))
         .filter(([ name ]) => (
-          'string' === typeof name
+          "string" === typeof name
           && name in this.configs
-          && 'function' !== typeof this.configs[name]['value']
+          && "function" !== typeof this.configs[name]["value"]
         ))
         .reduce((attrs, [ name, value ]) => ({
           ...attrs,

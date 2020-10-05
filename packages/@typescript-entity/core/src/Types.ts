@@ -41,21 +41,21 @@ export type Attrs<C extends Configs> = {
   [K in keyof C]: Attr<C[K]>;
 };
 
-export type Attr<C extends Config | FnConfig> = C extends FnConfig ? ReturnType<C['value']> : C['value'];
+export type Attr<C extends Config | FnConfig> = C extends FnConfig ? ReturnType<C["value"]> : C["value"];
 
 export type Unsanitized<Attrs> = Record<keyof Attrs, unknown>;
 
 export type HiddenAttrs<C extends Configs> = Attrs<Pick<C, {
-  [K in keyof C]: C[K]['hidden'] extends true ? K : never;
+  [K in keyof C]: C[K]["hidden"] extends true ? K : never;
 }[keyof C]>>;
 
 export type VisibleAttrs<C extends Configs> = Attrs<Pick<C, {
-  [K in keyof C]: C[K]['hidden'] extends true ? never : K;
+  [K in keyof C]: C[K]["hidden"] extends true ? never : K;
 }[keyof C]>>;
 
 export type WritableAttrs<C extends Configs, OverrideReadOnly extends boolean = false> = Attrs<Pick<C, {
   [K in keyof C]: C[K] extends Config
-    ? C[K]['readOnly'] extends true
+    ? C[K]["readOnly"] extends true
       ? OverrideReadOnly extends true
         ? K
         : never
@@ -74,11 +74,11 @@ export type ConfigFactory<
   Config<ResolvedValue<V, Optional>> extends infer C
     ? C extends Config<ResolvedValue<V, Optional>>
       ? (
-        Pick<C, 'value' | 'sanitizer'>
+        Pick<C, "value" | "sanitizer">
         & (Hidden extends true ? { hidden: true } : { hidden?: false })
         & (ReadOnly extends true ? { readOnly: true } : { readOnly?: false })
-        & (Normalizer extends true ? Pick<Required<C>, 'normalizer'> : { normalizer?: undefined })
-        & (Validator extends true ? Pick<Required<C>, 'validator'> : { validator?: undefined })
+        & (Normalizer extends true ? Pick<Required<C>, "normalizer"> : { normalizer?: undefined })
+        & (Validator extends true ? Pick<Required<C>, "validator"> : { validator?: undefined })
       )
       : never
     : never
@@ -89,7 +89,7 @@ export type FnConfigFactory<
   Optional extends boolean = false,
   Hidden extends boolean = false
 > = (
-  Pick<FnConfig<ResolvedValue<V, Optional>>, 'value'>
+  Pick<FnConfig<ResolvedValue<V, Optional>>, "value">
   & (Hidden extends true ? { hidden: true } : { hidden?: false })
 );
 

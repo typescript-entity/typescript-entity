@@ -1,4 +1,4 @@
-import validator from 'validator';
+import validator from "validator";
 
 export type IsAfterOptions = { now?: Date };
 
@@ -12,13 +12,13 @@ export type IsIntegerOptions = validator.IsIntOptions;
 
 export type IsLengthOptions = validator.IsLengthOptions;
 
-export type IsNegativeFloatOptions = Exclude<IsFloatOptions, 'lt'>
+export type IsNegativeFloatOptions = Exclude<IsFloatOptions, "lt">
 
-export type IsNegativeIntegerOptions = Exclude<IsIntegerOptions, 'lt'>
+export type IsNegativeIntegerOptions = Exclude<IsIntegerOptions, "lt">
 
-export type IsPositiveFloatOptions = Exclude<IsFloatOptions, 'gt'>
+export type IsPositiveFloatOptions = Exclude<IsFloatOptions, "gt">
 
-export type IsPositiveIntegerOptions = Exclude<IsIntegerOptions, 'gt'>
+export type IsPositiveIntegerOptions = Exclude<IsIntegerOptions, "gt">
 
 export type IsURLOptions = validator.IsURLOptions;
 

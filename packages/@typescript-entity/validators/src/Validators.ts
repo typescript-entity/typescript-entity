@@ -1,6 +1,6 @@
-import { toString } from '@typescript-entity/sanitizers';
-import validator from 'validator';
-import { IsAfterOptions, IsBeforeOptions, IsEmailOptions, IsFloatOptions, IsIntegerOptions, IsLengthOptions, IsNegativeFloatOptions, IsNegativeIntegerOptions, IsPositiveFloatOptions, IsPositiveIntegerOptions, IsURLOptions, IsUUIDOptions } from './Types';
+import { toString } from "@typescript-entity/sanitizers";
+import validator from "validator";
+import { IsAfterOptions, IsBeforeOptions, IsEmailOptions, IsFloatOptions, IsIntegerOptions, IsLengthOptions, IsNegativeFloatOptions, IsNegativeIntegerOptions, IsPositiveFloatOptions, IsPositiveIntegerOptions, IsURLOptions, IsUUIDOptions } from "./Types";
 
 export const isAfter = (value: Date, options: IsAfterOptions = {}): boolean => validator.isAfter(toString(value), options.now && toString(options.now));
 

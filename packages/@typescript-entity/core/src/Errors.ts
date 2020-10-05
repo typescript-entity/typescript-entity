@@ -1,5 +1,5 @@
-import Entity from './Entity';
-import { Configs, Value } from './Types';
+import Entity from "./Entity";
+import { Configs, Value } from "./Types";
 
 export class EntityError<C extends Configs> extends Error {
 

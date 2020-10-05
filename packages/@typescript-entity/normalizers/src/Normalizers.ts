@@ -1,5 +1,5 @@
-import { camelCase, capitalize as _capitalize, ceil as _ceil, floor as _floor, round as _round } from 'lodash';
-import validator from 'validator';
+import { camelCase, capitalize as _capitalize, ceil as _ceil, floor as _floor, round as _round } from "lodash";
+import validator from "validator";
 
 export const camelize = (value: string): string => camelCase(value);
 
