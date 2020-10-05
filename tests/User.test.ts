@@ -1,5 +1,6 @@
 import { Attrs, InvalidAttrValueError } from '@typescript-entity/core';
-import { User, UserConfigs } from './User';
+import User from './User';
+import { UserConfigs } from './UserTypes';
 
 test('an Entity can be constructed with default values', () => {
 
