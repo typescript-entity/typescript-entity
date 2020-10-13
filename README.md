@@ -68,7 +68,8 @@ yarn add @typescript-entity/validators
 You may prefer to [skip to Simplified Usage](#simplified-usage).
 
 ```typescript
-import { Attrs, BooleanConfigFactory, Entity, FnConfigFactory, NumberConfigFactory, StringConfigFactory, WritableAttrs } from "@typescript-entity/core";
+import { Entity } from "@typescript-entity/core";
+import type { Attrs, BooleanConfigFactory, FnConfigFactory, NumberConfigFactory, StringConfigFactory, WritableAttrs } from "@typescript-entity/core";
 
 // ID is a number and is optional, read-only and must have a validator function defined
 type IDConfig = NumberConfigFactory<true, false, true, false, true>;
@@ -171,8 +172,10 @@ class Person extends Entity<PersonConfigs> implements Attrs<PersonConfigs> {
 The [example above](#verbose-usage) is intentionally verbose for instructional purposes. Much of it can be simplified using the optional helper packages....
 
 ```typescript
-import { booleanConfig, positiveIntegerConfig, PositiveIntegerConfigFactory, stringConfig } from "@typescript-entity/configs";
-import { Attrs, BooleanConfigFactory, Entity, FnConfigFactory, StringConfigFactory, WritableAttrs } from "@typescript-entity/core";
+import { booleanConfig, positiveIntegerConfig, stringConfig } from "@typescript-entity/configs";
+import type { PositiveIntegerConfigFactory } from "@typescript-entity/configs";
+import { Entity } from "@typescript-entity/core";
+import type { Attrs, BooleanConfigFactory, FnConfigFactory, StringConfigFactory, WritableAttrs } from "@typescript-entity/core";
 import { trim } from "@typescript-entity/normalizers";
 
 type PersonConfigs = {
