@@ -1,5 +1,5 @@
-import { DateInPastConfigFactory, EmailConfigFactory, UUIDConfigFactory } from "@typescript-entity/configs";
-import { BooleanConfigFactory, FnConfigFactory, StringConfigFactory } from "@typescript-entity/core";
+import type { DateInPastConfigFactory, EmailConfigFactory, UUIDConfigFactory } from "@typescript-entity/configs";
+import type { BooleanConfigFactory, FnConfigFactory, StringConfigFactory } from "@typescript-entity/core";
 
 export type UserDateOfBirthConfig = DateInPastConfigFactory;
 

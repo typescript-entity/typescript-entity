@@ -1,7 +1,8 @@
 import { booleanConfig, dateInPastConfig, emailConfig, fnConfig, stringConfig, uuidConfig } from "@typescript-entity/configs";
-import { Attr, Attrs, Entity, WritableAttrs } from "@typescript-entity/core";
+import { Entity } from "@typescript-entity/core";
+import type { Attr, Attrs, WritableAttrs } from "@typescript-entity/core";
 import { isLength } from "@typescript-entity/validators";
-import { UserConfigs } from "./UserTypes";
+import type { UserConfigs } from "./UserTypes";
 
 export default class User extends Entity<UserConfigs> implements Attrs<UserConfigs> {
 

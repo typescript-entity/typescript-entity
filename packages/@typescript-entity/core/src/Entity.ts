@@ -1,6 +1,6 @@
 import { cloneDeep } from "lodash";
 import { InvalidAttrValueError, UnknownAttrError, UnsanitizableAttrError } from "./Errors";
-import { Attrs, Config, Configs, FnConfig, HiddenAttrs, NormalizerFn, SanitizerFn, Unsanitized, ValidatorFn, VisibleAttrs, WritableAttrs } from "./Types";
+import type { Attrs, Config, Configs, FnConfig, HiddenAttrs, NormalizerFn, SanitizerFn, Unsanitized, ValidatorFn, VisibleAttrs, WritableAttrs } from "./Types";
 
 type Entries<T> = { [K in keyof T]: [ K, T[K] ] }[keyof T][];
 

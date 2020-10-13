@@ -1,8 +1,9 @@
-import { BooleanArrayConfigFactory, BooleanConfigFactory, DateArrayConfigFactory, DateConfigFactory, FnConfigFactory, NumberArrayConfigFactory, NumberConfigFactory, StringArrayConfigFactory, StringConfigFactory, ValueFn } from "@typescript-entity/core";
+import type { BooleanArrayConfigFactory, BooleanConfigFactory, DateArrayConfigFactory, DateConfigFactory, FnConfigFactory, NumberArrayConfigFactory, NumberConfigFactory, StringArrayConfigFactory, StringConfigFactory, ValueFn } from "@typescript-entity/core";
 import { lowercase } from "@typescript-entity/normalizers";
 import { toBoolean, toDate, toFloat, toInteger, toNumber, toString } from "@typescript-entity/sanitizers";
-import { isAfter, IsAfterOptions, isBefore, IsBeforeOptions, isEmail, IsEmailOptions, isFloat, IsFloatOptions, isInteger, IsIntegerOptions, isNegativeFloat, IsNegativeFloatOptions, isNegativeInteger, IsNegativeIntegerOptions, isPositiveFloat, IsPositiveFloatOptions, isPositiveInteger, IsPositiveIntegerOptions, isURL, IsURLOptions, isUUID, IsUUIDOptions } from "@typescript-entity/validators";
-import { DateInFutureConfigFactory, DateInPastConfigFactory, EmailConfigFactory, FloatConfigFactory, IntegerConfigFactory, NegativeFloatConfigFactory, NegativeIntegerConfigFactory, PositiveFloatConfigFactory, PositiveIntegerConfigFactory, URLConfigFactory, UUIDConfigFactory } from "./Types";
+import { isAfter, isBefore, isEmail, isFloat, isInteger, isNegativeFloat, isNegativeInteger, isPositiveFloat,  isPositiveInteger, isURL, isUUID } from "@typescript-entity/validators";
+import type { IsAfterOptions, IsBeforeOptions, IsEmailOptions, IsFloatOptions, IsIntegerOptions, IsNegativeFloatOptions, IsNegativeIntegerOptions, IsPositiveFloatOptions, IsPositiveIntegerOptions, IsURLOptions, IsUUIDOptions } from "@typescript-entity/validators";
+import type { DateInFutureConfigFactory, DateInPastConfigFactory, EmailConfigFactory, FloatConfigFactory, IntegerConfigFactory, NegativeFloatConfigFactory, NegativeIntegerConfigFactory, PositiveFloatConfigFactory, PositiveIntegerConfigFactory, URLConfigFactory, UUIDConfigFactory } from "./Types";
 
 export const booleanConfig = <
   O extends boolean = false,

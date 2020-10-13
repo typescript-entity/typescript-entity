@@ -1,4 +1,4 @@
-import { DateConfigFactory, NumberConfigFactory, StringConfigFactory } from "@typescript-entity/core";
+import type { DateConfigFactory, NumberConfigFactory, StringConfigFactory } from "@typescript-entity/core";
 
 export type DateInFutureConfigFactory<
   Optional extends boolean = false,
