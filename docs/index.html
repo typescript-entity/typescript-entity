@@ -137,52 +137,52 @@
 <span class="hljs-comment">// Smelly is a boolean and is required but hidden</span>
 <span class="hljs-keyword">type</span> SmellyConfig = BooleanConfigFactory&lt;<span class="hljs-literal">false</span>, <span class="hljs-literal">true</span>&gt;;
 
-<span class="hljs-keyword">type</span> PersonConfigs = {
+<span class="hljs-keyword">type</span> Configs = {
   id: IDConfig;
   name: NameConfig;
   username: UsernameConfig;
   smelly: SmellyConfig;
 };
 
-<span class="hljs-keyword">class</span> Person <span class="hljs-keyword">extends</span> Entity&lt;PersonConfigs&gt; <span class="hljs-keyword">implements</span> Attrs&lt;PersonConfigs&gt; {
+<span class="hljs-comment">// The runtime configurations are constructed once and passed to all instances of the Person entity</span>
+<span class="hljs-comment">// via the Entity constructor. All configuration properties are shared between instances to minimise</span>
+<span class="hljs-comment">// memory footprint, except non-function values which are cloned for each instance.</span>
+<span class="hljs-keyword">const</span> configs: Configs = {
+  id: {
+    value: <span class="hljs-literal">undefined</span>, <span class="hljs-comment">// The values provided in the config are used as default values</span>
+    readOnly: <span class="hljs-literal">true</span>,
+    sanitizer: (value: unknown): <span class="hljs-built_in">number</span> | <span class="hljs-function"><span class="hljs-params">undefined</span> =&gt;</span> <span class="hljs-built_in">Number</span>(value) || <span class="hljs-literal">undefined</span>,
+    validator: (value: <span class="hljs-built_in">number</span>): <span class="hljs-function"><span class="hljs-params">boolean</span> =&gt;</span> value &gt; <span class="hljs-number">0</span>,
+  },
+  name: {
+    value: <span class="hljs-string">&quot;&quot;</span>, <span class="hljs-comment">// Name was configured as a required string so can&#x27;t use undefined here</span>
+    sanitizer: (value: unknown): <span class="hljs-function"><span class="hljs-params">string</span> =&gt;</span> <span class="hljs-built_in">String</span>(value),
+    normalizer: (value: <span class="hljs-built_in">string</span>): <span class="hljs-function"><span class="hljs-params">string</span> =&gt;</span> value.trim(),
+  },
+  username: {
+    <span class="hljs-comment">// All value, sanitizer, normalizer and validator functions have the instance bound to this.</span>
+    <span class="hljs-comment">// Use TypeScript&#x27;s &quot;this parameters&quot; feature to declare it.</span>
+    value: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"><span class="hljs-built_in">this</span>: Person</span>): <span class="hljs-title">string</span> </span>{ <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>.name.toLowerCase(); },
+  },
+  smelly: {
+    value: <span class="hljs-literal">false</span>,
+    hidden: <span class="hljs-literal">true</span>,
+    sanitizer: (value: unknown): <span class="hljs-function"><span class="hljs-params">boolean</span> =&gt;</span> <span class="hljs-built_in">Boolean</span>(value),
+  },
+};
 
-  <span class="hljs-comment">// The runtime configurations are configured statically to maximize reusability but minimize the</span>
-  <span class="hljs-comment">// memory footprint. They don&#x27;t have be defined here, you may want to define them in a different</span>
-  <span class="hljs-comment">// file - just remember to update the first argument passed to the Entity constructor.</span>
-  <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">readonly</span> CONFIGS: PersonConfigs = {
-    id: {
-      value: <span class="hljs-literal">undefined</span>, <span class="hljs-comment">// The values provided in the config are used as default values</span>
-      readOnly: <span class="hljs-literal">true</span>,
-      sanitizer: (value: unknown): <span class="hljs-built_in">number</span> | <span class="hljs-function"><span class="hljs-params">undefined</span> =&gt;</span> <span class="hljs-built_in">Number</span>(value) || <span class="hljs-literal">undefined</span>,
-      validator: (value: <span class="hljs-built_in">number</span>): <span class="hljs-function"><span class="hljs-params">boolean</span> =&gt;</span> value &gt; <span class="hljs-number">0</span>,
-    },
-    name: {
-      value: <span class="hljs-string">&quot;&quot;</span>, <span class="hljs-comment">// Name was configured as a required string so can&#x27;t use undefined here</span>
-      sanitizer: (value: unknown): <span class="hljs-function"><span class="hljs-params">string</span> =&gt;</span> <span class="hljs-built_in">String</span>(value),
-      normalizer: (value: <span class="hljs-built_in">string</span>): <span class="hljs-function"><span class="hljs-params">string</span> =&gt;</span> value.trim(),
-    },
-    username: {
-      <span class="hljs-comment">// All value, sanitizer, normalizer and validator functions have the instance bound to this.</span>
-      <span class="hljs-comment">// Use TypeScript&#x27;s &quot;this parameters&quot; feature to declare it.</span>
-      value: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"><span class="hljs-built_in">this</span>: Person</span>): <span class="hljs-title">string</span> </span>{ <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>.name.toLowerCase(); },
-    },
-    smelly: {
-      value: <span class="hljs-literal">false</span>,
-      hidden: <span class="hljs-literal">true</span>,
-      sanitizer: (value: unknown): <span class="hljs-function"><span class="hljs-params">boolean</span> =&gt;</span> <span class="hljs-built_in">Boolean</span>(value),
-    },
-  };
+<span class="hljs-keyword">class</span> Person <span class="hljs-keyword">extends</span> Entity&lt;Configs&gt; <span class="hljs-keyword">implements</span> Attrs&lt;Configs&gt; {
 
   <span class="hljs-comment">// Allow consumers to provide some/all attributes during construction to override the default</span>
   <span class="hljs-comment">// values provided in the configs. Attributes passed to the constructor can include values for</span>
   <span class="hljs-comment">// read-only values but not for function attributes.</span>
-  <span class="hljs-keyword">constructor</span>(<span class="hljs-params">attrs: Partial&lt;WritableAttrs&lt;PersonConfigs, <span class="hljs-literal">true</span>&gt;&gt; = {}</span>) {
-    <span class="hljs-built_in">super</span>(Person.CONFIGS, attrs);
+  <span class="hljs-keyword">constructor</span>(<span class="hljs-params">attrs: Partial&lt;WritableAttrs&lt;Configs, <span class="hljs-literal">true</span>&gt;&gt; = {}</span>) {
+    <span class="hljs-built_in">super</span>(configs, attrs);
   }
 
-  <span class="hljs-comment">// Because we declared that Person implements Attrs&lt;PersonConfigs&gt; we have opted in to defining</span>
-  <span class="hljs-comment">// getters and setters for each attribute on the entity which makes it easier to interact with</span>
-  <span class="hljs-comment">// instances. Types do not need to be specified since they are inferred from PersonConfigs.</span>
+  <span class="hljs-comment">// Because we declared that Person implements Attrs&lt;Configs&gt; we have opted in to defining getters</span>
+  <span class="hljs-comment">// and setters for each attribute on the entity which makes it easier to interact with instances.</span>
+  <span class="hljs-comment">// Types do not need to be specified since they are inferred from Configs.</span>
 
   get id() {
     <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>.get(<span class="hljs-string">&quot;id&quot;</span>);
@@ -223,35 +223,33 @@
 					<h3>Simplified Usage</h3>
 				</a>
 				<p>The <a href="#verbose-usage">example above</a> is intentionally verbose for instructional purposes. Much of it can be simplified using the optional helper packages....</p>
-				<pre><code class="language-typescript"><span class="hljs-keyword">import</span> { booleanConfig, positiveIntegerConfig, stringConfig } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@typescript-entity/configs&quot;</span>;
+				<pre><code class="language-typescript"><span class="hljs-keyword">import</span> { booleanConfig, fnConfig, positiveIntegerConfig, stringConfig } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@typescript-entity/configs&quot;</span>;
 <span class="hljs-keyword">import</span> <span class="hljs-keyword">type</span> { PositiveIntegerConfigFactory } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@typescript-entity/configs&quot;</span>;
 <span class="hljs-keyword">import</span> { Entity } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@typescript-entity/core&quot;</span>;
 <span class="hljs-keyword">import</span> <span class="hljs-keyword">type</span> { Attrs, BooleanConfigFactory, FnConfigFactory, StringConfigFactory, WritableAttrs } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@typescript-entity/core&quot;</span>;
 <span class="hljs-keyword">import</span> { trim } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@typescript-entity/normalizers&quot;</span>;
 
-<span class="hljs-keyword">type</span> PersonConfigs = {
+<span class="hljs-keyword">type</span> Configs = {
   id: PositiveIntegerConfigFactory&lt;<span class="hljs-literal">true</span>, <span class="hljs-literal">false</span>, <span class="hljs-literal">true</span>&gt;;
   name: StringConfigFactory&lt;<span class="hljs-literal">false</span>, <span class="hljs-literal">false</span>, <span class="hljs-literal">false</span>, <span class="hljs-literal">true</span>&gt;;
   username: FnConfigFactory&lt;<span class="hljs-built_in">string</span>&gt;;
   smelly: BooleanConfigFactory&lt;<span class="hljs-literal">false</span>, <span class="hljs-literal">true</span>&gt;;
 };
 
-<span class="hljs-keyword">class</span> Person <span class="hljs-keyword">extends</span> Entity&lt;PersonConfigs&gt; <span class="hljs-keyword">implements</span> Attrs&lt;PersonConfigs&gt; {
+<span class="hljs-keyword">const</span> configs: Configs = {
+  id: positiveIntegerConfig(<span class="hljs-literal">true</span>, <span class="hljs-literal">false</span>, <span class="hljs-literal">true</span>),
+  name: {
+    ...stringConfig(),
+    normalizer: trim,
+  },
+  username: fnConfig(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"><span class="hljs-built_in">this</span>: Person</span>): <span class="hljs-title">string</span> </span>{ <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>.name.toLowerCase(); }),
+  smelly: booleanConfig(<span class="hljs-literal">false</span>, <span class="hljs-literal">true</span>),
+};
 
-  <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">readonly</span> CONFIGS: PersonConfigs = {
-    id: positiveIntegerConfig(<span class="hljs-literal">true</span>, <span class="hljs-literal">false</span>, <span class="hljs-literal">true</span>),
-    name: {
-      ...stringConfig(),
-      normalizer: trim,
-    },
-    username: {
-      value: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"><span class="hljs-built_in">this</span>: Person</span>): <span class="hljs-title">string</span> </span>{ <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>.name.toLowerCase(); },
-    },
-    smelly: booleanConfig(<span class="hljs-literal">false</span>, <span class="hljs-literal">true</span>),
-  };
+<span class="hljs-keyword">class</span> Person <span class="hljs-keyword">extends</span> Entity&lt;Configs&gt; <span class="hljs-keyword">implements</span> Attrs&lt;Configs&gt; {
 
-  <span class="hljs-keyword">constructor</span>(<span class="hljs-params">attrs: Partial&lt;WritableAttrs&lt;PersonConfigs, <span class="hljs-literal">true</span>&gt;&gt; = {}</span>) {
-    <span class="hljs-built_in">super</span>(Person.CONFIGS, attrs);
+  <span class="hljs-keyword">constructor</span>(<span class="hljs-params">attrs: Partial&lt;WritableAttrs&lt;Configs, <span class="hljs-literal">true</span>&gt;&gt; = {}</span>) {
+    <span class="hljs-built_in">super</span>(configs, attrs);
   }
 
   get id() {

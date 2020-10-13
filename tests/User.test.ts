@@ -1,7 +1,7 @@
 import { InvalidAttrValueError } from "@typescript-entity/core";
 import type { Attrs } from "@typescript-entity/core";
-import User from "./User";
-import type { UserConfigs } from "./UserTypes";
+import { User } from "./User";
+import type { Configs } from "./User";
 
 test("an Entity can be constructed with default values", () => {
 
@@ -108,7 +108,7 @@ test("an Entity can expose some attributes", () => {
     verified: attrs.verified,
   };
   const user = new User(attrs);
-  expect(user.some(Object.keys(expected) as (keyof Attrs<UserConfigs>)[])).toStrictEqual(expected);
+  expect(user.some(Object.keys(expected) as (keyof Attrs<Configs>)[])).toStrictEqual(expected);
 
 });
 
