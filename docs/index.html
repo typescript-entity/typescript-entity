@@ -122,7 +122,8 @@
 					<h3>Verbose Usage</h3>
 				</a>
 				<p>You may prefer to <a href="#simplified-usage">skip to Simplified Usage</a>.</p>
-				<pre><code class="language-typescript"><span class="hljs-keyword">import</span> { Attrs, BooleanConfigFactory, Entity, FnConfigFactory, NumberConfigFactory, StringConfigFactory, WritableAttrs } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@typescript-entity/core&quot;</span>;
+				<pre><code class="language-typescript"><span class="hljs-keyword">import</span> { Entity } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@typescript-entity/core&quot;</span>;
+<span class="hljs-keyword">import</span> <span class="hljs-keyword">type</span> { Attrs, BooleanConfigFactory, FnConfigFactory, NumberConfigFactory, StringConfigFactory, WritableAttrs } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@typescript-entity/core&quot;</span>;
 
 <span class="hljs-comment">// ID is a number and is optional, read-only and must have a validator function defined</span>
 <span class="hljs-keyword">type</span> IDConfig = NumberConfigFactory&lt;<span class="hljs-literal">true</span>, <span class="hljs-literal">false</span>, <span class="hljs-literal">true</span>, <span class="hljs-literal">false</span>, <span class="hljs-literal">true</span>&gt;;
@@ -222,8 +223,10 @@
 					<h3>Simplified Usage</h3>
 				</a>
 				<p>The <a href="#verbose-usage">example above</a> is intentionally verbose for instructional purposes. Much of it can be simplified using the optional helper packages....</p>
-				<pre><code class="language-typescript"><span class="hljs-keyword">import</span> { booleanConfig, positiveIntegerConfig, PositiveIntegerConfigFactory, stringConfig } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@typescript-entity/configs&quot;</span>;
-<span class="hljs-keyword">import</span> { Attrs, BooleanConfigFactory, Entity, FnConfigFactory, StringConfigFactory, WritableAttrs } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@typescript-entity/core&quot;</span>;
+				<pre><code class="language-typescript"><span class="hljs-keyword">import</span> { booleanConfig, positiveIntegerConfig, stringConfig } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@typescript-entity/configs&quot;</span>;
+<span class="hljs-keyword">import</span> <span class="hljs-keyword">type</span> { PositiveIntegerConfigFactory } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@typescript-entity/configs&quot;</span>;
+<span class="hljs-keyword">import</span> { Entity } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@typescript-entity/core&quot;</span>;
+<span class="hljs-keyword">import</span> <span class="hljs-keyword">type</span> { Attrs, BooleanConfigFactory, FnConfigFactory, StringConfigFactory, WritableAttrs } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@typescript-entity/core&quot;</span>;
 <span class="hljs-keyword">import</span> { trim } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@typescript-entity/normalizers&quot;</span>;
 
 <span class="hljs-keyword">type</span> PersonConfigs = {
