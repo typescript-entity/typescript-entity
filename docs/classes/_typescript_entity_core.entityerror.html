@@ -79,7 +79,7 @@
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<a href="_typescript_entity_core.entityerror.html#error" class="tsd-signature-type">Error</a>
+						<a href="_typescript_entity_core.rethrownerror.html" class="tsd-signature-type">RethrownError</a>
 						<ul class="tsd-hierarchy">
 							<li>
 								<span class="target">EntityError</span>
@@ -100,7 +100,7 @@
 						<section class="tsd-index-section ">
 							<h3>Constructors</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-constructor tsd-parent-kind-class"><a href="_typescript_entity_core.entityerror.html#constructor" class="tsd-kind-icon">constructor</a></li>
+								<li class="tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite"><a href="_typescript_entity_core.entityerror.html#constructor" class="tsd-kind-icon">constructor</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
@@ -109,8 +109,14 @@
 								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_typescript_entity_core.entityerror.html#entity" class="tsd-kind-icon">entity</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="_typescript_entity_core.entityerror.html#message" class="tsd-kind-icon">message</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="_typescript_entity_core.entityerror.html#name" class="tsd-kind-icon">name</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="_typescript_entity_core.entityerror.html#previous" class="tsd-kind-icon">previous</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="_typescript_entity_core.entityerror.html#stack" class="tsd-kind-icon">stack</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static"><a href="_typescript_entity_core.entityerror.html#error" class="tsd-kind-icon">Error</a></li>
+							</ul>
+						</section>
+						<section class="tsd-index-section tsd-is-inherited">
+							<h3>Accessors</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited"><a href="_typescript_entity_core.entityerror.html#root" class="tsd-kind-icon">root</a></li>
 							</ul>
 						</section>
 					</div>
@@ -118,17 +124,18 @@
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Constructors</h2>
-				<section class="tsd-panel tsd-member tsd-kind-constructor tsd-parent-kind-class">
+				<section class="tsd-panel tsd-member tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite">
 					<a name="constructor" class="tsd-anchor"></a>
 					<h3>constructor</h3>
-					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">new <wbr>Entity<wbr>Error<span class="tsd-signature-symbol">(</span>entity<span class="tsd-signature-symbol">: </span><a href="_typescript_entity_core.entity.html" class="tsd-signature-type">Entity</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">C</span><span class="tsd-signature-symbol">&gt;</span>, message<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_typescript_entity_core.entityerror.html" class="tsd-signature-type">EntityError</a></li>
+					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite">
+						<li class="tsd-signature tsd-kind-icon">new <wbr>Entity<wbr>Error<span class="tsd-signature-symbol">(</span>entity<span class="tsd-signature-symbol">: </span><a href="_typescript_entity_core.entity.html" class="tsd-signature-type">Entity</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">C</span><span class="tsd-signature-symbol">&gt;</span>, message<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span>, previous<span class="tsd-signature-symbol">?: </span><a href="_typescript_entity_core.rethrownerror.html#error" class="tsd-signature-type">Error</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_typescript_entity_core.entityerror.html" class="tsd-signature-type">EntityError</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
+								<p>Overrides <a href="_typescript_entity_core.rethrownerror.html">RethrownError</a>.<a href="_typescript_entity_core.rethrownerror.html#constructor">constructor</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/typescript-entity/typescript-entity/blob/3812fdb/packages/@typescript-entity/core/src/EntityError.ts#L6">packages/@typescript-entity/core/src/EntityError.ts:6</a></li>
+									<li>Defined in <a href="https://github.com/typescript-entity/typescript-entity/blob/166487c/packages/@typescript-entity/core/src/EntityError.ts#L7">packages/@typescript-entity/core/src/EntityError.ts:7</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -138,6 +145,9 @@
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> message: <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span></h5>
+								</li>
+								<li>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> previous: <a href="_typescript_entity_core.rethrownerror.html#error" class="tsd-signature-type">Error</a></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <a href="_typescript_entity_core.entityerror.html" class="tsd-signature-type">EntityError</a></h4>
@@ -153,7 +163,7 @@
 					<div class="tsd-signature tsd-kind-icon">entity<span class="tsd-signature-symbol">:</span> <a href="_typescript_entity_core.entity.html" class="tsd-signature-type">Entity</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">C</span><span class="tsd-signature-symbol">&gt;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/typescript-entity/typescript-entity/blob/3812fdb/packages/@typescript-entity/core/src/EntityError.ts#L6">packages/@typescript-entity/core/src/EntityError.ts:6</a></li>
+							<li>Defined in <a href="https://github.com/typescript-entity/typescript-entity/blob/166487c/packages/@typescript-entity/core/src/EntityError.ts#L7">packages/@typescript-entity/core/src/EntityError.ts:7</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -180,6 +190,17 @@
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
+					<a name="previous" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> previous</h3>
+					<div class="tsd-signature tsd-kind-icon">previous<span class="tsd-signature-symbol">:</span> <a href="_typescript_entity_core.rethrownerror.html#error" class="tsd-signature-type">Error</a></div>
+					<aside class="tsd-sources">
+						<p>Inherited from <a href="_typescript_entity_core.attrvalueerror.html">AttrValueError</a>.<a href="_typescript_entity_core.attrvalueerror.html#previous">previous</a></p>
+						<ul>
+							<li>Defined in packages/@typescript-entity/core/src/RethrownError.ts:3</li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
 					<a name="stack" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagOptional">Optional</span> stack</h3>
 					<div class="tsd-signature tsd-kind-icon">stack<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span></div>
@@ -190,15 +211,26 @@
 						</ul>
 					</aside>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-static">
-					<a name="error" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagStatic">Static</span> Error</h3>
-					<div class="tsd-signature tsd-kind-icon">Error<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">ErrorConstructor</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in node_modules/typescript/lib/lib.es5.d.ts:984</li>
-						</ul>
-					</aside>
+			</section>
+			<section class="tsd-panel-group tsd-member-group tsd-is-inherited">
+				<h2>Accessors</h2>
+				<section class="tsd-panel tsd-member tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited">
+					<a name="root" class="tsd-anchor"></a>
+					<h3>root</h3>
+					<ul class="tsd-signatures tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited">
+						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> root<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_typescript_entity_core.rethrownerror.html#error" class="tsd-signature-type">Error</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Inherited from <a href="_typescript_entity_core.attrvalueerror.html">AttrValueError</a>.<a href="_typescript_entity_core.attrvalueerror.html#root">root</a></p>
+								<ul>
+									<li>Defined in packages/@typescript-entity/core/src/RethrownError.ts:10</li>
+								</ul>
+							</aside>
+							<h4 class="tsd-returns-title">Returns <a href="_typescript_entity_core.rethrownerror.html#error" class="tsd-signature-type">Error</a></h4>
+						</li>
+					</ul>
 				</section>
 			</section>
 		</div>
@@ -247,7 +279,7 @@
 							<li class="current tsd-kind-class tsd-parent-kind-module tsd-has-type-parameter">
 								<a href="_typescript_entity_core.entityerror.html" class="tsd-kind-icon">Entity<wbr>Error</a>
 								<ul>
-									<li class=" tsd-kind-constructor tsd-parent-kind-class">
+									<li class=" tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite">
 										<a href="_typescript_entity_core.entityerror.html#constructor" class="tsd-kind-icon">constructor</a>
 									</li>
 									<li class=" tsd-kind-property tsd-parent-kind-class">
@@ -260,15 +292,21 @@
 										<a href="_typescript_entity_core.entityerror.html#name" class="tsd-kind-icon">name</a>
 									</li>
 									<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
+										<a href="_typescript_entity_core.entityerror.html#previous" class="tsd-kind-icon">previous</a>
+									</li>
+									<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
 										<a href="_typescript_entity_core.entityerror.html#stack" class="tsd-kind-icon">stack</a>
 									</li>
-									<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-static">
-										<a href="_typescript_entity_core.entityerror.html#error" class="tsd-kind-icon">Error</a>
+									<li class=" tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited">
+										<a href="_typescript_entity_core.entityerror.html#root" class="tsd-kind-icon">root</a>
 									</li>
 								</ul>
 							</li>
 							<li class=" tsd-kind-class tsd-parent-kind-module tsd-has-type-parameter">
 								<a href="_typescript_entity_core.invalidattrvalueerror.html" class="tsd-kind-icon">Invalid<wbr>Attr<wbr>Value<wbr>Error</a>
+							</li>
+							<li class=" tsd-kind-class tsd-parent-kind-module">
+								<a href="_typescript_entity_core.rethrownerror.html" class="tsd-kind-icon">Rethrown<wbr>Error</a>
 							</li>
 							<li class=" tsd-kind-class tsd-parent-kind-module tsd-has-type-parameter">
 								<a href="_typescript_entity_core.unknownattrerror.html" class="tsd-kind-icon">Unknown<wbr>Attr<wbr>Error</a>
@@ -354,6 +392,7 @@
 				<li class="tsd-kind-type-alias tsd-has-type-parameter"><span class="tsd-kind-icon">Type alias with type parameter</span></li>
 			</ul>
 			<ul class="tsd-legend">
+				<li class="tsd-kind-class"><span class="tsd-kind-icon">Class</span></li>
 				<li class="tsd-kind-class tsd-has-type-parameter"><span class="tsd-kind-icon">Class with type parameter</span></li>
 				<li class="tsd-kind-constructor tsd-parent-kind-class"><span class="tsd-kind-icon">Constructor</span></li>
 				<li class="tsd-kind-property tsd-parent-kind-class"><span class="tsd-kind-icon">Property</span></li>
@@ -364,9 +403,6 @@
 			</ul>
 			<ul class="tsd-legend">
 				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited property</span></li>
-			</ul>
-			<ul class="tsd-legend">
-				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static property</span></li>
 			</ul>
 		</div>
 	</div>

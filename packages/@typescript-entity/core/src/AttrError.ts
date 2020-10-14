@@ -6,8 +6,8 @@ export class AttrError<C extends Configs> extends EntityError<C> {
 
   public attrName: keyof C;
 
-  constructor(entity: Entity<C>, attrName: keyof C, message?: string) {
-    super(entity, message);
+  constructor(entity: Entity<C>, attrName: keyof C, message?: string, previous?: Error) {
+    super(entity, message, previous);
     this.attrName = attrName;
   }
 

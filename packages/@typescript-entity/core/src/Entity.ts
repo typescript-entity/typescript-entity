@@ -106,10 +106,17 @@ export abstract class Entity<C extends Configs> {
       throw new UnknownAttrError(this, name);
     }
     const sanitizer = (this.configs[name] as Config<V>).sanitizer;
-    if (undefined === sanitizer) {
-      throw new UnsanitizableAttrError(this, name);
+    try {
+      if (undefined === sanitizer) {
+        throw new UnsanitizableAttrError(this, name);
+      }
+      return sanitizer.call(this, value);
+    } catch (err) {
+      if (err instanceof UnsanitizableAttrError) {
+        throw err;
+      }
+      throw new UnsanitizableAttrError(this, name, undefined, err);
     }
-    return sanitizer.call(this, value);
   }
 
   /**
