@@ -25,7 +25,7 @@ export type Configs = {
   verified: VerifiedConfig;
 };
 
-export const configs: Configs = {
+export const CONFIGS: Configs = {
   date_of_birth: dateInPastConfig(),
   email: emailConfig(),
   email_domain: fnConfig(function(this: User): string | undefined { return this.email.split("@", 2)[1] || undefined }, true),
@@ -40,7 +40,7 @@ export const configs: Configs = {
 export class User extends Entity<Configs> implements Attrs<Configs> {
 
   constructor(attrs: Partial<WritableAttrs<Configs, true>> = {}) {
-    super(configs, attrs);
+    super(CONFIGS, attrs);
   }
 
   get date_of_birth(): Attr<Configs["date_of_birth"]> {

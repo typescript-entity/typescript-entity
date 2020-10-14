@@ -93,7 +93,7 @@ type Configs = {
 // The runtime configurations are constructed once and passed to all instances of the Person entity
 // via the Entity constructor. All configuration properties are shared between instances to minimise
 // memory footprint, except non-function values which are cloned for each instance.
-const configs: Configs = {
+const CONFIGS: Configs = {
   id: {
     value: undefined, // The values provided in the config are used as default values
     readOnly: true,
@@ -123,7 +123,7 @@ class Person extends Entity<Configs> implements Attrs<Configs> {
   // values provided in the configs. Attributes passed to the constructor can include values for
   // read-only values but not for function attributes.
   constructor(attrs: Partial<WritableAttrs<Configs, true>> = {}) {
-    super(configs, attrs);
+    super(CONFIGS, attrs);
   }
 
   // Because we declared that Person implements Attrs<Configs> we have opted in to defining getters
@@ -185,7 +185,7 @@ type Configs = {
   smelly: BooleanConfigFactory<false, true>;
 };
 
-const configs: Configs = {
+const CONFIGS: Configs = {
   id: positiveIntegerConfig(true, false, true),
   name: {
     ...stringConfig(),
@@ -198,7 +198,7 @@ const configs: Configs = {
 class Person extends Entity<Configs> implements Attrs<Configs> {
 
   constructor(attrs: Partial<WritableAttrs<Configs, true>> = {}) {
-    super(configs, attrs);
+    super(CONFIGS, attrs);
   }
 
   get id() {

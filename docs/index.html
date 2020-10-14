@@ -147,7 +147,7 @@
 <span class="hljs-comment">// The runtime configurations are constructed once and passed to all instances of the Person entity</span>
 <span class="hljs-comment">// via the Entity constructor. All configuration properties are shared between instances to minimise</span>
 <span class="hljs-comment">// memory footprint, except non-function values which are cloned for each instance.</span>
-<span class="hljs-keyword">const</span> configs: Configs = {
+<span class="hljs-keyword">const</span> CONFIGS: Configs = {
   id: {
     value: <span class="hljs-literal">undefined</span>, <span class="hljs-comment">// The values provided in the config are used as default values</span>
     readOnly: <span class="hljs-literal">true</span>,
@@ -177,7 +177,7 @@
   <span class="hljs-comment">// values provided in the configs. Attributes passed to the constructor can include values for</span>
   <span class="hljs-comment">// read-only values but not for function attributes.</span>
   <span class="hljs-keyword">constructor</span>(<span class="hljs-params">attrs: Partial&lt;WritableAttrs&lt;Configs, <span class="hljs-literal">true</span>&gt;&gt; = {}</span>) {
-    <span class="hljs-built_in">super</span>(configs, attrs);
+    <span class="hljs-built_in">super</span>(CONFIGS, attrs);
   }
 
   <span class="hljs-comment">// Because we declared that Person implements Attrs&lt;Configs&gt; we have opted in to defining getters</span>
@@ -236,7 +236,7 @@
   smelly: BooleanConfigFactory&lt;<span class="hljs-literal">false</span>, <span class="hljs-literal">true</span>&gt;;
 };
 
-<span class="hljs-keyword">const</span> configs: Configs = {
+<span class="hljs-keyword">const</span> CONFIGS: Configs = {
   id: positiveIntegerConfig(<span class="hljs-literal">true</span>, <span class="hljs-literal">false</span>, <span class="hljs-literal">true</span>),
   name: {
     ...stringConfig(),
@@ -249,7 +249,7 @@
 <span class="hljs-keyword">class</span> Person <span class="hljs-keyword">extends</span> Entity&lt;Configs&gt; <span class="hljs-keyword">implements</span> Attrs&lt;Configs&gt; {
 
   <span class="hljs-keyword">constructor</span>(<span class="hljs-params">attrs: Partial&lt;WritableAttrs&lt;Configs, <span class="hljs-literal">true</span>&gt;&gt; = {}</span>) {
-    <span class="hljs-built_in">super</span>(configs, attrs);
+    <span class="hljs-built_in">super</span>(CONFIGS, attrs);
   }
 
   get id() {
