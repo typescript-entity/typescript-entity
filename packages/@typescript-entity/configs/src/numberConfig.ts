@@ -14,7 +14,9 @@ export const numberConfig = <
   H extends boolean = false,
   R extends boolean = false
 >(optional?: O, hidden?: H, readOnly?: R): NumberConfigFactory<O, H, R> => ({
-  ...numberConfig(optional, hidden, readOnly),
+  hidden,
+  readOnly,
+  value: optional ? undefined : 0,
   sanitizer: (
     optional
       ? (value: unknown): number | undefined => toString(value) ? toNumber(value) : undefined
