@@ -1,10 +1,76 @@
 import { cloneDeep } from "lodash";
-import { InvalidAttrValueError, UnknownAttrError, UnsanitizableAttrError } from "./Errors";
-import type { Attrs, Config, Configs, FnConfig, HiddenAttrs, NormalizerFn, SanitizerFn, Unsanitized, ValidatorFn, VisibleAttrs, WritableAttrs } from "./Types";
+import { InvalidAttrValueError } from "./InvalidAttrValueError";
+import { UnknownAttrError } from "./UnknownAttrError";
+import { UnsanitizableAttrError } from "./UnsanitizableAttrError";
+
+export interface Configs {
+  [name: string]: Config | FnConfig;
+}
+
+export interface Config<V extends Value = Value> {
+  hidden?: boolean;
+  normalizer?: NormalizerFn<V>;
+  readOnly?: boolean;
+  sanitizer: SanitizerFn<V>;
+  validator?: ValidatorFn<V>;
+  value: V;
+}
+
+export interface FnConfig<V extends Value = Value> {
+  hidden?: boolean;
+  value: ValueFn<V>;
+}
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type Value = any;
+
+export type ValueFn<V extends Value = Value> = () => V;
+
+export type ResolvedValue<V extends Value, Optional extends boolean = false> = (
+  Optional extends true
+    ? V extends Array<Value>
+      ? (ArrayType<V> | undefined)[]
+      : V | undefined
+    : V
+);
+
+export type ArrayType<T extends Array<Value>> = T extends (infer R)[] ? R : never;
+
+export type SanitizerFn<V> = (value: unknown) => V;
+
+export type NormalizerFn<V> = (value: NonNullable<V>) => V;
+
+export type ValidatorFn<V> = (value: NonNullable<V>) => boolean;
+
+export type Attrs<C extends Configs> = {
+  [K in keyof C]: Attr<C[K]>;
+};
+
+export type Attr<C extends Config | FnConfig> = C extends FnConfig ? ReturnType<C["value"]> : C["value"];
+
+export type Unsanitized<Attrs> = Record<keyof Attrs, unknown>;
+
+export type HiddenAttrs<C extends Configs> = Attrs<Pick<C, {
+  [K in keyof C]: C[K]["hidden"] extends true ? K : never;
+}[keyof C]>>;
+
+export type VisibleAttrs<C extends Configs> = Attrs<Pick<C, {
+  [K in keyof C]: C[K]["hidden"] extends true ? never : K;
+}[keyof C]>>;
+
+export type WritableAttrs<C extends Configs, OverrideReadOnly extends boolean = false> = Attrs<Pick<C, {
+  [K in keyof C]: C[K] extends Config
+    ? C[K]["readOnly"] extends true
+      ? OverrideReadOnly extends true
+        ? K
+        : never
+      : K
+    : never;
+}[keyof C]>>;
 
 type Entries<T> = { [K in keyof T]: [ K, T[K] ] }[keyof T][];
 
-export default abstract class Entity<C extends Configs> {
+export abstract class Entity<C extends Configs> {
 
   protected configs: C;
 

@@ -69,19 +69,36 @@ You may prefer to [skip to Simplified Usage](#simplified-usage).
 
 ```typescript
 import { Entity } from "@typescript-entity/core";
-import type { Attrs, BooleanConfigFactory, FnConfigFactory, NumberConfigFactory, StringConfigFactory, WritableAttrs } from "@typescript-entity/core";
+import type { Attrs, NormalizerFn, SanitizerFn, ValidatorFn, ValueFn, WritableAttrs } from "@typescript-entity/core";
 
-// ID is a number and is optional, read-only and must have a validator function defined
-type IDConfig = NumberConfigFactory<true, false, true, false, true>;
+// ID is an optional number, must be read-only and must have a validator function defined. Like all
+// non-function attributes, it must also have a sanitizer function defined.
+type IDConfig = {
+  value: number | undefined;
+  readOnly: true;
+  sanitizer: SanitizerFn<number | undefined>;
+  validator: ValidatorFn<number | undefined>;
+};
 
-// Name is a string and is required and must have a normalizer function defined
-type NameConfig = StringConfigFactory<false, false, false, true>;
+// Name is a string and must have a normalizer function defined.
+type NameConfig = {
+  value: string;
+  sanitizer: SanitizerFn<string>;
+  normalizer: NormalizerFn<string>;
+};
 
-// Username is a string which is simply the lowercase form of Name
-type UsernameConfig = FnConfigFactory<string>;
+// Username is a function that returns a string. A sanitizer function is not required since values
+// for function attributes cannot be set.
+type UsernameConfig = {
+  value: ValueFn<string>;
+};
 
-// Smelly is a boolean and is required but hidden
-type SmellyConfig = BooleanConfigFactory<false, true>;
+// Smelly is a boolean and is hidden from JSON representation.
+type SmellyConfig = {
+  value: boolean;
+  hidden: true;
+  sanitizer: SanitizerFn<boolean>;
+};
 
 type Configs = {
   id: IDConfig;
@@ -90,40 +107,40 @@ type Configs = {
   smelly: SmellyConfig;
 };
 
-// The runtime configurations are constructed once and passed to all instances of the Person entity
-// via the Entity constructor. All configuration properties are shared between instances to minimise
-// memory footprint, except non-function values which are cloned for each instance.
-const CONFIGS: Configs = {
-  id: {
-    value: undefined, // The values provided in the config are used as default values
-    readOnly: true,
-    sanitizer: (value: unknown): number | undefined => Number(value) || undefined,
-    validator: (value: number): boolean => value > 0,
-  },
-  name: {
-    value: "", // Name was configured as a required string so can't use undefined here
-    sanitizer: (value: unknown): string => String(value),
-    normalizer: (value: string): string => value.trim(),
-  },
-  username: {
-    // All value, sanitizer, normalizer and validator functions have the instance bound to this.
-    // Use TypeScript's "this parameters" feature to declare it.
-    value: function(this: Person): string { return this.name.toLowerCase(); },
-  },
-  smelly: {
-    value: false,
-    hidden: true,
-    sanitizer: (value: unknown): boolean => Boolean(value),
-  },
-};
-
 class Person extends Entity<Configs> implements Attrs<Configs> {
+
+  // The runtime configurations are constructed once and passed to all instances of the Person
+  // entity via the Entity constructor. All configuration properties are shared between instances to
+  // minimise memory footprint, except values for non-function attributes which are cloned.
+  public static readonly CONFIGS: Configs = {
+    id: {
+      value: undefined, // The values provided in the config are used as default values
+      readOnly: true, // Must be readOnly to be compatible with IDConfig
+      sanitizer: (value: unknown): number | undefined => Number(value) || undefined,
+      validator: (value: number): boolean => value > 0,
+    },
+    name: {
+      value: "", // Name was configured as a required string so can't use undefined here
+      sanitizer: (value: unknown): string => String(value),
+      normalizer: (value: string): string => value.trim(),
+    },
+    username: {
+      // All value, sanitizer, normalizer and validator functions have the instance bound to this.
+      // Use TypeScript's "this parameters" feature to declare it.
+      value: function(this: Person): string { return this.name.toLowerCase(); },
+    },
+    smelly: {
+      value: false,
+      hidden: true,
+      sanitizer: (value: unknown): boolean => Boolean(value),
+    },
+  };
 
   // Allow consumers to provide some/all attributes during construction to override the default
   // values provided in the configs. Attributes passed to the constructor can include values for
   // read-only values but not for function attributes.
   constructor(attrs: Partial<WritableAttrs<Configs, true>> = {}) {
-    super(CONFIGS, attrs);
+    super(Person.CONFIGS, attrs);
   }
 
   // Because we declared that Person implements Attrs<Configs> we have opted in to defining getters
@@ -169,36 +186,41 @@ class Person extends Entity<Configs> implements Attrs<Configs> {
 
 ### Simplified Usage
 
-The [example above](#verbose-usage) is intentionally verbose for instructional purposes. Much of it can be simplified using the optional helper packages....
+The [example above](#verbose-usage) is intentionally verbose for instructional purposes. Much of it can be simplified using the optional helper packages...
 
 ```typescript
 import { booleanConfig, fnConfig, positiveIntegerConfig, stringConfig } from "@typescript-entity/configs";
-import type { PositiveIntegerConfigFactory } from "@typescript-entity/configs";
+import type { BooleanConfigFactory, FnConfigFactory, PositiveIntegerConfigFactory, StringConfigFactory } from "@typescript-entity/configs";
 import { Entity } from "@typescript-entity/core";
-import type { Attrs, BooleanConfigFactory, FnConfigFactory, StringConfigFactory, WritableAttrs } from "@typescript-entity/core";
+import type { Attrs, WritableAttrs } from "@typescript-entity/core";
 import { trim } from "@typescript-entity/normalizers";
 
-type Configs = {
-  id: PositiveIntegerConfigFactory<true, false, true>;
-  name: StringConfigFactory<false, false, false, true>;
-  username: FnConfigFactory<string>;
-  smelly: BooleanConfigFactory<false, true>;
-};
+type IDConfig = PositiveIntegerConfigFactory<true, false, true>;
+type NameConfig = StringConfigFactory<false, false, false, true>;
+type UsernameConfig = FnConfigFactory<string>;
+type SmellyConfig = BooleanConfigFactory<false, true>;
 
-const CONFIGS: Configs = {
-  id: positiveIntegerConfig(true, false, true),
-  name: {
-    ...stringConfig(),
-    normalizer: trim,
-  },
-  username: fnConfig(function(this: Person): string { return this.name.toLowerCase(); }),
-  smelly: booleanConfig(false, true),
+type Configs = {
+  id: IDConfig;
+  name: NameConfig;
+  username: UsernameConfig;
+  smelly: SmellyConfig;
 };
 
 class Person extends Entity<Configs> implements Attrs<Configs> {
 
+  public static readonly CONFIGS: Configs = {
+    id: positiveIntegerConfig(true, false, true),
+    name: {
+      ...stringConfig(),
+      normalizer: trim,
+    },
+    username: fnConfig(function(this: Person): string { return this.name.toLowerCase(); }),
+    smelly: booleanConfig(false, true),
+  };
+
   constructor(attrs: Partial<WritableAttrs<Configs, true>> = {}) {
-    super(CONFIGS, attrs);
+    super(Person.CONFIGS, attrs);
   }
 
   get id() {

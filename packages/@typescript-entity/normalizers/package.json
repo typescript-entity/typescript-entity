@@ -22,9 +22,7 @@
   "types": "dist/index.d.ts",
   "dependencies": {
     "@types/lodash": "4",
-    "@types/validator": "13",
-    "lodash": "^4.17.20",
-    "validator": "13"
+    "lodash": "^4.17.20"
   },
   "devDependencies": {
     "rimraf": "3",

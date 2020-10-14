@@ -1,7 +1,7 @@
 import { booleanConfig, dateInPastConfig, emailConfig, fnConfig, stringConfig, uuidConfig } from "@typescript-entity/configs";
-import type { DateInPastConfigFactory, EmailConfigFactory, UUIDConfigFactory } from "@typescript-entity/configs";
+import type { BooleanConfigFactory, DateInPastConfigFactory, EmailConfigFactory, FnConfigFactory, StringConfigFactory, UUIDConfigFactory } from "@typescript-entity/configs";
 import { Entity } from "@typescript-entity/core";
-import type { Attr, Attrs, BooleanConfigFactory, FnConfigFactory, StringConfigFactory, WritableAttrs } from "@typescript-entity/core";
+import type { Attr, Attrs, WritableAttrs } from "@typescript-entity/core";
 import { isLength } from "@typescript-entity/validators";
 
 export type DateOfBirthConfig = DateInPastConfigFactory;
