@@ -20,6 +20,7 @@
   ],
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "sideEffects": false,
   "dependencies": {
     "@types/validator": "13",
     "validator": "13"
