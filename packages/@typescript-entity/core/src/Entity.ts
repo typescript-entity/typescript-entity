@@ -1,4 +1,4 @@
-import { cloneDeep } from "lodash";
+import { cloneDeep, toPlainObject } from "lodash";
 import { InvalidAttrValueError } from "./InvalidAttrValueError";
 import { UnknownAttrError } from "./UnknownAttrError";
 import { UnsanitizableAttrError } from "./UnsanitizableAttrError";
@@ -314,15 +314,19 @@ export abstract class Entity<C extends Configs> {
   }
 
   /**
-   * Sets multiple attributes from the provided `json` string. Unrecognised attributes, or those
-   * that are configured with value functions, are ignored. The remaining attributes are passed to
+   * Sets multiple attributes from the provided `json` data. If `json` is a string it is assumed to
+   * be an unparsed JSON string and parsed. Unrecognised attributes, or those that are configured
+   * with value functions, are ignored. The remaining attributes are passed to
    * [[`Entity.fillRawReadOnly`]] for sanitization, normalization and validation.
    *
    * @param json
    */
-  public fillJSON(json: string): this {
+  public fillJSON(json: unknown): this {
+    if ('string' === typeof json) {
+      json = JSON.parse(json);
+    }
     return this.fillRawReadOnly(
-      Object.entries(JSON.parse(json))
+      Object.entries(toPlainObject(json))
         .filter(([ name ]) => (
           "string" === typeof name
           && name in this.configs
