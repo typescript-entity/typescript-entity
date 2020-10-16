@@ -3,6 +3,11 @@ import { InvalidAttrValueError } from "./InvalidAttrValueError";
 import { UnknownAttrError } from "./UnknownAttrError";
 import { UnsanitizableAttrError } from "./UnsanitizableAttrError";
 
+export interface EntityConstructor<E extends Entity<Configs>> {
+  new(): E;
+  prototype: E;
+}
+
 export interface Configs {
   [name: string]: Config | FnConfig;
 }
