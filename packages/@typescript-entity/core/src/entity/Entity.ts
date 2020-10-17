@@ -4,7 +4,8 @@ import { UnknownAttrError } from "../error/UnknownAttrError";
 import { UnsanitizableAttrError } from "../error/UnsanitizableAttrError";
 
 export interface EntityConstructor<E extends Entity<Configs>> {
-  new(): E;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  new(...args: any[]): E;
   prototype: E;
 }
 
