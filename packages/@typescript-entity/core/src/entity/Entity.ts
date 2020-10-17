@@ -1,7 +1,7 @@
 import { cloneDeep, toPlainObject } from "lodash";
-import { InvalidAttrValueError } from "./InvalidAttrValueError";
-import { UnknownAttrError } from "./UnknownAttrError";
-import { UnsanitizableAttrError } from "./UnsanitizableAttrError";
+import { InvalidAttrValueError } from "../error/InvalidAttrValueError";
+import { UnknownAttrError } from "../error/UnknownAttrError";
+import { UnsanitizableAttrError } from "../error/UnsanitizableAttrError";
 
 export interface EntityConstructor<E extends Entity<Configs>> {
   new(): E;

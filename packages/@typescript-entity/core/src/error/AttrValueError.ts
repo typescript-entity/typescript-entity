@@ -1,6 +1,6 @@
+import { Entity } from "../entity/Entity";
+import type { Configs, Value } from "../entity/Entity";
 import { AttrError } from "./AttrError";
-import { Entity } from "./Entity";
-import type { Configs, Value } from "./Entity";
 
 export class AttrValueError<C extends Configs> extends AttrError<C> {
 
