@@ -2,7 +2,7 @@
   "name": "root",
   "private": true,
   "workspaces": [
-    "packages/@typescript-entity/*"
+    "packages/*/*"
   ],
   "devDependencies": {
     "@strictsoftware/typedoc-plugin-monorepo": "0",
