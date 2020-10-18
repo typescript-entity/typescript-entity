@@ -22,7 +22,7 @@
   "types": "dist/index.d.ts",
   "sideEffects": false,
   "dependencies": {
-    "@typescript-entity/core": "^0.1.0-alpha.30",
+    "@typescript-entity/core": "^0.1.0",
     "@typescript-entity/normalizers": "^0.1.0",
     "@typescript-entity/sanitizers": "^0.1.0",
     "@typescript-entity/validators": "^0.1.0"
