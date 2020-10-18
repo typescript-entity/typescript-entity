@@ -31,7 +31,7 @@
     "typescript": "4"
   },
   "peerDependencies": {
-    "@typescript-entity/core": "0"
+    "@typescript-entity/core": "^0"
   },
   "scripts": {
     "prebuild": "rimraf ./dist",
