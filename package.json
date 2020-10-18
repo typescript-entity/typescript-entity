@@ -28,11 +28,11 @@
   },
   "eslintConfig": {
     "root": true,
-    "ignorePatterns": [ "dist/", "*.js" ],
     "parser": "@typescript-eslint/parser",
     "plugins": [ "@typescript-eslint" ],
     "extends": [ "plugin:@typescript-eslint/recommended" ]
   },
+  "eslintIgnore": [ "dist/", "*.js" ],
   "jest": {
     "moduleNameMapper": {
       "^(@typescript-entity/.*)$": "<rootDir>/packages/$1/src"
