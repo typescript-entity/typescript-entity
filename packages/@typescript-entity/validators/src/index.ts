@@ -1,5 +1,6 @@
 export * from "./isAfter";
 export * from "./isBefore";
+export * from "./isCountryCode";
 export * from "./isEmail";
 export * from "./isLength";
 export * from "./isNegative";
