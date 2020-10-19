@@ -1,5 +1,6 @@
 export * from "./booleanConfig";
 export * from "./ConfigFactory";
+export * from "./countryCodeConfig";
 export * from "./dateConfig";
 export * from "./dateInFutureConfig";
 export * from "./dateInPastConfig";
