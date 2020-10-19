@@ -1,6 +1,6 @@
 {
   "name": "@typescript-entity/configs",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Attribute configurations for use with @typescript-entity/core.",
   "homepage": "https://github.com/typescript-entity/typescript-entity/tree/master/packages/%40typescript-entity/configs#readme",
   "bugs": {
@@ -25,7 +25,7 @@
     "@typescript-entity/core": "^0.1.1",
     "@typescript-entity/normalizers": "^0.1.0",
     "@typescript-entity/sanitizers": "^0.1.0",
-    "@typescript-entity/validators": "^0.1.0"
+    "@typescript-entity/validators": "^0.1.2"
   },
   "devDependencies": {
     "rimraf": "3",
