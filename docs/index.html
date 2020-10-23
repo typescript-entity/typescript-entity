@@ -202,7 +202,7 @@
   <span class="hljs-comment">// Types do not need to be specified since they are inferred from Configs.</span>
 
   get id() {
-    <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>.get(<span class="hljs-string">&quot;id&quot;</span>);
+    <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>.one(<span class="hljs-string">&quot;id&quot;</span>);
   }
 
   <span class="hljs-comment">// IDConfig is a read-only attribute so TypeScript will correctly prevent us from setting it.</span>
@@ -211,7 +211,7 @@
   <span class="hljs-comment">//}</span>
 
   get name() {
-    <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>.get(<span class="hljs-string">&quot;name&quot;</span>);
+    <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>.one(<span class="hljs-string">&quot;name&quot;</span>);
   }
 
   set name(value) {
@@ -219,7 +219,7 @@
   }
 
   get username() {
-    <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>.get(<span class="hljs-string">&quot;username&quot;</span>);
+    <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>.one(<span class="hljs-string">&quot;username&quot;</span>);
   }
 
   <span class="hljs-comment">// UsernameConfig is a function attribute so TypeScript will correctly prevent us from setting it.</span>
@@ -228,7 +228,7 @@
   <span class="hljs-comment">//}</span>
 
   get smelly() {
-    <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>.get(<span class="hljs-string">&quot;smelly&quot;</span>);
+    <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>.one(<span class="hljs-string">&quot;smelly&quot;</span>);
   }
 
   set smelly(value) {
@@ -275,11 +275,11 @@
   }
 
   get id() {
-    <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>.get(<span class="hljs-string">&quot;id&quot;</span>);
+    <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>.one(<span class="hljs-string">&quot;id&quot;</span>);
   }
 
   get name() {
-    <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>.get(<span class="hljs-string">&quot;name&quot;</span>);
+    <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>.one(<span class="hljs-string">&quot;name&quot;</span>);
   }
 
   set name(value) {
@@ -287,11 +287,11 @@
   }
 
   get username() {
-    <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>.get(<span class="hljs-string">&quot;username&quot;</span>);
+    <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>.one(<span class="hljs-string">&quot;username&quot;</span>);
   }
 
   get smelly() {
-    <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>.get(<span class="hljs-string">&quot;smelly&quot;</span>);
+    <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>.one(<span class="hljs-string">&quot;smelly&quot;</span>);
   }
 
   set smelly(value) {
