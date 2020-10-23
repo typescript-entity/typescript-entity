@@ -1,6 +1,7 @@
-import { cloneDeep, toPlainObject } from "lodash";
+import { cloneDeep, isPlainObject, toPlainObject } from "lodash";
 import { InvalidAttrValueError } from "../error/InvalidAttrValueError";
 import { UnknownAttrError } from "../error/UnknownAttrError";
+import { UnknownDataError } from "../error/UnknownDataError";
 import { UnsanitizableAttrError } from "../error/UnsanitizableAttrError";
 
 export interface EntityConstructor<E extends Entity<Configs>> {
@@ -320,15 +321,28 @@ export abstract class Entity<C extends Configs> {
   }
 
   /**
-   * Sets multiple attributes from the provided `json` data. Unrecognised attributes, or those that
-   * are configured with value functions, are ignored. The remaining attributes are passed to
-   * [[`Entity.fillRawReadOnly`]] for sanitization, normalization and validation.
+   * Sets multiple attributes from the provided `json` string.
    *
    * @param json
    */
   public fillJSON(json: string): this {
-    return this.fillRawReadOnly(
-      Object.entries(toPlainObject(JSON.parse(json)))
+    return this.fillUnknown(toPlainObject(JSON.parse(json)));
+  }
+
+  /**
+   * Sets multiple attributes from the provided `data`. Attempts to identify the type of incoming
+   * `data` and update the Entity accordingly. Unrecognized attributes, or those that are configured
+   * with value functions, are silently ignored. The remaining, recognized attributes are forwarded
+   * to passed to [[`Entity.fillRawReadOnly`]] for sanitization, normalization and validation.
+   *
+   * @param data
+   */
+  public fillUnknown(data: unknown): this {
+    if ("string" === typeof data) { // Assume JSON representation of Entity
+      return this.fillJSON(data);
+    }
+    if (isPlainObject(data)) { // Assume parsed JSON representation of Entity
+      return this.fillRawReadOnly(Object.entries(data as Record<string, unknown>)
         .filter(([ name ]) => (
           "string" === typeof name
           && name in this.configs
@@ -337,8 +351,9 @@ export abstract class Entity<C extends Configs> {
         .reduce((attrs, [ name, value ]) => ({
           ...attrs,
           [name]: value,
-        }), {})
-    );
+        }), {}));
+    }
+    throw new UnknownDataError(this, data);
   }
 
   /**
