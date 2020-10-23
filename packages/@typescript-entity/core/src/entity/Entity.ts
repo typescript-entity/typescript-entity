@@ -168,7 +168,7 @@ export abstract class Entity<C extends Configs> {
    *
    * @param name
    */
-  public get<K extends keyof Attrs<C>, V extends Attrs<C>[K]>(name: K): V {
+  public one<K extends keyof Attrs<C>, V extends Attrs<C>[K]>(name: K): V {
     if (!(name in this.configs)) {
       throw new UnknownAttrError(this, name);
     }
@@ -182,10 +182,10 @@ export abstract class Entity<C extends Configs> {
    *
    * @param names
    */
-  public some<K extends keyof Attrs<C>>(names: K[]): Partial<Attrs<C>> {
+  public many<K extends keyof Attrs<C>>(names: K[]): Partial<Attrs<C>> {
     return names.reduce((attrs, name) => ({
       ...attrs,
-      [name]: this.get(name),
+      [name]: this.one(name),
     }), {});
   }
 
@@ -193,14 +193,14 @@ export abstract class Entity<C extends Configs> {
    * Returns all attributes.
    */
   public all(): Attrs<C> {
-    return this.some(Object.keys(this.configs)) as Attrs<C>;
+    return this.many(Object.keys(this.configs)) as Attrs<C>;
   }
 
   /**
    * Returns the attributes configured as `hidden`.
    */
   public hidden(): HiddenAttrs<C> {
-    return this.some(Object.keys(this.configs)
+    return this.many(Object.keys(this.configs)
       .filter((name) => this.configs[name].hidden)) as HiddenAttrs<C>;
   }
 
@@ -208,7 +208,7 @@ export abstract class Entity<C extends Configs> {
    * Returns the attributes not configured as `hidden`.
    */
   public visible(): VisibleAttrs<C> {
-    return this.some(Object.keys(this.configs)
+    return this.many(Object.keys(this.configs)
       .filter((name) => !this.configs[name].hidden)) as VisibleAttrs<C>;
   }
 
@@ -229,7 +229,7 @@ export abstract class Entity<C extends Configs> {
    * @param name
    * @param value
    */
-  protected setReadOnly<K extends keyof WritableAttrs<C, true>, V extends WritableAttrs<C, true>[K]>(name: K, value: V): this {
+  public setReadOnly<K extends keyof WritableAttrs<C, true>, V extends WritableAttrs<C, true>[K]>(name: K, value: V): this {
     if (!(name in this.configs)) {
       throw new UnknownAttrError(this, name);
     }
@@ -257,7 +257,7 @@ export abstract class Entity<C extends Configs> {
    * @param name
    * @param value
    */
-  protected setRawReadOnly<K extends keyof Unsanitized<WritableAttrs<C, true>>, V extends Unsanitized<WritableAttrs<C, true>>[K]>(name: K, value: V): this {
+  public setRawReadOnly<K extends keyof Unsanitized<WritableAttrs<C, true>>, V extends Unsanitized<WritableAttrs<C, true>>[K]>(name: K, value: V): this {
     return this.setReadOnly(name, this.sanitize(name, value));
   }
 
@@ -277,7 +277,7 @@ export abstract class Entity<C extends Configs> {
    *
    * @param attrs
    */
-  protected fillReadOnly(attrs: Partial<WritableAttrs<C, true>>): this {
+  public fillReadOnly(attrs: Partial<WritableAttrs<C, true>>): this {
     // Cannot assert as Entries<Partial<...>> since TS will (correctly) complain that values may be
     // undefined, but we're mitigating against this by ignoring undefined values
     (Object.entries(attrs) as Entries<WritableAttrs<C, true>>)
@@ -306,7 +306,7 @@ export abstract class Entity<C extends Configs> {
    *
    * @param attrs
    */
-  protected fillRawReadOnly(attrs: Partial<Unsanitized<WritableAttrs<C, true>>>): this {
+  public fillRawReadOnly(attrs: Partial<Unsanitized<WritableAttrs<C, true>>>): this {
     (Object.entries(attrs) as Entries<Partial<Unsanitized<WritableAttrs<C, true>>>>)
       .forEach(([ name, value ]) => {
         // Prevent abuse of Partial<> allowing non-undefinable attributes to be set to undefined
@@ -320,19 +320,15 @@ export abstract class Entity<C extends Configs> {
   }
 
   /**
-   * Sets multiple attributes from the provided `json` data. If `json` is a string it is assumed to
-   * be an unparsed JSON string and parsed. Unrecognised attributes, or those that are configured
-   * with value functions, are ignored. The remaining attributes are passed to
+   * Sets multiple attributes from the provided `json` data. Unrecognised attributes, or those that
+   * are configured with value functions, are ignored. The remaining attributes are passed to
    * [[`Entity.fillRawReadOnly`]] for sanitization, normalization and validation.
    *
    * @param json
    */
-  public fillJSON(json: unknown): this {
-    if ('string' === typeof json) {
-      json = JSON.parse(json);
-    }
+  public fillJSON(json: string): this {
     return this.fillRawReadOnly(
-      Object.entries(toPlainObject(json))
+      Object.entries(toPlainObject(JSON.parse(json)))
         .filter(([ name ]) => (
           "string" === typeof name
           && name in this.configs

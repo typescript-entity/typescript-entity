@@ -54,7 +54,7 @@ test("an Entity can be filled with custom values later", () => {
 test("an Entity can be filled with read-only attributes later", () => {
 
   const user = new User();
-  user.exposedFillReadOnly({ uuid: "7a2d2178-37da-4f5c-bb05-5f6819ff6ecd" });
+  user.fillReadOnly({ uuid: "7a2d2178-37da-4f5c-bb05-5f6819ff6ecd" });
   expect(user.uuid).toStrictEqual("7a2d2178-37da-4f5c-bb05-5f6819ff6ecd");
 
 });
@@ -108,7 +108,7 @@ test("an Entity can expose some attributes", () => {
     verified: attrs.verified,
   };
   const user = new User(attrs);
-  expect(user.some(Object.keys(expected) as (keyof Attrs<Configs>)[])).toStrictEqual(expected);
+  expect(user.many(Object.keys(expected) as (keyof Attrs<Configs>)[])).toStrictEqual(expected);
 
 });
 

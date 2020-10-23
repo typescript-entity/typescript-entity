@@ -148,7 +148,7 @@ class Person extends Entity<Configs> implements Attrs<Configs> {
   // Types do not need to be specified since they are inferred from Configs.
 
   get id() {
-    return this.get("id");
+    return this.one("id");
   }
 
   // IDConfig is a read-only attribute so TypeScript will correctly prevent us from setting it.
@@ -157,7 +157,7 @@ class Person extends Entity<Configs> implements Attrs<Configs> {
   //}
 
   get name() {
-    return this.get("name");
+    return this.one("name");
   }
 
   set name(value) {
@@ -165,7 +165,7 @@ class Person extends Entity<Configs> implements Attrs<Configs> {
   }
 
   get username() {
-    return this.get("username");
+    return this.one("username");
   }
 
   // UsernameConfig is a function attribute so TypeScript will correctly prevent us from setting it.
@@ -174,7 +174,7 @@ class Person extends Entity<Configs> implements Attrs<Configs> {
   //}
 
   get smelly() {
-    return this.get("smelly");
+    return this.one("smelly");
   }
 
   set smelly(value) {
@@ -224,11 +224,11 @@ class Person extends Entity<Configs> implements Attrs<Configs> {
   }
 
   get id() {
-    return this.get("id");
+    return this.one("id");
   }
 
   get name() {
-    return this.get("name");
+    return this.one("name");
   }
 
   set name(value) {
@@ -236,11 +236,11 @@ class Person extends Entity<Configs> implements Attrs<Configs> {
   }
 
   get username() {
-    return this.get("username");
+    return this.one("username");
   }
 
   get smelly() {
-    return this.get("smelly");
+    return this.one("smelly");
   }
 
   set smelly(value) {

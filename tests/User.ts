@@ -44,7 +44,7 @@ export class User extends Entity<Configs> implements Attrs<Configs> {
   }
 
   get date_of_birth(): Attr<Configs["date_of_birth"]> {
-    return this.get("date_of_birth");
+    return this.one("date_of_birth");
   }
 
   set date_of_birth(value: Attr<Configs["date_of_birth"]>) {
@@ -52,7 +52,7 @@ export class User extends Entity<Configs> implements Attrs<Configs> {
   }
 
   get email(): Attr<Configs["email"]> {
-    return this.get("email");
+    return this.one("email");
   }
 
   set email(value: Attr<Configs["email"]>) {
@@ -60,15 +60,15 @@ export class User extends Entity<Configs> implements Attrs<Configs> {
   }
 
   get email_domain(): Attr<Configs["email_domain"]> {
-    return this.get("email_domain");
+    return this.one("email_domain");
   }
 
   get uuid(): Attr<Configs["uuid"]> {
-    return this.get("uuid");
+    return this.one("uuid");
   }
 
   get username(): Attr<Configs["username"]> {
-    return this.get("username");
+    return this.one("username");
   }
 
   set username(value: Attr<Configs["username"]>) {
@@ -76,15 +76,11 @@ export class User extends Entity<Configs> implements Attrs<Configs> {
   }
 
   get verified(): Attr<Configs["verified"]> {
-    return this.get("verified");
+    return this.one("verified");
   }
 
   set verified(value: Attr<Configs["verified"]>) {
     this.set("verified", value);
-  }
-
-  public exposedFillReadOnly<A extends Partial<WritableAttrs<Configs, true>>>(attrs: A): this {
-    return this.fillReadOnly(attrs);
   }
 
 }
