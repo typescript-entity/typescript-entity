@@ -1,6 +1,6 @@
 {
   "name": "@typescript-entity/configs",
-  "version": "0.1.8",
+  "version": "0.1.9",
   "description": "Attribute configurations for use with @typescript-entity/core.",
   "homepage": "https://github.com/typescript-entity/typescript-entity/tree/master/packages/%40typescript-entity/configs#readme",
   "bugs": {
@@ -22,7 +22,7 @@
   "types": "dist/index.d.ts",
   "sideEffects": false,
   "dependencies": {
-    "@typescript-entity/core": "^0.1.8",
+    "@typescript-entity/core": "^0.1.9",
     "@typescript-entity/normalizers": "^0.1.6",
     "@typescript-entity/sanitizers": "^0.1.6",
     "@typescript-entity/validators": "^0.1.6"
