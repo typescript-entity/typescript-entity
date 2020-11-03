@@ -9,13 +9,15 @@ type Entries<T> = {
   [K in keyof T]: [ K, T[K] ];
 }[keyof T][];
 
-export interface EntityConstructor<T extends Entity<Configs>> {
+export interface EntityConstructor<T extends Entity> {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   new(...args: any[]): T;
   prototype: T;
 }
 
-export type Configs = Record<Name, StaticConfig | FnConfig>;
+export interface Configs {
+  [name: string]: StaticConfig | FnConfig;
+}
 
 export interface StaticConfig<T extends StaticValue = StaticValue> {
   hidden?: boolean;
@@ -82,10 +84,10 @@ const isStaticConfigTypeGuard = <T extends StaticValue>(config: StaticConfig<T> 
   "function" !== typeof config.value
 );
 
-export abstract class Entity<C extends Configs> {
+export abstract class Entity<C extends Configs = Configs> {
 
-  protected _configs: Map<keyof C, StaticConfig | FnConfig> = new Map();
-  protected _modified: Set<keyof StaticAttrs<C>> = new Set();
+  protected _configs = new Map<keyof C, StaticConfig | FnConfig>();
+  protected _modified = new Set<keyof WritableAttrs<C>>();
 
   /**
    * Creates a new [[`Entity`]] instance. The attribute `configs` define the attributes available on
@@ -244,7 +246,7 @@ export abstract class Entity<C extends Configs> {
    *
    * @param name
    */
-  public modified(): Partial<StaticAttrs<C>> {
+  public modified(): Partial<WritableAttrs<C>> {
     return this.many(Array.from(this._modified.values()));
   }
 
