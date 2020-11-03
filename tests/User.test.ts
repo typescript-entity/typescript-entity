@@ -1,4 +1,4 @@
-import { InvalidAttrValueError } from "@typescript-entity/core";
+import { ReadOnlyError, ValidationError } from "@typescript-entity/core";
 import type { Attrs } from "@typescript-entity/core";
 import { User } from "./User";
 import type { Configs } from "./User";
@@ -41,21 +41,22 @@ test("an Entity can be filled with custom values later", () => {
     date_of_birth: new Date("2000-01-01"),
     email: "foo@example.com",
     username: "foobar",
-    verified: true,
   });
   expect(user.date_of_birth).toBeInstanceOf(Date);
   expect(user.email).toStrictEqual("foo@example.com");
   expect(user.email_domain).toStrictEqual("example.com");
   expect(user.username).toStrictEqual("foobar");
-  expect(user.verified).toStrictEqual(true);
+  expect(user.verified).toStrictEqual(false);
 
 });
 
-test("an Entity can be filled with read-only attributes later", () => {
+test("an Entity cannot be filled with read-only attributes later", () => {
 
   const user = new User();
-  user.fillReadOnly({ uuid: "7a2d2178-37da-4f5c-bb05-5f6819ff6ecd" });
-  expect(user.uuid).toStrictEqual("7a2d2178-37da-4f5c-bb05-5f6819ff6ecd");
+  expect(() => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    user.fill({ uuid: "7a2d2178-37da-4f5c-bb05-5f6819ff6ecd" } as any);
+  }).toThrow(ReadOnlyError);
 
 });
 
@@ -63,7 +64,7 @@ test("an Entity cannot be constructed with invalid values", () => {
 
   expect(() => {
     new User({ username: "abc" });
-  }).toThrow(InvalidAttrValueError);
+  }).toThrow(ValidationError);
 
 });
 
@@ -72,7 +73,7 @@ test("an Entity cannot be filled with invalid values later", () => {
   const user = new User();
   expect(() => {
     user.fill({ username: "abc" });
-  }).toThrow(InvalidAttrValueError);
+  }).toThrow(ValidationError);
 
 });
 
@@ -164,17 +165,43 @@ test("an Entity can expose all visible attributes when cast to string", () => {
 
 });
 
-test("an Entity can be filled with read-only values from a JSON string", () => {
+test("an Entity can be constructed from JSON", () => {
 
-  const user = new User({
+  const json = JSON.stringify({
     date_of_birth: new Date("2000-01-01"),
     email: "foo@example.com",
     username: "foobar",
     uuid: "7a2d2178-37da-4f5c-bb05-5f6819ff6ecd",
     verified: true,
   });
+  const user = new User(JSON.parse(json));
+  expect(user.date_of_birth).toBeInstanceOf(Date);
+  expect(user.email).toStrictEqual("foo@example.com");
+  expect(user.email_domain).toStrictEqual("example.com");
+  expect(user.username).toStrictEqual("foobar");
+  expect(user.uuid).toStrictEqual("7a2d2178-37da-4f5c-bb05-5f6819ff6ecd");
+  expect(user.verified).toStrictEqual(true);
 
-  const userCopy = (new User()).fillJSON(JSON.stringify(user.all()));
-  expect(userCopy.all()).toStrictEqual(user.all());
+});
+
+test("an Entity can be constructed from JSON containing values for unconfigured and function attributes", () => {
+
+  const json = JSON.stringify({
+    date_of_birth: new Date("2000-01-01"),
+    email: "foo@example.com",
+    username: "foobar",
+    uuid: "7a2d2178-37da-4f5c-bb05-5f6819ff6ecd",
+    verified: true,
+    email_domain: "anotherexample.com",
+    extraneous: [ "foo" ],
+  });
+  const user = new User(JSON.parse(json));
+  expect(user.date_of_birth).toBeInstanceOf(Date);
+  expect(user.email).toStrictEqual("foo@example.com");
+  expect(user.email_domain).toStrictEqual("example.com");
+  expect(user.username).toStrictEqual("foobar");
+  expect(user.uuid).toStrictEqual("7a2d2178-37da-4f5c-bb05-5f6819ff6ecd");
+  expect(user.verified).toStrictEqual(true);
+  expect(Object.keys(user.all())).not.toContain("extraneous");
 
 });

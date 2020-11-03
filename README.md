@@ -69,7 +69,7 @@ You may prefer to [skip to Simplified Usage](#simplified-usage).
 
 ```typescript
 import { Entity } from "@typescript-entity/core";
-import type { Attrs, NormalizerFn, SanitizerFn, ValidatorFn, ValueFn, WritableAttrs } from "@typescript-entity/core";
+import type { Attr, Attrs, FnValue, InitialAttrs, NormalizerFn, SanitizerFn, ValidatorFn } from "@typescript-entity/core";
 
 // ID is an optional number, must be read-only and must have a validator function defined. Like all
 // non-function attributes, it must also have a sanitizer function defined.
@@ -90,7 +90,7 @@ type NameConfig = {
 // Username is a function that returns a string. A sanitizer function is not required since values
 // for function attributes cannot be set.
 type UsernameConfig = {
-  value: ValueFn<string>;
+  value: FnValue<string>;
 };
 
 // Smelly is a boolean and is hidden from JSON representation.
@@ -107,7 +107,7 @@ type Configs = {
   smelly: SmellyConfig;
 };
 
-class Person extends Entity<Configs> implements Attrs<Configs> {
+export class Person extends Entity<Configs> implements Attrs<Configs> {
 
   // The runtime configurations are constructed once and passed to all instances of the Person
   // entity via the Entity constructor. All configuration properties are shared between instances to
@@ -139,7 +139,7 @@ class Person extends Entity<Configs> implements Attrs<Configs> {
   // Allow consumers to provide some/all attributes during construction to override the default
   // values provided in the configs. Attributes passed to the constructor can include values for
   // read-only values but not for function attributes.
-  constructor(attrs: Partial<WritableAttrs<Configs, true>> = {}) {
+  constructor(attrs: InitialAttrs<Configs> = {}) {
     super(Person.CONFIGS, attrs);
   }
 
@@ -147,37 +147,37 @@ class Person extends Entity<Configs> implements Attrs<Configs> {
   // and setters for each attribute on the entity which makes it easier to interact with instances.
   // Types do not need to be specified since they are inferred from Configs.
 
-  get id() {
+  get id(): Attr<Configs, "id"> {
     return this.one("id");
   }
 
   // IDConfig is a read-only attribute so TypeScript will correctly prevent us from setting it.
-  //set id(value) {
+  //set id(value: Attr<Configs, "id">) {
   //  this.set("id", value);
   //}
 
-  get name() {
+  get name(): Attr<Configs, "name"> {
     return this.one("name");
   }
 
-  set name(value) {
+  set name(value: Attr<Configs, "name">) {
     this.set("name", value);
   }
 
-  get username() {
+  get username(): Attr<Configs, "username"> {
     return this.one("username");
   }
 
   // UsernameConfig is a function attribute so TypeScript will correctly prevent us from setting it.
-  //set username(value) {
+  //set username(value: Attr<Configs, "username">) {
   //  this.set("username", value);
   //}
 
-  get smelly() {
+  get smelly(): Attr<Configs, "smelly"> {
     return this.one("smelly");
   }
 
-  set smelly(value) {
+  set smelly(value: Attr<Configs, "smelly">) {
     this.set("smelly", value);
   }
 
@@ -192,7 +192,7 @@ The [example above](#verbose-usage) is intentionally verbose for instructional p
 import { booleanConfig, fnConfig, positiveIntegerConfig, stringConfig } from "@typescript-entity/configs";
 import type { BooleanConfigFactory, FnConfigFactory, PositiveIntegerConfigFactory, StringConfigFactory } from "@typescript-entity/configs";
 import { Entity } from "@typescript-entity/core";
-import type { Attrs, WritableAttrs } from "@typescript-entity/core";
+import type { Attr, Attrs, InitialAttrs } from "@typescript-entity/core";
 import { trim } from "@typescript-entity/normalizers";
 
 type IDConfig = PositiveIntegerConfigFactory<true, false, true>;
@@ -207,7 +207,7 @@ type Configs = {
   smelly: SmellyConfig;
 };
 
-class Person extends Entity<Configs> implements Attrs<Configs> {
+export class Person extends Entity<Configs> implements Attrs<Configs> {
 
   public static readonly CONFIGS: Configs = {
     id: positiveIntegerConfig(true, false, true),
@@ -219,31 +219,31 @@ class Person extends Entity<Configs> implements Attrs<Configs> {
     smelly: booleanConfig(false, true),
   };
 
-  constructor(attrs: Partial<WritableAttrs<Configs, true>> = {}) {
+  constructor(attrs: InitialAttrs<Configs> = {}) {
     super(Person.CONFIGS, attrs);
   }
 
-  get id() {
+  get id(): Attr<Configs, "id"> {
     return this.one("id");
   }
 
-  get name() {
+  get name(): Attr<Configs, "name"> {
     return this.one("name");
   }
 
-  set name(value) {
+  set name(value: Attr<Configs, "name">) {
     this.set("name", value);
   }
 
-  get username() {
+  get username(): Attr<Configs, "username"> {
     return this.one("username");
   }
 
-  get smelly() {
+  get smelly(): Attr<Configs, "smelly"> {
     return this.one("smelly");
   }
 
-  set smelly(value) {
+  set smelly(value: Attr<Configs, "smelly">) {
     this.set("smelly", value);
   }
 
@@ -276,14 +276,12 @@ console.log(JSON.stringify(bob)); // {"id":123,"name":"Bob","username":"bob"}
 
 ```typescript
 const json = '{"id":"123","name":"Jane  ","username":"janerocks","smelly":true}';
-const jane = (new Person()).fillJSON(json);
+const jane = new Person(JSON.parse(json));
 console.log(jane.id); // 123 (sanitized from string to number)
 console.log(jane.name); // "Jane" (normalized to remove trailing whitespace)
 console.log(jane.username); // "jane" (the JSON value was ignored as this is a function attr)
 console.log(jane.smelly); // true (the JSON value was allowed even though this is a read-only attr)
 ```
-
-Note: extraneous values provided in JSON are silently ignored by `Entity.fillJSON()`.
 
 ## API Documentation
 

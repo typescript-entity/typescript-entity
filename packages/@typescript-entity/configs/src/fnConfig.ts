@@ -1,16 +1,17 @@
-import type { FnConfig, ResolvedValue, Value, ValueFn } from "@typescript-entity/core";
+import type { FnConfig, StaticValue, FnValue } from "@typescript-entity/core";
+import type { ResolvedStaticValue } from "./ConfigFactory";
 
 export type FnConfigFactory<
-  V extends Value,
+  T extends StaticValue,
   Optional extends boolean = false,
   Hidden extends boolean = false
 > = (
-  Pick<FnConfig<ResolvedValue<V, Optional>>, "value">
+  Pick<FnConfig<ResolvedStaticValue<T, Optional>>, "value">
   & (Hidden extends true ? { hidden: true } : { hidden?: false })
 );
 
 export const fnConfig = <
-  V extends ValueFn,
+  V extends FnValue,
   O extends boolean = false,
   H extends boolean = false,
 >(value: V, optional?: O, hidden?: H): FnConfigFactory<ReturnType<V>, O, H> => ({

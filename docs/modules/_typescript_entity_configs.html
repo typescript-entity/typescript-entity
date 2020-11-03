@@ -97,6 +97,7 @@
 								<li class="tsd-kind-type-alias tsd-parent-kind-module tsd-has-type-parameter"><a href="_typescript_entity_configs.html#positivefloatconfigfactory" class="tsd-kind-icon">Positive<wbr>Float<wbr>Config<wbr>Factory</a></li>
 								<li class="tsd-kind-type-alias tsd-parent-kind-module tsd-has-type-parameter"><a href="_typescript_entity_configs.html#positiveintegerconfigfactory" class="tsd-kind-icon">Positive<wbr>Integer<wbr>Config<wbr>Factory</a></li>
 								<li class="tsd-kind-type-alias tsd-parent-kind-module tsd-has-type-parameter"><a href="_typescript_entity_configs.html#positivenumberconfigfactory" class="tsd-kind-icon">Positive<wbr>Number<wbr>Config<wbr>Factory</a></li>
+								<li class="tsd-kind-type-alias tsd-parent-kind-module tsd-has-type-parameter"><a href="_typescript_entity_configs.html#resolvedstaticvalue" class="tsd-kind-icon">Resolved<wbr>Static<wbr>Value</a></li>
 								<li class="tsd-kind-type-alias tsd-parent-kind-module tsd-has-type-parameter"><a href="_typescript_entity_configs.html#stringconfigfactory" class="tsd-kind-icon">String<wbr>Config<wbr>Factory</a></li>
 								<li class="tsd-kind-type-alias tsd-parent-kind-module tsd-has-type-parameter"><a href="_typescript_entity_configs.html#urlconfigfactory" class="tsd-kind-icon">URLConfig<wbr>Factory</a></li>
 								<li class="tsd-kind-type-alias tsd-parent-kind-module tsd-has-type-parameter"><a href="_typescript_entity_configs.html#uuidconfigfactory" class="tsd-kind-icon">UUIDConfig<wbr>Factory</a></li>
@@ -137,7 +138,7 @@
 					<div class="tsd-signature tsd-kind-icon">Boolean<wbr>Config<wbr>Factory&lt;Optional, Hidden, ReadOnly, Normalizer, Validator&gt;<span class="tsd-signature-symbol">:</span> <a href="_typescript_entity_configs.html#configfactory" class="tsd-signature-type">ConfigFactory</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">Optional</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">Hidden</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">ReadOnly</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">Normalizer</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">Validator</span><span class="tsd-signature-symbol">&gt;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/typescript-entity/typescript-entity/blob/087bdb4/packages/@typescript-entity/configs/src/booleanConfig.ts#L5">packages/@typescript-entity/configs/src/booleanConfig.ts:5</a></li>
+							<li>Defined in <a href="https://github.com/typescript-entity/typescript-entity/blob/aa6c56b/packages/@typescript-entity/configs/src/booleanConfig.ts#L5">packages/@typescript-entity/configs/src/booleanConfig.ts:5</a></li>
 						</ul>
 					</aside>
 					<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -162,16 +163,16 @@
 				<section class="tsd-panel tsd-member tsd-kind-type-alias tsd-parent-kind-module tsd-has-type-parameter">
 					<a name="configfactory" class="tsd-anchor"></a>
 					<h3>Config<wbr>Factory</h3>
-					<div class="tsd-signature tsd-kind-icon">Config<wbr>Factory&lt;V, Optional, Hidden, ReadOnly, Normalizer, Validator&gt;<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Config</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">ResolvedValue</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">V</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">Optional</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> extends </span><span class="tsd-signature-symbol">infer </span> C<span class="tsd-signature-symbol"> ? </span><span class="tsd-signature-type">C</span><span class="tsd-signature-symbol"> extends </span><span class="tsd-signature-type">Config</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">ResolvedValue</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">V</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">Optional</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> ? </span><span class="tsd-signature-type">Pick</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">C</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"value"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"sanitizer"</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-type">Hidden</span><span class="tsd-signature-symbol"> extends </span><span class="tsd-signature-type">true</span><span class="tsd-signature-symbol"> ? </span><span class="tsd-signature-symbol">{ </span>hidden<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">true</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol"> : </span><span class="tsd-signature-symbol">{ </span>hidden<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">false</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-type">ReadOnly</span><span class="tsd-signature-symbol"> extends </span><span class="tsd-signature-type">true</span><span class="tsd-signature-symbol"> ? </span><span class="tsd-signature-symbol">{ </span>readOnly<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">true</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol"> : </span><span class="tsd-signature-symbol">{ </span>readOnly<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">false</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-type">Normalizer</span><span class="tsd-signature-symbol"> extends </span><span class="tsd-signature-type">true</span><span class="tsd-signature-symbol"> ? </span><span class="tsd-signature-type">Pick</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Required</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">C</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"normalizer"</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> : </span><span class="tsd-signature-symbol">{ </span>normalizer<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-type">Validator</span><span class="tsd-signature-symbol"> extends </span><span class="tsd-signature-type">true</span><span class="tsd-signature-symbol"> ? </span><span class="tsd-signature-type">Pick</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Required</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">C</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"validator"</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> : </span><span class="tsd-signature-symbol">{ </span>validator<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol"> : </span><span class="tsd-signature-type">never</span><span class="tsd-signature-symbol"> : </span><span class="tsd-signature-type">never</span></div>
+					<div class="tsd-signature tsd-kind-icon">Config<wbr>Factory&lt;T, Optional, Hidden, ReadOnly, Normalizer, Validator&gt;<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">StaticConfig</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">ResolvedStaticValue</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">Optional</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> extends </span><span class="tsd-signature-symbol">infer </span> C<span class="tsd-signature-symbol"> ? </span><span class="tsd-signature-type">C</span><span class="tsd-signature-symbol"> extends </span><span class="tsd-signature-type">StaticConfig</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">ResolvedStaticValue</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">Optional</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> ? </span><span class="tsd-signature-type">Pick</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">C</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"value"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"sanitizer"</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-type">Hidden</span><span class="tsd-signature-symbol"> extends </span><span class="tsd-signature-type">true</span><span class="tsd-signature-symbol"> ? </span><span class="tsd-signature-symbol">{ </span>hidden<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">true</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol"> : </span><span class="tsd-signature-symbol">{ </span>hidden<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">false</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-type">ReadOnly</span><span class="tsd-signature-symbol"> extends </span><span class="tsd-signature-type">true</span><span class="tsd-signature-symbol"> ? </span><span class="tsd-signature-symbol">{ </span>readOnly<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">true</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol"> : </span><span class="tsd-signature-symbol">{ </span>readOnly<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">false</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-type">Normalizer</span><span class="tsd-signature-symbol"> extends </span><span class="tsd-signature-type">true</span><span class="tsd-signature-symbol"> ? </span><span class="tsd-signature-type">Pick</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Required</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">C</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"normalizer"</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> : </span><span class="tsd-signature-symbol">{ </span>normalizer<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-type">Validator</span><span class="tsd-signature-symbol"> extends </span><span class="tsd-signature-type">true</span><span class="tsd-signature-symbol"> ? </span><span class="tsd-signature-type">Pick</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Required</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">C</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"validator"</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> : </span><span class="tsd-signature-symbol">{ </span>validator<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol"> : </span><span class="tsd-signature-type">never</span><span class="tsd-signature-symbol"> : </span><span class="tsd-signature-type">never</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/typescript-entity/typescript-entity/blob/087bdb4/packages/@typescript-entity/configs/src/ConfigFactory.ts#L3">packages/@typescript-entity/configs/src/ConfigFactory.ts:3</a></li>
+							<li>Defined in <a href="https://github.com/typescript-entity/typescript-entity/blob/aa6c56b/packages/@typescript-entity/configs/src/ConfigFactory.ts#L13">packages/@typescript-entity/configs/src/ConfigFactory.ts:13</a></li>
 						</ul>
 					</aside>
 					<h4 class="tsd-type-parameters-title">Type parameters</h4>
 					<ul class="tsd-type-parameters">
 						<li>
-							<h4>V<span class="tsd-signature-symbol">: </span><a href="_typescript_entity_core.html#value" class="tsd-signature-type">Value</a></h4>
+							<h4>T<span class="tsd-signature-symbol">: </span><a href="_typescript_entity_core.html#staticvalue" class="tsd-signature-type">StaticValue</a></h4>
 						</li>
 						<li>
 							<h4>Optional<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span> = <span class="tsd-signature-type">false</span></h4>
@@ -196,7 +197,7 @@
 					<div class="tsd-signature tsd-kind-icon">Country<wbr>Code<wbr>Config&lt;Optional, Hidden, ReadOnly&gt;<span class="tsd-signature-symbol">:</span> <a href="_typescript_entity_configs.html#stringconfigfactory" class="tsd-signature-type">StringConfigFactory</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Optional</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">Hidden</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">ReadOnly</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">true</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">true</span><span class="tsd-signature-symbol">&gt;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/typescript-entity/typescript-entity/blob/087bdb4/packages/@typescript-entity/configs/src/countryCodeConfig.ts#L7">packages/@typescript-entity/configs/src/countryCodeConfig.ts:7</a></li>
+							<li>Defined in <a href="https://github.com/typescript-entity/typescript-entity/blob/aa6c56b/packages/@typescript-entity/configs/src/countryCodeConfig.ts#L7">packages/@typescript-entity/configs/src/countryCodeConfig.ts:7</a></li>
 						</ul>
 					</aside>
 					<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -218,7 +219,7 @@
 					<div class="tsd-signature tsd-kind-icon">Date<wbr>Config<wbr>Factory&lt;Optional, Hidden, ReadOnly, Normalizer, Validator&gt;<span class="tsd-signature-symbol">:</span> <a href="_typescript_entity_configs.html#configfactory" class="tsd-signature-type">ConfigFactory</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Date</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">Optional</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">Hidden</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">ReadOnly</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">Normalizer</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">Validator</span><span class="tsd-signature-symbol">&gt;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/typescript-entity/typescript-entity/blob/087bdb4/packages/@typescript-entity/configs/src/dateConfig.ts#L4">packages/@typescript-entity/configs/src/dateConfig.ts:4</a></li>
+							<li>Defined in <a href="https://github.com/typescript-entity/typescript-entity/blob/aa6c56b/packages/@typescript-entity/configs/src/dateConfig.ts#L4">packages/@typescript-entity/configs/src/dateConfig.ts:4</a></li>
 						</ul>
 					</aside>
 					<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -246,7 +247,7 @@
 					<div class="tsd-signature tsd-kind-icon">Date<wbr>InFuture<wbr>Config<wbr>Factory&lt;Optional, Hidden, ReadOnly, Normalizer&gt;<span class="tsd-signature-symbol">:</span> <a href="_typescript_entity_configs.html#dateconfigfactory" class="tsd-signature-type">DateConfigFactory</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Optional</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">Hidden</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">ReadOnly</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">Normalizer</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">true</span><span class="tsd-signature-symbol">&gt;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/typescript-entity/typescript-entity/blob/087bdb4/packages/@typescript-entity/configs/src/dateInFutureConfig.ts#L6">packages/@typescript-entity/configs/src/dateInFutureConfig.ts:6</a></li>
+							<li>Defined in <a href="https://github.com/typescript-entity/typescript-entity/blob/aa6c56b/packages/@typescript-entity/configs/src/dateInFutureConfig.ts#L6">packages/@typescript-entity/configs/src/dateInFutureConfig.ts:6</a></li>
 						</ul>
 					</aside>
 					<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -271,7 +272,7 @@
 					<div class="tsd-signature tsd-kind-icon">Date<wbr>InPast<wbr>Config<wbr>Factory&lt;Optional, Hidden, ReadOnly, Normalizer&gt;<span class="tsd-signature-symbol">:</span> <a href="_typescript_entity_configs.html#dateconfigfactory" class="tsd-signature-type">DateConfigFactory</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Optional</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">Hidden</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">ReadOnly</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">Normalizer</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">true</span><span class="tsd-signature-symbol">&gt;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/typescript-entity/typescript-entity/blob/087bdb4/packages/@typescript-entity/configs/src/dateInPastConfig.ts#L6">packages/@typescript-entity/configs/src/dateInPastConfig.ts:6</a></li>
+							<li>Defined in <a href="https://github.com/typescript-entity/typescript-entity/blob/aa6c56b/packages/@typescript-entity/configs/src/dateInPastConfig.ts#L6">packages/@typescript-entity/configs/src/dateInPastConfig.ts:6</a></li>
 						</ul>
 					</aside>
 					<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -296,7 +297,7 @@
 					<div class="tsd-signature tsd-kind-icon">Email<wbr>Config<wbr>Factory&lt;Optional, Hidden, ReadOnly, Normalizer&gt;<span class="tsd-signature-symbol">:</span> <a href="_typescript_entity_configs.html#stringconfigfactory" class="tsd-signature-type">StringConfigFactory</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Optional</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">Hidden</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">ReadOnly</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">Normalizer</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">true</span><span class="tsd-signature-symbol">&gt;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/typescript-entity/typescript-entity/blob/087bdb4/packages/@typescript-entity/configs/src/emailConfig.ts#L6">packages/@typescript-entity/configs/src/emailConfig.ts:6</a></li>
+							<li>Defined in <a href="https://github.com/typescript-entity/typescript-entity/blob/aa6c56b/packages/@typescript-entity/configs/src/emailConfig.ts#L6">packages/@typescript-entity/configs/src/emailConfig.ts:6</a></li>
 						</ul>
 					</aside>
 					<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -321,7 +322,7 @@
 					<div class="tsd-signature tsd-kind-icon">Float<wbr>Config<wbr>Factory&lt;Optional, Hidden, ReadOnly, Normalizer, Validator&gt;<span class="tsd-signature-symbol">:</span> <a href="_typescript_entity_configs.html#numberconfigfactory" class="tsd-signature-type">NumberConfigFactory</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Optional</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">Hidden</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">ReadOnly</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">Normalizer</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">Validator</span><span class="tsd-signature-symbol">&gt;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/typescript-entity/typescript-entity/blob/087bdb4/packages/@typescript-entity/configs/src/floatConfig.ts#L5">packages/@typescript-entity/configs/src/floatConfig.ts:5</a></li>
+							<li>Defined in <a href="https://github.com/typescript-entity/typescript-entity/blob/aa6c56b/packages/@typescript-entity/configs/src/floatConfig.ts#L5">packages/@typescript-entity/configs/src/floatConfig.ts:5</a></li>
 						</ul>
 					</aside>
 					<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -346,16 +347,16 @@
 				<section class="tsd-panel tsd-member tsd-kind-type-alias tsd-parent-kind-module tsd-has-type-parameter">
 					<a name="fnconfigfactory" class="tsd-anchor"></a>
 					<h3>Fn<wbr>Config<wbr>Factory</h3>
-					<div class="tsd-signature tsd-kind-icon">Fn<wbr>Config<wbr>Factory&lt;V, Optional, Hidden&gt;<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Pick</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/_typescript_entity_core.fnconfig.html" class="tsd-signature-type">FnConfig</a><span class="tsd-signature-symbol">&lt;</span><a href="_typescript_entity_core.html#resolvedvalue" class="tsd-signature-type">ResolvedValue</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">V</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">Optional</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"value"</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-type">Hidden</span><span class="tsd-signature-symbol"> extends </span><span class="tsd-signature-type">true</span><span class="tsd-signature-symbol"> ? </span><span class="tsd-signature-symbol">{ </span>hidden<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">true</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol"> : </span><span class="tsd-signature-symbol">{ </span>hidden<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">false</span><span class="tsd-signature-symbol"> }</span></div>
+					<div class="tsd-signature tsd-kind-icon">Fn<wbr>Config<wbr>Factory&lt;T, Optional, Hidden&gt;<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Pick</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/_typescript_entity_core.fnconfig.html" class="tsd-signature-type">FnConfig</a><span class="tsd-signature-symbol">&lt;</span><a href="_typescript_entity_configs.html#resolvedstaticvalue" class="tsd-signature-type">ResolvedStaticValue</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">Optional</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"value"</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-type">Hidden</span><span class="tsd-signature-symbol"> extends </span><span class="tsd-signature-type">true</span><span class="tsd-signature-symbol"> ? </span><span class="tsd-signature-symbol">{ </span>hidden<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">true</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol"> : </span><span class="tsd-signature-symbol">{ </span>hidden<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">false</span><span class="tsd-signature-symbol"> }</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/typescript-entity/typescript-entity/blob/087bdb4/packages/@typescript-entity/configs/src/fnConfig.ts#L3">packages/@typescript-entity/configs/src/fnConfig.ts:3</a></li>
+							<li>Defined in <a href="https://github.com/typescript-entity/typescript-entity/blob/aa6c56b/packages/@typescript-entity/configs/src/fnConfig.ts#L4">packages/@typescript-entity/configs/src/fnConfig.ts:4</a></li>
 						</ul>
 					</aside>
 					<h4 class="tsd-type-parameters-title">Type parameters</h4>
 					<ul class="tsd-type-parameters">
 						<li>
-							<h4>V<span class="tsd-signature-symbol">: </span><a href="_typescript_entity_core.html#value" class="tsd-signature-type">Value</a></h4>
+							<h4>T<span class="tsd-signature-symbol">: </span><a href="_typescript_entity_core.html#staticvalue" class="tsd-signature-type">StaticValue</a></h4>
 						</li>
 						<li>
 							<h4>Optional<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span> = <span class="tsd-signature-type">false</span></h4>
@@ -371,7 +372,7 @@
 					<div class="tsd-signature tsd-kind-icon">Integer<wbr>Config<wbr>Factory&lt;Optional, Hidden, ReadOnly, Normalizer, Validator&gt;<span class="tsd-signature-symbol">:</span> <a href="_typescript_entity_configs.html#numberconfigfactory" class="tsd-signature-type">NumberConfigFactory</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Optional</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">Hidden</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">ReadOnly</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">Normalizer</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">Validator</span><span class="tsd-signature-symbol">&gt;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/typescript-entity/typescript-entity/blob/087bdb4/packages/@typescript-entity/configs/src/integerConfig.ts#L5">packages/@typescript-entity/configs/src/integerConfig.ts:5</a></li>
+							<li>Defined in <a href="https://github.com/typescript-entity/typescript-entity/blob/aa6c56b/packages/@typescript-entity/configs/src/integerConfig.ts#L5">packages/@typescript-entity/configs/src/integerConfig.ts:5</a></li>
 						</ul>
 					</aside>
 					<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -399,7 +400,7 @@
 					<div class="tsd-signature tsd-kind-icon">Negative<wbr>Float<wbr>Config<wbr>Factory&lt;Optional, Hidden, ReadOnly, Normalizer&gt;<span class="tsd-signature-symbol">:</span> <a href="_typescript_entity_configs.html#floatconfigfactory" class="tsd-signature-type">FloatConfigFactory</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Optional</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">Hidden</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">ReadOnly</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">Normalizer</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">true</span><span class="tsd-signature-symbol">&gt;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/typescript-entity/typescript-entity/blob/087bdb4/packages/@typescript-entity/configs/src/negativeFloatConfig.ts#L5">packages/@typescript-entity/configs/src/negativeFloatConfig.ts:5</a></li>
+							<li>Defined in <a href="https://github.com/typescript-entity/typescript-entity/blob/aa6c56b/packages/@typescript-entity/configs/src/negativeFloatConfig.ts#L5">packages/@typescript-entity/configs/src/negativeFloatConfig.ts:5</a></li>
 						</ul>
 					</aside>
 					<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -424,7 +425,7 @@
 					<div class="tsd-signature tsd-kind-icon">Negative<wbr>Integer<wbr>Config<wbr>Factory&lt;Optional, Hidden, ReadOnly, Normalizer&gt;<span class="tsd-signature-symbol">:</span> <a href="_typescript_entity_configs.html#integerconfigfactory" class="tsd-signature-type">IntegerConfigFactory</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Optional</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">Hidden</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">ReadOnly</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">Normalizer</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">true</span><span class="tsd-signature-symbol">&gt;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/typescript-entity/typescript-entity/blob/087bdb4/packages/@typescript-entity/configs/src/negativeIntegerConfig.ts#L5">packages/@typescript-entity/configs/src/negativeIntegerConfig.ts:5</a></li>
+							<li>Defined in <a href="https://github.com/typescript-entity/typescript-entity/blob/aa6c56b/packages/@typescript-entity/configs/src/negativeIntegerConfig.ts#L5">packages/@typescript-entity/configs/src/negativeIntegerConfig.ts:5</a></li>
 						</ul>
 					</aside>
 					<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -449,7 +450,7 @@
 					<div class="tsd-signature tsd-kind-icon">Negative<wbr>Number<wbr>Config<wbr>Factory&lt;Optional, Hidden, ReadOnly, Normalizer&gt;<span class="tsd-signature-symbol">:</span> <a href="_typescript_entity_configs.html#numberconfigfactory" class="tsd-signature-type">NumberConfigFactory</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Optional</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">Hidden</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">ReadOnly</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">Normalizer</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">true</span><span class="tsd-signature-symbol">&gt;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/typescript-entity/typescript-entity/blob/087bdb4/packages/@typescript-entity/configs/src/negativeNumberConfig.ts#L5">packages/@typescript-entity/configs/src/negativeNumberConfig.ts:5</a></li>
+							<li>Defined in <a href="https://github.com/typescript-entity/typescript-entity/blob/aa6c56b/packages/@typescript-entity/configs/src/negativeNumberConfig.ts#L5">packages/@typescript-entity/configs/src/negativeNumberConfig.ts:5</a></li>
 						</ul>
 					</aside>
 					<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -474,7 +475,7 @@
 					<div class="tsd-signature tsd-kind-icon">Number<wbr>Config<wbr>Factory&lt;Optional, Hidden, ReadOnly, Normalizer, Validator&gt;<span class="tsd-signature-symbol">:</span> <a href="_typescript_entity_configs.html#configfactory" class="tsd-signature-type">ConfigFactory</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">Optional</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">Hidden</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">ReadOnly</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">Normalizer</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">Validator</span><span class="tsd-signature-symbol">&gt;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/typescript-entity/typescript-entity/blob/087bdb4/packages/@typescript-entity/configs/src/numberConfig.ts#L4">packages/@typescript-entity/configs/src/numberConfig.ts:4</a></li>
+							<li>Defined in <a href="https://github.com/typescript-entity/typescript-entity/blob/aa6c56b/packages/@typescript-entity/configs/src/numberConfig.ts#L4">packages/@typescript-entity/configs/src/numberConfig.ts:4</a></li>
 						</ul>
 					</aside>
 					<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -502,7 +503,7 @@
 					<div class="tsd-signature tsd-kind-icon">Positive<wbr>Float<wbr>Config<wbr>Factory&lt;Optional, Hidden, ReadOnly, Normalizer&gt;<span class="tsd-signature-symbol">:</span> <a href="_typescript_entity_configs.html#floatconfigfactory" class="tsd-signature-type">FloatConfigFactory</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Optional</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">Hidden</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">ReadOnly</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">Normalizer</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">true</span><span class="tsd-signature-symbol">&gt;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/typescript-entity/typescript-entity/blob/087bdb4/packages/@typescript-entity/configs/src/positiveFloatConfig.ts#L5">packages/@typescript-entity/configs/src/positiveFloatConfig.ts:5</a></li>
+							<li>Defined in <a href="https://github.com/typescript-entity/typescript-entity/blob/aa6c56b/packages/@typescript-entity/configs/src/positiveFloatConfig.ts#L5">packages/@typescript-entity/configs/src/positiveFloatConfig.ts:5</a></li>
 						</ul>
 					</aside>
 					<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -527,7 +528,7 @@
 					<div class="tsd-signature tsd-kind-icon">Positive<wbr>Integer<wbr>Config<wbr>Factory&lt;Optional, Hidden, ReadOnly, Normalizer&gt;<span class="tsd-signature-symbol">:</span> <a href="_typescript_entity_configs.html#integerconfigfactory" class="tsd-signature-type">IntegerConfigFactory</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Optional</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">Hidden</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">ReadOnly</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">Normalizer</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">true</span><span class="tsd-signature-symbol">&gt;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/typescript-entity/typescript-entity/blob/087bdb4/packages/@typescript-entity/configs/src/positiveIntegerConfig.ts#L5">packages/@typescript-entity/configs/src/positiveIntegerConfig.ts:5</a></li>
+							<li>Defined in <a href="https://github.com/typescript-entity/typescript-entity/blob/aa6c56b/packages/@typescript-entity/configs/src/positiveIntegerConfig.ts#L5">packages/@typescript-entity/configs/src/positiveIntegerConfig.ts:5</a></li>
 						</ul>
 					</aside>
 					<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -552,7 +553,7 @@
 					<div class="tsd-signature tsd-kind-icon">Positive<wbr>Number<wbr>Config<wbr>Factory&lt;Optional, Hidden, ReadOnly, Normalizer&gt;<span class="tsd-signature-symbol">:</span> <a href="_typescript_entity_configs.html#numberconfigfactory" class="tsd-signature-type">NumberConfigFactory</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Optional</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">Hidden</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">ReadOnly</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">Normalizer</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">true</span><span class="tsd-signature-symbol">&gt;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/typescript-entity/typescript-entity/blob/087bdb4/packages/@typescript-entity/configs/src/positiveNumberConfig.ts#L5">packages/@typescript-entity/configs/src/positiveNumberConfig.ts:5</a></li>
+							<li>Defined in <a href="https://github.com/typescript-entity/typescript-entity/blob/aa6c56b/packages/@typescript-entity/configs/src/positiveNumberConfig.ts#L5">packages/@typescript-entity/configs/src/positiveNumberConfig.ts:5</a></li>
 						</ul>
 					</aside>
 					<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -572,12 +573,31 @@
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-type-alias tsd-parent-kind-module tsd-has-type-parameter">
+					<a name="resolvedstaticvalue" class="tsd-anchor"></a>
+					<h3>Resolved<wbr>Static<wbr>Value</h3>
+					<div class="tsd-signature tsd-kind-icon">Resolved<wbr>Static<wbr>Value&lt;T, Optional&gt;<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Optional</span><span class="tsd-signature-symbol"> extends </span><span class="tsd-signature-type">true</span><span class="tsd-signature-symbol"> ? </span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol"> extends </span><span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">StaticValue</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> ? </span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-type">ArrayType</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> : </span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> : </span><span class="tsd-signature-type">T</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/typescript-entity/typescript-entity/blob/aa6c56b/packages/@typescript-entity/configs/src/ConfigFactory.ts#L5">packages/@typescript-entity/configs/src/ConfigFactory.ts:5</a></li>
+						</ul>
+					</aside>
+					<h4 class="tsd-type-parameters-title">Type parameters</h4>
+					<ul class="tsd-type-parameters">
+						<li>
+							<h4>T<span class="tsd-signature-symbol">: </span><a href="_typescript_entity_core.html#staticvalue" class="tsd-signature-type">StaticValue</a></h4>
+						</li>
+						<li>
+							<h4>Optional<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span> = <span class="tsd-signature-type">false</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-type-alias tsd-parent-kind-module tsd-has-type-parameter">
 					<a name="stringconfigfactory" class="tsd-anchor"></a>
 					<h3>String<wbr>Config<wbr>Factory</h3>
 					<div class="tsd-signature tsd-kind-icon">String<wbr>Config<wbr>Factory&lt;Optional, Hidden, ReadOnly, Normalizer, Validator&gt;<span class="tsd-signature-symbol">:</span> <a href="_typescript_entity_configs.html#configfactory" class="tsd-signature-type">ConfigFactory</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">Optional</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">Hidden</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">ReadOnly</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">Normalizer</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">Validator</span><span class="tsd-signature-symbol">&gt;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/typescript-entity/typescript-entity/blob/087bdb4/packages/@typescript-entity/configs/src/stringConfig.ts#L4">packages/@typescript-entity/configs/src/stringConfig.ts:4</a></li>
+							<li>Defined in <a href="https://github.com/typescript-entity/typescript-entity/blob/aa6c56b/packages/@typescript-entity/configs/src/stringConfig.ts#L4">packages/@typescript-entity/configs/src/stringConfig.ts:4</a></li>
 						</ul>
 					</aside>
 					<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -605,7 +625,7 @@
 					<div class="tsd-signature tsd-kind-icon">URLConfig<wbr>Factory&lt;Optional, Hidden, ReadOnly, Normalizer&gt;<span class="tsd-signature-symbol">:</span> <a href="_typescript_entity_configs.html#stringconfigfactory" class="tsd-signature-type">StringConfigFactory</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Optional</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">Hidden</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">ReadOnly</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">Normalizer</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">true</span><span class="tsd-signature-symbol">&gt;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/typescript-entity/typescript-entity/blob/087bdb4/packages/@typescript-entity/configs/src/urlConfig.ts#L6">packages/@typescript-entity/configs/src/urlConfig.ts:6</a></li>
+							<li>Defined in <a href="https://github.com/typescript-entity/typescript-entity/blob/aa6c56b/packages/@typescript-entity/configs/src/urlConfig.ts#L6">packages/@typescript-entity/configs/src/urlConfig.ts:6</a></li>
 						</ul>
 					</aside>
 					<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -630,7 +650,7 @@
 					<div class="tsd-signature tsd-kind-icon">UUIDConfig<wbr>Factory&lt;Optional, Hidden, ReadOnly&gt;<span class="tsd-signature-symbol">:</span> <a href="_typescript_entity_configs.html#stringconfigfactory" class="tsd-signature-type">StringConfigFactory</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Optional</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">Hidden</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">ReadOnly</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">true</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">true</span><span class="tsd-signature-symbol">&gt;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/typescript-entity/typescript-entity/blob/087bdb4/packages/@typescript-entity/configs/src/uuidConfig.ts#L7">packages/@typescript-entity/configs/src/uuidConfig.ts:7</a></li>
+							<li>Defined in <a href="https://github.com/typescript-entity/typescript-entity/blob/aa6c56b/packages/@typescript-entity/configs/src/uuidConfig.ts#L7">packages/@typescript-entity/configs/src/uuidConfig.ts:7</a></li>
 						</ul>
 					</aside>
 					<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -659,7 +679,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/typescript-entity/typescript-entity/blob/087bdb4/packages/@typescript-entity/configs/src/booleanConfig.ts#L13">packages/@typescript-entity/configs/src/booleanConfig.ts:13</a></li>
+									<li>Defined in <a href="https://github.com/typescript-entity/typescript-entity/blob/aa6c56b/packages/@typescript-entity/configs/src/booleanConfig.ts#L13">packages/@typescript-entity/configs/src/booleanConfig.ts:13</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -703,7 +723,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/typescript-entity/typescript-entity/blob/087bdb4/packages/@typescript-entity/configs/src/countryCodeConfig.ts#L13">packages/@typescript-entity/configs/src/countryCodeConfig.ts:13</a></li>
+									<li>Defined in <a href="https://github.com/typescript-entity/typescript-entity/blob/aa6c56b/packages/@typescript-entity/configs/src/countryCodeConfig.ts#L13">packages/@typescript-entity/configs/src/countryCodeConfig.ts:13</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -747,7 +767,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/typescript-entity/typescript-entity/blob/087bdb4/packages/@typescript-entity/configs/src/dateConfig.ts#L12">packages/@typescript-entity/configs/src/dateConfig.ts:12</a></li>
+									<li>Defined in <a href="https://github.com/typescript-entity/typescript-entity/blob/aa6c56b/packages/@typescript-entity/configs/src/dateConfig.ts#L12">packages/@typescript-entity/configs/src/dateConfig.ts:12</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -788,7 +808,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/typescript-entity/typescript-entity/blob/087bdb4/packages/@typescript-entity/configs/src/dateInFutureConfig.ts#L13">packages/@typescript-entity/configs/src/dateInFutureConfig.ts:13</a></li>
+									<li>Defined in <a href="https://github.com/typescript-entity/typescript-entity/blob/aa6c56b/packages/@typescript-entity/configs/src/dateInFutureConfig.ts#L13">packages/@typescript-entity/configs/src/dateInFutureConfig.ts:13</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -832,7 +852,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/typescript-entity/typescript-entity/blob/087bdb4/packages/@typescript-entity/configs/src/dateInPastConfig.ts#L13">packages/@typescript-entity/configs/src/dateInPastConfig.ts:13</a></li>
+									<li>Defined in <a href="https://github.com/typescript-entity/typescript-entity/blob/aa6c56b/packages/@typescript-entity/configs/src/dateInPastConfig.ts#L13">packages/@typescript-entity/configs/src/dateInPastConfig.ts:13</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -876,7 +896,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/typescript-entity/typescript-entity/blob/087bdb4/packages/@typescript-entity/configs/src/emailConfig.ts#L13">packages/@typescript-entity/configs/src/emailConfig.ts:13</a></li>
+									<li>Defined in <a href="https://github.com/typescript-entity/typescript-entity/blob/aa6c56b/packages/@typescript-entity/configs/src/emailConfig.ts#L13">packages/@typescript-entity/configs/src/emailConfig.ts:13</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -920,7 +940,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/typescript-entity/typescript-entity/blob/087bdb4/packages/@typescript-entity/configs/src/floatConfig.ts#L13">packages/@typescript-entity/configs/src/floatConfig.ts:13</a></li>
+									<li>Defined in <a href="https://github.com/typescript-entity/typescript-entity/blob/aa6c56b/packages/@typescript-entity/configs/src/floatConfig.ts#L13">packages/@typescript-entity/configs/src/floatConfig.ts:13</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -961,13 +981,13 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/typescript-entity/typescript-entity/blob/087bdb4/packages/@typescript-entity/configs/src/fnConfig.ts#L12">packages/@typescript-entity/configs/src/fnConfig.ts:12</a></li>
+									<li>Defined in <a href="https://github.com/typescript-entity/typescript-entity/blob/aa6c56b/packages/@typescript-entity/configs/src/fnConfig.ts#L13">packages/@typescript-entity/configs/src/fnConfig.ts:13</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
 							<ul class="tsd-type-parameters">
 								<li>
-									<h4>V<span class="tsd-signature-symbol">: </span><a href="_typescript_entity_core.html#valuefn" class="tsd-signature-type">ValueFn</a></h4>
+									<h4>V<span class="tsd-signature-symbol">: </span><a href="_typescript_entity_core.html#fnvalue" class="tsd-signature-type">FnValue</a></h4>
 								</li>
 								<li>
 									<h4>O<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span> = <span class="tsd-signature-type">false</span></h4>
@@ -1002,7 +1022,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/typescript-entity/typescript-entity/blob/087bdb4/packages/@typescript-entity/configs/src/integerConfig.ts#L13">packages/@typescript-entity/configs/src/integerConfig.ts:13</a></li>
+									<li>Defined in <a href="https://github.com/typescript-entity/typescript-entity/blob/aa6c56b/packages/@typescript-entity/configs/src/integerConfig.ts#L13">packages/@typescript-entity/configs/src/integerConfig.ts:13</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -1043,7 +1063,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/typescript-entity/typescript-entity/blob/087bdb4/packages/@typescript-entity/configs/src/negativeFloatConfig.ts#L12">packages/@typescript-entity/configs/src/negativeFloatConfig.ts:12</a></li>
+									<li>Defined in <a href="https://github.com/typescript-entity/typescript-entity/blob/aa6c56b/packages/@typescript-entity/configs/src/negativeFloatConfig.ts#L12">packages/@typescript-entity/configs/src/negativeFloatConfig.ts:12</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -1084,7 +1104,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/typescript-entity/typescript-entity/blob/087bdb4/packages/@typescript-entity/configs/src/negativeIntegerConfig.ts#L12">packages/@typescript-entity/configs/src/negativeIntegerConfig.ts:12</a></li>
+									<li>Defined in <a href="https://github.com/typescript-entity/typescript-entity/blob/aa6c56b/packages/@typescript-entity/configs/src/negativeIntegerConfig.ts#L12">packages/@typescript-entity/configs/src/negativeIntegerConfig.ts:12</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -1125,7 +1145,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/typescript-entity/typescript-entity/blob/087bdb4/packages/@typescript-entity/configs/src/negativeNumberConfig.ts#L12">packages/@typescript-entity/configs/src/negativeNumberConfig.ts:12</a></li>
+									<li>Defined in <a href="https://github.com/typescript-entity/typescript-entity/blob/aa6c56b/packages/@typescript-entity/configs/src/negativeNumberConfig.ts#L12">packages/@typescript-entity/configs/src/negativeNumberConfig.ts:12</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -1166,7 +1186,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/typescript-entity/typescript-entity/blob/087bdb4/packages/@typescript-entity/configs/src/numberConfig.ts#L12">packages/@typescript-entity/configs/src/numberConfig.ts:12</a></li>
+									<li>Defined in <a href="https://github.com/typescript-entity/typescript-entity/blob/aa6c56b/packages/@typescript-entity/configs/src/numberConfig.ts#L12">packages/@typescript-entity/configs/src/numberConfig.ts:12</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -1207,7 +1227,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/typescript-entity/typescript-entity/blob/087bdb4/packages/@typescript-entity/configs/src/positiveFloatConfig.ts#L12">packages/@typescript-entity/configs/src/positiveFloatConfig.ts:12</a></li>
+									<li>Defined in <a href="https://github.com/typescript-entity/typescript-entity/blob/aa6c56b/packages/@typescript-entity/configs/src/positiveFloatConfig.ts#L12">packages/@typescript-entity/configs/src/positiveFloatConfig.ts:12</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -1248,7 +1268,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/typescript-entity/typescript-entity/blob/087bdb4/packages/@typescript-entity/configs/src/positiveIntegerConfig.ts#L12">packages/@typescript-entity/configs/src/positiveIntegerConfig.ts:12</a></li>
+									<li>Defined in <a href="https://github.com/typescript-entity/typescript-entity/blob/aa6c56b/packages/@typescript-entity/configs/src/positiveIntegerConfig.ts#L12">packages/@typescript-entity/configs/src/positiveIntegerConfig.ts:12</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -1289,7 +1309,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/typescript-entity/typescript-entity/blob/087bdb4/packages/@typescript-entity/configs/src/positiveNumberConfig.ts#L12">packages/@typescript-entity/configs/src/positiveNumberConfig.ts:12</a></li>
+									<li>Defined in <a href="https://github.com/typescript-entity/typescript-entity/blob/aa6c56b/packages/@typescript-entity/configs/src/positiveNumberConfig.ts#L12">packages/@typescript-entity/configs/src/positiveNumberConfig.ts:12</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -1330,7 +1350,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/typescript-entity/typescript-entity/blob/087bdb4/packages/@typescript-entity/configs/src/stringConfig.ts#L12">packages/@typescript-entity/configs/src/stringConfig.ts:12</a></li>
+									<li>Defined in <a href="https://github.com/typescript-entity/typescript-entity/blob/aa6c56b/packages/@typescript-entity/configs/src/stringConfig.ts#L12">packages/@typescript-entity/configs/src/stringConfig.ts:12</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -1371,7 +1391,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/typescript-entity/typescript-entity/blob/087bdb4/packages/@typescript-entity/configs/src/urlConfig.ts#L13">packages/@typescript-entity/configs/src/urlConfig.ts:13</a></li>
+									<li>Defined in <a href="https://github.com/typescript-entity/typescript-entity/blob/aa6c56b/packages/@typescript-entity/configs/src/urlConfig.ts#L13">packages/@typescript-entity/configs/src/urlConfig.ts:13</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -1415,7 +1435,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/typescript-entity/typescript-entity/blob/087bdb4/packages/@typescript-entity/configs/src/uuidConfig.ts#L13">packages/@typescript-entity/configs/src/uuidConfig.ts:13</a></li>
+									<li>Defined in <a href="https://github.com/typescript-entity/typescript-entity/blob/aa6c56b/packages/@typescript-entity/configs/src/uuidConfig.ts#L13">packages/@typescript-entity/configs/src/uuidConfig.ts:13</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -1531,6 +1551,9 @@
 							</li>
 							<li class=" tsd-kind-type-alias tsd-parent-kind-module tsd-has-type-parameter">
 								<a href="_typescript_entity_configs.html#positivenumberconfigfactory" class="tsd-kind-icon">Positive<wbr>Number<wbr>Config<wbr>Factory</a>
+							</li>
+							<li class=" tsd-kind-type-alias tsd-parent-kind-module tsd-has-type-parameter">
+								<a href="_typescript_entity_configs.html#resolvedstaticvalue" class="tsd-kind-icon">Resolved<wbr>Static<wbr>Value</a>
 							</li>
 							<li class=" tsd-kind-type-alias tsd-parent-kind-module tsd-has-type-parameter">
 								<a href="_typescript_entity_configs.html#stringconfigfactory" class="tsd-kind-icon">String<wbr>Config<wbr>Factory</a>

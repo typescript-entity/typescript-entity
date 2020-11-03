@@ -1,85 +1,91 @@
-import { cloneDeep, isPlainObject, toPlainObject } from "lodash";
-import { InvalidAttrValueError } from "../error/InvalidAttrValueError";
-import { UnknownAttrError } from "../error/UnknownAttrError";
-import { UnknownDataError } from "../error/UnknownDataError";
-import { UnsanitizableAttrError } from "../error/UnsanitizableAttrError";
+import { cloneDeep } from "lodash";
+import { FnAttrError } from "../error/FnAttrError";
+import { NotConfiguredError } from "../error/NotConfiguredError";
+import { ReadOnlyError } from "../error/ReadOnlyError";
+import { SanitizationError } from "../error/SanitizationError";
+import { ValidationError } from "../error/ValidationError";
 
-export interface EntityConstructor<E extends Entity<Configs>> {
+type Entries<T> = {
+  [K in keyof T]: [ K, T[K] ];
+}[keyof T][];
+
+export interface EntityConstructor<T extends Entity<Configs>> {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  new(...args: any[]): E;
-  prototype: E;
+  new(...args: any[]): T;
+  prototype: T;
 }
 
-export interface Configs {
-  [name: string]: Config | FnConfig;
-}
+export type Configs = Record<Name, StaticConfig | FnConfig>;
 
-export interface Config<V extends Value = Value> {
+export interface StaticConfig<T extends StaticValue = StaticValue> {
   hidden?: boolean;
-  normalizer?: NormalizerFn<V>;
+  normalizer?: NormalizerFn<T>;
   readOnly?: boolean;
-  sanitizer: SanitizerFn<V>;
-  validator?: ValidatorFn<V>;
-  value: V;
+  sanitizer: SanitizerFn<T>;
+  validator?: ValidatorFn<T>;
+  value: T;
 }
 
-export interface FnConfig<V extends Value = Value> {
+export interface FnConfig<T extends StaticValue = StaticValue> {
   hidden?: boolean;
-  value: ValueFn<V>;
+  value: FnValue<T>;
 }
+
+export type Name = string;
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export type Value = any;
+export type StaticValue = any;
 
-export type ValueFn<V extends Value = Value> = () => V;
+export type FnValue<T extends StaticValue = StaticValue> = () => T;
 
-export type ResolvedValue<V extends Value, Optional extends boolean = false> = (
-  Optional extends true
-    ? V extends Array<Value>
-      ? (ArrayType<V> | undefined)[]
-      : V | undefined
-    : V
-);
+export type SanitizerFn<T extends StaticValue = StaticValue> = (value: unknown) => T;
 
-export type ArrayType<T extends Array<Value>> = T extends (infer R)[] ? R : never;
+export type NormalizerFn<T extends StaticValue = StaticValue> = (value: NonNullable<T>) => T;
 
-export type SanitizerFn<V> = (value: unknown) => V;
+export type ValidatorFn<T extends StaticValue = StaticValue> = (value: NonNullable<T>) => boolean;
 
-export type NormalizerFn<V> = (value: NonNullable<V>) => V;
-
-export type ValidatorFn<V> = (value: NonNullable<V>) => boolean;
-
-export type Attrs<C extends Configs> = {
-  [K in keyof C]: Attr<C[K]>;
+export type Attrs<T extends Configs> = {
+  [K in keyof T]: Attr<T, K>;
 };
 
-export type Attr<C extends Config | FnConfig> = C extends FnConfig ? ReturnType<C["value"]> : C["value"];
+export type Attr<T extends Configs, K extends keyof T> = T[K] extends FnConfig ? ReturnType<T[K]["value"]> : T[K]["value"];
 
-export type Unsanitized<Attrs> = Record<keyof Attrs, unknown>;
+export type StaticAttrs<T extends Configs> = Attrs<Pick<T, {
+  [K in keyof T]: T[K] extends StaticConfig ? K : never;
+}[keyof T]>>;
 
-export type HiddenAttrs<C extends Configs> = Attrs<Pick<C, {
-  [K in keyof C]: C[K]["hidden"] extends true ? K : never;
-}[keyof C]>>;
+export type FnAttrs<T extends Configs> = Attrs<Pick<T, {
+  [K in keyof T]: T[K] extends FnConfig ? K : never;
+}[keyof T]>>;
 
-export type VisibleAttrs<C extends Configs> = Attrs<Pick<C, {
-  [K in keyof C]: C[K]["hidden"] extends true ? never : K;
-}[keyof C]>>;
+export type HiddenAttrs<T extends Configs> = Attrs<Pick<T, {
+  [K in keyof T]: T[K]["hidden"] extends true ? K : never;
+}[keyof T]>>;
 
-export type WritableAttrs<C extends Configs, OverrideReadOnly extends boolean = false> = Attrs<Pick<C, {
-  [K in keyof C]: C[K] extends Config
-    ? C[K]["readOnly"] extends true
-      ? OverrideReadOnly extends true
-        ? K
-        : never
-      : K
-    : never;
-}[keyof C]>>;
+export type VisibleAttrs<T extends Configs> = Attrs<Pick<T, {
+  [K in keyof T]: T[K]["hidden"] extends true ? never : K;
+}[keyof T]>>;
 
-type Entries<T> = { [K in keyof T]: [ K, T[K] ] }[keyof T][];
+export type ReadOnlyAttrs<T extends Configs> = Pick<StaticAttrs<T>, {
+  [K in keyof StaticAttrs<T>]: T[K] extends StaticConfig ? T[K]["readOnly"] extends true ? K : never : never;
+}[keyof StaticAttrs<T>]>;
+
+export type WritableAttrs<T extends Configs> = Omit<StaticAttrs<T>, keyof ReadOnlyAttrs<T>>;
+
+export type InitialAttrs<T extends Configs> = Partial<StaticAttrs<T>>;
+
+const isFnConfigTypeGuard = <T extends StaticValue>(config: StaticConfig<T> | FnConfig<T>): config is FnConfig<T> => (
+  "function" === typeof config.value
+);
+
+const isStaticConfigTypeGuard = <T extends StaticValue>(config: StaticConfig<T> | FnConfig<T>): config is StaticConfig<T> => (
+  "function" !== typeof config.value
+);
 
 export abstract class Entity<C extends Configs> {
 
-  protected configs: C;
+  protected _configs: Map<keyof C, StaticConfig | FnConfig> = new Map();
+  protected _modified: Set<keyof StaticAttrs<C>> = new Set();
 
   /**
    * Creates a new [[`Entity`]] instance. The attribute `configs` define the attributes available on
@@ -90,15 +96,23 @@ export abstract class Entity<C extends Configs> {
    * @param configs
    * @param attrs
    */
-  constructor(configs: C, attrs: Partial<WritableAttrs<C, true>> = {}) {
-    this.configs = (Object.entries(configs) as Entries<C>).reduce((configs, [ name, config ]) => ({
-      ...configs,
-      [name]: {
+  constructor(configs: C, attrs: InitialAttrs<C> = {}) {
+    (Object.entries(configs) as Entries<InitialAttrs<C>>).forEach(([ name, config ]) => {
+      this._configs.set(name, {
         ...config,
         value: "function" !== typeof config.value ? cloneDeep(config.value) : config.value,
-      },
-    }), {}) as C;
-    this.fillReadOnly(attrs);
+      });
+    });
+
+    this
+      .fill(attrs)
+      .clearModified();
+
+    this._configs.forEach((config) => {
+      if (isStaticConfigTypeGuard(config) && config.readOnly) {
+        Object.defineProperty(config, "value", { writable: false });
+      }
+    });
   }
 
   /**
@@ -108,21 +122,20 @@ export abstract class Entity<C extends Configs> {
    * @param name
    * @param value
    */
-  public sanitize<K extends keyof WritableAttrs<C, true>, V extends WritableAttrs<C, true>[K]>(name: K, value: unknown): ReturnType<SanitizerFn<V>> {
-    if (!(name in this.configs)) {
-      throw new UnknownAttrError(this, name);
+  public sanitize<K extends keyof StaticAttrs<C>, V extends StaticAttrs<C>[K]>(name: K, value: unknown): ReturnType<NormalizerFn<V>> {
+    const config = this._configs.get(name);
+    if (undefined === config) {
+      throw new NotConfiguredError(this, name);
     }
-    const sanitizer = (this.configs[name] as Config<V>).sanitizer;
+    if (isFnConfigTypeGuard(config)) {
+      throw new FnAttrError(this, name);
+    }
     try {
-      if (undefined === sanitizer) {
-        throw new UnsanitizableAttrError(this, name);
-      }
-      return sanitizer.call(this, value);
+      return config.sanitizer.call(this, value);
     } catch (err) {
-      if (err instanceof UnsanitizableAttrError) {
-        throw err;
-      }
-      throw new UnsanitizableAttrError(this, name, undefined, err);
+      throw err instanceof SanitizationError
+        ? err
+        : new SanitizationError(this, name, undefined, err);
     }
   }
 
@@ -134,13 +147,16 @@ export abstract class Entity<C extends Configs> {
    * @param name
    * @param value
    */
-  public normalize<K extends keyof WritableAttrs<C, true>, V extends WritableAttrs<C, true>[K]>(name: K, value: V): ReturnType<NormalizerFn<V>> {
-    if (!(name in this.configs)) {
-      throw new UnknownAttrError(this, name);
+  public normalize<K extends keyof StaticAttrs<C>, V extends StaticAttrs<C>[K]>(name: K, value: V): ReturnType<NormalizerFn<V>> {
+    const config = this._configs.get(name);
+    if (undefined === config) {
+      throw new NotConfiguredError(this, name);
     }
-    const normalizer = (this.configs[name] as Config<V>).normalizer;
-    return (undefined !== value && null !== value && undefined !== normalizer)
-      ? normalizer.call(this, value as NonNullable<V>)
+    if (isFnConfigTypeGuard(config)) {
+      throw new FnAttrError(this, name);
+    }
+    return (undefined !== value && null !== value && undefined !== config.normalizer)
+      ? config.normalizer.call(this, value)
       : value;
   }
 
@@ -152,13 +168,16 @@ export abstract class Entity<C extends Configs> {
    * @param name
    * @param value
    */
-  public validate<K extends keyof WritableAttrs<C, true>, V extends WritableAttrs<C, true>[K]>(name: K, value: V): ReturnType<ValidatorFn<V>> {
-    if (!(name in this.configs)) {
-      throw new UnknownAttrError(this, name);
+  public validate<K extends keyof StaticAttrs<C>, V extends StaticAttrs<C>[K]>(name: K, value: V): ReturnType<ValidatorFn<V>> {
+    const config = this._configs.get(name);
+    if (undefined === config) {
+      throw new NotConfiguredError(this, name);
     }
-    const validator = (this.configs[name] as Config<V>).validator;
-    return (undefined !== value && null !== value && undefined !== validator)
-      ? validator.call(this, value as NonNullable<V>)
+    if (isFnConfigTypeGuard(config)) {
+      throw new FnAttrError(this, name);
+    }
+    return (undefined !== value && null !== value && undefined !== config.validator)
+      ? config.validator.call(this, value)
       : true;
   }
 
@@ -170,12 +189,13 @@ export abstract class Entity<C extends Configs> {
    * @param name
    */
   public one<K extends keyof Attrs<C>, V extends Attrs<C>[K]>(name: K): V {
-    if (!(name in this.configs)) {
-      throw new UnknownAttrError(this, name);
+    const config = this._configs.get(name);
+    if (undefined === config) {
+      throw new NotConfiguredError(this, name);
     }
-    return "function" === typeof this.configs[name]["value"]
-      ? (this.configs[name] as FnConfig<V>).value.call(this)
-      : (this.configs[name] as Config<V>).value;
+    return isFnConfigTypeGuard(config)
+      ? config.value.call(this)
+      : config.value;
   }
 
   /**
@@ -194,166 +214,102 @@ export abstract class Entity<C extends Configs> {
    * Returns all attributes.
    */
   public all(): Attrs<C> {
-    return this.many(Object.keys(this.configs)) as Attrs<C>;
+    return this.many(Array.from(this._configs.keys())) as Attrs<C>;
   }
 
   /**
    * Returns the attributes configured as `hidden`.
    */
   public hidden(): HiddenAttrs<C> {
-    return this.many(Object.keys(this.configs)
-      .filter((name) => this.configs[name].hidden)) as HiddenAttrs<C>;
+    return this.many(
+      Array.from(this._configs.entries())
+        .filter(([ , config ]) => config.hidden)
+        .map(([ name ]) => name)
+    ) as HiddenAttrs<C>;
   }
 
   /**
    * Returns the attributes not configured as `hidden`.
    */
   public visible(): VisibleAttrs<C> {
-    return this.many(Object.keys(this.configs)
-      .filter((name) => !this.configs[name].hidden)) as VisibleAttrs<C>;
+    return this.many(
+      Array.from(this._configs.entries())
+        .filter(([ , config ]) => !config.hidden)
+        .map(([ name ]) => name)
+    ) as VisibleAttrs<C>;
   }
 
   /**
-   * Sets the `value` for the specified attribute `name`. The `value` provided will be normalized
-   * and validated. If validation fails an error is thrown and the attribute remains unmodified.
+   * Returns the attributes that have been modified since instantiation.
+   *
+   * @param name
+   */
+  public modified(): Partial<StaticAttrs<C>> {
+    return this.many(Array.from(this._modified.values()));
+  }
+
+  /**
+   * Marks all attributes as unmodified.
+   *
+   * @param name
+   */
+  public clearModified(): this {
+    this._modified.clear();
+    return this;
+  }
+
+  /**
+   * Sets the `value` for the specified attribute `name`. The `value` provided will be sanitized,
+   * normalized and validated. If validation fails an error is thrown and the attribute remains
+   * unmodified.
    *
    * @param name
    * @param value
    */
   public set<K extends keyof WritableAttrs<C>, V extends WritableAttrs<C>[K]>(name: K, value: V): this {
-    return this.setReadOnly(name, value);
-  }
-
-  /**
-   * Like [[`Entity.set`]] but allows overwriting of attributes configured as `readOnly`.
-   *
-   * @param name
-   * @param value
-   */
-  public setReadOnly<K extends keyof WritableAttrs<C, true>, V extends WritableAttrs<C, true>[K]>(name: K, value: V): this {
-    if (!(name in this.configs)) {
-      throw new UnknownAttrError(this, name);
+    const config = this._configs.get(name);
+    if (undefined === config) {
+      throw new NotConfiguredError(this, name);
     }
-    value = this.normalize(name, value);
+    if (isFnConfigTypeGuard(config)) {
+      throw new FnAttrError(this, name);
+    }
+    const descriptor = Object.getOwnPropertyDescriptor(config, "value");
+    if (descriptor && !descriptor.writable) {
+      throw new ReadOnlyError(this, name);
+    }
+    value = this.normalize(name, this.sanitize(name, value));
     if (!this.validate(name, value)) {
-      throw new InvalidAttrValueError(this, name, value);
+      throw new ValidationError(this, name, value);
     }
-    (this.configs[name] as Config<V>).value = value;
+    if (this.one(name) !== value) {
+      config.value = value;
+      this._modified.add(name);
+    }
     return this;
   }
 
   /**
-   * Like [[`Entity.set`]] but accepts an arbitrary `value` which will be sanitized first.
-   *
-   * @param name
-   * @param value
-   */
-  public setRaw<K extends keyof Unsanitized<WritableAttrs<C>>, V extends Unsanitized<WritableAttrs<C>>[K]>(name: K, value: V): this {
-    return this.setRawReadOnly(name, value);
-  }
-
-  /**
-   * Like [[`Entity.setRaw`]] but allows overwriting of attributes configured as `readOnly`.
-   *
-   * @param name
-   * @param value
-   */
-  public setRawReadOnly<K extends keyof Unsanitized<WritableAttrs<C, true>>, V extends Unsanitized<WritableAttrs<C, true>>[K]>(name: K, value: V): this {
-    return this.setReadOnly(name, this.sanitize(name, value));
-  }
-
-  /**
-   * Sets multiple attributes using the provided `attrs`. The values provided will be normalized and
-   * validated. If validation fails an error is thrown and the attribute - and any subsequent
-   * attributes - remain unmodified.
+   * Sets multiple attributes using the provided `attrs` by calling [[`Entity.set`]]. Unknown or
+   * function attributes are silently ignored.
    *
    * @param attrs
    */
   public fill(attrs: Partial<WritableAttrs<C>>): this {
-    return this.fillReadOnly(attrs as Partial<WritableAttrs<C, true>>); // TODO: Unsure why attrs needs type assertion
-  }
-
-  /**
-   * Like [[`Entity.fill`]] but allows overwriting of attributes configured as `readOnly`.
-   *
-   * @param attrs
-   */
-  public fillReadOnly(attrs: Partial<WritableAttrs<C, true>>): this {
-    // Cannot assert as Entries<Partial<...>> since TS will (correctly) complain that values may be
-    // undefined, but we're mitigating against this by ignoring undefined values
-    (Object.entries(attrs) as Entries<WritableAttrs<C, true>>)
-      .forEach(([ name, value ]) => {
-        if (undefined !== value) {
-          // Prevent abuse of Partial<> allowing non-undefinable attributes to be set to undefined
-          // https://github.com/microsoft/TypeScript/issues/13195
-          // https://github.com/microsoft/TypeScript/issues/26438
-          this.setReadOnly(name, value);
-        }
-      });
-    return this;
-  }
-
-  /**
-   * Like [[`Entity.fill`]] but accepts arbitrary values which will be sanitized first.
-   *
-   * @param attrs
-   */
-  public fillRaw(attrs: Partial<Unsanitized<WritableAttrs<C>>>): this {
-    return this.fillRaw(attrs);
-  }
-
-  /**
-   * Like [[`Entity.fillRaw`]] but allows overwriting of attributes configured as `readOnly`.
-   *
-   * @param attrs
-   */
-  public fillRawReadOnly(attrs: Partial<Unsanitized<WritableAttrs<C, true>>>): this {
-    (Object.entries(attrs) as Entries<Partial<Unsanitized<WritableAttrs<C, true>>>>)
-      .forEach(([ name, value ]) => {
-        // Prevent abuse of Partial<> allowing non-undefinable attributes to be set to undefined
+    (Object.entries(attrs) as Entries<WritableAttrs<C>>).forEach(([ name, value ]) => {
+      const config = this._configs.get(name);
+      if (
+        // Prevent abuse of Partial which allows setting required attributes to undefined
         // https://github.com/microsoft/TypeScript/issues/13195
         // https://github.com/microsoft/TypeScript/issues/26438
-        if (undefined !== value) {
-          this.setRawReadOnly(name, value);
-        }
-      });
+        undefined !== value
+        && undefined !== config
+        && !isFnConfigTypeGuard(config)
+      ) {
+        this.set(name, value);
+      }
+    });
     return this;
-  }
-
-  /**
-   * Sets multiple attributes from the provided `json` string.
-   *
-   * @param json
-   */
-  public fillJSON(json: string): this {
-    return this.fillUnknown(toPlainObject(JSON.parse(json)));
-  }
-
-  /**
-   * Sets multiple attributes from the provided `data`. Attempts to identify the type of incoming
-   * `data` and update the Entity accordingly. Unrecognized attributes, or those that are configured
-   * with value functions, are silently ignored. The remaining, recognized attributes are forwarded
-   * to passed to [[`Entity.fillRawReadOnly`]] for sanitization, normalization and validation.
-   *
-   * @param data
-   */
-  public fillUnknown(data: unknown): this {
-    if ("string" === typeof data) { // Assume JSON representation of Entity
-      return this.fillJSON(data);
-    }
-    if (isPlainObject(data)) { // Assume parsed JSON representation of Entity
-      return this.fillRawReadOnly(Object.entries(data as Record<string, unknown>)
-        .filter(([ name ]) => (
-          "string" === typeof name
-          && name in this.configs
-          && "function" !== typeof this.configs[name]["value"]
-        ))
-        .reduce((attrs, [ name, value ]) => ({
-          ...attrs,
-          [name]: value,
-        }), {}));
-    }
-    throw new UnknownDataError(this, data);
   }
 
   /**
