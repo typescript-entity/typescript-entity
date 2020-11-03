@@ -1,8 +1,9 @@
 import { cloneDeep } from "lodash";
 import { FnAttrError } from "../error/FnAttrError";
-import { NotConfiguredError } from "../error/NotConfiguredError";
+import { NormalizationError } from "../error/NormalizationError";
 import { ReadOnlyError } from "../error/ReadOnlyError";
 import { SanitizationError } from "../error/SanitizationError";
+import { UnconfiguredAttrError } from "../error/UnconfiguredAttrError";
 import { ValidationError } from "../error/ValidationError";
 
 type Entries<T> = {
@@ -15,9 +16,9 @@ export interface EntityConstructor<T extends Entity> {
   prototype: T;
 }
 
-export type Configs = Record<Name, StaticConfig | FnConfig>;
+export type Configs = Record<Name, ValueConfig | FnConfig>;
 
-export interface StaticConfig<T extends StaticValue = StaticValue> {
+export interface ValueConfig<T extends Value = Value> {
   hidden?: boolean;
   normalizer?: NormalizerFn<T>;
   readOnly?: boolean;
@@ -26,32 +27,32 @@ export interface StaticConfig<T extends StaticValue = StaticValue> {
   value: T;
 }
 
-export interface FnConfig<T extends StaticValue = StaticValue> {
+export interface FnConfig<T extends Value = Value> {
   hidden?: boolean;
-  value: FnValue<T>;
+  fn: Fn<T>;
 }
 
 export type Name = string;
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export type StaticValue = any;
+export type Value = any;
 
-export type FnValue<T extends StaticValue = StaticValue> = () => T;
+export type Fn<T extends Value = Value> = () => T;
 
-export type SanitizerFn<T extends StaticValue = StaticValue> = (value: unknown) => T;
+export type SanitizerFn<T extends Value = Value> = (value: unknown) => T;
 
-export type NormalizerFn<T extends StaticValue = StaticValue> = (value: NonNullable<T>) => T;
+export type NormalizerFn<T extends Value = Value> = (value: NonNullable<T>) => T;
 
-export type ValidatorFn<T extends StaticValue = StaticValue> = (value: NonNullable<T>) => boolean;
+export type ValidatorFn<T extends Value = Value> = (value: NonNullable<T>) => boolean;
 
 export type Attrs<T extends Configs> = {
   [K in keyof T]: Attr<T, K>;
 };
 
-export type Attr<T extends Configs, K extends keyof T> = T[K] extends FnConfig ? ReturnType<T[K]["value"]> : T[K]["value"];
+export type Attr<T extends Configs, K extends keyof T> = T[K] extends FnConfig ? ReturnType<T[K]["fn"]> : T[K] extends ValueConfig ? T[K]["value"] : never;
 
-export type StaticAttrs<T extends Configs> = Attrs<Pick<T, {
-  [K in keyof T]: T[K] extends StaticConfig ? K : never;
+export type ValueAttrs<T extends Configs> = Attrs<Pick<T, {
+  [K in keyof T]: T[K] extends ValueConfig ? K : never;
 }[keyof T]>>;
 
 export type FnAttrs<T extends Configs> = Attrs<Pick<T, {
@@ -66,25 +67,21 @@ export type VisibleAttrs<T extends Configs> = Attrs<Pick<T, {
   [K in keyof T]: T[K]["hidden"] extends true ? never : K;
 }[keyof T]>>;
 
-export type ReadOnlyAttrs<T extends Configs> = Pick<StaticAttrs<T>, {
-  [K in keyof StaticAttrs<T>]: T[K] extends StaticConfig ? T[K]["readOnly"] extends true ? K : never : never;
-}[keyof StaticAttrs<T>]>;
+export type ReadOnlyAttrs<T extends Configs> = Pick<ValueAttrs<T>, {
+  [K in keyof ValueAttrs<T>]: T[K] extends ValueConfig ? T[K]["readOnly"] extends true ? K : never : never;
+}[keyof ValueAttrs<T>]>;
 
-export type WritableAttrs<T extends Configs> = Omit<StaticAttrs<T>, keyof ReadOnlyAttrs<T>>;
+export type WritableAttrs<T extends Configs> = Omit<ValueAttrs<T>, keyof ReadOnlyAttrs<T>>;
 
-export type InitialAttrs<T extends Configs> = Partial<StaticAttrs<T>>;
+export type InitialAttrs<T extends Configs> = Partial<ValueAttrs<T>>;
 
-const isFnConfigTypeGuard = <T extends StaticValue>(config: StaticConfig<T> | FnConfig<T>): config is FnConfig<T> => (
-  "function" === typeof config.value
-);
+const isFnConfig = <T extends Value>(config: ValueConfig<T> | FnConfig<T>): config is FnConfig<T> => "fn" in config;
 
-const isStaticConfigTypeGuard = <T extends StaticValue>(config: StaticConfig<T> | FnConfig<T>): config is StaticConfig<T> => (
-  "function" !== typeof config.value
-);
+const isValueConfig = <T extends Value>(config: ValueConfig<T> | FnConfig<T>): config is ValueConfig<T> => "value" in config;
 
 export abstract class Entity<C extends Configs = Configs> {
 
-  protected _configs = new Map<keyof C, StaticConfig | FnConfig>();
+  protected _configs = new Map<keyof C, ValueConfig | FnConfig>();
 
   // TODO: This should really be typed as `Set<keyof WritableAttrs<C>>` but because `C` defaults to
   // `Configs` and `keyof WritableAttrs<Configs>` resolves to `never`, instances of `Entity<C>` -
@@ -101,10 +98,10 @@ export abstract class Entity<C extends Configs = Configs> {
    * @param attrs
    */
   constructor(configs: C, attrs: InitialAttrs<C> = {}) {
-    (Object.entries(configs) as Entries<InitialAttrs<C>>).forEach(([ name, config ]) => {
+    (Object.entries(configs) as Entries<C>).forEach(([ name, config ]) => {
       this._configs.set(name, {
         ...config,
-        value: "function" !== typeof config.value ? cloneDeep(config.value) : config.value,
+        value: isValueConfig(config) ? cloneDeep(config.value) : undefined,
       });
     });
 
@@ -113,10 +110,23 @@ export abstract class Entity<C extends Configs = Configs> {
       .clearModified();
 
     this._configs.forEach((config) => {
-      if (isStaticConfigTypeGuard(config) && config.readOnly) {
+      if (isValueConfig(config) && config.readOnly) {
         Object.defineProperty(config, "value", { writable: false });
       }
     });
+  }
+
+  /**
+   * Returns the configuration for the attribute named `name`.
+   *
+   * @param name
+   */
+  protected _config(name: keyof C): ValueConfig | FnConfig {
+    const config = this._configs.get(name);
+    if (undefined === config) {
+      throw new UnconfiguredAttrError(this, name);
+    }
+    return config;
   }
 
   /**
@@ -126,20 +136,17 @@ export abstract class Entity<C extends Configs = Configs> {
    * @param name
    * @param value
    */
-  public sanitize<K extends keyof StaticAttrs<C>, V extends StaticAttrs<C>[K]>(name: K, value: unknown): ReturnType<NormalizerFn<V>> {
-    const config = this._configs.get(name);
-    if (undefined === config) {
-      throw new NotConfiguredError(this, name);
-    }
-    if (isFnConfigTypeGuard(config)) {
-      throw new FnAttrError(this, name);
+  public sanitize<K extends keyof ValueAttrs<C>, V extends ValueAttrs<C>[K]>(name: K, value: unknown): ReturnType<NormalizerFn<V>> {
+    const config = this._config(name);
+    if (isFnConfig(config)) {
+      throw new FnAttrError(this, name, "Function attributes cannot be sanitized.");
     }
     try {
       return config.sanitizer.call(this, value);
     } catch (err) {
       throw err instanceof SanitizationError
         ? err
-        : new SanitizationError(this, name, undefined, err);
+        : new SanitizationError(this, name, value, undefined, err);
     }
   }
 
@@ -151,17 +158,20 @@ export abstract class Entity<C extends Configs = Configs> {
    * @param name
    * @param value
    */
-  public normalize<K extends keyof StaticAttrs<C>, V extends StaticAttrs<C>[K]>(name: K, value: V): ReturnType<NormalizerFn<V>> {
-    const config = this._configs.get(name);
-    if (undefined === config) {
-      throw new NotConfiguredError(this, name);
+  public normalize<K extends keyof ValueAttrs<C>, V extends ValueAttrs<C>[K]>(name: K, value: V): ReturnType<NormalizerFn<V>> {
+    const config = this._config(name);
+    if (isFnConfig(config)) {
+      throw new FnAttrError(this, name, "Function attributes cannot be normalized.");
     }
-    if (isFnConfigTypeGuard(config)) {
-      throw new FnAttrError(this, name);
+    try {
+      return (undefined !== value && null !== value && undefined !== config.normalizer)
+        ? config.normalizer.call(this, value)
+        : value;
+    } catch (err) {
+      throw err instanceof NormalizationError
+        ? err
+        : new NormalizationError(this, name, value, undefined, err);
     }
-    return (undefined !== value && null !== value && undefined !== config.normalizer)
-      ? config.normalizer.call(this, value)
-      : value;
   }
 
   /**
@@ -172,17 +182,20 @@ export abstract class Entity<C extends Configs = Configs> {
    * @param name
    * @param value
    */
-  public validate<K extends keyof StaticAttrs<C>, V extends StaticAttrs<C>[K]>(name: K, value: V): ReturnType<ValidatorFn<V>> {
-    const config = this._configs.get(name);
-    if (undefined === config) {
-      throw new NotConfiguredError(this, name);
+  public validate<K extends keyof ValueAttrs<C>, V extends ValueAttrs<C>[K]>(name: K, value: V): ReturnType<ValidatorFn<V>> {
+    const config = this._config(name);
+    if (isFnConfig(config)) {
+      throw new FnAttrError(this, name, "Function attributes cannot be validated.");
     }
-    if (isFnConfigTypeGuard(config)) {
-      throw new FnAttrError(this, name);
+    try {
+      return (undefined !== value && null !== value && undefined !== config.validator)
+        ? config.validator.call(this, value)
+        : true;
+    } catch (err) {
+      throw err instanceof ValidationError
+        ? err
+        : new ValidationError(this, name, value, undefined, err);
     }
-    return (undefined !== value && null !== value && undefined !== config.validator)
-      ? config.validator.call(this, value)
-      : true;
   }
 
   /**
@@ -193,13 +206,8 @@ export abstract class Entity<C extends Configs = Configs> {
    * @param name
    */
   public one<K extends keyof Attrs<C>, V extends Attrs<C>[K]>(name: K): V {
-    const config = this._configs.get(name);
-    if (undefined === config) {
-      throw new NotConfiguredError(this, name);
-    }
-    return isFnConfigTypeGuard(config)
-      ? config.value.call(this)
-      : config.value;
+    const config = this._config(name);
+    return isFnConfig(config) ? config.fn.call(this) : config.value;
   }
 
   /**
@@ -264,23 +272,20 @@ export abstract class Entity<C extends Configs = Configs> {
 
   /**
    * Sets the `value` for the specified attribute `name`. The `value` provided will be sanitized,
-   * normalized and validated. If validation fails an error is thrown and the attribute remains
-   * unmodified.
+   * normalized and validated. If validation fails a `ValidationError` is thrown and the attribute
+   * remains unmodified.
    *
    * @param name
    * @param value
    */
   public set<K extends keyof WritableAttrs<C>, V extends WritableAttrs<C>[K]>(name: K, value: V): this {
-    const config = this._configs.get(name);
-    if (undefined === config) {
-      throw new NotConfiguredError(this, name);
-    }
-    if (isFnConfigTypeGuard(config)) {
-      throw new FnAttrError(this, name);
+    const config = this._config(name);
+    if (isFnConfig(config)) {
+      throw new FnAttrError(this, name, "Function attributes cannot be modified.");
     }
     const descriptor = Object.getOwnPropertyDescriptor(config, "value");
     if (descriptor && !descriptor.writable) {
-      throw new ReadOnlyError(this, name);
+      throw new ReadOnlyError(this, name, value);
     }
     value = this.normalize(name, this.sanitize(name, value));
     if (!this.validate(name, value)) {
@@ -301,17 +306,22 @@ export abstract class Entity<C extends Configs = Configs> {
    */
   public fill(attrs: Partial<WritableAttrs<C>>): this {
     (Object.entries(attrs) as Entries<WritableAttrs<C>>).forEach(([ name, value ]) => {
-      const config = this._configs.get(name);
-      if (
-        // Prevent abuse of Partial which allows setting required attributes to undefined
-        // https://github.com/microsoft/TypeScript/issues/13195
-        // https://github.com/microsoft/TypeScript/issues/26438
-        undefined !== value
-        && undefined !== config
-        && !isFnConfigTypeGuard(config)
-      ) {
-        this.set(name, value);
+      // Prevent abuse of Partial which allows setting required attributes to undefined
+      // https://github.com/microsoft/TypeScript/issues/13195
+      // https://github.com/microsoft/TypeScript/issues/26438
+      if (undefined === value) {
+        return;
       }
+      let config: ValueConfig | FnConfig;
+      try {
+        config = this._config(name);
+      } catch (err) {
+        return;
+      }
+      if (isFnConfig(config)) {
+        return;
+      }
+      this.set(name, value);
     });
     return this;
   }

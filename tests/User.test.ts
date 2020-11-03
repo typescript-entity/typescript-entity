@@ -1,7 +1,7 @@
 import { ReadOnlyError, ValidationError } from "@typescript-entity/core";
 import type { Attrs } from "@typescript-entity/core";
 import { User } from "./User";
-import type { Configs } from "./User";
+import type { UserConfigs } from "./User";
 
 test("an Entity can be constructed with default values", () => {
 
@@ -109,7 +109,7 @@ test("an Entity can expose some attributes", () => {
     verified: attrs.verified,
   };
   const user = new User(attrs);
-  expect(user.many(Object.keys(expected) as (keyof Attrs<Configs>)[])).toStrictEqual(expected);
+  expect(user.many(Object.keys(expected) as (keyof Attrs<UserConfigs>)[])).toStrictEqual(expected);
 
 });
 

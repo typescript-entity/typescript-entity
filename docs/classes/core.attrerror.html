@@ -60,7 +60,7 @@
 					<a href="core.attrerror.html">AttrError</a>
 				</li>
 			</ul>
-			<h1>Class AttrError&lt;C&gt;</h1>
+			<h1>Class AttrError&lt;C, K&gt;</h1>
 		</div>
 	</div>
 </header>
@@ -71,7 +71,10 @@
 				<h3>Type parameters</h3>
 				<ul class="tsd-type-parameters">
 					<li>
-						<h4>C<span class="tsd-signature-symbol">: </span><a href="../modules/core.html#configs" class="tsd-signature-type">Configs</a></h4>
+						<h4>C<span class="tsd-signature-symbol">: </span><a href="../modules/core.html#configs" class="tsd-signature-type">Configs</a> = <span class="tsd-signature-type">Configs</span></h4>
+					</li>
+					<li>
+						<h4>K<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">keyof </span><span class="tsd-signature-type">C</span> = <span class="tsd-signature-symbol">keyof </span><span class="tsd-signature-type">C</span></h4>
 					</li>
 				</ul>
 			</section>
@@ -88,10 +91,7 @@
 										<a href="core.fnattrerror.html" class="tsd-signature-type">FnAttrError</a>
 									</li>
 									<li>
-										<a href="core.notconfigurederror.html" class="tsd-signature-type">NotConfiguredError</a>
-									</li>
-									<li>
-										<a href="core.staticattrerror.html" class="tsd-signature-type">StaticAttrError</a>
+										<a href="core.valueattrerror.html" class="tsd-signature-type">ValueAttrError</a>
 									</li>
 								</ul>
 							</li>
@@ -135,14 +135,14 @@
 					<a name="constructor" class="tsd-anchor"></a>
 					<h3>constructor</h3>
 					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite">
-						<li class="tsd-signature tsd-kind-icon">new <wbr>Attr<wbr>Error<span class="tsd-signature-symbol">(</span>entity<span class="tsd-signature-symbol">: </span><a href="core.entity.html" class="tsd-signature-type">Entity</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">C</span><span class="tsd-signature-symbol">&gt;</span>, attrName<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">keyof </span><span class="tsd-signature-type">C</span>, message<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span>, previous<span class="tsd-signature-symbol">?: </span><a href="core.rethrownerror.html#error" class="tsd-signature-type">Error</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="core.attrerror.html" class="tsd-signature-type">AttrError</a></li>
+						<li class="tsd-signature tsd-kind-icon">new <wbr>Attr<wbr>Error<span class="tsd-signature-symbol">(</span>entity<span class="tsd-signature-symbol">: </span><a href="core.entity.html" class="tsd-signature-type">Entity</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">C</span><span class="tsd-signature-symbol">&gt;</span>, attrName<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">K</span>, message<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span>, previous<span class="tsd-signature-symbol">?: </span><a href="core.rethrownerror.html#error" class="tsd-signature-type">Error</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="core.attrerror.html" class="tsd-signature-type">AttrError</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<p>Overrides <a href="core.entityerror.html">EntityError</a>.<a href="core.entityerror.html#constructor">constructor</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/typescript-entity/typescript-entity/blob/5cecf64/packages/core/src/error/AttrError.ts#L7">packages/core/src/error/AttrError.ts:7</a></li>
+									<li>Defined in <a href="https://github.com/typescript-entity/typescript-entity/blob/d5f28b8/packages/core/src/error/AttrError.ts#L7">packages/core/src/error/AttrError.ts:7</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -151,7 +151,7 @@
 									<h5>entity: <a href="core.entity.html" class="tsd-signature-type">Entity</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">C</span><span class="tsd-signature-symbol">&gt;</span></h5>
 								</li>
 								<li>
-									<h5>attrName: <span class="tsd-signature-symbol">keyof </span><span class="tsd-signature-type">C</span></h5>
+									<h5>attrName: <span class="tsd-signature-type">K</span></h5>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> message: <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span></h5>
@@ -173,7 +173,7 @@
 					<div class="tsd-signature tsd-kind-icon">attr<wbr>Name<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">keyof </span><span class="tsd-signature-type">C</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/typescript-entity/typescript-entity/blob/5cecf64/packages/core/src/error/AttrError.ts#L7">packages/core/src/error/AttrError.ts:7</a></li>
+							<li>Defined in <a href="https://github.com/typescript-entity/typescript-entity/blob/d5f28b8/packages/core/src/error/AttrError.ts#L7">packages/core/src/error/AttrError.ts:7</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -184,7 +184,7 @@
 					<aside class="tsd-sources">
 						<p>Inherited from <a href="core.entityerror.html">EntityError</a>.<a href="core.entityerror.html#entity">entity</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/typescript-entity/typescript-entity/blob/5cecf64/packages/core/src/error/EntityError.ts#L7">packages/core/src/error/EntityError.ts:7</a></li>
+							<li>Defined in <a href="https://github.com/typescript-entity/typescript-entity/blob/d5f28b8/packages/core/src/error/EntityError.ts#L7">packages/core/src/error/EntityError.ts:7</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -217,7 +217,7 @@
 					<aside class="tsd-sources">
 						<p>Inherited from <a href="core.rethrownerror.html">RethrownError</a>.<a href="core.rethrownerror.html#previous">previous</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/typescript-entity/typescript-entity/blob/5cecf64/packages/core/src/error/RethrownError.ts#L3">packages/core/src/error/RethrownError.ts:3</a></li>
+							<li>Defined in <a href="https://github.com/typescript-entity/typescript-entity/blob/d5f28b8/packages/core/src/error/RethrownError.ts#L3">packages/core/src/error/RethrownError.ts:3</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -246,7 +246,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="core.rethrownerror.html">RethrownError</a>.<a href="core.rethrownerror.html#root">root</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/typescript-entity/typescript-entity/blob/5cecf64/packages/core/src/error/RethrownError.ts#L10">packages/core/src/error/RethrownError.ts:10</a></li>
+									<li>Defined in <a href="https://github.com/typescript-entity/typescript-entity/blob/d5f28b8/packages/core/src/error/RethrownError.ts#L10">packages/core/src/error/RethrownError.ts:10</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <a href="core.rethrownerror.html#error" class="tsd-signature-type">Error</a></h4>
@@ -327,7 +327,7 @@
 								<a href="core.fnattrerror.html" class="tsd-kind-icon">Fn<wbr>Attr<wbr>Error</a>
 							</li>
 							<li class=" tsd-kind-class tsd-parent-kind-module tsd-has-type-parameter">
-								<a href="core.notconfigurederror.html" class="tsd-kind-icon">Not<wbr>Configured<wbr>Error</a>
+								<a href="core.normalizationerror.html" class="tsd-kind-icon">Normalization<wbr>Error</a>
 							</li>
 							<li class=" tsd-kind-class tsd-parent-kind-module tsd-has-type-parameter">
 								<a href="core.readonlyerror.html" class="tsd-kind-icon">Read<wbr>Only<wbr>Error</a>
@@ -339,10 +339,13 @@
 								<a href="core.sanitizationerror.html" class="tsd-kind-icon">Sanitization<wbr>Error</a>
 							</li>
 							<li class=" tsd-kind-class tsd-parent-kind-module tsd-has-type-parameter">
-								<a href="core.staticattrerror.html" class="tsd-kind-icon">Static<wbr>Attr<wbr>Error</a>
+								<a href="core.unconfiguredattrerror.html" class="tsd-kind-icon">Unconfigured<wbr>Attr<wbr>Error</a>
 							</li>
 							<li class=" tsd-kind-class tsd-parent-kind-module tsd-has-type-parameter">
 								<a href="core.validationerror.html" class="tsd-kind-icon">Validation<wbr>Error</a>
+							</li>
+							<li class=" tsd-kind-class tsd-parent-kind-module tsd-has-type-parameter">
+								<a href="core.valueattrerror.html" class="tsd-kind-icon">Value<wbr>Attr<wbr>Error</a>
 							</li>
 							<li class=" tsd-kind-interface tsd-parent-kind-module tsd-has-type-parameter">
 								<a href="../interfaces/core.entityconstructor.html" class="tsd-kind-icon">Entity<wbr>Constructor</a>
@@ -351,7 +354,7 @@
 								<a href="../interfaces/core.fnconfig.html" class="tsd-kind-icon">Fn<wbr>Config</a>
 							</li>
 							<li class=" tsd-kind-interface tsd-parent-kind-module tsd-has-type-parameter">
-								<a href="../interfaces/core.staticconfig.html" class="tsd-kind-icon">Static<wbr>Config</a>
+								<a href="../interfaces/core.valueconfig.html" class="tsd-kind-icon">Value<wbr>Config</a>
 							</li>
 							<li class=" tsd-kind-type-alias tsd-parent-kind-module tsd-has-type-parameter">
 								<a href="../modules/core.html#attr" class="tsd-kind-icon">Attr</a>
@@ -363,10 +366,10 @@
 								<a href="../modules/core.html#configs" class="tsd-kind-icon">Configs</a>
 							</li>
 							<li class=" tsd-kind-type-alias tsd-parent-kind-module tsd-has-type-parameter">
-								<a href="../modules/core.html#fnattrs" class="tsd-kind-icon">Fn<wbr>Attrs</a>
+								<a href="../modules/core.html#fn" class="tsd-kind-icon">Fn</a>
 							</li>
 							<li class=" tsd-kind-type-alias tsd-parent-kind-module tsd-has-type-parameter">
-								<a href="../modules/core.html#fnvalue" class="tsd-kind-icon">Fn<wbr>Value</a>
+								<a href="../modules/core.html#fnattrs" class="tsd-kind-icon">Fn<wbr>Attrs</a>
 							</li>
 							<li class=" tsd-kind-type-alias tsd-parent-kind-module tsd-has-type-parameter">
 								<a href="../modules/core.html#hiddenattrs" class="tsd-kind-icon">Hidden<wbr>Attrs</a>
@@ -387,13 +390,13 @@
 								<a href="../modules/core.html#sanitizerfn" class="tsd-kind-icon">Sanitizer<wbr>Fn</a>
 							</li>
 							<li class=" tsd-kind-type-alias tsd-parent-kind-module tsd-has-type-parameter">
-								<a href="../modules/core.html#staticattrs" class="tsd-kind-icon">Static<wbr>Attrs</a>
+								<a href="../modules/core.html#validatorfn" class="tsd-kind-icon">Validator<wbr>Fn</a>
 							</li>
 							<li class=" tsd-kind-type-alias tsd-parent-kind-module">
-								<a href="../modules/core.html#staticvalue" class="tsd-kind-icon">Static<wbr>Value</a>
+								<a href="../modules/core.html#value" class="tsd-kind-icon">Value</a>
 							</li>
 							<li class=" tsd-kind-type-alias tsd-parent-kind-module tsd-has-type-parameter">
-								<a href="../modules/core.html#validatorfn" class="tsd-kind-icon">Validator<wbr>Fn</a>
+								<a href="../modules/core.html#valueattrs" class="tsd-kind-icon">Value<wbr>Attrs</a>
 							</li>
 							<li class=" tsd-kind-type-alias tsd-parent-kind-module tsd-has-type-parameter">
 								<a href="../modules/core.html#visibleattrs" class="tsd-kind-icon">Visible<wbr>Attrs</a>

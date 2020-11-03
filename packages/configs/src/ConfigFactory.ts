@@ -1,25 +1,25 @@
-import type { StaticConfig, StaticValue } from "@typescript-entity/core";
+import type { Value, ValueConfig } from "@typescript-entity/core";
 
-type ArrayType<T extends Array<StaticValue>> = T extends (infer R)[] ? R : never;
+type ArrayType<T extends Array<Value>> = T extends (infer R)[] ? R : never;
 
-export type ResolvedStaticValue<T extends StaticValue, Optional extends boolean = false> = (
+export type ResolvedValue<T extends Value, Optional extends boolean = false> = (
   Optional extends true
-    ? T extends Array<StaticValue>
+    ? T extends Array<Value>
       ? (ArrayType<T> | undefined)[]
       : T | undefined
     : T
 );
 
 export type ConfigFactory<
-  T extends StaticValue,
+  T extends Value,
   Optional extends boolean = false,
   Hidden extends boolean = false,
   ReadOnly extends boolean = false,
   Normalizer extends boolean = false,
   Validator extends boolean = false
 > = (
-  StaticConfig<ResolvedStaticValue<T, Optional>> extends infer C
-  ? C extends StaticConfig<ResolvedStaticValue<T, Optional>>
+  ValueConfig<ResolvedValue<T, Optional>> extends infer C
+  ? C extends ValueConfig<ResolvedValue<T, Optional>>
     ? (
       Pick<C, "value" | "sanitizer">
       & (Hidden extends true ? { hidden: true } : { hidden?: false })
