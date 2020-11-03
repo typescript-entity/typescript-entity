@@ -15,9 +15,7 @@ export interface EntityConstructor<T extends Entity> {
   prototype: T;
 }
 
-export interface Configs {
-  [name: string]: StaticConfig | FnConfig;
-}
+export type Configs = Record<Name, StaticConfig | FnConfig>;
 
 export interface StaticConfig<T extends StaticValue = StaticValue> {
   hidden?: boolean;
@@ -87,7 +85,11 @@ const isStaticConfigTypeGuard = <T extends StaticValue>(config: StaticConfig<T> 
 export abstract class Entity<C extends Configs = Configs> {
 
   protected _configs = new Map<keyof C, StaticConfig | FnConfig>();
-  protected _modified = new Set<keyof WritableAttrs<C>>();
+
+  // TODO: This should really be typed as `Set<keyof WritableAttrs<C>>` but because `C` defaults to
+  // `Configs` and `keyof WritableAttrs<Configs>` resolves to `never`, instances of `Entity<C>` -
+  // where `C` is a non-empty configuration type - can never be compared to Entity<Configs>.
+  protected _modified = new Set<keyof C>();
 
   /**
    * Creates a new [[`Entity`]] instance. The attribute `configs` define the attributes available on
