@@ -361,24 +361,25 @@ export abstract class Entity<C extends Configs = Configs> {
    * @param attrs
    */
   public fill(attrs: Partial<WritableAttrs<C>>): this {
-    (Object.entries(attrs) as Entries<WritableAttrs<C>>).forEach(([ name, value ]) => {
-      // Prevent abuse of Partial which allows setting required attributes to undefined
-      // https://github.com/microsoft/TypeScript/issues/13195
-      // https://github.com/microsoft/TypeScript/issues/26438
-      if (undefined === value) {
-        return;
-      }
-      let config: ValueConfig | FnConfig;
-      try {
-        config = this._config(name);
-      } catch (err) {
-        return;
-      }
-      if (isFnConfig(config)) {
-        return;
-      }
-      this.set(name, value);
-    });
+    (Object.entries("object" !== typeof attrs && null !== attrs ? attrs : {}) as Entries<WritableAttrs<C>>)
+      .forEach(([ name, value ]) => {
+        // Prevent abuse of Partial which allows setting required attributes to undefined
+        // https://github.com/microsoft/TypeScript/issues/13195
+        // https://github.com/microsoft/TypeScript/issues/26438
+        if (undefined === value) {
+          return;
+        }
+        let config: ValueConfig | FnConfig;
+        try {
+          config = this._config(name);
+        } catch (err) {
+          return;
+        }
+        if (isFnConfig(config)) {
+          return;
+        }
+        this.set(name, value);
+      });
     return this;
   }
 
