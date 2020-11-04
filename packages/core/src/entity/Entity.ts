@@ -361,7 +361,7 @@ export abstract class Entity<C extends Configs = Configs> {
    * @param attrs
    */
   public fill(attrs: Partial<WritableAttrs<C>>): this {
-    (Object.entries("object" !== typeof attrs && null !== attrs ? attrs : {}) as Entries<WritableAttrs<C>>)
+    (Object.entries("object" === typeof attrs && null !== attrs ? attrs : {}) as Entries<WritableAttrs<C>>)
       .forEach(([ name, value ]) => {
         // Prevent abuse of Partial which allows setting required attributes to undefined
         // https://github.com/microsoft/TypeScript/issues/13195
