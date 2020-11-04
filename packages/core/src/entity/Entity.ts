@@ -177,14 +177,14 @@ export abstract class Entity<C extends Configs = Configs> {
   /**
    * Validates a non-nullish `value` using the configured `validator` function for the specified
    * attribute `name`. If a validator function has not been configured, or returns a truthy value
-   * then `true` is returned. If the validator function returns a falsey value and `throws` is
-   * `true` then a `ValidationError` is thrown otherwise `false` is returned. The validator function
-   * will be called with the entity instance bound to `this`.
+   * then `true` is returned. If it returns a falsey value then a `ValidationError` is thrown unless
+   * `throws` is set to `false` in which case `false` is returned. The validator function will be
+   * called with the entity instance bound to `this`.
    *
    * @param name
    * @param value
    */
-  public validate<K extends keyof ValueAttrs<C>, V extends ValueAttrs<C>[K]>(name: K, value: V, throws = false): ReturnType<ValidatorFn<V>> {
+  public validate<K extends keyof ValueAttrs<C>, V extends ValueAttrs<C>[K]>(name: K, value: V, throws = true): ReturnType<ValidatorFn<V>> {
     const config = this._config(name);
     if (isFnConfig(config)) {
       throw new FnAttrError(this, name, "Function attributes cannot be validated.");
@@ -215,7 +215,7 @@ export abstract class Entity<C extends Configs = Configs> {
    * @param names
    * @param value
    */
-  public validateMany(names: (keyof ValueAttrs<C>)[], throws = false): boolean {
+  public validateMany(names: (keyof ValueAttrs<C>)[], throws = true): boolean {
     return !!(Object.entries(this.many(names)) as Entries<ValueAttrs<C>>)
       .find(([ name, value ]) => !this.validate(name, value, throws));
   }
@@ -225,7 +225,7 @@ export abstract class Entity<C extends Configs = Configs> {
    *
    * @param throws
    */
-  public validateWritable(throws = false): boolean {
+  public validateWritable(throws = true): boolean {
     return !!(Object.entries(this.writable()) as Entries<WritableAttrs<C>>)
       .find(([ name, value ]) => !this.validate(name, value, throws));
   }
@@ -342,9 +342,7 @@ export abstract class Entity<C extends Configs = Configs> {
       throw new ReadOnlyError(this, name, value);
     }
     value = this.normalize(name, this.sanitize(name, value));
-    if (!this.validate(name, value)) {
-      throw new ValidationError(this, name, value);
-    }
+    this.validate(name, value);
     if (this.one(name) !== value) {
       config.value = value;
       this._modified.add(name);
