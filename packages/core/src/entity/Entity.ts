@@ -151,7 +151,7 @@ export abstract class Entity<C extends Configs = Configs> {
   }
 
   /**
-   * Normalizes an non-nullish `value` using the configured `normalizer` function for the specified
+   * Normalizes a non-nullish `value` using the configured `normalizer` function for the specified
    * attribute `name`. If a normalizer function has not been configured then the `value` is returned
    * as-is. The function will be called with the entity instance bound to `this`.
    *
@@ -175,27 +175,59 @@ export abstract class Entity<C extends Configs = Configs> {
   }
 
   /**
-   * Validates an non-nullish `value` using the configured `validator` function for the specified
-   * attribute `name`. If a validator function has not been configured then `true` is returned. The
-   * function will be called with the entity instance bound to `this`.
+   * Validates a non-nullish `value` using the configured `validator` function for the specified
+   * attribute `name`. If a validator function has not been configured, or returns a truthy value
+   * then `true` is returned. If the validator function returns a falsey value and `throws` is
+   * `true` then a `ValidationError` is thrown otherwise `false` is returned. The validator function
+   * will be called with the entity instance bound to `this`.
    *
    * @param name
    * @param value
    */
-  public validate<K extends keyof ValueAttrs<C>, V extends ValueAttrs<C>[K]>(name: K, value: V): ReturnType<ValidatorFn<V>> {
+  public validate<K extends keyof ValueAttrs<C>, V extends ValueAttrs<C>[K]>(name: K, value: V, throws = false): ReturnType<ValidatorFn<V>> {
     const config = this._config(name);
     if (isFnConfig(config)) {
       throw new FnAttrError(this, name, "Function attributes cannot be validated.");
     }
     try {
-      return (undefined !== value && null !== value && undefined !== config.validator)
-        ? config.validator.call(this, value)
-        : true;
+      if (
+        undefined === value
+        || null === value
+        || undefined === config.validator
+        || config.validator.call(this, value)
+      ) {
+        return true;
+      }
+      throw new ValidationError(this, name, value);
     } catch (err) {
-      throw err instanceof ValidationError
-        ? err
-        : new ValidationError(this, name, value, undefined, err);
+      if (throws) {
+        throw err instanceof ValidationError
+          ? err
+          : new ValidationError(this, name, value, undefined, err);
+      }
     }
+    return false;
+  }
+
+  /**
+   * Validates multiple attributes.
+   *
+   * @param names
+   * @param value
+   */
+  public validateMany(names: (keyof ValueAttrs<C>)[], throws = false): boolean {
+    return !!(Object.entries(this.many(names)) as Entries<ValueAttrs<C>>)
+      .find(([ name, value ]) => !this.validate(name, value, throws));
+  }
+
+  /**
+   * Validates all writable attributes. Particularly useful for validating state before persisting.
+   *
+   * @param throws
+   */
+  public validateWritable(throws = false): boolean {
+    return !!(Object.entries(this.writable()) as Entries<WritableAttrs<C>>)
+      .find(([ name, value ]) => !this.validate(name, value, throws));
   }
 
   /**
@@ -249,6 +281,28 @@ export abstract class Entity<C extends Configs = Configs> {
         .filter(([ , config ]) => !config.hidden)
         .map(([ name ]) => name)
     ) as VisibleAttrs<C>;
+  }
+
+  /**
+   * Returns value attributes that are configured as `readOnly`.
+   */
+  public readOnly(): ReadOnlyAttrs<C> {
+    return this.many(
+      Array.from(this._configs.entries())
+        .filter(([ , config ]) => isValueConfig(config) && config.readOnly)
+        .map(([ name ]) => name)
+    ) as ReadOnlyAttrs<C>;
+  }
+
+  /**
+   * Returns value attributes that are not configured as `readOnly`.
+   */
+  public writable(): WritableAttrs<C> {
+    return this.many(
+      Array.from(this._configs.entries())
+        .filter(([ , config ]) => isValueConfig(config) && !config.readOnly)
+        .map(([ name ]) => name)
+    ) as WritableAttrs<C>;
   }
 
   /**
