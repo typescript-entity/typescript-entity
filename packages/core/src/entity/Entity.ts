@@ -99,10 +99,14 @@ export abstract class Entity<C extends Configs = Configs> {
    */
   constructor(configs: C, attrs: InitialAttrs<C> = {}) {
     (Object.entries(configs) as Entries<C>).forEach(([ name, config ]) => {
-      this._configs.set(name, {
-        ...config,
-        value: isValueConfig(config) ? cloneDeep(config.value) : undefined,
-      });
+      if (isValueConfig(config)) {
+        this._configs.set(name, {
+          ...config,
+          value: cloneDeep(config.value),
+        });
+      } else {
+        this._configs.set(name, config);
+      }
     });
 
     this
