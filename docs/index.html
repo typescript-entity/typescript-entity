@@ -193,7 +193,7 @@
   <span class="hljs-comment">// Allow consumers to provide some/all attributes during construction to override the default</span>
   <span class="hljs-comment">// values provided in the configs. Attributes passed to the constructor can include values for</span>
   <span class="hljs-comment">// read-only values but not for function attributes.</span>
-  <span class="hljs-function"><span class="hljs-title">constructor</span>(<span class="hljs-params">attrs: InitialAttrs&lt;Configs&gt; = {}</span>)</span> {
+  <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-title">constructor</span>(<span class="hljs-params">attrs: InitialAttrs&lt;Configs&gt; = {}</span>)</span> {
     <span class="hljs-built_in">super</span>(Person.CONFIGS, attrs);
   }
 
@@ -201,37 +201,37 @@
   <span class="hljs-comment">// and setters for each attribute on the entity which makes it easier to interact with instances.</span>
   <span class="hljs-comment">// Types do not need to be specified since they are inferred from Configs.</span>
 
-  <span class="hljs-keyword">get</span> <span class="hljs-title">id</span>(): <span class="hljs-title">Attr</span>&lt;<span class="hljs-title">Configs</span>, &#x27;<span class="hljs-title">id</span>&#x27;&gt; {
+  <span class="hljs-keyword">public</span> <span class="hljs-keyword">get</span> <span class="hljs-title">id</span>(): <span class="hljs-title">Attr</span>&lt;<span class="hljs-title">Configs</span>, &#x27;<span class="hljs-title">id</span>&#x27;&gt; {
     <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>.one(<span class="hljs-string">&#x27;id&#x27;</span>);
   }
 
   <span class="hljs-comment">// IDConfig is a read-only attribute so TypeScript will correctly prevent us from setting it.</span>
-  <span class="hljs-comment">//set id(value: Attr&lt;Configs, &#x27;id&#x27;&gt;) {</span>
+  <span class="hljs-comment">//public set id(value: Attr&lt;Configs, &#x27;id&#x27;&gt;) {</span>
   <span class="hljs-comment">//  this.set(&#x27;id&#x27;, value);</span>
   <span class="hljs-comment">//}</span>
 
-  <span class="hljs-keyword">get</span> <span class="hljs-title">name</span>(): <span class="hljs-title">Attr</span>&lt;<span class="hljs-title">Configs</span>, &#x27;<span class="hljs-title">name</span>&#x27;&gt; {
+  <span class="hljs-keyword">public</span> <span class="hljs-keyword">get</span> <span class="hljs-title">name</span>(): <span class="hljs-title">Attr</span>&lt;<span class="hljs-title">Configs</span>, &#x27;<span class="hljs-title">name</span>&#x27;&gt; {
     <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>.one(<span class="hljs-string">&#x27;name&#x27;</span>);
   }
 
-  <span class="hljs-keyword">set</span> <span class="hljs-title">name</span>(<span class="hljs-params">value: Attr&lt;Configs, <span class="hljs-string">&#x27;name&#x27;</span>&gt;</span>) {
+  <span class="hljs-keyword">public</span> <span class="hljs-keyword">set</span> <span class="hljs-title">name</span>(<span class="hljs-params">value: Attr&lt;Configs, <span class="hljs-string">&#x27;name&#x27;</span>&gt;</span>) {
     <span class="hljs-built_in">this</span>.set(<span class="hljs-string">&#x27;name&#x27;</span>, value);
   }
 
-  <span class="hljs-keyword">get</span> <span class="hljs-title">username</span>(): <span class="hljs-title">Attr</span>&lt;<span class="hljs-title">Configs</span>, &#x27;<span class="hljs-title">username</span>&#x27;&gt; {
+  <span class="hljs-keyword">public</span> <span class="hljs-keyword">get</span> <span class="hljs-title">username</span>(): <span class="hljs-title">Attr</span>&lt;<span class="hljs-title">Configs</span>, &#x27;<span class="hljs-title">username</span>&#x27;&gt; {
     <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>.one(<span class="hljs-string">&#x27;username&#x27;</span>);
   }
 
   <span class="hljs-comment">// UsernameConfig is a function attribute so TypeScript will correctly prevent us from setting it.</span>
-  <span class="hljs-comment">//set username(value: Attr&lt;Configs, &#x27;username&#x27;&gt;) {</span>
+  <span class="hljs-comment">//public set username(value: Attr&lt;Configs, &#x27;username&#x27;&gt;) {</span>
   <span class="hljs-comment">//  this.set(&#x27;username&#x27;, value);</span>
   <span class="hljs-comment">//}</span>
 
-  <span class="hljs-keyword">get</span> <span class="hljs-title">smelly</span>(): <span class="hljs-title">Attr</span>&lt;<span class="hljs-title">Configs</span>, &#x27;<span class="hljs-title">smelly</span>&#x27;&gt; {
+  <span class="hljs-keyword">public</span> <span class="hljs-keyword">get</span> <span class="hljs-title">smelly</span>(): <span class="hljs-title">Attr</span>&lt;<span class="hljs-title">Configs</span>, &#x27;<span class="hljs-title">smelly</span>&#x27;&gt; {
     <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>.one(<span class="hljs-string">&#x27;smelly&#x27;</span>);
   }
 
-  <span class="hljs-keyword">set</span> <span class="hljs-title">smelly</span>(<span class="hljs-params">value: Attr&lt;Configs, <span class="hljs-string">&#x27;smelly&#x27;</span>&gt;</span>) {
+  <span class="hljs-keyword">public</span> <span class="hljs-keyword">set</span> <span class="hljs-title">smelly</span>(<span class="hljs-params">value: Attr&lt;Configs, <span class="hljs-string">&#x27;smelly&#x27;</span>&gt;</span>) {
     <span class="hljs-built_in">this</span>.set(<span class="hljs-string">&#x27;smelly&#x27;</span>, value);
   }
 
@@ -270,31 +270,31 @@
     <span class="hljs-attr">smelly</span>: booleanConfig(<span class="hljs-literal">false</span>, <span class="hljs-literal">true</span>),
   };
 
-  <span class="hljs-function"><span class="hljs-title">constructor</span>(<span class="hljs-params">attrs: InitialAttrs&lt;Configs&gt; = {}</span>)</span> {
+  <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-title">constructor</span>(<span class="hljs-params">attrs: InitialAttrs&lt;Configs&gt; = {}</span>)</span> {
     <span class="hljs-built_in">super</span>(Person.CONFIGS, attrs);
   }
 
-  <span class="hljs-keyword">get</span> <span class="hljs-title">id</span>(): <span class="hljs-title">Attr</span>&lt;<span class="hljs-title">Configs</span>, &#x27;<span class="hljs-title">id</span>&#x27;&gt; {
+  <span class="hljs-keyword">public</span> <span class="hljs-keyword">get</span> <span class="hljs-title">id</span>(): <span class="hljs-title">Attr</span>&lt;<span class="hljs-title">Configs</span>, &#x27;<span class="hljs-title">id</span>&#x27;&gt; {
     <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>.one(<span class="hljs-string">&#x27;id&#x27;</span>);
   }
 
-  <span class="hljs-keyword">get</span> <span class="hljs-title">name</span>(): <span class="hljs-title">Attr</span>&lt;<span class="hljs-title">Configs</span>, &#x27;<span class="hljs-title">name</span>&#x27;&gt; {
+  <span class="hljs-keyword">public</span> <span class="hljs-keyword">get</span> <span class="hljs-title">name</span>(): <span class="hljs-title">Attr</span>&lt;<span class="hljs-title">Configs</span>, &#x27;<span class="hljs-title">name</span>&#x27;&gt; {
     <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>.one(<span class="hljs-string">&#x27;name&#x27;</span>);
   }
 
-  <span class="hljs-keyword">set</span> <span class="hljs-title">name</span>(<span class="hljs-params">value: Attr&lt;Configs, <span class="hljs-string">&#x27;name&#x27;</span>&gt;</span>) {
+  <span class="hljs-keyword">public</span> <span class="hljs-keyword">set</span> <span class="hljs-title">name</span>(<span class="hljs-params">value: Attr&lt;Configs, <span class="hljs-string">&#x27;name&#x27;</span>&gt;</span>) {
     <span class="hljs-built_in">this</span>.set(<span class="hljs-string">&#x27;name&#x27;</span>, value);
   }
 
-  <span class="hljs-keyword">get</span> <span class="hljs-title">username</span>(): <span class="hljs-title">Attr</span>&lt;<span class="hljs-title">Configs</span>, &#x27;<span class="hljs-title">username</span>&#x27;&gt; {
+  <span class="hljs-keyword">public</span> <span class="hljs-keyword">get</span> <span class="hljs-title">username</span>(): <span class="hljs-title">Attr</span>&lt;<span class="hljs-title">Configs</span>, &#x27;<span class="hljs-title">username</span>&#x27;&gt; {
     <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>.one(<span class="hljs-string">&#x27;username&#x27;</span>);
   }
 
-  <span class="hljs-keyword">get</span> <span class="hljs-title">smelly</span>(): <span class="hljs-title">Attr</span>&lt;<span class="hljs-title">Configs</span>, &#x27;<span class="hljs-title">smelly</span>&#x27;&gt; {
+  <span class="hljs-keyword">public</span> <span class="hljs-keyword">get</span> <span class="hljs-title">smelly</span>(): <span class="hljs-title">Attr</span>&lt;<span class="hljs-title">Configs</span>, &#x27;<span class="hljs-title">smelly</span>&#x27;&gt; {
     <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>.one(<span class="hljs-string">&#x27;smelly&#x27;</span>);
   }
 
-  <span class="hljs-keyword">set</span> <span class="hljs-title">smelly</span>(<span class="hljs-params">value: Attr&lt;Configs, <span class="hljs-string">&#x27;smelly&#x27;</span>&gt;</span>) {
+  <span class="hljs-keyword">public</span> <span class="hljs-keyword">set</span> <span class="hljs-title">smelly</span>(<span class="hljs-params">value: Attr&lt;Configs, <span class="hljs-string">&#x27;smelly&#x27;</span>&gt;</span>) {
     <span class="hljs-built_in">this</span>.set(<span class="hljs-string">&#x27;smelly&#x27;</span>, value);
   }
 
