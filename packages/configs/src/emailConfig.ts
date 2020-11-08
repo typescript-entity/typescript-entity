@@ -1,7 +1,7 @@
-import { isEmail } from "@typescript-entity/validators";
-import type { IsEmailOptions } from "@typescript-entity/validators";
-import { stringConfig } from "./stringConfig";
-import type { StringConfigFactory } from "./stringConfig";
+import { isEmail } from '@typescript-entity/validators';
+import type { IsEmailOptions } from '@typescript-entity/validators';
+import { stringConfig } from './stringConfig';
+import type { StringConfigFactory } from './stringConfig';
 
 export type EmailConfigFactory<
   Optional extends boolean = false,

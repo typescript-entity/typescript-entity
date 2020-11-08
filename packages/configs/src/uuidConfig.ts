@@ -1,8 +1,8 @@
-import { lowerCase } from "@typescript-entity/normalizers";
-import { isUUID } from "@typescript-entity/validators";
-import type { IsUUIDOptions } from "@typescript-entity/validators";
-import { stringConfig } from "./stringConfig";
-import type { StringConfigFactory } from "./stringConfig";
+import { lowerCase } from '@typescript-entity/normalizers';
+import { isUUID } from '@typescript-entity/validators';
+import type { IsUUIDOptions } from '@typescript-entity/validators';
+import { stringConfig } from './stringConfig';
+import type { StringConfigFactory } from './stringConfig';
 
 export type UUIDConfigFactory<
   Optional extends boolean = false,

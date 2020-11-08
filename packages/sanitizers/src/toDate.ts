@@ -1,5 +1,5 @@
-import validator from "validator";
-import { toString } from "./toString";
+import validator from 'validator';
+import { toString } from './toString';
 
 export const toDate = (value: unknown): Date => {
   const sanitized = value instanceof Date ? value : validator.toDate(toString(value));

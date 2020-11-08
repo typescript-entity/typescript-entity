@@ -1,5 +1,5 @@
-import { toString } from "@typescript-entity/sanitizers";
-import validator from "validator";
+import { toString } from '@typescript-entity/sanitizers';
+import validator from 'validator';
 
 export interface IsAfterOptions {
   now?: Date;

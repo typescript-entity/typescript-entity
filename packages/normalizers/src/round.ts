@@ -1,4 +1,4 @@
-import { round as _round } from "lodash";
+import { round as _round } from 'lodash';
 
 export type RoundOptions = { precision?: number };
 

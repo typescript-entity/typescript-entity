@@ -1,7 +1,7 @@
-import { isURL } from "@typescript-entity/validators";
-import type { IsURLOptions } from "@typescript-entity/validators";
-import { stringConfig } from "./stringConfig";
-import type { StringConfigFactory } from "./stringConfig";
+import { isURL } from '@typescript-entity/validators';
+import type { IsURLOptions } from '@typescript-entity/validators';
+import { stringConfig } from './stringConfig';
+import type { StringConfigFactory } from './stringConfig';
 
 export type URLConfigFactory<
   Optional extends boolean = false,

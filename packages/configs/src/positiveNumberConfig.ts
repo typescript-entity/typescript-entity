@@ -1,6 +1,6 @@
-import { isPositive } from "@typescript-entity/validators";
-import { numberConfig } from "./numberConfig";
-import type { NumberConfigFactory } from "./numberConfig";
+import { isPositive } from '@typescript-entity/validators';
+import { numberConfig } from './numberConfig';
+import type { NumberConfigFactory } from './numberConfig';
 
 export type PositiveNumberConfigFactory<
   Optional extends boolean = false,

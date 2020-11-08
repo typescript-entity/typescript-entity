@@ -1,6 +1,6 @@
-import { isNegative } from "@typescript-entity/validators";
-import { floatConfig } from "./floatConfig";
-import type { FloatConfigFactory } from "./floatConfig";
+import { isNegative } from '@typescript-entity/validators';
+import { floatConfig } from './floatConfig';
+import type { FloatConfigFactory } from './floatConfig';
 
 export type NegativeFloatConfigFactory<
   Optional extends boolean = false,

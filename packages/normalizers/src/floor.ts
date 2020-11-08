@@ -1,4 +1,4 @@
-import { floor as _floor } from "lodash";
+import { floor as _floor } from 'lodash';
 
 export type FloorOptions = { precision?: number };
 

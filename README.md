@@ -68,8 +68,8 @@ yarn add @typescript-entity/validators
 You may prefer to [skip to Simplified Usage](#simplified-usage).
 
 ```typescript
-import { Entity } from "@typescript-entity/core";
-import type { Attr, Attrs, FnValue, InitialAttrs, NormalizerFn, SanitizerFn, ValidatorFn } from "@typescript-entity/core";
+import { Entity } from '@typescript-entity/core';
+import type { Attr, Attrs, FnValue, InitialAttrs, NormalizerFn, SanitizerFn, ValidatorFn } from '@typescript-entity/core';
 
 // ID is an optional number, must be read-only and must have a validator function defined. Like all
 // non-function attributes, it must also have a sanitizer function defined.
@@ -120,7 +120,7 @@ export class Person extends Entity<Configs> implements Attrs<Configs> {
       validator: (value: number): boolean => value > 0,
     },
     name: {
-      value: "", // Name was configured as a required string so can't use undefined here
+      value: '', // Name was configured as a required string so can't use undefined here
       sanitizer: (value: unknown): string => String(value),
       normalizer: (value: string): string => value.trim(),
     },
@@ -147,38 +147,38 @@ export class Person extends Entity<Configs> implements Attrs<Configs> {
   // and setters for each attribute on the entity which makes it easier to interact with instances.
   // Types do not need to be specified since they are inferred from Configs.
 
-  get id(): Attr<Configs, "id"> {
-    return this.one("id");
+  get id(): Attr<Configs, 'id'> {
+    return this.one('id');
   }
 
   // IDConfig is a read-only attribute so TypeScript will correctly prevent us from setting it.
-  //set id(value: Attr<Configs, "id">) {
-  //  this.set("id", value);
+  //set id(value: Attr<Configs, 'id'>) {
+  //  this.set('id', value);
   //}
 
-  get name(): Attr<Configs, "name"> {
-    return this.one("name");
+  get name(): Attr<Configs, 'name'> {
+    return this.one('name');
   }
 
-  set name(value: Attr<Configs, "name">) {
-    this.set("name", value);
+  set name(value: Attr<Configs, 'name'>) {
+    this.set('name', value);
   }
 
-  get username(): Attr<Configs, "username"> {
-    return this.one("username");
+  get username(): Attr<Configs, 'username'> {
+    return this.one('username');
   }
 
   // UsernameConfig is a function attribute so TypeScript will correctly prevent us from setting it.
-  //set username(value: Attr<Configs, "username">) {
-  //  this.set("username", value);
+  //set username(value: Attr<Configs, 'username'>) {
+  //  this.set('username', value);
   //}
 
-  get smelly(): Attr<Configs, "smelly"> {
-    return this.one("smelly");
+  get smelly(): Attr<Configs, 'smelly'> {
+    return this.one('smelly');
   }
 
-  set smelly(value: Attr<Configs, "smelly">) {
-    this.set("smelly", value);
+  set smelly(value: Attr<Configs, 'smelly'>) {
+    this.set('smelly', value);
   }
 
 }
@@ -189,11 +189,11 @@ export class Person extends Entity<Configs> implements Attrs<Configs> {
 The [example above](#verbose-usage) is intentionally verbose for instructional purposes. Much of it can be simplified using the optional helper packages...
 
 ```typescript
-import { booleanConfig, fnConfig, positiveIntegerConfig, stringConfig } from "@typescript-entity/configs";
-import type { BooleanConfigFactory, FnConfigFactory, PositiveIntegerConfigFactory, StringConfigFactory } from "@typescript-entity/configs";
-import { Entity } from "@typescript-entity/core";
-import type { Attr, Attrs, InitialAttrs } from "@typescript-entity/core";
-import { trim } from "@typescript-entity/normalizers";
+import { booleanConfig, fnConfig, positiveIntegerConfig, stringConfig } from '@typescript-entity/configs';
+import type { BooleanConfigFactory, FnConfigFactory, PositiveIntegerConfigFactory, StringConfigFactory } from '@typescript-entity/configs';
+import { Entity } from '@typescript-entity/core';
+import type { Attr, Attrs, InitialAttrs } from '@typescript-entity/core';
+import { trim } from '@typescript-entity/normalizers';
 
 type IDConfig = PositiveIntegerConfigFactory<true, false, true>;
 type NameConfig = StringConfigFactory<false, false, false, true>;
@@ -223,28 +223,28 @@ export class Person extends Entity<Configs> implements Attrs<Configs> {
     super(Person.CONFIGS, attrs);
   }
 
-  get id(): Attr<Configs, "id"> {
-    return this.one("id");
+  get id(): Attr<Configs, 'id'> {
+    return this.one('id');
   }
 
-  get name(): Attr<Configs, "name"> {
-    return this.one("name");
+  get name(): Attr<Configs, 'name'> {
+    return this.one('name');
   }
 
-  set name(value: Attr<Configs, "name">) {
-    this.set("name", value);
+  set name(value: Attr<Configs, 'name'>) {
+    this.set('name', value);
   }
 
-  get username(): Attr<Configs, "username"> {
-    return this.one("username");
+  get username(): Attr<Configs, 'username'> {
+    return this.one('username');
   }
 
-  get smelly(): Attr<Configs, "smelly"> {
-    return this.one("smelly");
+  get smelly(): Attr<Configs, 'smelly'> {
+    return this.one('smelly');
   }
 
-  set smelly(value: Attr<Configs, "smelly">) {
-    this.set("smelly", value);
+  set smelly(value: Attr<Configs, 'smelly'>) {
+    this.set('smelly', value);
   }
 
 }
@@ -255,8 +255,8 @@ export class Person extends Entity<Configs> implements Attrs<Configs> {
 ```typescript
 const person = new Person();
 console.log(person.id); // 0
-console.log(person.name); // ""
-console.log(person.username); // ""
+console.log(person.name); // ''
+console.log(person.username); // ''
 console.log(person.smelly); // false
 console.log(JSON.stringify(person)); // {"name":"","username":""}
 ```
@@ -264,12 +264,12 @@ console.log(JSON.stringify(person)); // {"name":"","username":""}
 ```typescript
 const bob = new Person({
   id: 123,
-  name: "  Bob  ",
+  name: '  Bob  ',
   smelly: true,
 });
 console.log(bob.id); // 123
-console.log(bob.name); // "Bob"
-console.log(bob.username); // "bob"
+console.log(bob.name); // 'Bob'
+console.log(bob.username); // 'bob'
 console.log(bob.smelly); // true
 console.log(JSON.stringify(bob)); // {"id":123,"name":"Bob","username":"bob"}
 ```
@@ -278,8 +278,8 @@ console.log(JSON.stringify(bob)); // {"id":123,"name":"Bob","username":"bob"}
 const json = '{"id":"123","name":"Jane  ","username":"janerocks","smelly":true}';
 const jane = new Person(JSON.parse(json));
 console.log(jane.id); // 123 (sanitized from string to number)
-console.log(jane.name); // "Jane" (normalized to remove trailing whitespace)
-console.log(jane.username); // "jane" (the JSON value was ignored as this is a function attr)
+console.log(jane.name); // 'Jane' (normalized to remove trailing whitespace)
+console.log(jane.username); // 'jane' (the JSON value was ignored as this is a function attr)
 console.log(jane.smelly); // true (the JSON value was allowed even though this is a read-only attr)
 ```
 

@@ -1,5 +1,5 @@
-import type { ConfigFactory } from "./ConfigFactory";
-import { toString } from "@typescript-entity/sanitizers";
+import type { ConfigFactory } from './ConfigFactory';
+import { toString } from '@typescript-entity/sanitizers';
 
 export type StringConfigFactory<
   Optional extends boolean = false,
@@ -16,7 +16,7 @@ export const stringConfig = <
 >(optional?: O, hidden?: H, readOnly?: R): StringConfigFactory<O, H, R> => ({
   hidden,
   readOnly,
-  value: optional ? undefined : "",
+  value: optional ? undefined : '',
   sanitizer: (
     optional
       ? (value: unknown): string | undefined => toString(value) || undefined

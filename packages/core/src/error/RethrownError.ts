@@ -10,7 +10,7 @@ export class RethrownError extends Error {
   get root(): Error {
     // eslint-disable-next-line @typescript-eslint/no-this-alias
     let err: RethrownError | Error = this;
-    while ("previous" in err && err.previous) {
+    while ('previous' in err && err.previous) {
       err = err.previous;
     }
     return err;

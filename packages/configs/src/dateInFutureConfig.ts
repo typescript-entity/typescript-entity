@@ -1,7 +1,7 @@
-import { isAfter } from "@typescript-entity/validators";
-import type { IsAfterOptions } from "@typescript-entity/validators";
-import { dateConfig } from "./dateConfig";
-import type { DateConfigFactory } from "./dateConfig";
+import { isAfter } from '@typescript-entity/validators';
+import type { IsAfterOptions } from '@typescript-entity/validators';
+import { dateConfig } from './dateConfig';
+import type { DateConfigFactory } from './dateConfig';
 
 export type DateInFutureConfigFactory<
   Optional extends boolean = false,

@@ -1,4 +1,4 @@
-import { ceil as _ceil } from "lodash";
+import { ceil as _ceil } from 'lodash';
 
 export type CeilOptions = { precision?: number };
 

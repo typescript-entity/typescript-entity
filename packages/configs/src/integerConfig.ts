@@ -1,6 +1,6 @@
-import { toInteger, toString } from "@typescript-entity/sanitizers";
-import { numberConfig } from "./numberConfig";
-import type { NumberConfigFactory } from "./numberConfig";
+import { toInteger, toString } from '@typescript-entity/sanitizers';
+import { numberConfig } from './numberConfig';
+import type { NumberConfigFactory } from './numberConfig';
 
 export type IntegerConfigFactory<
   Optional extends boolean = false,

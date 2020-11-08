@@ -1,7 +1,7 @@
-import { isBefore } from "@typescript-entity/validators";
-import type { IsBeforeOptions } from "@typescript-entity/validators";
-import { dateConfig } from "./dateConfig";
-import type { DateConfigFactory } from "./dateConfig";
+import { isBefore } from '@typescript-entity/validators';
+import type { IsBeforeOptions } from '@typescript-entity/validators';
+import { dateConfig } from './dateConfig';
+import type { DateConfigFactory } from './dateConfig';
 
 export type DateInPastConfigFactory<
   Optional extends boolean = false,

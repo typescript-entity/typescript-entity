@@ -1,10 +1,10 @@
-import { cloneDeep } from "lodash";
-import { FnAttrError } from "../error/FnAttrError";
-import { NormalizationError } from "../error/NormalizationError";
-import { ReadOnlyError } from "../error/ReadOnlyError";
-import { SanitizationError } from "../error/SanitizationError";
-import { UnconfiguredAttrError } from "../error/UnconfiguredAttrError";
-import { ValidationError } from "../error/ValidationError";
+import { cloneDeep } from 'lodash';
+import { FnAttrError } from '../error/FnAttrError';
+import { NormalizationError } from '../error/NormalizationError';
+import { ReadOnlyError } from '../error/ReadOnlyError';
+import { SanitizationError } from '../error/SanitizationError';
+import { UnconfiguredAttrError } from '../error/UnconfiguredAttrError';
+import { ValidationError } from '../error/ValidationError';
 
 type Entries<T> = {
   [K in keyof T]: [ K, T[K] ];
@@ -49,7 +49,7 @@ export type Attrs<T extends Configs> = {
   [K in keyof T]: Attr<T, K>;
 };
 
-export type Attr<T extends Configs, K extends keyof T> = T[K] extends FnConfig ? ReturnType<T[K]["fn"]> : T[K] extends ValueConfig ? T[K]["value"] : never;
+export type Attr<T extends Configs, K extends keyof T> = T[K] extends FnConfig ? ReturnType<T[K]['fn']> : T[K] extends ValueConfig ? T[K]['value'] : never;
 
 export type ValueAttrs<T extends Configs> = Attrs<Pick<T, {
   [K in keyof T]: T[K] extends ValueConfig ? K : never;
@@ -60,24 +60,24 @@ export type FnAttrs<T extends Configs> = Attrs<Pick<T, {
 }[keyof T]>>;
 
 export type HiddenAttrs<T extends Configs> = Attrs<Pick<T, {
-  [K in keyof T]: T[K]["hidden"] extends true ? K : never;
+  [K in keyof T]: T[K]['hidden'] extends true ? K : never;
 }[keyof T]>>;
 
 export type VisibleAttrs<T extends Configs> = Attrs<Pick<T, {
-  [K in keyof T]: T[K]["hidden"] extends true ? never : K;
+  [K in keyof T]: T[K]['hidden'] extends true ? never : K;
 }[keyof T]>>;
 
 export type ReadOnlyAttrs<T extends Configs> = Pick<ValueAttrs<T>, {
-  [K in keyof ValueAttrs<T>]: T[K] extends ValueConfig ? T[K]["readOnly"] extends true ? K : never : never;
+  [K in keyof ValueAttrs<T>]: T[K] extends ValueConfig ? T[K]['readOnly'] extends true ? K : never : never;
 }[keyof ValueAttrs<T>]>;
 
 export type WritableAttrs<T extends Configs> = Omit<ValueAttrs<T>, keyof ReadOnlyAttrs<T>>;
 
 export type InitialAttrs<T extends Configs> = Partial<ValueAttrs<T>>;
 
-const isFnConfig = <T extends Value>(config: ValueConfig<T> | FnConfig<T>): config is FnConfig<T> => "fn" in config;
+const isFnConfig = <T extends Value>(config: ValueConfig<T> | FnConfig<T>): config is FnConfig<T> => 'fn' in config;
 
-const isValueConfig = <T extends Value>(config: ValueConfig<T> | FnConfig<T>): config is ValueConfig<T> => "value" in config;
+const isValueConfig = <T extends Value>(config: ValueConfig<T> | FnConfig<T>): config is ValueConfig<T> => 'value' in config;
 
 export abstract class Entity<C extends Configs = Configs> {
 
@@ -115,7 +115,7 @@ export abstract class Entity<C extends Configs = Configs> {
 
     this._configs.forEach((config) => {
       if (isValueConfig(config) && config.readOnly) {
-        Object.defineProperty(config, "value", { writable: false });
+        Object.defineProperty(config, 'value', { writable: false });
       }
     });
   }
@@ -143,7 +143,7 @@ export abstract class Entity<C extends Configs = Configs> {
   public sanitize<K extends keyof ValueAttrs<C>, V extends ValueAttrs<C>[K]>(name: K, value: unknown): ReturnType<NormalizerFn<V>> {
     const config = this._config(name);
     if (isFnConfig(config)) {
-      throw new FnAttrError(this, name, "Function attributes cannot be sanitized.");
+      throw new FnAttrError(this, name, 'Function attributes cannot be sanitized.');
     }
     try {
       return config.sanitizer.call(this, value);
@@ -165,7 +165,7 @@ export abstract class Entity<C extends Configs = Configs> {
   public normalize<K extends keyof ValueAttrs<C>, V extends ValueAttrs<C>[K]>(name: K, value: V): ReturnType<NormalizerFn<V>> {
     const config = this._config(name);
     if (isFnConfig(config)) {
-      throw new FnAttrError(this, name, "Function attributes cannot be normalized.");
+      throw new FnAttrError(this, name, 'Function attributes cannot be normalized.');
     }
     try {
       return (undefined !== value && null !== value && undefined !== config.normalizer)
@@ -191,7 +191,7 @@ export abstract class Entity<C extends Configs = Configs> {
   public validate<K extends keyof ValueAttrs<C>, V extends ValueAttrs<C>[K]>(name: K, value: V, throws = true): ReturnType<ValidatorFn<V>> {
     const config = this._config(name);
     if (isFnConfig(config)) {
-      throw new FnAttrError(this, name, "Function attributes cannot be validated.");
+      throw new FnAttrError(this, name, 'Function attributes cannot be validated.');
     }
     try {
       if (
@@ -339,9 +339,9 @@ export abstract class Entity<C extends Configs = Configs> {
   public set<K extends keyof WritableAttrs<C>, V extends WritableAttrs<C>[K]>(name: K, value: V): this {
     const config = this._config(name);
     if (isFnConfig(config)) {
-      throw new FnAttrError(this, name, "Function attributes cannot be modified.");
+      throw new FnAttrError(this, name, 'Function attributes cannot be modified.');
     }
-    const descriptor = Object.getOwnPropertyDescriptor(config, "value");
+    const descriptor = Object.getOwnPropertyDescriptor(config, 'value');
     if (descriptor && !descriptor.writable) {
       throw new ReadOnlyError(this, name, value);
     }
@@ -361,7 +361,7 @@ export abstract class Entity<C extends Configs = Configs> {
    * @param attrs
    */
   public fill(attrs: Partial<WritableAttrs<C>>): this {
-    (Object.entries("object" === typeof attrs && null !== attrs ? attrs : {}) as Entries<WritableAttrs<C>>)
+    (Object.entries('object' === typeof attrs && null !== attrs ? attrs : {}) as Entries<WritableAttrs<C>>)
       .forEach(([ name, value ]) => {
         // Prevent abuse of Partial which allows setting required attributes to undefined
         // https://github.com/microsoft/TypeScript/issues/13195

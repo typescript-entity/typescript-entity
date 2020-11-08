@@ -1,12 +1,12 @@
-import type { Fn, FnConfig, Value } from "@typescript-entity/core";
-import type { ResolvedValue } from "./ConfigFactory";
+import type { Fn, FnConfig, Value } from '@typescript-entity/core';
+import type { ResolvedValue } from './ConfigFactory';
 
 export type FnConfigFactory<
   T extends Value,
   Optional extends boolean = false,
   Hidden extends boolean = false
 > = (
-  Pick<FnConfig<ResolvedValue<T, Optional>>, "fn">
+  Pick<FnConfig<ResolvedValue<T, Optional>>, 'fn'>
   & (Hidden extends true ? { hidden: true } : { hidden?: false })
 );
 

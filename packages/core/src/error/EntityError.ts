@@ -1,6 +1,6 @@
-import { Entity } from "../entity/Entity";
-import type { Configs } from "../entity/Entity";
-import { RethrownError } from "./RethrownError";
+import { Entity } from '../entity/Entity';
+import type { Configs } from '../entity/Entity';
+import { RethrownError } from './RethrownError';
 
 export class EntityError<C extends Configs = Configs> extends RethrownError {
 

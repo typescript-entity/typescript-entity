@@ -1,6 +1,6 @@
-import { toFloat, toString } from "@typescript-entity/sanitizers";
-import { numberConfig } from "./numberConfig";
-import type { NumberConfigFactory } from "./numberConfig";
+import { toFloat, toString } from '@typescript-entity/sanitizers';
+import { numberConfig } from './numberConfig';
+import type { NumberConfigFactory } from './numberConfig';
 
 export type FloatConfigFactory<
   Optional extends boolean = false,

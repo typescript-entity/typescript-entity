@@ -1,4 +1,4 @@
-import { trim as _trim } from "lodash";
+import { trim as _trim } from 'lodash';
 
 export type TrimOptions = { chars?: string };
 

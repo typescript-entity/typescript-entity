@@ -1,5 +1,5 @@
-import { toDate, toString } from "@typescript-entity/sanitizers";
-import type { ConfigFactory } from "./ConfigFactory";
+import { toDate, toString } from '@typescript-entity/sanitizers';
+import type { ConfigFactory } from './ConfigFactory';
 
 export type DateConfigFactory<
   Optional extends boolean = false,

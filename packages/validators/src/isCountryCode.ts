@@ -1,4 +1,4 @@
-import validator from "validator";
+import validator from 'validator';
 
 export interface IsCountryCodeOptions {
   alpha3?: boolean;

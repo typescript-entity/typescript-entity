@@ -1,4 +1,4 @@
-import type { Value, ValueConfig } from "@typescript-entity/core";
+import type { Value, ValueConfig } from '@typescript-entity/core';
 
 type ArrayType<T extends Array<Value>> = T extends (infer R)[] ? R : never;
 
@@ -21,11 +21,11 @@ export type ConfigFactory<
   ValueConfig<ResolvedValue<T, Optional>> extends infer C
   ? C extends ValueConfig<ResolvedValue<T, Optional>>
     ? (
-      Pick<C, "value" | "sanitizer">
+      Pick<C, 'value' | 'sanitizer'>
       & (Hidden extends true ? { hidden: true } : { hidden?: false })
       & (ReadOnly extends true ? { readOnly: true } : { readOnly?: false })
-      & (Normalizer extends true ? Pick<Required<C>, "normalizer"> : { normalizer?: undefined })
-      & (Validator extends true ? Pick<Required<C>, "validator"> : { validator?: undefined })
+      & (Normalizer extends true ? Pick<Required<C>, 'normalizer'> : { normalizer?: undefined })
+      & (Validator extends true ? Pick<Required<C>, 'validator'> : { validator?: undefined })
     )
     : never
   : never

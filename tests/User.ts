@@ -1,8 +1,8 @@
-import { booleanConfig, dateInPastConfig, emailConfig, fnConfig, stringConfig, uuidConfig } from "../packages/configs/src/";
-import type { BooleanConfigFactory, DateInPastConfigFactory, EmailConfigFactory, FnConfigFactory, StringConfigFactory, UUIDConfigFactory } from "../packages/configs/src/";
-import { Entity } from "../packages/core/src/";
-import type { Attr, Attrs, InitialAttrs } from "../packages/core/src/";
-import { isLength } from "../packages/validators/src/";
+import { booleanConfig, dateInPastConfig, emailConfig, fnConfig, stringConfig, uuidConfig } from '../packages/configs/src/';
+import type { BooleanConfigFactory, DateInPastConfigFactory, EmailConfigFactory, FnConfigFactory, StringConfigFactory, UUIDConfigFactory } from '../packages/configs/src/';
+import { Entity } from '../packages/core/src/';
+import type { Attr, Attrs, InitialAttrs } from '../packages/core/src/';
+import { isLength } from '../packages/validators/src/';
 
 export type UserDateOfBirthConfig = DateInPastConfigFactory;
 
@@ -28,7 +28,7 @@ export type UserConfigs = {
 export const CONFIGS: UserConfigs = {
   date_of_birth: dateInPastConfig(),
   email: emailConfig(),
-  email_domain: fnConfig(function(this: User): string | undefined { return this.email.split("@", 2)[1] || undefined }, true),
+  email_domain: fnConfig(function(this: User): string | undefined { return this.email.split('@', 2)[1] || undefined }, true),
   uuid: uuidConfig(true, true, true),
   username: {
     ...stringConfig(),
@@ -43,40 +43,40 @@ export class User extends Entity<UserConfigs> implements Attrs<UserConfigs> {
     super(CONFIGS, attrs);
   }
 
-  get date_of_birth(): Attr<UserConfigs, "date_of_birth"> {
-    return this.one("date_of_birth");
+  get date_of_birth(): Attr<UserConfigs, 'date_of_birth'> {
+    return this.one('date_of_birth');
   }
 
-  set date_of_birth(value: Attr<UserConfigs, "date_of_birth">) {
-    this.set("date_of_birth", value);
+  set date_of_birth(value: Attr<UserConfigs, 'date_of_birth'>) {
+    this.set('date_of_birth', value);
   }
 
-  get email(): Attr<UserConfigs, "email"> {
-    return this.one("email");
+  get email(): Attr<UserConfigs, 'email'> {
+    return this.one('email');
   }
 
-  set email(value: Attr<UserConfigs, "email">) {
-    this.set("email", value);
+  set email(value: Attr<UserConfigs, 'email'>) {
+    this.set('email', value);
   }
 
-  get email_domain(): Attr<UserConfigs, "email_domain"> {
-    return this.one("email_domain");
+  get email_domain(): Attr<UserConfigs, 'email_domain'> {
+    return this.one('email_domain');
   }
 
-  get uuid(): Attr<UserConfigs, "uuid"> {
-    return this.one("uuid");
+  get uuid(): Attr<UserConfigs, 'uuid'> {
+    return this.one('uuid');
   }
 
-  get username(): Attr<UserConfigs, "username"> {
-    return this.one("username");
+  get username(): Attr<UserConfigs, 'username'> {
+    return this.one('username');
   }
 
-  set username(value: Attr<UserConfigs, "username">) {
-    this.set("username", value);
+  set username(value: Attr<UserConfigs, 'username'>) {
+    this.set('username', value);
   }
 
-  get verified(): Attr<UserConfigs, "verified"> {
-    return this.one("verified");
+  get verified(): Attr<UserConfigs, 'verified'> {
+    return this.one('verified');
   }
 
 }

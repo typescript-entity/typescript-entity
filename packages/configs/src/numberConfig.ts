@@ -1,5 +1,5 @@
-import type { ConfigFactory } from "./ConfigFactory";
-import { toNumber, toString } from "@typescript-entity/sanitizers";
+import type { ConfigFactory } from './ConfigFactory';
+import { toNumber, toString } from '@typescript-entity/sanitizers';
 
 export type NumberConfigFactory<
   Optional extends boolean = false,

@@ -1,6 +1,6 @@
-import type { ConfigFactory } from "./ConfigFactory";
-import { toBoolean, toString } from "@typescript-entity/sanitizers";
-import type { ToBooleanOptions } from "@typescript-entity/sanitizers";
+import type { ConfigFactory } from './ConfigFactory';
+import { toBoolean, toString } from '@typescript-entity/sanitizers';
+import type { ToBooleanOptions } from '@typescript-entity/sanitizers';
 
 export type BooleanConfigFactory<
   Optional extends boolean = false,
