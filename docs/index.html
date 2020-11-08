@@ -122,8 +122,8 @@
 					<h3>Verbose Usage</h3>
 				</a>
 				<p>You may prefer to <a href="#simplified-usage">skip to Simplified Usage</a>.</p>
-				<pre><code class="language-typescript"><span class="hljs-keyword">import</span> { Entity } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@typescript-entity/core&quot;</span>;
-<span class="hljs-keyword">import</span> <span class="hljs-keyword">type</span> { Attr, Attrs, FnValue, InitialAttrs, NormalizerFn, SanitizerFn, ValidatorFn } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@typescript-entity/core&quot;</span>;
+				<pre><code class="language-typescript"><span class="hljs-keyword">import</span> { Entity } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@typescript-entity/core&#x27;</span>;
+<span class="hljs-keyword">import</span> <span class="hljs-keyword">type</span> { Attr, Attrs, FnValue, InitialAttrs, NormalizerFn, SanitizerFn, ValidatorFn } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@typescript-entity/core&#x27;</span>;
 
 <span class="hljs-comment">// ID is an optional number, must be read-only and must have a validator function defined. Like all</span>
 <span class="hljs-comment">// non-function attributes, it must also have a sanitizer function defined.</span>
@@ -174,7 +174,7 @@
       <span class="hljs-attr">validator</span>: (value: <span class="hljs-built_in">number</span>): <span class="hljs-function"><span class="hljs-params">boolean</span> =&gt;</span> value &gt; <span class="hljs-number">0</span>,
     },
     <span class="hljs-attr">name</span>: {
-      <span class="hljs-attr">value</span>: <span class="hljs-string">&quot;&quot;</span>, <span class="hljs-comment">// Name was configured as a required string so can&#x27;t use undefined here</span>
+      <span class="hljs-attr">value</span>: <span class="hljs-string">&#x27;&#x27;</span>, <span class="hljs-comment">// Name was configured as a required string so can&#x27;t use undefined here</span>
       <span class="hljs-attr">sanitizer</span>: (value: unknown): <span class="hljs-function"><span class="hljs-params">string</span> =&gt;</span> <span class="hljs-built_in">String</span>(value),
       <span class="hljs-attr">normalizer</span>: (value: <span class="hljs-built_in">string</span>): <span class="hljs-function"><span class="hljs-params">string</span> =&gt;</span> value.trim(),
     },
@@ -201,38 +201,38 @@
   <span class="hljs-comment">// and setters for each attribute on the entity which makes it easier to interact with instances.</span>
   <span class="hljs-comment">// Types do not need to be specified since they are inferred from Configs.</span>
 
-  <span class="hljs-keyword">get</span> <span class="hljs-title">id</span>(): <span class="hljs-title">Attr</span>&lt;<span class="hljs-title">Configs</span>, &quot;<span class="hljs-title">id</span>&quot;&gt; {
-    <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>.one(<span class="hljs-string">&quot;id&quot;</span>);
+  <span class="hljs-keyword">get</span> <span class="hljs-title">id</span>(): <span class="hljs-title">Attr</span>&lt;<span class="hljs-title">Configs</span>, &#x27;<span class="hljs-title">id</span>&#x27;&gt; {
+    <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>.one(<span class="hljs-string">&#x27;id&#x27;</span>);
   }
 
   <span class="hljs-comment">// IDConfig is a read-only attribute so TypeScript will correctly prevent us from setting it.</span>
-  <span class="hljs-comment">//set id(value: Attr&lt;Configs, &quot;id&quot;&gt;) {</span>
-  <span class="hljs-comment">//  this.set(&quot;id&quot;, value);</span>
+  <span class="hljs-comment">//set id(value: Attr&lt;Configs, &#x27;id&#x27;&gt;) {</span>
+  <span class="hljs-comment">//  this.set(&#x27;id&#x27;, value);</span>
   <span class="hljs-comment">//}</span>
 
-  <span class="hljs-keyword">get</span> <span class="hljs-title">name</span>(): <span class="hljs-title">Attr</span>&lt;<span class="hljs-title">Configs</span>, &quot;<span class="hljs-title">name</span>&quot;&gt; {
-    <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>.one(<span class="hljs-string">&quot;name&quot;</span>);
+  <span class="hljs-keyword">get</span> <span class="hljs-title">name</span>(): <span class="hljs-title">Attr</span>&lt;<span class="hljs-title">Configs</span>, &#x27;<span class="hljs-title">name</span>&#x27;&gt; {
+    <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>.one(<span class="hljs-string">&#x27;name&#x27;</span>);
   }
 
-  <span class="hljs-keyword">set</span> <span class="hljs-title">name</span>(<span class="hljs-params">value: Attr&lt;Configs, <span class="hljs-string">&quot;name&quot;</span>&gt;</span>) {
-    <span class="hljs-built_in">this</span>.set(<span class="hljs-string">&quot;name&quot;</span>, value);
+  <span class="hljs-keyword">set</span> <span class="hljs-title">name</span>(<span class="hljs-params">value: Attr&lt;Configs, <span class="hljs-string">&#x27;name&#x27;</span>&gt;</span>) {
+    <span class="hljs-built_in">this</span>.set(<span class="hljs-string">&#x27;name&#x27;</span>, value);
   }
 
-  <span class="hljs-keyword">get</span> <span class="hljs-title">username</span>(): <span class="hljs-title">Attr</span>&lt;<span class="hljs-title">Configs</span>, &quot;<span class="hljs-title">username</span>&quot;&gt; {
-    <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>.one(<span class="hljs-string">&quot;username&quot;</span>);
+  <span class="hljs-keyword">get</span> <span class="hljs-title">username</span>(): <span class="hljs-title">Attr</span>&lt;<span class="hljs-title">Configs</span>, &#x27;<span class="hljs-title">username</span>&#x27;&gt; {
+    <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>.one(<span class="hljs-string">&#x27;username&#x27;</span>);
   }
 
   <span class="hljs-comment">// UsernameConfig is a function attribute so TypeScript will correctly prevent us from setting it.</span>
-  <span class="hljs-comment">//set username(value: Attr&lt;Configs, &quot;username&quot;&gt;) {</span>
-  <span class="hljs-comment">//  this.set(&quot;username&quot;, value);</span>
+  <span class="hljs-comment">//set username(value: Attr&lt;Configs, &#x27;username&#x27;&gt;) {</span>
+  <span class="hljs-comment">//  this.set(&#x27;username&#x27;, value);</span>
   <span class="hljs-comment">//}</span>
 
-  <span class="hljs-keyword">get</span> <span class="hljs-title">smelly</span>(): <span class="hljs-title">Attr</span>&lt;<span class="hljs-title">Configs</span>, &quot;<span class="hljs-title">smelly</span>&quot;&gt; {
-    <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>.one(<span class="hljs-string">&quot;smelly&quot;</span>);
+  <span class="hljs-keyword">get</span> <span class="hljs-title">smelly</span>(): <span class="hljs-title">Attr</span>&lt;<span class="hljs-title">Configs</span>, &#x27;<span class="hljs-title">smelly</span>&#x27;&gt; {
+    <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>.one(<span class="hljs-string">&#x27;smelly&#x27;</span>);
   }
 
-  <span class="hljs-keyword">set</span> <span class="hljs-title">smelly</span>(<span class="hljs-params">value: Attr&lt;Configs, <span class="hljs-string">&quot;smelly&quot;</span>&gt;</span>) {
-    <span class="hljs-built_in">this</span>.set(<span class="hljs-string">&quot;smelly&quot;</span>, value);
+  <span class="hljs-keyword">set</span> <span class="hljs-title">smelly</span>(<span class="hljs-params">value: Attr&lt;Configs, <span class="hljs-string">&#x27;smelly&#x27;</span>&gt;</span>) {
+    <span class="hljs-built_in">this</span>.set(<span class="hljs-string">&#x27;smelly&#x27;</span>, value);
   }
 
 }</code></pre>
@@ -240,11 +240,11 @@
 					<h3>Simplified Usage</h3>
 				</a>
 				<p>The <a href="#verbose-usage">example above</a> is intentionally verbose for instructional purposes. Much of it can be simplified using the optional helper packages...</p>
-				<pre><code class="language-typescript"><span class="hljs-keyword">import</span> { booleanConfig, fnConfig, positiveIntegerConfig, stringConfig } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@typescript-entity/configs&quot;</span>;
-<span class="hljs-keyword">import</span> <span class="hljs-keyword">type</span> { BooleanConfigFactory, FnConfigFactory, PositiveIntegerConfigFactory, StringConfigFactory } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@typescript-entity/configs&quot;</span>;
-<span class="hljs-keyword">import</span> { Entity } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@typescript-entity/core&quot;</span>;
-<span class="hljs-keyword">import</span> <span class="hljs-keyword">type</span> { Attr, Attrs, InitialAttrs } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@typescript-entity/core&quot;</span>;
-<span class="hljs-keyword">import</span> { trim } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@typescript-entity/normalizers&quot;</span>;
+				<pre><code class="language-typescript"><span class="hljs-keyword">import</span> { booleanConfig, fnConfig, positiveIntegerConfig, stringConfig } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@typescript-entity/configs&#x27;</span>;
+<span class="hljs-keyword">import</span> <span class="hljs-keyword">type</span> { BooleanConfigFactory, FnConfigFactory, PositiveIntegerConfigFactory, StringConfigFactory } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@typescript-entity/configs&#x27;</span>;
+<span class="hljs-keyword">import</span> { Entity } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@typescript-entity/core&#x27;</span>;
+<span class="hljs-keyword">import</span> <span class="hljs-keyword">type</span> { Attr, Attrs, InitialAttrs } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@typescript-entity/core&#x27;</span>;
+<span class="hljs-keyword">import</span> { trim } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@typescript-entity/normalizers&#x27;</span>;
 
 <span class="hljs-keyword">type</span> IDConfig = PositiveIntegerConfigFactory&lt;<span class="hljs-literal">true</span>, <span class="hljs-literal">false</span>, <span class="hljs-literal">true</span>&gt;;
 <span class="hljs-keyword">type</span> NameConfig = StringConfigFactory&lt;<span class="hljs-literal">false</span>, <span class="hljs-literal">false</span>, <span class="hljs-literal">false</span>, <span class="hljs-literal">true</span>&gt;;
@@ -274,28 +274,28 @@
     <span class="hljs-built_in">super</span>(Person.CONFIGS, attrs);
   }
 
-  <span class="hljs-keyword">get</span> <span class="hljs-title">id</span>(): <span class="hljs-title">Attr</span>&lt;<span class="hljs-title">Configs</span>, &quot;<span class="hljs-title">id</span>&quot;&gt; {
-    <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>.one(<span class="hljs-string">&quot;id&quot;</span>);
+  <span class="hljs-keyword">get</span> <span class="hljs-title">id</span>(): <span class="hljs-title">Attr</span>&lt;<span class="hljs-title">Configs</span>, &#x27;<span class="hljs-title">id</span>&#x27;&gt; {
+    <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>.one(<span class="hljs-string">&#x27;id&#x27;</span>);
   }
 
-  <span class="hljs-keyword">get</span> <span class="hljs-title">name</span>(): <span class="hljs-title">Attr</span>&lt;<span class="hljs-title">Configs</span>, &quot;<span class="hljs-title">name</span>&quot;&gt; {
-    <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>.one(<span class="hljs-string">&quot;name&quot;</span>);
+  <span class="hljs-keyword">get</span> <span class="hljs-title">name</span>(): <span class="hljs-title">Attr</span>&lt;<span class="hljs-title">Configs</span>, &#x27;<span class="hljs-title">name</span>&#x27;&gt; {
+    <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>.one(<span class="hljs-string">&#x27;name&#x27;</span>);
   }
 
-  <span class="hljs-keyword">set</span> <span class="hljs-title">name</span>(<span class="hljs-params">value: Attr&lt;Configs, <span class="hljs-string">&quot;name&quot;</span>&gt;</span>) {
-    <span class="hljs-built_in">this</span>.set(<span class="hljs-string">&quot;name&quot;</span>, value);
+  <span class="hljs-keyword">set</span> <span class="hljs-title">name</span>(<span class="hljs-params">value: Attr&lt;Configs, <span class="hljs-string">&#x27;name&#x27;</span>&gt;</span>) {
+    <span class="hljs-built_in">this</span>.set(<span class="hljs-string">&#x27;name&#x27;</span>, value);
   }
 
-  <span class="hljs-keyword">get</span> <span class="hljs-title">username</span>(): <span class="hljs-title">Attr</span>&lt;<span class="hljs-title">Configs</span>, &quot;<span class="hljs-title">username</span>&quot;&gt; {
-    <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>.one(<span class="hljs-string">&quot;username&quot;</span>);
+  <span class="hljs-keyword">get</span> <span class="hljs-title">username</span>(): <span class="hljs-title">Attr</span>&lt;<span class="hljs-title">Configs</span>, &#x27;<span class="hljs-title">username</span>&#x27;&gt; {
+    <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>.one(<span class="hljs-string">&#x27;username&#x27;</span>);
   }
 
-  <span class="hljs-keyword">get</span> <span class="hljs-title">smelly</span>(): <span class="hljs-title">Attr</span>&lt;<span class="hljs-title">Configs</span>, &quot;<span class="hljs-title">smelly</span>&quot;&gt; {
-    <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>.one(<span class="hljs-string">&quot;smelly&quot;</span>);
+  <span class="hljs-keyword">get</span> <span class="hljs-title">smelly</span>(): <span class="hljs-title">Attr</span>&lt;<span class="hljs-title">Configs</span>, &#x27;<span class="hljs-title">smelly</span>&#x27;&gt; {
+    <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>.one(<span class="hljs-string">&#x27;smelly&#x27;</span>);
   }
 
-  <span class="hljs-keyword">set</span> <span class="hljs-title">smelly</span>(<span class="hljs-params">value: Attr&lt;Configs, <span class="hljs-string">&quot;smelly&quot;</span>&gt;</span>) {
-    <span class="hljs-built_in">this</span>.set(<span class="hljs-string">&quot;smelly&quot;</span>, value);
+  <span class="hljs-keyword">set</span> <span class="hljs-title">smelly</span>(<span class="hljs-params">value: Attr&lt;Configs, <span class="hljs-string">&#x27;smelly&#x27;</span>&gt;</span>) {
+    <span class="hljs-built_in">this</span>.set(<span class="hljs-string">&#x27;smelly&#x27;</span>, value);
   }
 
 }</code></pre>
@@ -304,25 +304,25 @@
 				</a>
 				<pre><code class="language-typescript"><span class="hljs-keyword">const</span> person = <span class="hljs-keyword">new</span> Person();
 <span class="hljs-built_in">console</span>.log(person.id); <span class="hljs-comment">// 0</span>
-<span class="hljs-built_in">console</span>.log(person.name); <span class="hljs-comment">// &quot;&quot;</span>
-<span class="hljs-built_in">console</span>.log(person.username); <span class="hljs-comment">// &quot;&quot;</span>
+<span class="hljs-built_in">console</span>.log(person.name); <span class="hljs-comment">// &#x27;&#x27;</span>
+<span class="hljs-built_in">console</span>.log(person.username); <span class="hljs-comment">// &#x27;&#x27;</span>
 <span class="hljs-built_in">console</span>.log(person.smelly); <span class="hljs-comment">// false</span>
 <span class="hljs-built_in">console</span>.log(<span class="hljs-built_in">JSON</span>.stringify(person)); <span class="hljs-comment">// {&quot;name&quot;:&quot;&quot;,&quot;username&quot;:&quot;&quot;}</span></code></pre>
 				<pre><code class="language-typescript"><span class="hljs-keyword">const</span> bob = <span class="hljs-keyword">new</span> Person({
   <span class="hljs-attr">id</span>: <span class="hljs-number">123</span>,
-  <span class="hljs-attr">name</span>: <span class="hljs-string">&quot;  Bob  &quot;</span>,
+  <span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;  Bob  &#x27;</span>,
   <span class="hljs-attr">smelly</span>: <span class="hljs-literal">true</span>,
 });
 <span class="hljs-built_in">console</span>.log(bob.id); <span class="hljs-comment">// 123</span>
-<span class="hljs-built_in">console</span>.log(bob.name); <span class="hljs-comment">// &quot;Bob&quot;</span>
-<span class="hljs-built_in">console</span>.log(bob.username); <span class="hljs-comment">// &quot;bob&quot;</span>
+<span class="hljs-built_in">console</span>.log(bob.name); <span class="hljs-comment">// &#x27;Bob&#x27;</span>
+<span class="hljs-built_in">console</span>.log(bob.username); <span class="hljs-comment">// &#x27;bob&#x27;</span>
 <span class="hljs-built_in">console</span>.log(bob.smelly); <span class="hljs-comment">// true</span>
 <span class="hljs-built_in">console</span>.log(<span class="hljs-built_in">JSON</span>.stringify(bob)); <span class="hljs-comment">// {&quot;id&quot;:123,&quot;name&quot;:&quot;Bob&quot;,&quot;username&quot;:&quot;bob&quot;}</span></code></pre>
 				<pre><code class="language-typescript"><span class="hljs-keyword">const</span> json = <span class="hljs-string">&#x27;{&quot;id&quot;:&quot;123&quot;,&quot;name&quot;:&quot;Jane  &quot;,&quot;username&quot;:&quot;janerocks&quot;,&quot;smelly&quot;:true}&#x27;</span>;
 <span class="hljs-keyword">const</span> jane = <span class="hljs-keyword">new</span> Person(<span class="hljs-built_in">JSON</span>.parse(json));
 <span class="hljs-built_in">console</span>.log(jane.id); <span class="hljs-comment">// 123 (sanitized from string to number)</span>
-<span class="hljs-built_in">console</span>.log(jane.name); <span class="hljs-comment">// &quot;Jane&quot; (normalized to remove trailing whitespace)</span>
-<span class="hljs-built_in">console</span>.log(jane.username); <span class="hljs-comment">// &quot;jane&quot; (the JSON value was ignored as this is a function attr)</span>
+<span class="hljs-built_in">console</span>.log(jane.name); <span class="hljs-comment">// &#x27;Jane&#x27; (normalized to remove trailing whitespace)</span>
+<span class="hljs-built_in">console</span>.log(jane.username); <span class="hljs-comment">// &#x27;jane&#x27; (the JSON value was ignored as this is a function attr)</span>
 <span class="hljs-built_in">console</span>.log(jane.smelly); <span class="hljs-comment">// true (the JSON value was allowed even though this is a read-only attr)</span></code></pre>
 				<a href="#api-documentation" id="api-documentation" style="color: inherit; text-decoration: none;">
 					<h2>API Documentation</h2>
