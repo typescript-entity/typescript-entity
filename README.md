@@ -139,7 +139,7 @@ export class Person extends Entity<Configs> implements Attrs<Configs> {
   // Allow consumers to provide some/all attributes during construction to override the default
   // values provided in the configs. Attributes passed to the constructor can include values for
   // read-only values but not for function attributes.
-  constructor(attrs: InitialAttrs<Configs> = {}) {
+  public constructor(attrs: InitialAttrs<Configs> = {}) {
     super(Person.CONFIGS, attrs);
   }
 
@@ -147,37 +147,37 @@ export class Person extends Entity<Configs> implements Attrs<Configs> {
   // and setters for each attribute on the entity which makes it easier to interact with instances.
   // Types do not need to be specified since they are inferred from Configs.
 
-  get id(): Attr<Configs, 'id'> {
+  public get id(): Attr<Configs, 'id'> {
     return this.one('id');
   }
 
   // IDConfig is a read-only attribute so TypeScript will correctly prevent us from setting it.
-  //set id(value: Attr<Configs, 'id'>) {
+  //public set id(value: Attr<Configs, 'id'>) {
   //  this.set('id', value);
   //}
 
-  get name(): Attr<Configs, 'name'> {
+  public get name(): Attr<Configs, 'name'> {
     return this.one('name');
   }
 
-  set name(value: Attr<Configs, 'name'>) {
+  public set name(value: Attr<Configs, 'name'>) {
     this.set('name', value);
   }
 
-  get username(): Attr<Configs, 'username'> {
+  public get username(): Attr<Configs, 'username'> {
     return this.one('username');
   }
 
   // UsernameConfig is a function attribute so TypeScript will correctly prevent us from setting it.
-  //set username(value: Attr<Configs, 'username'>) {
+  //public set username(value: Attr<Configs, 'username'>) {
   //  this.set('username', value);
   //}
 
-  get smelly(): Attr<Configs, 'smelly'> {
+  public get smelly(): Attr<Configs, 'smelly'> {
     return this.one('smelly');
   }
 
-  set smelly(value: Attr<Configs, 'smelly'>) {
+  public set smelly(value: Attr<Configs, 'smelly'>) {
     this.set('smelly', value);
   }
 
@@ -219,31 +219,31 @@ export class Person extends Entity<Configs> implements Attrs<Configs> {
     smelly: booleanConfig(false, true),
   };
 
-  constructor(attrs: InitialAttrs<Configs> = {}) {
+  public constructor(attrs: InitialAttrs<Configs> = {}) {
     super(Person.CONFIGS, attrs);
   }
 
-  get id(): Attr<Configs, 'id'> {
+  public get id(): Attr<Configs, 'id'> {
     return this.one('id');
   }
 
-  get name(): Attr<Configs, 'name'> {
+  public get name(): Attr<Configs, 'name'> {
     return this.one('name');
   }
 
-  set name(value: Attr<Configs, 'name'>) {
+  public set name(value: Attr<Configs, 'name'>) {
     this.set('name', value);
   }
 
-  get username(): Attr<Configs, 'username'> {
+  public get username(): Attr<Configs, 'username'> {
     return this.one('username');
   }
 
-  get smelly(): Attr<Configs, 'smelly'> {
+  public get smelly(): Attr<Configs, 'smelly'> {
     return this.one('smelly');
   }
 
-  set smelly(value: Attr<Configs, 'smelly'>) {
+  public set smelly(value: Attr<Configs, 'smelly'>) {
     this.set('smelly', value);
   }
 

@@ -39,43 +39,43 @@ export const CONFIGS: UserConfigs = {
 
 export class User extends Entity<UserConfigs> implements Attrs<UserConfigs> {
 
-  constructor(attrs: InitialAttrs<UserConfigs> = {}) {
+  public constructor(attrs: InitialAttrs<UserConfigs> = {}) {
     super(CONFIGS, attrs);
   }
 
-  get date_of_birth(): Attr<UserConfigs, 'date_of_birth'> {
+  public get date_of_birth(): Attr<UserConfigs, 'date_of_birth'> {
     return this.one('date_of_birth');
   }
 
-  set date_of_birth(value: Attr<UserConfigs, 'date_of_birth'>) {
+  public set date_of_birth(value: Attr<UserConfigs, 'date_of_birth'>) {
     this.set('date_of_birth', value);
   }
 
-  get email(): Attr<UserConfigs, 'email'> {
+  public get email(): Attr<UserConfigs, 'email'> {
     return this.one('email');
   }
 
-  set email(value: Attr<UserConfigs, 'email'>) {
+  public set email(value: Attr<UserConfigs, 'email'>) {
     this.set('email', value);
   }
 
-  get email_domain(): Attr<UserConfigs, 'email_domain'> {
+  public get email_domain(): Attr<UserConfigs, 'email_domain'> {
     return this.one('email_domain');
   }
 
-  get uuid(): Attr<UserConfigs, 'uuid'> {
+  public get uuid(): Attr<UserConfigs, 'uuid'> {
     return this.one('uuid');
   }
 
-  get username(): Attr<UserConfigs, 'username'> {
+  public get username(): Attr<UserConfigs, 'username'> {
     return this.one('username');
   }
 
-  set username(value: Attr<UserConfigs, 'username'>) {
+  public set username(value: Attr<UserConfigs, 'username'>) {
     this.set('username', value);
   }
 
-  get verified(): Attr<UserConfigs, 'verified'> {
+  public get verified(): Attr<UserConfigs, 'verified'> {
     return this.one('verified');
   }
 

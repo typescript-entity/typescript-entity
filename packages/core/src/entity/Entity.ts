@@ -97,7 +97,7 @@ export abstract class Entity<C extends Configs = Configs> {
    * @param configs
    * @param attrs
    */
-  constructor(configs: C, attrs: InitialAttrs<C> = {}) {
+  public constructor(configs: C, attrs: InitialAttrs<C> = {}) {
     (Object.entries(configs) as Entries<C>).forEach(([ name, config ]) => {
       if (isValueConfig(config)) {
         this._configs.set(name, {
