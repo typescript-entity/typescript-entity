@@ -29,7 +29,7 @@
     "typescript": "4"
   },
   "scripts": {
-    "prebuild": "rimraf ./dist",
-    "build": "tsc -p tsconfig.build.json"
+    "prebuild": "rimraf './dist/'",
+    "build": "tsc -p './tsconfig.build.json'"
   }
 }

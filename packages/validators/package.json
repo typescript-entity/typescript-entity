@@ -34,7 +34,7 @@
     "@typescript-entity/core": "0"
   },
   "scripts": {
-    "prebuild": "rimraf ./dist",
-    "build": "tsc -p tsconfig.build.json"
+    "prebuild": "rimraf './dist/'",
+    "build": "tsc -p './tsconfig.build.json'"
   }
 }

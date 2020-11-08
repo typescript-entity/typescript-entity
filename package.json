@@ -18,12 +18,12 @@
     "typescript": "4"
   },
   "scripts": {
-    "lint": "eslint --ext .ts,.tsx tests/ packages/*/src/",
+    "lint": "eslint --ext '.ts,.tsx' tests/ packages/*/src/",
     "test": "jest",
     "prebuild": "yarn run lint",
     "build": "lerna run build --stream",
     "postbuild": "yarn run test && yarn run docs",
-    "predocs": "rimraf ./docs",
+    "predocs": "rimraf './docs/'",
     "docs": "typedoc --excludeNotExported --mode 'modules' --name '@typescript-entity' --out './docs' --readme './README.md' --external-modulemap 'packages\/([^\/]+)' --exclude 'packages\/*\/src\/index.ts' ./packages"
   },
   "eslintConfig": {
