@@ -24,15 +24,22 @@
     "build": "lerna run build --stream",
     "postbuild": "yarn run test && yarn run docs",
     "predocs": "rimraf ./docs",
-    "docs": "typedoc --excludeNotExported --mode \"modules\" --name \"@typescript-entity\" --out \"./docs\" --readme \"./README.md\" --external-modulemap \"packages\\/([^\\/]+)\" --exclude \"packages\\/*\\/src\\/index.ts\" ./packages"
+    "docs": "typedoc --excludeNotExported --mode 'modules' --name '@typescript-entity' --out './docs' --readme './README.md' --external-modulemap 'packages\/([^\/]+)' --exclude 'packages\/*\/src\/index.ts' ./packages"
   },
   "eslintConfig": {
     "root": true,
     "parser": "@typescript-eslint/parser",
-    "plugins": [ "@typescript-eslint" ],
-    "extends": [ "plugin:@typescript-eslint/recommended" ]
+    "plugins": [
+      "@typescript-eslint"
+    ],
+    "extends": [
+      "plugin:@typescript-eslint/recommended"
+    ]
   },
-  "eslintIgnore": [ "dist/", "*.js" ],
+  "eslintIgnore": [
+    "dist/",
+    "*.js"
+  ],
   "jest": {
     "moduleNameMapper": {
       "^@typescript-entity/(.*)$": "<rootDir>/packages/$1/src"
