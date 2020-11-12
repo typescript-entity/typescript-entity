@@ -21,6 +21,7 @@
     "typescript": "4"
   },
   "scripts": {
+    "depcheck": "depcheck; lerna exec --no-bail -- depcheck",
     "lint": "eslint --ext '.ts,.tsx' tests/ packages/*/src/",
     "test": "jest",
     "prebuild": "yarn run lint",
