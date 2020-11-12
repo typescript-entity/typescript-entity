@@ -4,6 +4,9 @@
   "workspaces": [
     "packages/*"
   ],
+  "dependencies": {
+    "@typescript-entity/core": "^0.1.15"
+  },
   "devDependencies": {
     "@strictsoftware/typedoc-plugin-monorepo": "0",
     "@types/jest": "26",
