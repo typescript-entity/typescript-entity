@@ -1,5 +1,5 @@
-import { ReadOnlyError, ValidationError } from '@typescript-entity/core';
-import type { Attrs } from '@typescript-entity/core';
+import { ReadOnlyError, ValidationError } from '../packages/core/src/';
+import type { Attrs } from '../packages/core/src/';
 import { User } from './User';
 import type { UserConfigs } from './User';
 
