@@ -1,5 +1,4 @@
 import { cloneDeep } from 'lodash';
-import { FnAttrError } from '../error/FnAttrError';
 import { NormalizationError } from '../error/NormalizationError';
 import { ReadOnlyError } from '../error/ReadOnlyError';
 import { SanitizationError } from '../error/SanitizationError';
@@ -90,14 +89,15 @@ export class Entity<C extends Configs = Configs> {
   // See https://github.com/Microsoft/TypeScript/issues/3841
   ['constructor']!: EntityConstructor<C>;
 
-  protected _configs = new Map<keyof C, ValueConfig | FnConfig>();
-
   public static readonly configs = {};
 
-  // TODO: This should really be typed as `Set<keyof WritableAttrs<C>>` but because `C` defaults to
-  // `Configs` and `keyof WritableAttrs<Configs>` resolves to `never`, instances of `Entity<C>` -
-  // where `C` is a non-empty configuration type - can never be compared to Entity<Configs>.
-  protected _modified = new Set<keyof C>();
+  protected readOnlyValues: ReadOnlyAttrs<C>;
+  protected writableValues: WritableAttrs<C>;
+
+  // TODO: This should really be typed as keyof Writable<C> but because C defaults to Configs and
+  // keyof WritableAttrs<Configs> resolves to never, instances of Entity<C> - where C is any
+  // non-empty type - can never be compared to Entity<Configs>.
+  protected modifiedSet = new Set<keyof C>();
 
   /**
    * Creates a new [[`Entity`]] instance. The attribute `configs` define the attributes available on
@@ -105,43 +105,41 @@ export class Entity<C extends Configs = Configs> {
    * values are not sanitized, normalized nor validated. Values provided via `attrs` are normalized
    * and validated, and may also include values for `readOnly` attributes.
    *
-   * @param configs
    * @param attrs
    */
   public constructor(attrs: InitialAttrs<C> = {}) {
+    const readOnlyValues: Partial<ReadOnlyAttrs<C>> = {};
+    const writableValues: Partial<WritableAttrs<C>> = {};
+
     (Object.entries(this.constructor.configs) as Entries<C>).forEach(([ name, config ]) => {
       if (isValueConfig(config)) {
-        this._configs.set(name, {
-          ...config,
-          value: cloneDeep(config.value),
-        });
-      } else {
-        this._configs.set(name, config);
+        const value = cloneDeep((config as ValueConfig).value);
+        if (config.readOnly) {
+          readOnlyValues[name as keyof ReadOnlyAttrs<C>] = value;
+        } else {
+          writableValues[name as keyof WritableAttrs<C>] = value;
+        }
       }
     });
+
+    this.readOnlyValues = readOnlyValues as ReadOnlyAttrs<C>;
+    this.writableValues = writableValues as WritableAttrs<C>;
+
+    Object.seal(this.readOnlyValues);
+    Object.seal(this.writableValues);
 
     this
       .fill(attrs)
       .clearModified();
 
-    this._configs.forEach((config) => {
-      if (isValueConfig(config) && config.readOnly) {
-        Object.defineProperty(config, 'value', { writable: false });
-      }
-    });
+    Object.freeze(this.readOnlyValues);
   }
 
-  /**
-   * Returns the configuration for the attribute named `name`.
-   *
-   * @param name
-   */
-  protected _config(name: keyof C): ValueConfig | FnConfig {
-    const config = this._configs.get(name);
-    if (undefined === config) {
-      throw new UnconfiguredAttrError(this, name);
+  public config(name: keyof C): ValueConfig | FnConfig {
+    if (!(name in this.constructor.configs)) {
+      throw new UnconfiguredAttrError(this, name, `Attribute ${name} does not exist.`);
     }
-    return config;
+    return this.constructor.configs[name];
   }
 
   /**
@@ -151,17 +149,17 @@ export class Entity<C extends Configs = Configs> {
    * @param name
    * @param value
    */
-  public sanitize<K extends keyof ValueAttrs<C>, V extends ValueAttrs<C>[K]>(name: K, value: unknown): ReturnType<NormalizerFn<V>> {
-    const config = this._config(name);
-    if (isFnConfig(config)) {
-      throw new FnAttrError(this, name, 'Function attributes cannot be sanitized.');
+  public sanitize<K extends keyof ValueAttrs<C>, V extends ValueAttrs<C>[K]>(name: K, value: unknown): ReturnType<SanitizerFn<V>> {
+    const config = this.config(name);
+    if (!isValueConfig(config)) {
+      throw new SanitizationError(this, name, value, `Attribute ${name} cannot be sanitized.`);
     }
     try {
       return config.sanitizer.call(this, value);
     } catch (err) {
       throw err instanceof SanitizationError
         ? err
-        : new SanitizationError(this, name, value, undefined, err);
+        : new SanitizationError(this, name, value, err.message, err);
     }
   }
 
@@ -174,9 +172,9 @@ export class Entity<C extends Configs = Configs> {
    * @param value
    */
   public normalize<K extends keyof ValueAttrs<C>, V extends ValueAttrs<C>[K]>(name: K, value: V): ReturnType<NormalizerFn<V>> {
-    const config = this._config(name);
-    if (isFnConfig(config)) {
-      throw new FnAttrError(this, name, 'Function attributes cannot be normalized.');
+    const config = this.config(name);
+    if (!isValueConfig(config)) {
+      throw new NormalizationError(this, name, value, `Attribute ${name} cannot be normalized.`);
     }
     try {
       return (undefined !== value && null !== value && undefined !== config.normalizer)
@@ -185,7 +183,7 @@ export class Entity<C extends Configs = Configs> {
     } catch (err) {
       throw err instanceof NormalizationError
         ? err
-        : new NormalizationError(this, name, value, undefined, err);
+        : new NormalizationError(this, name, value, err.message, err);
     }
   }
 
@@ -200,9 +198,9 @@ export class Entity<C extends Configs = Configs> {
    * @param value
    */
   public validate<K extends keyof ValueAttrs<C>, V extends ValueAttrs<C>[K]>(name: K, value: V, throws = true): ReturnType<ValidatorFn<V>> {
-    const config = this._config(name);
-    if (isFnConfig(config)) {
-      throw new FnAttrError(this, name, 'Function attributes cannot be validated.');
+    const config = this.config(name);
+    if (!isValueConfig(config)) {
+      throw new ValidationError(this, name, value, `Attribute ${name} cannot be validated.`);
     }
     try {
       if (
@@ -213,12 +211,12 @@ export class Entity<C extends Configs = Configs> {
       ) {
         return true;
       }
-      throw new ValidationError(this, name, value);
+      throw new ValidationError(this, name, value, `Attribute ${name} received an invalid value.`);
     } catch (err) {
       if (throws) {
         throw err instanceof ValidationError
           ? err
-          : new ValidationError(this, name, value, undefined, err);
+          : new ValidationError(this, name, value, err.message, err);
       }
     }
     return false;
@@ -253,8 +251,14 @@ export class Entity<C extends Configs = Configs> {
    * @param name
    */
   public one<K extends keyof Attrs<C>, V extends Attrs<C>[K]>(name: K): V {
-    const config = this._config(name);
-    return isFnConfig(config) ? config.fn.call(this) : config.value;
+    const config = this.config(name);
+    if (isFnConfig(config)) {
+      return config.fn.call(this);
+    }
+    return ({
+      ...this.readOnlyValues,
+      ...this.writableValues,
+    } as Attrs<C>)[name];
   }
 
   /**
@@ -273,7 +277,7 @@ export class Entity<C extends Configs = Configs> {
    * Returns all attributes.
    */
   public all(): Attrs<C> {
-    return this.many(Array.from(this._configs.keys())) as Attrs<C>;
+    return this.many(Object.keys(this.constructor.configs)) as Attrs<C>;
   }
 
   /**
@@ -281,7 +285,7 @@ export class Entity<C extends Configs = Configs> {
    */
   public hidden(): HiddenAttrs<C> {
     return this.many(
-      Array.from(this._configs.entries())
+      Object.entries(this.constructor.configs)
         .filter(([ , config ]) => config.hidden)
         .map(([ name ]) => name)
     ) as HiddenAttrs<C>;
@@ -292,7 +296,7 @@ export class Entity<C extends Configs = Configs> {
    */
   public visible(): VisibleAttrs<C> {
     return this.many(
-      Array.from(this._configs.entries())
+      Object.entries(this.constructor.configs)
         .filter(([ , config ]) => !config.hidden)
         .map(([ name ]) => name)
     ) as VisibleAttrs<C>;
@@ -302,22 +306,14 @@ export class Entity<C extends Configs = Configs> {
    * Returns value attributes that are configured as `readOnly`.
    */
   public readOnly(): ReadOnlyAttrs<C> {
-    return this.many(
-      Array.from(this._configs.entries())
-        .filter(([ , config ]) => isValueConfig(config) && config.readOnly)
-        .map(([ name ]) => name)
-    ) as ReadOnlyAttrs<C>;
+    return this.readOnlyValues as ReadOnlyAttrs<C>;
   }
 
   /**
    * Returns value attributes that are not configured as `readOnly`.
    */
   public writable(): WritableAttrs<C> {
-    return this.many(
-      Array.from(this._configs.entries())
-        .filter(([ , config ]) => isValueConfig(config) && !config.readOnly)
-        .map(([ name ]) => name)
-    ) as WritableAttrs<C>;
+    return this.writableValues as WritableAttrs<C>;
   }
 
   /**
@@ -326,7 +322,7 @@ export class Entity<C extends Configs = Configs> {
    * @param name
    */
   public modified(): Partial<WritableAttrs<C>> {
-    return this.many(Array.from(this._modified.values()));
+    return this.many(Array.from(this.modifiedSet.values()));
   }
 
   /**
@@ -335,7 +331,7 @@ export class Entity<C extends Configs = Configs> {
    * @param name
    */
   public clearModified(): this {
-    this._modified.clear();
+    this.modifiedSet.clear();
     return this;
   }
 
@@ -348,19 +344,17 @@ export class Entity<C extends Configs = Configs> {
    * @param value
    */
   public set<K extends keyof WritableAttrs<C>, V extends WritableAttrs<C>[K]>(name: K, value: V): this {
-    const config = this._config(name);
-    if (isFnConfig(config)) {
-      throw new FnAttrError(this, name, 'Function attributes cannot be modified.');
-    }
-    const descriptor = Object.getOwnPropertyDescriptor(config, 'value');
-    if (descriptor && !descriptor.writable) {
-      throw new ReadOnlyError(this, name, value);
-    }
     value = this.normalize(name, this.sanitize(name, value));
     this.validate(name, value);
     if (this.one(name) !== value) {
-      config.value = value;
-      this._modified.add(name);
+      if (name in this.writableValues) {
+        this.writableValues[name] = value;
+      } else if (name in this.readOnlyValues && !Object.isFrozen(this.readOnlyValues)) {
+        (this.readOnlyValues as unknown as WritableAttrs<C>)[name] = value;
+      } else {
+        throw new ReadOnlyError(this, name, value, `Attribute ${name} is read-only.`);
+      }
+      this.modifiedSet.add(name);
     }
     return this;
   }
@@ -387,14 +381,13 @@ export class Entity<C extends Configs = Configs> {
         }
         let config: ValueConfig | FnConfig;
         try {
-          config = this._config(name);
+          config = this.config(name);
         } catch (err) {
           return;
         }
-        if (isFnConfig(config)) {
-          return;
+        if (isValueConfig(config)) {
+          this.set(name, value);
         }
-        this.set(name, value);
       });
     return this;
   }

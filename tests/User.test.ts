@@ -52,8 +52,8 @@ test('an Entity can be filled with custom values later', () => {
 
 test('an Entity cannot be filled with read-only attributes later', () => {
 
-  const user = new User();
   expect(() => {
+    const user = new User();
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     user.fill({ uuid: '7a2d2178-37da-4f5c-bb05-5f6819ff6ecd' } as any);
   }).toThrow(ReadOnlyError);
@@ -174,7 +174,7 @@ test('an Entity can be constructed from JSON', () => {
     uuid: '7a2d2178-37da-4f5c-bb05-5f6819ff6ecd',
     verified: true,
   });
-  const user = new User(JSON.parse(json));
+  const user = User.fromJSON<User>(json);
   expect(user.date_of_birth).toBeInstanceOf(Date);
   expect(user.email).toStrictEqual('foo@example.com');
   expect(user.email_domain).toStrictEqual('example.com');
@@ -195,7 +195,7 @@ test('an Entity can be constructed from JSON containing values for unconfigured 
     email_domain: 'anotherexample.com',
     extraneous: [ 'foo' ],
   });
-  const user = new User(JSON.parse(json));
+  const user = User.fromJSON<User>(json);
   expect(user.date_of_birth).toBeInstanceOf(Date);
   expect(user.email).toStrictEqual('foo@example.com');
   expect(user.email_domain).toStrictEqual('example.com');
