@@ -1,7 +1,7 @@
 import { booleanConfig, dateInPastConfig, emailConfig, fnConfig, stringConfig, uuidConfig } from '../packages/configs/src/';
 import type { BooleanConfigFactory, DateInPastConfigFactory, EmailConfigFactory, FnConfigFactory, StringConfigFactory, UUIDConfigFactory } from '../packages/configs/src/';
 import { Entity } from '../packages/core/src/';
-import type { Attr, Attrs, InitialAttrs } from '../packages/core/src/';
+import type { Attr, EntityInterface } from '../packages/core/src/';
 import { isLength } from '../packages/validators/src/';
 
 export type UserDateOfBirthConfig = DateInPastConfigFactory;
@@ -25,23 +25,19 @@ export type UserConfigs = {
   verified: UserVerifiedConfig;
 };
 
-export const CONFIGS: UserConfigs = {
-  date_of_birth: dateInPastConfig(),
-  email: emailConfig(),
-  email_domain: fnConfig(function(this: User): string | undefined { return this.email.split('@', 2)[1] || undefined }, true),
-  uuid: uuidConfig(true, true, true),
-  username: {
-    ...stringConfig(),
-    validator: (value: string): boolean => isLength(value, { min: 5 }),
-  },
-  verified: booleanConfig(false, false, true),
-};
+export class User extends Entity<UserConfigs> implements EntityInterface<UserConfigs> {
 
-export class User extends Entity<UserConfigs> implements Attrs<UserConfigs> {
-
-  public constructor(attrs: InitialAttrs<UserConfigs> = {}) {
-    super(CONFIGS, attrs);
-  }
+  public static readonly configs: UserConfigs = {
+    date_of_birth: dateInPastConfig(),
+    email: emailConfig(),
+    email_domain: fnConfig(function(this: User): string | undefined { return this.email.split('@', 2)[1] || undefined }, true),
+    uuid: uuidConfig(true, true, true),
+    username: {
+      ...stringConfig(),
+      validator: (value: string): boolean => isLength(value, { min: 5 }),
+    },
+    verified: booleanConfig(false, false, true),
+  };
 
   public get date_of_birth(): Attr<UserConfigs, 'date_of_birth'> {
     return this.one('date_of_birth');

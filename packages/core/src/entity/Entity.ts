@@ -10,26 +10,32 @@ type Entries<T> = {
   [K in keyof T]: [ K, T[K] ];
 }[keyof T][];
 
-export interface EntityConstructor<T extends Entity> {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  new(...args: any[]): T;
-  prototype: T;
+export interface EntityConstructor<C extends Configs = Configs> {
+  new(attrs: InitialAttrs<C>): Entity<C>;
+  readonly prototype: Entity<C>;
+  readonly configs: C;
+  clone<E extends Entity<C>>(entity: E): E;
+  fromJSON<E extends Entity<C>>(json: string): E;
 }
 
-export type Configs = Record<Name, ValueConfig | FnConfig>;
+export type EntityInterface<C extends Configs = Configs> = Attrs<C>;
 
-export interface ValueConfig<T extends Value = Value> {
+export interface Configs {
+  [name: string]: ValueConfig | FnConfig;
+}
+
+export interface ValueConfig<V extends Value = Value> {
   hidden?: boolean;
-  normalizer?: NormalizerFn<T>;
+  normalizer?: NormalizerFn<V>;
   readOnly?: boolean;
-  sanitizer: SanitizerFn<T>;
-  validator?: ValidatorFn<T>;
-  value: T;
+  sanitizer: SanitizerFn<V>;
+  validator?: ValidatorFn<V>;
+  value: V;
 }
 
-export interface FnConfig<T extends Value = Value> {
+export interface FnConfig<V extends Value = Value> {
   hidden?: boolean;
-  fn: Fn<T>;
+  fn: Fn<V>;
 }
 
 export type Name = string;
@@ -37,51 +43,56 @@ export type Name = string;
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type Value = any;
 
-export type Fn<T extends Value = Value> = () => T;
+export type Fn<V extends Value = Value> = () => V;
 
-export type SanitizerFn<T extends Value = Value> = (value: unknown) => T;
+export type SanitizerFn<V extends Value = Value> = (value: unknown) => V;
 
-export type NormalizerFn<T extends Value = Value> = (value: NonNullable<T>) => T;
+export type NormalizerFn<V extends Value = Value> = (value: NonNullable<V>) => V;
 
-export type ValidatorFn<T extends Value = Value> = (value: NonNullable<T>) => boolean;
+export type ValidatorFn<V extends Value = Value> = (value: NonNullable<V>) => boolean;
 
-export type Attrs<T extends Configs> = {
-  [K in keyof T]: Attr<T, K>;
+export type Attrs<C extends Configs> = {
+  [K in keyof C]: Attr<C, K>;
 };
 
-export type Attr<T extends Configs, K extends keyof T> = T[K] extends FnConfig ? ReturnType<T[K]['fn']> : T[K] extends ValueConfig ? T[K]['value'] : never;
+export type Attr<C extends Configs, K extends keyof C> = C[K] extends FnConfig ? ReturnType<C[K]['fn']> : C[K] extends ValueConfig ? C[K]['value'] : never;
 
-export type ValueAttrs<T extends Configs> = Attrs<Pick<T, {
-  [K in keyof T]: T[K] extends ValueConfig ? K : never;
-}[keyof T]>>;
+export type ValueAttrs<C extends Configs> = Attrs<Pick<C, {
+  [K in keyof C]: C[K] extends ValueConfig ? K : never;
+}[keyof C]>>;
 
-export type FnAttrs<T extends Configs> = Attrs<Pick<T, {
-  [K in keyof T]: T[K] extends FnConfig ? K : never;
-}[keyof T]>>;
+export type FnAttrs<C extends Configs> = Attrs<Pick<C, {
+  [K in keyof C]: C[K] extends FnConfig ? K : never;
+}[keyof C]>>;
 
-export type HiddenAttrs<T extends Configs> = Attrs<Pick<T, {
-  [K in keyof T]: T[K]['hidden'] extends true ? K : never;
-}[keyof T]>>;
+export type HiddenAttrs<C extends Configs> = Attrs<Pick<C, {
+  [K in keyof C]: C[K]['hidden'] extends true ? K : never;
+}[keyof C]>>;
 
-export type VisibleAttrs<T extends Configs> = Attrs<Pick<T, {
-  [K in keyof T]: T[K]['hidden'] extends true ? never : K;
-}[keyof T]>>;
+export type VisibleAttrs<C extends Configs> = Attrs<Pick<C, {
+  [K in keyof C]: C[K]['hidden'] extends true ? never : K;
+}[keyof C]>>;
 
-export type ReadOnlyAttrs<T extends Configs> = Pick<ValueAttrs<T>, {
-  [K in keyof ValueAttrs<T>]: T[K] extends ValueConfig ? T[K]['readOnly'] extends true ? K : never : never;
-}[keyof ValueAttrs<T>]>;
+export type ReadOnlyAttrs<C extends Configs> = Pick<ValueAttrs<C>, {
+  [K in keyof ValueAttrs<C>]: C[K] extends ValueConfig ? C[K]['readOnly'] extends true ? K : never : never;
+}[keyof ValueAttrs<C>]>;
 
-export type WritableAttrs<T extends Configs> = Omit<ValueAttrs<T>, keyof ReadOnlyAttrs<T>>;
+export type WritableAttrs<C extends Configs> = Omit<ValueAttrs<C>, keyof ReadOnlyAttrs<C>>;
 
-export type InitialAttrs<T extends Configs> = Partial<ValueAttrs<T>>;
+export type InitialAttrs<C extends Configs> = Partial<ValueAttrs<C>>;
 
-const isFnConfig = <T extends Value>(config: ValueConfig<T> | FnConfig<T>): config is FnConfig<T> => 'fn' in config;
+const isFnConfig = <V extends Value>(config: ValueConfig<V> | FnConfig<V>): config is FnConfig<V> => 'fn' in config;
 
-const isValueConfig = <T extends Value>(config: ValueConfig<T> | FnConfig<T>): config is ValueConfig<T> => 'value' in config;
+const isValueConfig = <V extends Value>(config: ValueConfig<V> | FnConfig<V>): config is ValueConfig<V> => 'value' in config;
 
-export abstract class Entity<C extends Configs = Configs> {
+export class Entity<C extends Configs = Configs> {
+
+  // See https://github.com/Microsoft/TypeScript/issues/3841
+  ['constructor']!: EntityConstructor<C>;
 
   protected _configs = new Map<keyof C, ValueConfig | FnConfig>();
+
+  public static readonly configs = {};
 
   // TODO: This should really be typed as `Set<keyof WritableAttrs<C>>` but because `C` defaults to
   // `Configs` and `keyof WritableAttrs<Configs>` resolves to `never`, instances of `Entity<C>` -
@@ -97,8 +108,8 @@ export abstract class Entity<C extends Configs = Configs> {
    * @param configs
    * @param attrs
    */
-  public constructor(configs: C, attrs: InitialAttrs<C> = {}) {
-    (Object.entries(configs) as Entries<C>).forEach(([ name, config ]) => {
+  public constructor(attrs: InitialAttrs<C> = {}) {
+    (Object.entries(this.constructor.configs) as Entries<C>).forEach(([ name, config ]) => {
       if (isValueConfig(config)) {
         this._configs.set(name, {
           ...config,
@@ -405,6 +416,27 @@ export abstract class Entity<C extends Configs = Configs> {
    */
   public toJSON(): VisibleAttrs<C> {
     return this.visible();
+  }
+
+  /**
+   * Create a new entity instance from a JSON string.
+   *
+   * @param json
+   */
+  public static fromJSON<E extends Entity<Configs>>(json: string): E {
+    // Cannot determine this type in static methods. Workaraound is to provide the type via generics.
+    // See https://github.com/microsoft/TypeScript/issues/5863
+    return new this(JSON.parse(json)) as E;
+  }
+
+  /**
+   * Create a new entity instance from a source entity.
+   *
+   * @param entity
+   */
+  public static clone<E extends Entity<Configs>>(entity: E): E {
+    const Constructor = entity.constructor;
+    return new Constructor(entity.all()) as E;
   }
 
 }
