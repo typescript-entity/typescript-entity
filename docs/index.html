@@ -66,8 +66,9 @@
 					<h1>@typescript-entity</h1>
 				</a>
 				<p>Typed entity library with attribute sanitization, normalization and validation.</p>
-				<p>Provides a low-level implementation of data objects represented as entity classes. Each entity class is assigned a collection of attribute configurations that define the value type (<code>string</code>, <code>number</code>, custom type, anything...) and other constraints such as <code>optional</code>, <code>readOnly</code> or <code>hidden</code> (from JSON representation).</p>
-				<p>Attribute values can be sanitized from raw/untrusted data (e.g. JSON or user-input) using the <code>sanitizer</code> function configured for each attribute, as well as normalized and validated by configuring an optional <code>normalizer</code> and <code>validator</code> function, respectively. Dynamic attributes can also be defined using functions which also return strictly-typed values.</p>
+				<p>Provides a low-level implementation of data objects represented as entity classes. Each entity class is assigned a collection of attribute configurations that define the value type (<code>string</code>, <code>number</code>, custom type, anything...) and other constraints such as <code>optional</code>, <code>immutable</code> or <code>hidden</code> (from JSON representation).</p>
+				<p>Attribute values can be sanitized from raw/untrusted data (e.g. JSON or user-input) using the <code>sanitizer</code> function configured for each attribute, as well as normalized and validated by configuring an optional <code>normalizer</code> and <code>validator</code> function, respectively.</p>
+				<p>Callable attributes can also be defined which use a callback to obtain generate and return a typed value.</p>
 				<ul>
 					<li><a href="#installation">Installation</a><ul>
 							<li><a href="#optional-packages">Optional Packages</a></li>
@@ -94,11 +95,11 @@
 				<a href="#optional-packages" id="optional-packages" style="color: inherit; text-decoration: none;">
 					<h3>Optional Packages</h3>
 				</a>
-				<p>These packages can help minimize the code required for declaring common attribute configurations. They are entirely optional but you may find them useful.</p>
+				<p>These packages can help minimize the code required for declaring common attribute configuration sets. They are entirely optional but you may find them useful.</p>
 				<a href="#typescript-entityconfigs" id="typescript-entityconfigs" style="color: inherit; text-decoration: none;">
 					<h5><a href="https://www.npmjs.com/package/@typescript-entity/configs"><code>@typescript-entity/configs</code></a></h5>
 				</a>
-				<p>Configuration typings and factory functions for common types of attributes.</p>
+				<p>Attribute configuration set typings and factory functions for common types of attributes.</p>
 				<pre><code class="language-shell">yarn add @typescript-entity/configs</code></pre>
 				<a href="#typescript-entitynormalizers" id="typescript-entitynormalizers" style="color: inherit; text-decoration: none;">
 					<h5><a href="https://www.npmjs.com/package/@typescript-entity/normalizers"><code>@typescript-entity/normalizers</code></a></h5>
@@ -118,212 +119,101 @@
 				<a href="#usage" id="usage" style="color: inherit; text-decoration: none;">
 					<h2>Usage</h2>
 				</a>
-				<a href="#verbose-usage" id="verbose-usage" style="color: inherit; text-decoration: none;">
-					<h3>Verbose Usage</h3>
-				</a>
-				<p>You may prefer to <a href="#simplified-usage">skip to Simplified Usage</a>.</p>
-				<pre><code class="language-typescript"><span class="hljs-keyword">import</span> { Entity } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@typescript-entity/core&#x27;</span>;
-<span class="hljs-keyword">import</span> <span class="hljs-keyword">type</span> { Attr, Attrs, FnValue, InitialAttrs, NormalizerFn, SanitizerFn, ValidatorFn } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@typescript-entity/core&#x27;</span>;
+				<pre><code class="language-typescript"><span class="hljs-keyword">import</span> { booleanConfig, callableConfig, dateInPastConfig, emailConfig, stringConfig, uuidConfig } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@typescript-entity/configs&#x27;</span>;
+<span class="hljs-keyword">import</span> <span class="hljs-keyword">type</span> { BooleanConfigFactory, CallableAttrConfigFactory, DateInPastConfigFactory, EmailConfigFactory, StringConfigFactory, UUIDConfigFactory } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@typescript-entity/configs&#x27;</span>;
+<span class="hljs-keyword">import</span> { entity } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@typescript-entity/core&#x27;</span>;
+<span class="hljs-keyword">import</span> <span class="hljs-keyword">type</span> { AttrName } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@typescript-entity/core&#x27;</span>;
+<span class="hljs-keyword">import</span> { isLength } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@typescript-entity/validators&#x27;</span>;
 
-<span class="hljs-comment">// ID is an optional number, must be read-only and must have a validator function defined. Like all</span>
-<span class="hljs-comment">// non-function attributes, it must also have a sanitizer function defined.</span>
-<span class="hljs-keyword">type</span> IDConfig = {
-  <span class="hljs-attr">value</span>: <span class="hljs-built_in">number</span> | <span class="hljs-literal">undefined</span>;
-  readOnly: <span class="hljs-literal">true</span>;
-  sanitizer: SanitizerFn&lt;<span class="hljs-built_in">number</span> | <span class="hljs-literal">undefined</span>&gt;;
-  validator: ValidatorFn&lt;<span class="hljs-built_in">number</span> | <span class="hljs-literal">undefined</span>&gt;;
+<span class="hljs-keyword">type</span> UserAttrConfigSet = {
+
+  <span class="hljs-comment">// `User.date_of_birth` is a date in the past</span>
+  <span class="hljs-attr">date_of_birth</span>: DateInPastConfigFactory;
+
+  <span class="hljs-comment">// `User.email` is an email address</span>
+  email: EmailConfigFactory;
+
+  <span class="hljs-comment">// `User.email_domain` is an optional, callable attribute that returns the domain part of</span>
+  <span class="hljs-comment">// `User.email` (string). Since this attribute is optional, the callback may also return `null`.</span>
+  email_domain: CallableAttrConfigFactory&lt;<span class="hljs-built_in">string</span>, <span class="hljs-literal">true</span>&gt;;
+
+  <span class="hljs-comment">// `User.uuid` is an optional, immutable and hidden UUID v4 attribute</span>
+  uuid: UUIDConfigFactory&lt;<span class="hljs-literal">true</span>, <span class="hljs-literal">true</span>, <span class="hljs-literal">true</span>&gt;;
+
+  <span class="hljs-comment">// `User.username` is a required, mutable, visible string attribute, that does not require a</span>
+  <span class="hljs-comment">// normalizer function but does require a validator function</span>
+  username: StringConfigFactory&lt;<span class="hljs-literal">false</span>, <span class="hljs-literal">false</span>, <span class="hljs-literal">false</span>, <span class="hljs-literal">false</span>, <span class="hljs-literal">true</span>&gt;;
+
+  <span class="hljs-comment">// `User.verified` is a required, mutable and hidden boolean attribute</span>
+  verified: BooleanConfigFactory&lt;<span class="hljs-literal">false</span>, <span class="hljs-literal">false</span>, <span class="hljs-literal">true</span>&gt;;
+
 };
 
-<span class="hljs-comment">// Name is a string and must have a normalizer function defined.</span>
-<span class="hljs-keyword">type</span> NameConfig = {
-  <span class="hljs-attr">value</span>: <span class="hljs-built_in">string</span>;
-  sanitizer: SanitizerFn&lt;<span class="hljs-built_in">string</span>&gt;;
-  normalizer: NormalizerFn&lt;<span class="hljs-built_in">string</span>&gt;;
+<span class="hljs-keyword">const</span> config: UserAttrConfigSet = {
+
+  <span class="hljs-comment">// Use the `dateInPastConfig()` helper to generate the config to match the type defined in UserAttrConfigSet[&#x27;date_of_birth&#x27;]</span>
+  <span class="hljs-attr">date_of_birth</span>: dateInPastConfig(),
+
+  <span class="hljs-comment">// Likewise, use the `emailConfig()` helper to generate the config to match the type defined in UserAttrConfigSet[&#x27;email&#x27;]</span>
+  <span class="hljs-attr">email</span>: emailConfig(),
+
+  <span class="hljs-comment">// Create a function that returns the domain part of `User.email`. Using [`this` parameters](https://www.typescriptlang.org/docs/handbook/functions.html#this-parameters)</span>
+  <span class="hljs-comment">// gives you access to the entity instance. The return value must match the type defined in</span>
+  <span class="hljs-comment">// `UserAttrConfigSet[&#x27;date_of_birth&#x27;]` (`string` or `null`).</span>
+  email_domain: callableConfig(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"><span class="hljs-built_in">this</span>: User</span>): <span class="hljs-title">string</span> | <span class="hljs-title">null</span> </span>{ <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>.email.split(<span class="hljs-string">&#x27;@&#x27;</span>, <span class="hljs-number">2</span>)[<span class="hljs-number">1</span>] || <span class="hljs-literal">null</span> }),
+
+  <span class="hljs-comment">// The argument order of helper functions match the argument order of the config typings</span>
+  <span class="hljs-attr">uuid</span>: uuidConfig(<span class="hljs-literal">true</span>, <span class="hljs-literal">true</span>, <span class="hljs-literal">true</span>),
+
+  <span class="hljs-comment">// `User.username` needs to have a custom validator function defined. This validator ensures the</span>
+  <span class="hljs-comment">// username is at least 5 characters long.</span>
+  username: {
+    ...stringConfig(),
+    <span class="hljs-attr">validator</span>: (value: <span class="hljs-built_in">string</span>, <span class="hljs-attr">name</span>: AttrName): <span class="hljs-function"><span class="hljs-params">boolean</span> =&gt;</span> isLength(value, name, { <span class="hljs-attr">min</span>: <span class="hljs-number">5</span> }),
+  },
+
+  <span class="hljs-comment">// Once again, arguments provided to helper functions must match the arguments provided to the</span>
+  <span class="hljs-comment">// type definition. All arguments (`optional`, `immutable`, `hidden`, `normalizer`, `validator`)</span>
+  <span class="hljs-comment">// default to `false`.</span>
+  verified: booleanConfig(<span class="hljs-literal">false</span>, <span class="hljs-literal">false</span>, <span class="hljs-literal">true</span>),
+
 };
 
-<span class="hljs-comment">// Username is a function that returns a string. A sanitizer function is not required since values</span>
-<span class="hljs-comment">// for function attributes cannot be set.</span>
-<span class="hljs-keyword">type</span> UsernameConfig = {
-  <span class="hljs-attr">value</span>: FnValue&lt;<span class="hljs-built_in">string</span>&gt;;
-};
+<span class="hljs-comment">// User constructor for creating new `User` instances (`new User()`), runtime type-checking using</span>
+<span class="hljs-comment">// the `instanceof` operator, etc.</span>
+<span class="hljs-keyword">const</span> User = entity(config);
 
-<span class="hljs-comment">// Smelly is a boolean and is hidden from JSON representation.</span>
-<span class="hljs-keyword">type</span> SmellyConfig = {
-  <span class="hljs-attr">value</span>: <span class="hljs-built_in">boolean</span>;
-  hidden: <span class="hljs-literal">true</span>;
-  sanitizer: SanitizerFn&lt;<span class="hljs-built_in">boolean</span>&gt;;
-};
-
-<span class="hljs-keyword">type</span> Configs = {
-  <span class="hljs-attr">id</span>: IDConfig;
-  name: NameConfig;
-  username: UsernameConfig;
-  smelly: SmellyConfig;
-};
-
-<span class="hljs-keyword">export</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Person</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Entity</span>&lt;<span class="hljs-title">Configs</span>&gt; <span class="hljs-title">implements</span> <span class="hljs-title">Attrs</span>&lt;<span class="hljs-title">Configs</span>&gt; </span>{
-
-  <span class="hljs-comment">// The runtime configurations are constructed once and passed to all instances of the Person</span>
-  <span class="hljs-comment">// entity via the Entity constructor. All configuration properties are shared between instances to</span>
-  <span class="hljs-comment">// minimise memory footprint, except values for non-function attributes which are cloned.</span>
-  <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">readonly</span> CONFIGS: Configs = {
-    <span class="hljs-attr">id</span>: {
-      <span class="hljs-attr">value</span>: <span class="hljs-literal">undefined</span>, <span class="hljs-comment">// The values provided in the config are used as default values</span>
-      <span class="hljs-attr">readOnly</span>: <span class="hljs-literal">true</span>, <span class="hljs-comment">// Must be readOnly to be compatible with IDConfig</span>
-      <span class="hljs-attr">sanitizer</span>: (value: unknown): <span class="hljs-built_in">number</span> | <span class="hljs-function"><span class="hljs-params">undefined</span> =&gt;</span> <span class="hljs-built_in">Number</span>(value) || <span class="hljs-literal">undefined</span>,
-      <span class="hljs-attr">validator</span>: (value: <span class="hljs-built_in">number</span>): <span class="hljs-function"><span class="hljs-params">boolean</span> =&gt;</span> value &gt; <span class="hljs-number">0</span>,
-    },
-    <span class="hljs-attr">name</span>: {
-      <span class="hljs-attr">value</span>: <span class="hljs-string">&#x27;&#x27;</span>, <span class="hljs-comment">// Name was configured as a required string so can&#x27;t use undefined here</span>
-      <span class="hljs-attr">sanitizer</span>: (value: unknown): <span class="hljs-function"><span class="hljs-params">string</span> =&gt;</span> <span class="hljs-built_in">String</span>(value),
-      <span class="hljs-attr">normalizer</span>: (value: <span class="hljs-built_in">string</span>): <span class="hljs-function"><span class="hljs-params">string</span> =&gt;</span> value.trim(),
-    },
-    <span class="hljs-attr">username</span>: {
-      <span class="hljs-comment">// All value, sanitizer, normalizer and validator functions have the instance bound to this.</span>
-      <span class="hljs-comment">// Use TypeScript&#x27;s &quot;this parameters&quot; feature to declare it.</span>
-      value: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"><span class="hljs-built_in">this</span>: Person</span>): <span class="hljs-title">string</span> </span>{ <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>.name.toLowerCase(); },
-    },
-    <span class="hljs-attr">smelly</span>: {
-      <span class="hljs-attr">value</span>: <span class="hljs-literal">false</span>,
-      <span class="hljs-attr">hidden</span>: <span class="hljs-literal">true</span>,
-      <span class="hljs-attr">sanitizer</span>: (value: unknown): <span class="hljs-function"><span class="hljs-params">boolean</span> =&gt;</span> <span class="hljs-built_in">Boolean</span>(value),
-    },
-  };
-
-  <span class="hljs-comment">// Allow consumers to provide some/all attributes during construction to override the default</span>
-  <span class="hljs-comment">// values provided in the configs. Attributes passed to the constructor can include values for</span>
-  <span class="hljs-comment">// read-only values but not for function attributes.</span>
-  <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-title">constructor</span>(<span class="hljs-params">attrs: InitialAttrs&lt;Configs&gt; = {}</span>)</span> {
-    <span class="hljs-built_in">super</span>(Person.CONFIGS, attrs);
-  }
-
-  <span class="hljs-comment">// Because we declared that Person implements Attrs&lt;Configs&gt; we have opted in to defining getters</span>
-  <span class="hljs-comment">// and setters for each attribute on the entity which makes it easier to interact with instances.</span>
-  <span class="hljs-comment">// Types do not need to be specified since they are inferred from Configs.</span>
-
-  <span class="hljs-keyword">public</span> <span class="hljs-keyword">get</span> <span class="hljs-title">id</span>(): <span class="hljs-title">Attr</span>&lt;<span class="hljs-title">Configs</span>, &#x27;<span class="hljs-title">id</span>&#x27;&gt; {
-    <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>.one(<span class="hljs-string">&#x27;id&#x27;</span>);
-  }
-
-  <span class="hljs-comment">// IDConfig is a read-only attribute so TypeScript will correctly prevent us from setting it.</span>
-  <span class="hljs-comment">//public set id(value: Attr&lt;Configs, &#x27;id&#x27;&gt;) {</span>
-  <span class="hljs-comment">//  this.set(&#x27;id&#x27;, value);</span>
-  <span class="hljs-comment">//}</span>
-
-  <span class="hljs-keyword">public</span> <span class="hljs-keyword">get</span> <span class="hljs-title">name</span>(): <span class="hljs-title">Attr</span>&lt;<span class="hljs-title">Configs</span>, &#x27;<span class="hljs-title">name</span>&#x27;&gt; {
-    <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>.one(<span class="hljs-string">&#x27;name&#x27;</span>);
-  }
-
-  <span class="hljs-keyword">public</span> <span class="hljs-keyword">set</span> <span class="hljs-title">name</span>(<span class="hljs-params">value: Attr&lt;Configs, <span class="hljs-string">&#x27;name&#x27;</span>&gt;</span>) {
-    <span class="hljs-built_in">this</span>.set(<span class="hljs-string">&#x27;name&#x27;</span>, value);
-  }
-
-  <span class="hljs-keyword">public</span> <span class="hljs-keyword">get</span> <span class="hljs-title">username</span>(): <span class="hljs-title">Attr</span>&lt;<span class="hljs-title">Configs</span>, &#x27;<span class="hljs-title">username</span>&#x27;&gt; {
-    <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>.one(<span class="hljs-string">&#x27;username&#x27;</span>);
-  }
-
-  <span class="hljs-comment">// UsernameConfig is a function attribute so TypeScript will correctly prevent us from setting it.</span>
-  <span class="hljs-comment">//public set username(value: Attr&lt;Configs, &#x27;username&#x27;&gt;) {</span>
-  <span class="hljs-comment">//  this.set(&#x27;username&#x27;, value);</span>
-  <span class="hljs-comment">//}</span>
-
-  <span class="hljs-keyword">public</span> <span class="hljs-keyword">get</span> <span class="hljs-title">smelly</span>(): <span class="hljs-title">Attr</span>&lt;<span class="hljs-title">Configs</span>, &#x27;<span class="hljs-title">smelly</span>&#x27;&gt; {
-    <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>.one(<span class="hljs-string">&#x27;smelly&#x27;</span>);
-  }
-
-  <span class="hljs-keyword">public</span> <span class="hljs-keyword">set</span> <span class="hljs-title">smelly</span>(<span class="hljs-params">value: Attr&lt;Configs, <span class="hljs-string">&#x27;smelly&#x27;</span>&gt;</span>) {
-    <span class="hljs-built_in">this</span>.set(<span class="hljs-string">&#x27;smelly&#x27;</span>, value);
-  }
-
-}</code></pre>
-				<a href="#simplified-usage" id="simplified-usage" style="color: inherit; text-decoration: none;">
-					<h3>Simplified Usage</h3>
-				</a>
-				<p>The <a href="#verbose-usage">example above</a> is intentionally verbose for instructional purposes. Much of it can be simplified using the optional helper packages...</p>
-				<pre><code class="language-typescript"><span class="hljs-keyword">import</span> { booleanConfig, fnConfig, positiveIntegerConfig, stringConfig } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@typescript-entity/configs&#x27;</span>;
-<span class="hljs-keyword">import</span> <span class="hljs-keyword">type</span> { BooleanConfigFactory, FnConfigFactory, PositiveIntegerConfigFactory, StringConfigFactory } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@typescript-entity/configs&#x27;</span>;
-<span class="hljs-keyword">import</span> { Entity } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@typescript-entity/core&#x27;</span>;
-<span class="hljs-keyword">import</span> <span class="hljs-keyword">type</span> { Attr, Attrs, InitialAttrs } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@typescript-entity/core&#x27;</span>;
-<span class="hljs-keyword">import</span> { trim } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@typescript-entity/normalizers&#x27;</span>;
-
-<span class="hljs-keyword">type</span> IDConfig = PositiveIntegerConfigFactory&lt;<span class="hljs-literal">true</span>, <span class="hljs-literal">false</span>, <span class="hljs-literal">true</span>&gt;;
-<span class="hljs-keyword">type</span> NameConfig = StringConfigFactory&lt;<span class="hljs-literal">false</span>, <span class="hljs-literal">false</span>, <span class="hljs-literal">false</span>, <span class="hljs-literal">true</span>&gt;;
-<span class="hljs-keyword">type</span> UsernameConfig = FnConfigFactory&lt;<span class="hljs-built_in">string</span>&gt;;
-<span class="hljs-keyword">type</span> SmellyConfig = BooleanConfigFactory&lt;<span class="hljs-literal">false</span>, <span class="hljs-literal">true</span>&gt;;
-
-<span class="hljs-keyword">type</span> Configs = {
-  <span class="hljs-attr">id</span>: IDConfig;
-  name: NameConfig;
-  username: UsernameConfig;
-  smelly: SmellyConfig;
-};
-
-<span class="hljs-keyword">export</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Person</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Entity</span>&lt;<span class="hljs-title">Configs</span>&gt; <span class="hljs-title">implements</span> <span class="hljs-title">Attrs</span>&lt;<span class="hljs-title">Configs</span>&gt; </span>{
-
-  <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">readonly</span> CONFIGS: Configs = {
-    <span class="hljs-attr">id</span>: positiveIntegerConfig(<span class="hljs-literal">true</span>, <span class="hljs-literal">false</span>, <span class="hljs-literal">true</span>),
-    <span class="hljs-attr">name</span>: {
-      ...stringConfig(),
-      <span class="hljs-attr">normalizer</span>: trim,
-    },
-    <span class="hljs-attr">username</span>: fnConfig(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"><span class="hljs-built_in">this</span>: Person</span>): <span class="hljs-title">string</span> </span>{ <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>.name.toLowerCase(); }),
-    <span class="hljs-attr">smelly</span>: booleanConfig(<span class="hljs-literal">false</span>, <span class="hljs-literal">true</span>),
-  };
-
-  <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-title">constructor</span>(<span class="hljs-params">attrs: InitialAttrs&lt;Configs&gt; = {}</span>)</span> {
-    <span class="hljs-built_in">super</span>(Person.CONFIGS, attrs);
-  }
-
-  <span class="hljs-keyword">public</span> <span class="hljs-keyword">get</span> <span class="hljs-title">id</span>(): <span class="hljs-title">Attr</span>&lt;<span class="hljs-title">Configs</span>, &#x27;<span class="hljs-title">id</span>&#x27;&gt; {
-    <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>.one(<span class="hljs-string">&#x27;id&#x27;</span>);
-  }
-
-  <span class="hljs-keyword">public</span> <span class="hljs-keyword">get</span> <span class="hljs-title">name</span>(): <span class="hljs-title">Attr</span>&lt;<span class="hljs-title">Configs</span>, &#x27;<span class="hljs-title">name</span>&#x27;&gt; {
-    <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>.one(<span class="hljs-string">&#x27;name&#x27;</span>);
-  }
-
-  <span class="hljs-keyword">public</span> <span class="hljs-keyword">set</span> <span class="hljs-title">name</span>(<span class="hljs-params">value: Attr&lt;Configs, <span class="hljs-string">&#x27;name&#x27;</span>&gt;</span>) {
-    <span class="hljs-built_in">this</span>.set(<span class="hljs-string">&#x27;name&#x27;</span>, value);
-  }
-
-  <span class="hljs-keyword">public</span> <span class="hljs-keyword">get</span> <span class="hljs-title">username</span>(): <span class="hljs-title">Attr</span>&lt;<span class="hljs-title">Configs</span>, &#x27;<span class="hljs-title">username</span>&#x27;&gt; {
-    <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>.one(<span class="hljs-string">&#x27;username&#x27;</span>);
-  }
-
-  <span class="hljs-keyword">public</span> <span class="hljs-keyword">get</span> <span class="hljs-title">smelly</span>(): <span class="hljs-title">Attr</span>&lt;<span class="hljs-title">Configs</span>, &#x27;<span class="hljs-title">smelly</span>&#x27;&gt; {
-    <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>.one(<span class="hljs-string">&#x27;smelly&#x27;</span>);
-  }
-
-  <span class="hljs-keyword">public</span> <span class="hljs-keyword">set</span> <span class="hljs-title">smelly</span>(<span class="hljs-params">value: Attr&lt;Configs, <span class="hljs-string">&#x27;smelly&#x27;</span>&gt;</span>) {
-    <span class="hljs-built_in">this</span>.set(<span class="hljs-string">&#x27;smelly&#x27;</span>, value);
-  }
-
-}</code></pre>
+<span class="hljs-comment">// Instance typing for use within Typescript for type-hinting `(user: User) =&gt; {}` arguments, etc.</span>
+<span class="hljs-keyword">type</span> User = InstanceType&lt;<span class="hljs-keyword">typeof</span> User&gt;;</code></pre>
 				<a href="#examples" id="examples" style="color: inherit; text-decoration: none;">
 					<h3>Examples</h3>
 				</a>
-				<pre><code class="language-typescript"><span class="hljs-keyword">const</span> person = <span class="hljs-keyword">new</span> Person();
-<span class="hljs-built_in">console</span>.log(person.id); <span class="hljs-comment">// 0</span>
-<span class="hljs-built_in">console</span>.log(person.name); <span class="hljs-comment">// &#x27;&#x27;</span>
-<span class="hljs-built_in">console</span>.log(person.username); <span class="hljs-comment">// &#x27;&#x27;</span>
-<span class="hljs-built_in">console</span>.log(person.smelly); <span class="hljs-comment">// false</span>
-<span class="hljs-built_in">console</span>.log(<span class="hljs-built_in">JSON</span>.stringify(person)); <span class="hljs-comment">// {&quot;name&quot;:&quot;&quot;,&quot;username&quot;:&quot;&quot;}</span></code></pre>
-				<pre><code class="language-typescript"><span class="hljs-keyword">const</span> bob = <span class="hljs-keyword">new</span> Person({
-  <span class="hljs-attr">id</span>: <span class="hljs-number">123</span>,
-  <span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;  Bob  &#x27;</span>,
-  <span class="hljs-attr">smelly</span>: <span class="hljs-literal">true</span>,
+				<pre><code class="language-typescript"><span class="hljs-keyword">const</span> user = <span class="hljs-keyword">new</span> User();
+
+<span class="hljs-built_in">console</span>.log(user.date_of_birth); <span class="hljs-comment">// 1970-01-01T00:00:00.000Z</span>
+<span class="hljs-comment">// Required date attributes default to Unix epoch</span>
+
+<span class="hljs-built_in">console</span>.log(user.email); <span class="hljs-comment">// &#x27;&#x27;</span>
+<span class="hljs-comment">// Required string attributes default to an empty string</span>
+
+<span class="hljs-built_in">console</span>.log(user.email_domain); <span class="hljs-comment">// null</span>
+<span class="hljs-comment">// Optional callable attributes can return null</span>
+
+<span class="hljs-built_in">console</span>.log(user.verified); <span class="hljs-comment">// false</span>
+<span class="hljs-comment">// Optional boolean attributes default to false</span>
+
+<span class="hljs-built_in">console</span>.log(<span class="hljs-built_in">JSON</span>.stringify(user)) <span class="hljs-comment">// {&quot;date_of_birth&quot;:&quot;1970-01-01T00:00:00.000Z&quot;,&quot;email&quot;:&quot;&quot;,&quot;email_domain&quot;:null,&quot;username&quot;:&quot;&quot;,&quot;verified&quot;:false}</span>
+<span class="hljs-comment">// Hidden attributes (`uuid`) are not exposed in JSON</span>
+
+<span class="hljs-keyword">const</span> anotherUser = <span class="hljs-keyword">new</span> User({
+  <span class="hljs-attr">uuid</span>: <span class="hljs-string">&#x27;abc&#x27;</span>, <span class="hljs-comment">// Immutable attributes can only be set at instantiation</span>
 });
-<span class="hljs-built_in">console</span>.log(bob.id); <span class="hljs-comment">// 123</span>
-<span class="hljs-built_in">console</span>.log(bob.name); <span class="hljs-comment">// &#x27;Bob&#x27;</span>
-<span class="hljs-built_in">console</span>.log(bob.username); <span class="hljs-comment">// &#x27;bob&#x27;</span>
-<span class="hljs-built_in">console</span>.log(bob.smelly); <span class="hljs-comment">// true</span>
-<span class="hljs-built_in">console</span>.log(<span class="hljs-built_in">JSON</span>.stringify(bob)); <span class="hljs-comment">// {&quot;id&quot;:123,&quot;name&quot;:&quot;Bob&quot;,&quot;username&quot;:&quot;bob&quot;}</span></code></pre>
-				<pre><code class="language-typescript"><span class="hljs-keyword">const</span> json = <span class="hljs-string">&#x27;{&quot;id&quot;:&quot;123&quot;,&quot;name&quot;:&quot;Jane  &quot;,&quot;username&quot;:&quot;janerocks&quot;,&quot;smelly&quot;:true}&#x27;</span>;
-<span class="hljs-keyword">const</span> jane = <span class="hljs-keyword">new</span> Person(<span class="hljs-built_in">JSON</span>.parse(json));
-<span class="hljs-built_in">console</span>.log(jane.id); <span class="hljs-comment">// 123 (sanitized from string to number)</span>
-<span class="hljs-built_in">console</span>.log(jane.name); <span class="hljs-comment">// &#x27;Jane&#x27; (normalized to remove trailing whitespace)</span>
-<span class="hljs-built_in">console</span>.log(jane.username); <span class="hljs-comment">// &#x27;jane&#x27; (the JSON value was ignored as this is a function attr)</span>
-<span class="hljs-built_in">console</span>.log(jane.smelly); <span class="hljs-comment">// true (the JSON value was allowed even though this is a read-only attr)</span></code></pre>
+
+anotherUser.set(<span class="hljs-string">&#x27;uuid&#x27;</span>, <span class="hljs-string">&#x27;bar&#x27;</span>); <span class="hljs-comment">// Throws a `ReadOnlyError`</span>
+
+anotherUser.fill({
+  <span class="hljs-attr">uuid</span>: <span class="hljs-string">&#x27;bar&#x27;</span>, <span class="hljs-comment">// Throws a `ReadOnlyError`</span>
+});</code></pre>
 				<a href="#api-documentation" id="api-documentation" style="color: inherit; text-decoration: none;">
 					<h2>API Documentation</h2>
 				</a>
@@ -394,7 +284,6 @@
 		<h2>Legend</h2>
 		<div class="tsd-legend-group">
 			<ul class="tsd-legend">
-				<li class="tsd-kind-variable"><span class="tsd-kind-icon">Variable</span></li>
 				<li class="tsd-kind-function"><span class="tsd-kind-icon">Function</span></li>
 				<li class="tsd-kind-function tsd-has-type-parameter"><span class="tsd-kind-icon">Function with type parameter</span></li>
 				<li class="tsd-kind-type-alias"><span class="tsd-kind-icon">Type alias</span></li>

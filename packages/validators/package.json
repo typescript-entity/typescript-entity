@@ -22,16 +22,14 @@
   "types": "dist/index.d.ts",
   "sideEffects": false,
   "dependencies": {
-    "@types/validator": "13",
+    "@typescript-entity/core": "^0.1.15",
     "@typescript-entity/sanitizers": "^0.1.14",
     "validator": "13"
   },
   "devDependencies": {
+    "@types/validator": "13",
     "rimraf": "3",
     "typescript": "4"
-  },
-  "peerDependencies": {
-    "@typescript-entity/core": "0"
   },
   "scripts": {
     "prebuild": "rimraf './dist/'",

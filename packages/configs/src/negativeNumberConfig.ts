@@ -5,15 +5,15 @@ import type { NumberConfigFactory } from './numberConfig';
 export type NegativeNumberConfigFactory<
   Optional extends boolean = false,
   Hidden extends boolean = false,
-  ReadOnly extends boolean = false,
+  Immutable extends boolean = false,
   Normalizer extends boolean = false
-> = NumberConfigFactory<Optional, Hidden, ReadOnly, Normalizer, true>;
+> = NumberConfigFactory<Optional, Hidden, Immutable, Normalizer, true>;
 
 export const negativeNumberConfig = <
   O extends boolean = false,
   H extends boolean = false,
   R extends boolean = false
->(optional?: O, hidden?: H, readOnly?: R): NegativeNumberConfigFactory<O, H, R> => ({
-  ...numberConfig(optional, hidden, readOnly),
+>(optional?: O, hidden?: H, immutable?: R): NegativeNumberConfigFactory<O, H, R> => ({
+  ...numberConfig(optional, hidden, immutable),
   validator: isNegative,
 });

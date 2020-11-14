@@ -1,7 +1,7 @@
-import { ReadOnlyError, ValidationError } from '../packages/core/src/';
-import type { Attrs } from '../packages/core/src/';
+import { ReadOnlyError, UnconfiguredAttrError, ValidationError } from '../packages/core/src/';
+import type { ResolveAttrSet, ResolveMutableAttrSet } from '../packages/core/src/';
 import { User } from './User';
-import type { UserConfigs } from './User';
+import type { UserAttrConfigSet } from './User';
 
 test('an Entity can be constructed with default values', () => {
 
@@ -9,9 +9,9 @@ test('an Entity can be constructed with default values', () => {
   expect(user).toBeInstanceOf(User);
   expect(user.date_of_birth).toBeInstanceOf(Date);
   expect(user.email).toStrictEqual('');
-  expect(user.email_domain).toStrictEqual(undefined);
+  expect(user.email_domain).toStrictEqual(null);
   expect(user.username).toStrictEqual('');
-  expect(user.uuid).toStrictEqual(undefined);
+  expect(user.uuid).toStrictEqual(null);
   expect(user.verified).toStrictEqual(false);
 
 });
@@ -50,12 +50,11 @@ test('an Entity can be filled with custom values later', () => {
 
 });
 
-test('an Entity cannot be filled with read-only attributes later', () => {
+test('an Entity cannot be filled with values for immutable attributes later', () => {
 
   expect(() => {
     const user = new User();
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    user.fill({ uuid: '7a2d2178-37da-4f5c-bb05-5f6819ff6ecd' } as any);
+    user.fill({ uuid: '7a2d2178-37da-4f5c-bb05-5f6819ff6ecd' } as unknown as ResolveMutableAttrSet<UserAttrConfigSet>);
   }).toThrow(ReadOnlyError);
 
 });
@@ -109,7 +108,7 @@ test('an Entity can expose some attributes', () => {
     verified: attrs.verified,
   };
   const user = new User(attrs);
-  expect(user.many(Object.keys(expected) as (keyof Attrs<UserConfigs>)[])).toStrictEqual(expected);
+  expect(user.many(Object.keys(expected) as (keyof ResolveAttrSet<UserAttrConfigSet>)[])).toStrictEqual(expected);
 
 });
 
@@ -174,7 +173,7 @@ test('an Entity can be constructed from JSON', () => {
     uuid: '7a2d2178-37da-4f5c-bb05-5f6819ff6ecd',
     verified: true,
   });
-  const user = User.fromJSON<User>(json);
+  const user = new User(json);
   expect(user.date_of_birth).toBeInstanceOf(Date);
   expect(user.email).toStrictEqual('foo@example.com');
   expect(user.email_domain).toStrictEqual('example.com');
@@ -184,24 +183,13 @@ test('an Entity can be constructed from JSON', () => {
 
 });
 
-test('an Entity can be constructed from JSON containing values for unconfigured and function attributes', () => {
+test('an Entity cannot be constructed from JSON containing values for unconfigured and function attributes', () => {
 
-  const json = JSON.stringify({
-    date_of_birth: new Date('2000-01-01'),
-    email: 'foo@example.com',
-    username: 'foobar',
-    uuid: '7a2d2178-37da-4f5c-bb05-5f6819ff6ecd',
-    verified: true,
-    email_domain: 'anotherexample.com',
-    extraneous: [ 'foo' ],
-  });
-  const user = User.fromJSON<User>(json);
-  expect(user.date_of_birth).toBeInstanceOf(Date);
-  expect(user.email).toStrictEqual('foo@example.com');
-  expect(user.email_domain).toStrictEqual('example.com');
-  expect(user.username).toStrictEqual('foobar');
-  expect(user.uuid).toStrictEqual('7a2d2178-37da-4f5c-bb05-5f6819ff6ecd');
-  expect(user.verified).toStrictEqual(true);
-  expect(Object.keys(user.all())).not.toContain('extraneous');
+  expect(() => {
+    const json = JSON.stringify({
+      foo: 'bar',
+    });
+    new User(json);
+  }).toThrow(UnconfiguredAttrError);
 
 });

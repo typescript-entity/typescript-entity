@@ -1,12 +1,11 @@
-import { Entity } from '../entity/Entity';
-import type { Configs } from '../entity/Entity';
+import type { Entity } from '../Entity';
 import { RethrownError } from './RethrownError';
 
-export class EntityError<C extends Configs = Configs> extends RethrownError {
+export class EntityError extends RethrownError {
 
-  public readonly entity: Entity<C>;
+  public readonly entity: Entity;
 
-  public constructor(entity: Entity<C>, message?: string, previous?: Error) {
+  public constructor(entity: Entity, message?: string, previous?: Error) {
     super(message, previous);
     this.entity = entity;
   }

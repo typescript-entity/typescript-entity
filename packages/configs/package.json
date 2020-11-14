@@ -31,9 +31,6 @@
     "rimraf": "3",
     "typescript": "4"
   },
-  "peerDependencies": {
-    "@typescript-entity/core": "0"
-  },
   "scripts": {
     "prebuild": "rimraf './dist/'",
     "build": "tsc -p './tsconfig.build.json'"

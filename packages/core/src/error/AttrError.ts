@@ -1,12 +1,11 @@
-import { Entity } from '../entity/Entity';
-import type { Configs } from '../entity/Entity';
+import type { AttrName, Entity } from '../Entity';
 import { EntityError } from './EntityError';
 
-export class AttrError<C extends Configs = Configs, K extends keyof C = keyof C> extends EntityError<C> {
+export class AttrError extends EntityError {
 
-  public readonly attrName: keyof C;
+  public readonly attrName: AttrName;
 
-  public constructor(entity: Entity<C>, attrName: K, message?: string, previous?: Error) {
+  public constructor(entity: Entity, attrName: AttrName, message?: string, previous?: Error) {
     super(entity, message, previous);
     this.attrName = attrName;
   }

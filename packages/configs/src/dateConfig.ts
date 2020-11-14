@@ -1,25 +1,29 @@
+import { Entity } from '@typescript-entity/core';
+import type { AttrName } from '@typescript-entity/core';
 import { toDate, toString } from '@typescript-entity/sanitizers';
-import type { ConfigFactory } from './ConfigFactory';
+import type { WritableAttrConfigFactory } from './AttrConfigFactory';
 
 export type DateConfigFactory<
   Optional extends boolean = false,
   Hidden extends boolean = false,
-  ReadOnly extends boolean = false,
+  Immutable extends boolean = false,
   Normalizer extends boolean = false,
   Validator extends boolean = false
-> = ConfigFactory<Date, Optional, Hidden, ReadOnly, Normalizer, Validator>;
+> = WritableAttrConfigFactory<Date, Optional, Hidden, Immutable, Normalizer, Validator>;
 
 export const dateConfig = <
   O extends boolean = false,
   H extends boolean = false,
   R extends boolean = false
->(optional?: O, hidden?: H, readOnly?: R): DateConfigFactory<O, H, R> => ({
+>(optional?: O, hidden?: H, immutable?: R): DateConfigFactory<O, H, R> => ({
   hidden,
-  readOnly,
-  value: optional ? undefined : new Date(0),
+  immutable,
+  value: optional ? null : new Date(0),
   sanitizer: (
     optional
-      ? (value: unknown): Date | undefined => toString(value) ? toDate(value) : undefined
+      ? function(this: Entity, value: unknown, name: AttrName): Date | null {
+        return toString(value) ? toDate.bind(this)(value, name) : null;
+      }
       : toDate
   ),
 } as unknown as DateConfigFactory<O, H, R>);

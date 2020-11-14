@@ -5,15 +5,15 @@ import type { NumberConfigFactory } from './numberConfig';
 export type PositiveNumberConfigFactory<
   Optional extends boolean = false,
   Hidden extends boolean = false,
-  ReadOnly extends boolean = false,
+  Immutable extends boolean = false,
   Normalizer extends boolean = false
-> = NumberConfigFactory<Optional, Hidden, ReadOnly, Normalizer, true>;
+> = NumberConfigFactory<Optional, Hidden, Immutable, Normalizer, true>;
 
 export const positiveNumberConfig = <
   O extends boolean = false,
   H extends boolean = false,
   R extends boolean = false
->(optional?: O, hidden?: H, readOnly?: R): PositiveNumberConfigFactory<O, H, R> => ({
-  ...numberConfig(optional, hidden, readOnly),
+>(optional?: O, hidden?: H, immutable?: R): PositiveNumberConfigFactory<O, H, R> => ({
+  ...numberConfig(optional, hidden, immutable),
   validator: isPositive,
 });

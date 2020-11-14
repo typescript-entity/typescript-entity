@@ -2,9 +2,11 @@
 
 Typed entity library with attribute sanitization, normalization and validation.
 
-Provides a low-level implementation of data objects represented as entity classes. Each entity class is assigned a collection of attribute configurations that define the value type (`string`, `number`, custom type, anything...) and other constraints such as `optional`, `readOnly` or `hidden` (from JSON representation).
+Provides a low-level implementation of data objects represented as entity classes. Each entity class is assigned a collection of attribute configurations that define the value type (`string`, `number`, custom type, anything...) and other constraints such as `optional`, `immutable` or `hidden` (from JSON representation).
 
-Attribute values can be sanitized from raw/untrusted data (e.g. JSON or user-input) using the `sanitizer` function configured for each attribute, as well as normalized and validated by configuring an optional `normalizer` and `validator` function, respectively. Dynamic attributes can also be defined using functions which also return strictly-typed values.
+Attribute values can be sanitized from raw/untrusted data (e.g. JSON or user-input) using the `sanitizer` function configured for each attribute, as well as normalized and validated by configuring an optional `normalizer` and `validator` function, respectively.
+
+Callable attributes can also be defined which use a callback to obtain generate and return a typed value.
 
 - [Installation](#installation)
   - [Optional Packages](#optional-packages)
@@ -27,11 +29,11 @@ yarn add @typescript-entity/core
 
 ### Optional Packages
 
-These packages can help minimize the code required for declaring common attribute configurations. They are entirely optional but you may find them useful.
+These packages can help minimize the code required for declaring common attribute configuration sets. They are entirely optional but you may find them useful.
 
 ##### [`@typescript-entity/configs`](https://www.npmjs.com/package/@typescript-entity/configs)
 
-Configuration typings and factory functions for common types of attributes.
+Attribute configuration set typings and factory functions for common types of attributes.
 
 ```shell
 yarn add @typescript-entity/configs
@@ -63,224 +65,103 @@ yarn add @typescript-entity/validators
 
 ## Usage
 
-### Verbose Usage
-
-You may prefer to [skip to Simplified Usage](#simplified-usage).
-
 ```typescript
-import { Entity } from '@typescript-entity/core';
-import type { Attr, Attrs, FnValue, InitialAttrs, NormalizerFn, SanitizerFn, ValidatorFn } from '@typescript-entity/core';
+import { booleanConfig, callableConfig, dateInPastConfig, emailConfig, stringConfig, uuidConfig } from '@typescript-entity/configs';
+import type { BooleanConfigFactory, CallableAttrConfigFactory, DateInPastConfigFactory, EmailConfigFactory, StringConfigFactory, UUIDConfigFactory } from '@typescript-entity/configs';
+import { entity } from '@typescript-entity/core';
+import type { AttrName } from '@typescript-entity/core';
+import { isLength } from '@typescript-entity/validators';
 
-// ID is an optional number, must be read-only and must have a validator function defined. Like all
-// non-function attributes, it must also have a sanitizer function defined.
-type IDConfig = {
-  value: number | undefined;
-  readOnly: true;
-  sanitizer: SanitizerFn<number | undefined>;
-  validator: ValidatorFn<number | undefined>;
+type UserAttrConfigSet = {
+
+  // `User.date_of_birth` is a date in the past
+  date_of_birth: DateInPastConfigFactory;
+
+  // `User.email` is an email address
+  email: EmailConfigFactory;
+
+  // `User.email_domain` is an optional, callable attribute that returns the domain part of
+  // `User.email` (string). Since this attribute is optional, the callback may also return `null`.
+  email_domain: CallableAttrConfigFactory<string, true>;
+
+  // `User.uuid` is an optional, immutable and hidden UUID v4 attribute
+  uuid: UUIDConfigFactory<true, true, true>;
+
+  // `User.username` is a required, mutable, visible string attribute, that does not require a
+  // normalizer function but does require a validator function
+  username: StringConfigFactory<false, false, false, false, true>;
+
+  // `User.verified` is a required, mutable and hidden boolean attribute
+  verified: BooleanConfigFactory<false, false, true>;
+
 };
 
-// Name is a string and must have a normalizer function defined.
-type NameConfig = {
-  value: string;
-  sanitizer: SanitizerFn<string>;
-  normalizer: NormalizerFn<string>;
+const config: UserAttrConfigSet = {
+
+  // Use the `dateInPastConfig()` helper to generate the config to match the type defined in UserAttrConfigSet['date_of_birth']
+  date_of_birth: dateInPastConfig(),
+
+  // Likewise, use the `emailConfig()` helper to generate the config to match the type defined in UserAttrConfigSet['email']
+  email: emailConfig(),
+
+  // Create a function that returns the domain part of `User.email`. Using [`this` parameters](https://www.typescriptlang.org/docs/handbook/functions.html#this-parameters)
+  // gives you access to the entity instance. The return value must match the type defined in
+  // `UserAttrConfigSet['date_of_birth']` (`string` or `null`).
+  email_domain: callableConfig(function(this: User): string | null { return this.email.split('@', 2)[1] || null }),
+
+  // The argument order of helper functions match the argument order of the config typings
+  uuid: uuidConfig(true, true, true),
+
+  // `User.username` needs to have a custom validator function defined. This validator ensures the
+  // username is at least 5 characters long.
+  username: {
+    ...stringConfig(),
+    validator: (value: string, name: AttrName): boolean => isLength(value, name, { min: 5 }),
+  },
+
+  // Once again, arguments provided to helper functions must match the arguments provided to the
+  // type definition. All arguments (`optional`, `immutable`, `hidden`, `normalizer`, `validator`)
+  // default to `false`.
+  verified: booleanConfig(false, false, true),
+
 };
 
-// Username is a function that returns a string. A sanitizer function is not required since values
-// for function attributes cannot be set.
-type UsernameConfig = {
-  value: FnValue<string>;
-};
+// User constructor for creating new `User` instances (`new User()`), runtime type-checking using
+// the `instanceof` operator, etc.
+const User = entity(config);
 
-// Smelly is a boolean and is hidden from JSON representation.
-type SmellyConfig = {
-  value: boolean;
-  hidden: true;
-  sanitizer: SanitizerFn<boolean>;
-};
-
-type Configs = {
-  id: IDConfig;
-  name: NameConfig;
-  username: UsernameConfig;
-  smelly: SmellyConfig;
-};
-
-export class Person extends Entity<Configs> implements Attrs<Configs> {
-
-  // The runtime configurations are constructed once and passed to all instances of the Person
-  // entity via the Entity constructor. All configuration properties are shared between instances to
-  // minimise memory footprint, except values for non-function attributes which are cloned.
-  public static readonly CONFIGS: Configs = {
-    id: {
-      value: undefined, // The values provided in the config are used as default values
-      readOnly: true, // Must be readOnly to be compatible with IDConfig
-      sanitizer: (value: unknown): number | undefined => Number(value) || undefined,
-      validator: (value: number): boolean => value > 0,
-    },
-    name: {
-      value: '', // Name was configured as a required string so can't use undefined here
-      sanitizer: (value: unknown): string => String(value),
-      normalizer: (value: string): string => value.trim(),
-    },
-    username: {
-      // All value, sanitizer, normalizer and validator functions have the instance bound to this.
-      // Use TypeScript's "this parameters" feature to declare it.
-      value: function(this: Person): string { return this.name.toLowerCase(); },
-    },
-    smelly: {
-      value: false,
-      hidden: true,
-      sanitizer: (value: unknown): boolean => Boolean(value),
-    },
-  };
-
-  // Allow consumers to provide some/all attributes during construction to override the default
-  // values provided in the configs. Attributes passed to the constructor can include values for
-  // read-only values but not for function attributes.
-  public constructor(attrs: InitialAttrs<Configs> = {}) {
-    super(Person.CONFIGS, attrs);
-  }
-
-  // Because we declared that Person implements Attrs<Configs> we have opted in to defining getters
-  // and setters for each attribute on the entity which makes it easier to interact with instances.
-  // Types do not need to be specified since they are inferred from Configs.
-
-  public get id(): Attr<Configs, 'id'> {
-    return this.one('id');
-  }
-
-  // IDConfig is a read-only attribute so TypeScript will correctly prevent us from setting it.
-  //public set id(value: Attr<Configs, 'id'>) {
-  //  this.set('id', value);
-  //}
-
-  public get name(): Attr<Configs, 'name'> {
-    return this.one('name');
-  }
-
-  public set name(value: Attr<Configs, 'name'>) {
-    this.set('name', value);
-  }
-
-  public get username(): Attr<Configs, 'username'> {
-    return this.one('username');
-  }
-
-  // UsernameConfig is a function attribute so TypeScript will correctly prevent us from setting it.
-  //public set username(value: Attr<Configs, 'username'>) {
-  //  this.set('username', value);
-  //}
-
-  public get smelly(): Attr<Configs, 'smelly'> {
-    return this.one('smelly');
-  }
-
-  public set smelly(value: Attr<Configs, 'smelly'>) {
-    this.set('smelly', value);
-  }
-
-}
+// Instance typing for use within Typescript for type-hinting `(user: User) => {}` arguments, etc.
+type User = InstanceType<typeof User>;
 ```
-
-### Simplified Usage
-
-The [example above](#verbose-usage) is intentionally verbose for instructional purposes. Much of it can be simplified using the optional helper packages...
-
-```typescript
-import { booleanConfig, fnConfig, positiveIntegerConfig, stringConfig } from '@typescript-entity/configs';
-import type { BooleanConfigFactory, FnConfigFactory, PositiveIntegerConfigFactory, StringConfigFactory } from '@typescript-entity/configs';
-import { Entity } from '@typescript-entity/core';
-import type { Attr, Attrs, InitialAttrs } from '@typescript-entity/core';
-import { trim } from '@typescript-entity/normalizers';
-
-type IDConfig = PositiveIntegerConfigFactory<true, false, true>;
-type NameConfig = StringConfigFactory<false, false, false, true>;
-type UsernameConfig = FnConfigFactory<string>;
-type SmellyConfig = BooleanConfigFactory<false, true>;
-
-type Configs = {
-  id: IDConfig;
-  name: NameConfig;
-  username: UsernameConfig;
-  smelly: SmellyConfig;
-};
-
-export class Person extends Entity<Configs> implements Attrs<Configs> {
-
-  public static readonly CONFIGS: Configs = {
-    id: positiveIntegerConfig(true, false, true),
-    name: {
-      ...stringConfig(),
-      normalizer: trim,
-    },
-    username: fnConfig(function(this: Person): string { return this.name.toLowerCase(); }),
-    smelly: booleanConfig(false, true),
-  };
-
-  public constructor(attrs: InitialAttrs<Configs> = {}) {
-    super(Person.CONFIGS, attrs);
-  }
-
-  public get id(): Attr<Configs, 'id'> {
-    return this.one('id');
-  }
-
-  public get name(): Attr<Configs, 'name'> {
-    return this.one('name');
-  }
-
-  public set name(value: Attr<Configs, 'name'>) {
-    this.set('name', value);
-  }
-
-  public get username(): Attr<Configs, 'username'> {
-    return this.one('username');
-  }
-
-  public get smelly(): Attr<Configs, 'smelly'> {
-    return this.one('smelly');
-  }
-
-  public set smelly(value: Attr<Configs, 'smelly'>) {
-    this.set('smelly', value);
-  }
-
-}
-```
-
 ### Examples
 
 ```typescript
-const person = new Person();
-console.log(person.id); // 0
-console.log(person.name); // ''
-console.log(person.username); // ''
-console.log(person.smelly); // false
-console.log(JSON.stringify(person)); // {"name":"","username":""}
-```
+const user = new User();
 
-```typescript
-const bob = new Person({
-  id: 123,
-  name: '  Bob  ',
-  smelly: true,
+console.log(user.date_of_birth); // 1970-01-01T00:00:00.000Z
+// Required date attributes default to Unix epoch
+
+console.log(user.email); // ''
+// Required string attributes default to an empty string
+
+console.log(user.email_domain); // null
+// Optional callable attributes can return null
+
+console.log(user.verified); // false
+// Optional boolean attributes default to false
+
+console.log(JSON.stringify(user)) // {"date_of_birth":"1970-01-01T00:00:00.000Z","email":"","email_domain":null,"username":"","verified":false}
+// Hidden attributes (`uuid`) are not exposed in JSON
+
+const anotherUser = new User({
+  uuid: 'abc', // Immutable attributes can only be set at instantiation
 });
-console.log(bob.id); // 123
-console.log(bob.name); // 'Bob'
-console.log(bob.username); // 'bob'
-console.log(bob.smelly); // true
-console.log(JSON.stringify(bob)); // {"id":123,"name":"Bob","username":"bob"}
-```
 
-```typescript
-const json = '{"id":"123","name":"Jane  ","username":"janerocks","smelly":true}';
-const jane = new Person(JSON.parse(json));
-console.log(jane.id); // 123 (sanitized from string to number)
-console.log(jane.name); // 'Jane' (normalized to remove trailing whitespace)
-console.log(jane.username); // 'jane' (the JSON value was ignored as this is a function attr)
-console.log(jane.smelly); // true (the JSON value was allowed even though this is a read-only attr)
+anotherUser.set('uuid', 'bar'); // Throws a `ReadOnlyError`
+
+anotherUser.fill({
+  uuid: 'bar', // Throws a `ReadOnlyError`
+});
 ```
 
 ## API Documentation

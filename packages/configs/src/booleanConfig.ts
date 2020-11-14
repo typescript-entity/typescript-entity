@@ -1,26 +1,27 @@
-import type { ConfigFactory } from './ConfigFactory';
+import type { AttrName } from '@typescript-entity/core';
 import { toBoolean, toString } from '@typescript-entity/sanitizers';
 import type { ToBooleanOptions } from '@typescript-entity/sanitizers';
+import type { WritableAttrConfigFactory } from './AttrConfigFactory';
 
 export type BooleanConfigFactory<
   Optional extends boolean = false,
   Hidden extends boolean = false,
-  ReadOnly extends boolean = false,
+  Immutable extends boolean = false,
   Normalizer extends boolean = false,
   Validator extends boolean = false
-> = ConfigFactory<boolean, Optional, Hidden, ReadOnly, Normalizer, Validator>;
+> = WritableAttrConfigFactory<boolean, Optional, Hidden, Immutable, Normalizer, Validator>;
 
 export const booleanConfig = <
   O extends boolean = false,
   H extends boolean = false,
   R extends boolean = false
->(optional?: O, hidden?: H, readOnly?: R, options: ToBooleanOptions = {}): BooleanConfigFactory<O, H, R> => ({
+>(optional?: O, hidden?: H, immutable?: R, options: ToBooleanOptions = {}): BooleanConfigFactory<O, H, R> => ({
   hidden,
-  readOnly,
-  value: optional ? undefined : false,
+  immutable,
+  value: optional ? null : false,
   sanitizer: (
     optional
-      ? (value: unknown): boolean | undefined => toString(value) ? toBoolean(value, options) : undefined
-      : (value: unknown): boolean => toBoolean(value, options)
+      ? (value: unknown, name: AttrName): boolean | null => toString(value) ? toBoolean(value, name, options) : null
+      : (value: unknown, name: AttrName): boolean => toBoolean(value, name, options)
   ),
 } as unknown as BooleanConfigFactory<O, H, R>);

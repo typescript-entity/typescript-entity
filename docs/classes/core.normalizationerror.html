@@ -60,32 +60,18 @@
 					<a href="core.normalizationerror.html">NormalizationError</a>
 				</li>
 			</ul>
-			<h1>Class NormalizationError&lt;C, K, V&gt;</h1>
+			<h1>Class NormalizationError</h1>
 		</div>
 	</div>
 </header>
 <div class="container container-main">
 	<div class="row">
 		<div class="col-8 col-content">
-			<section class="tsd-panel tsd-type-parameters">
-				<h3>Type parameters</h3>
-				<ul class="tsd-type-parameters">
-					<li>
-						<h4>C<span class="tsd-signature-symbol">: </span><a href="../modules/core.html#configs" class="tsd-signature-type">Configs</a> = <span class="tsd-signature-type">Configs</span></h4>
-					</li>
-					<li>
-						<h4>K<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">keyof </span><a href="../modules/core.html#valueattrs" class="tsd-signature-type">ValueAttrs</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">C</span><span class="tsd-signature-symbol">&gt;</span> = <span class="tsd-signature-symbol">keyof </span><span class="tsd-signature-type">ValueAttrs</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">C</span><span class="tsd-signature-symbol">&gt;</span></h4>
-					</li>
-					<li>
-						<h4>V<span class="tsd-signature-symbol">: </span><a href="../modules/core.html#attr" class="tsd-signature-type">Attr</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">C</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">K</span><span class="tsd-signature-symbol">&gt;</span> = <span class="tsd-signature-type">Attr</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">C</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">K</span><span class="tsd-signature-symbol">&gt;</span></h4>
-					</li>
-				</ul>
-			</section>
 			<section class="tsd-panel tsd-hierarchy">
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<a href="core.valueattrerror.html" class="tsd-signature-type">ValueAttrError</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">C</span><span class="tsd-signature-symbol">&gt;</span>
+						<a href="core.attrvalueerror.html" class="tsd-signature-type">AttrValueError</a>
 						<ul class="tsd-hierarchy">
 							<li>
 								<span class="target">NormalizationError</span>
@@ -98,17 +84,17 @@
 				<h2>Index</h2>
 				<section class="tsd-panel tsd-index-panel">
 					<div class="tsd-index-content">
-						<section class="tsd-index-section ">
+						<section class="tsd-index-section tsd-is-inherited">
 							<h3>Constructors</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite"><a href="core.normalizationerror.html#constructor" class="tsd-kind-icon">constructor</a></li>
+								<li class="tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited"><a href="core.normalizationerror.html#constructor" class="tsd-kind-icon">constructor</a></li>
 							</ul>
 						</section>
-						<section class="tsd-index-section ">
+						<section class="tsd-index-section tsd-is-inherited">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="core.normalizationerror.html#attrname" class="tsd-kind-icon">attr<wbr>Name</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class"><a href="core.normalizationerror.html#attrvalue" class="tsd-kind-icon">attr<wbr>Value</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="core.normalizationerror.html#attrvalue" class="tsd-kind-icon">attr<wbr>Value</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="core.normalizationerror.html#entity" class="tsd-kind-icon">entity</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="core.normalizationerror.html#message" class="tsd-kind-icon">message</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="core.normalizationerror.html#name" class="tsd-kind-icon">name</a></li>
@@ -125,32 +111,33 @@
 					</div>
 				</section>
 			</section>
-			<section class="tsd-panel-group tsd-member-group ">
+			<section class="tsd-panel-group tsd-member-group tsd-is-inherited">
 				<h2>Constructors</h2>
-				<section class="tsd-panel tsd-member tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite">
+				<section class="tsd-panel tsd-member tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited">
 					<a name="constructor" class="tsd-anchor"></a>
 					<h3>constructor</h3>
-					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite">
-						<li class="tsd-signature tsd-kind-icon">new <wbr>Normalization<wbr>Error<span class="tsd-signature-symbol">(</span>entity<span class="tsd-signature-symbol">: </span><a href="core.entity.html" class="tsd-signature-type">Entity</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">C</span><span class="tsd-signature-symbol">&gt;</span>, attrName<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">K</span>, attrValue<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">V</span>, message<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span>, previous<span class="tsd-signature-symbol">?: </span><a href="core.rethrownerror.html#error" class="tsd-signature-type">Error</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="core.normalizationerror.html" class="tsd-signature-type">NormalizationError</a></li>
+					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited">
+						<li class="tsd-signature tsd-kind-icon">new <wbr>Normalization<wbr>Error<span class="tsd-signature-symbol">(</span>entity<span class="tsd-signature-symbol">: </span><a href="core.entity.html" class="tsd-signature-type">Entity</a>, attrName<span class="tsd-signature-symbol">: </span><a href="../modules/core.html#attrname" class="tsd-signature-type">AttrName</a>, attrValue<span class="tsd-signature-symbol">: </span><a href="../modules/core.html#attrvalue" class="tsd-signature-type">AttrValue</a>, message<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span>, previous<span class="tsd-signature-symbol">?: </span><a href="core.rethrownerror.html#error" class="tsd-signature-type">Error</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="core.normalizationerror.html" class="tsd-signature-type">NormalizationError</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
+								<p>Inherited from <a href="core.attrvalueerror.html">AttrValueError</a>.<a href="core.attrvalueerror.html#constructor">constructor</a></p>
 								<p>Overrides <a href="core.attrerror.html">AttrError</a>.<a href="core.attrerror.html#constructor">constructor</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/typescript-entity/typescript-entity/blob/5252791/packages/core/src/error/NormalizationError.ts#L7">packages/core/src/error/NormalizationError.ts:7</a></li>
+									<li>Defined in <a href="https://github.com/typescript-entity/typescript-entity/blob/e922f08/packages/core/src/error/AttrValueError.ts#L6">packages/core/src/error/AttrValueError.ts:6</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>entity: <a href="core.entity.html" class="tsd-signature-type">Entity</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">C</span><span class="tsd-signature-symbol">&gt;</span></h5>
+									<h5>entity: <a href="core.entity.html" class="tsd-signature-type">Entity</a></h5>
 								</li>
 								<li>
-									<h5>attrName: <span class="tsd-signature-type">K</span></h5>
+									<h5>attrName: <a href="../modules/core.html#attrname" class="tsd-signature-type">AttrName</a></h5>
 								</li>
 								<li>
-									<h5>attrValue: <span class="tsd-signature-type">V</span></h5>
+									<h5>attrValue: <a href="../modules/core.html#attrvalue" class="tsd-signature-type">AttrValue</a></h5>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> message: <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span></h5>
@@ -164,37 +151,38 @@
 					</ul>
 				</section>
 			</section>
-			<section class="tsd-panel-group tsd-member-group ">
+			<section class="tsd-panel-group tsd-member-group tsd-is-inherited">
 				<h2>Properties</h2>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
 					<a name="attrname" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagReadonly">Readonly</span> attr<wbr>Name</h3>
-					<div class="tsd-signature tsd-kind-icon">attr<wbr>Name<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">keyof </span><span class="tsd-signature-type">C</span></div>
+					<div class="tsd-signature tsd-kind-icon">attr<wbr>Name<span class="tsd-signature-symbol">:</span> <a href="../modules/core.html#attrname" class="tsd-signature-type">AttrName</a></div>
 					<aside class="tsd-sources">
 						<p>Inherited from <a href="core.attrerror.html">AttrError</a>.<a href="core.attrerror.html#attrname">attrName</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/typescript-entity/typescript-entity/blob/5252791/packages/core/src/error/AttrError.ts#L7">packages/core/src/error/AttrError.ts:7</a></li>
+							<li>Defined in <a href="https://github.com/typescript-entity/typescript-entity/blob/e922f08/packages/core/src/error/AttrError.ts#L6">packages/core/src/error/AttrError.ts:6</a></li>
 						</ul>
 					</aside>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
 					<a name="attrvalue" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagReadonly">Readonly</span> attr<wbr>Value</h3>
-					<div class="tsd-signature tsd-kind-icon">attr<wbr>Value<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">V</span></div>
+					<div class="tsd-signature tsd-kind-icon">attr<wbr>Value<span class="tsd-signature-symbol">:</span> <a href="../modules/core.html#attrvalue" class="tsd-signature-type">AttrValue</a></div>
 					<aside class="tsd-sources">
+						<p>Inherited from <a href="core.attrvalueerror.html">AttrValueError</a>.<a href="core.attrvalueerror.html#attrvalue">attrValue</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/typescript-entity/typescript-entity/blob/5252791/packages/core/src/error/NormalizationError.ts#L7">packages/core/src/error/NormalizationError.ts:7</a></li>
+							<li>Defined in <a href="https://github.com/typescript-entity/typescript-entity/blob/e922f08/packages/core/src/error/AttrValueError.ts#L6">packages/core/src/error/AttrValueError.ts:6</a></li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
 					<a name="entity" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagReadonly">Readonly</span> entity</h3>
-					<div class="tsd-signature tsd-kind-icon">entity<span class="tsd-signature-symbol">:</span> <a href="core.entity.html" class="tsd-signature-type">Entity</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">C</span><span class="tsd-signature-symbol">&gt;</span></div>
+					<div class="tsd-signature tsd-kind-icon">entity<span class="tsd-signature-symbol">:</span> <a href="core.entity.html" class="tsd-signature-type">Entity</a></div>
 					<aside class="tsd-sources">
 						<p>Inherited from <a href="core.entityerror.html">EntityError</a>.<a href="core.entityerror.html#entity">entity</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/typescript-entity/typescript-entity/blob/5252791/packages/core/src/error/EntityError.ts#L7">packages/core/src/error/EntityError.ts:7</a></li>
+							<li>Defined in <a href="https://github.com/typescript-entity/typescript-entity/blob/e922f08/packages/core/src/error/EntityError.ts#L6">packages/core/src/error/EntityError.ts:6</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -227,7 +215,7 @@
 					<aside class="tsd-sources">
 						<p>Inherited from <a href="core.rethrownerror.html">RethrownError</a>.<a href="core.rethrownerror.html#previous">previous</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/typescript-entity/typescript-entity/blob/5252791/packages/core/src/error/RethrownError.ts#L3">packages/core/src/error/RethrownError.ts:3</a></li>
+							<li>Defined in <a href="https://github.com/typescript-entity/typescript-entity/blob/e922f08/packages/core/src/error/RethrownError.ts#L3">packages/core/src/error/RethrownError.ts:3</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -256,7 +244,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="core.rethrownerror.html">RethrownError</a>.<a href="core.rethrownerror.html#root">root</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/typescript-entity/typescript-entity/blob/5252791/packages/core/src/error/RethrownError.ts#L10">packages/core/src/error/RethrownError.ts:10</a></li>
+									<li>Defined in <a href="https://github.com/typescript-entity/typescript-entity/blob/e922f08/packages/core/src/error/RethrownError.ts#L10">packages/core/src/error/RethrownError.ts:10</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <a href="core.rethrownerror.html#error" class="tsd-signature-type">Error</a></h4>
@@ -298,28 +286,16 @@
 					<li class="current tsd-kind-module">
 						<a href="../modules/core.html" class="tsd-kind-icon">core</a>
 						<ul>
-							<li class=" tsd-kind-class tsd-parent-kind-module tsd-has-type-parameter">
-								<a href="core.attrerror.html" class="tsd-kind-icon">Attr<wbr>Error</a>
-							</li>
-							<li class=" tsd-kind-class tsd-parent-kind-module tsd-has-type-parameter">
-								<a href="core.entity.html" class="tsd-kind-icon">Entity</a>
-							</li>
-							<li class=" tsd-kind-class tsd-parent-kind-module tsd-has-type-parameter">
-								<a href="core.entityerror.html" class="tsd-kind-icon">Entity<wbr>Error</a>
-							</li>
-							<li class=" tsd-kind-class tsd-parent-kind-module tsd-has-type-parameter">
-								<a href="core.fnattrerror.html" class="tsd-kind-icon">Fn<wbr>Attr<wbr>Error</a>
-							</li>
-							<li class="current tsd-kind-class tsd-parent-kind-module tsd-has-type-parameter">
+							<li class="current tsd-kind-class tsd-parent-kind-module">
 								<a href="core.normalizationerror.html" class="tsd-kind-icon">Normalization<wbr>Error</a>
 								<ul>
-									<li class=" tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite">
+									<li class=" tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited">
 										<a href="core.normalizationerror.html#constructor" class="tsd-kind-icon">constructor</a>
 									</li>
 									<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
 										<a href="core.normalizationerror.html#attrname" class="tsd-kind-icon">attr<wbr>Name</a>
 									</li>
-									<li class=" tsd-kind-property tsd-parent-kind-class">
+									<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
 										<a href="core.normalizationerror.html#attrvalue" class="tsd-kind-icon">attr<wbr>Value</a>
 									</li>
 									<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
@@ -341,81 +317,6 @@
 										<a href="core.normalizationerror.html#root" class="tsd-kind-icon">root</a>
 									</li>
 								</ul>
-							</li>
-							<li class=" tsd-kind-class tsd-parent-kind-module tsd-has-type-parameter">
-								<a href="core.readonlyerror.html" class="tsd-kind-icon">Read<wbr>Only<wbr>Error</a>
-							</li>
-							<li class=" tsd-kind-class tsd-parent-kind-module">
-								<a href="core.rethrownerror.html" class="tsd-kind-icon">Rethrown<wbr>Error</a>
-							</li>
-							<li class=" tsd-kind-class tsd-parent-kind-module tsd-has-type-parameter">
-								<a href="core.sanitizationerror.html" class="tsd-kind-icon">Sanitization<wbr>Error</a>
-							</li>
-							<li class=" tsd-kind-class tsd-parent-kind-module tsd-has-type-parameter">
-								<a href="core.unconfiguredattrerror.html" class="tsd-kind-icon">Unconfigured<wbr>Attr<wbr>Error</a>
-							</li>
-							<li class=" tsd-kind-class tsd-parent-kind-module tsd-has-type-parameter">
-								<a href="core.validationerror.html" class="tsd-kind-icon">Validation<wbr>Error</a>
-							</li>
-							<li class=" tsd-kind-class tsd-parent-kind-module tsd-has-type-parameter">
-								<a href="core.valueattrerror.html" class="tsd-kind-icon">Value<wbr>Attr<wbr>Error</a>
-							</li>
-							<li class=" tsd-kind-interface tsd-parent-kind-module tsd-has-type-parameter">
-								<a href="../interfaces/core.entityconstructor.html" class="tsd-kind-icon">Entity<wbr>Constructor</a>
-							</li>
-							<li class=" tsd-kind-interface tsd-parent-kind-module tsd-has-type-parameter">
-								<a href="../interfaces/core.fnconfig.html" class="tsd-kind-icon">Fn<wbr>Config</a>
-							</li>
-							<li class=" tsd-kind-interface tsd-parent-kind-module tsd-has-type-parameter">
-								<a href="../interfaces/core.valueconfig.html" class="tsd-kind-icon">Value<wbr>Config</a>
-							</li>
-							<li class=" tsd-kind-type-alias tsd-parent-kind-module tsd-has-type-parameter">
-								<a href="../modules/core.html#attr" class="tsd-kind-icon">Attr</a>
-							</li>
-							<li class=" tsd-kind-type-alias tsd-parent-kind-module tsd-has-type-parameter">
-								<a href="../modules/core.html#attrs" class="tsd-kind-icon">Attrs</a>
-							</li>
-							<li class=" tsd-kind-type-alias tsd-parent-kind-module">
-								<a href="../modules/core.html#configs" class="tsd-kind-icon">Configs</a>
-							</li>
-							<li class=" tsd-kind-type-alias tsd-parent-kind-module tsd-has-type-parameter">
-								<a href="../modules/core.html#fn" class="tsd-kind-icon">Fn</a>
-							</li>
-							<li class=" tsd-kind-type-alias tsd-parent-kind-module tsd-has-type-parameter">
-								<a href="../modules/core.html#fnattrs" class="tsd-kind-icon">Fn<wbr>Attrs</a>
-							</li>
-							<li class=" tsd-kind-type-alias tsd-parent-kind-module tsd-has-type-parameter">
-								<a href="../modules/core.html#hiddenattrs" class="tsd-kind-icon">Hidden<wbr>Attrs</a>
-							</li>
-							<li class=" tsd-kind-type-alias tsd-parent-kind-module tsd-has-type-parameter">
-								<a href="../modules/core.html#initialattrs" class="tsd-kind-icon">Initial<wbr>Attrs</a>
-							</li>
-							<li class=" tsd-kind-type-alias tsd-parent-kind-module">
-								<a href="../modules/core.html#name" class="tsd-kind-icon">Name</a>
-							</li>
-							<li class=" tsd-kind-type-alias tsd-parent-kind-module tsd-has-type-parameter">
-								<a href="../modules/core.html#normalizerfn" class="tsd-kind-icon">Normalizer<wbr>Fn</a>
-							</li>
-							<li class=" tsd-kind-type-alias tsd-parent-kind-module tsd-has-type-parameter">
-								<a href="../modules/core.html#readonlyattrs" class="tsd-kind-icon">Read<wbr>Only<wbr>Attrs</a>
-							</li>
-							<li class=" tsd-kind-type-alias tsd-parent-kind-module tsd-has-type-parameter">
-								<a href="../modules/core.html#sanitizerfn" class="tsd-kind-icon">Sanitizer<wbr>Fn</a>
-							</li>
-							<li class=" tsd-kind-type-alias tsd-parent-kind-module tsd-has-type-parameter">
-								<a href="../modules/core.html#validatorfn" class="tsd-kind-icon">Validator<wbr>Fn</a>
-							</li>
-							<li class=" tsd-kind-type-alias tsd-parent-kind-module">
-								<a href="../modules/core.html#value" class="tsd-kind-icon">Value</a>
-							</li>
-							<li class=" tsd-kind-type-alias tsd-parent-kind-module tsd-has-type-parameter">
-								<a href="../modules/core.html#valueattrs" class="tsd-kind-icon">Value<wbr>Attrs</a>
-							</li>
-							<li class=" tsd-kind-type-alias tsd-parent-kind-module tsd-has-type-parameter">
-								<a href="../modules/core.html#visibleattrs" class="tsd-kind-icon">Visible<wbr>Attrs</a>
-							</li>
-							<li class=" tsd-kind-type-alias tsd-parent-kind-module tsd-has-type-parameter">
-								<a href="../modules/core.html#writableattrs" class="tsd-kind-icon">Writable<wbr>Attrs</a>
 							</li>
 						</ul>
 					</li>
@@ -440,23 +341,21 @@
 		<h2>Legend</h2>
 		<div class="tsd-legend-group">
 			<ul class="tsd-legend">
-				<li class="tsd-kind-variable"><span class="tsd-kind-icon">Variable</span></li>
 				<li class="tsd-kind-function"><span class="tsd-kind-icon">Function</span></li>
 				<li class="tsd-kind-function tsd-has-type-parameter"><span class="tsd-kind-icon">Function with type parameter</span></li>
 				<li class="tsd-kind-type-alias"><span class="tsd-kind-icon">Type alias</span></li>
 				<li class="tsd-kind-type-alias tsd-has-type-parameter"><span class="tsd-kind-icon">Type alias with type parameter</span></li>
 			</ul>
 			<ul class="tsd-legend">
-				<li class="tsd-kind-class"><span class="tsd-kind-icon">Class</span></li>
-				<li class="tsd-kind-class tsd-has-type-parameter"><span class="tsd-kind-icon">Class with type parameter</span></li>
-				<li class="tsd-kind-constructor tsd-parent-kind-class"><span class="tsd-kind-icon">Constructor</span></li>
-				<li class="tsd-kind-property tsd-parent-kind-class"><span class="tsd-kind-icon">Property</span></li>
-			</ul>
-			<ul class="tsd-legend">
 				<li class="tsd-kind-interface"><span class="tsd-kind-icon">Interface</span></li>
 				<li class="tsd-kind-interface tsd-has-type-parameter"><span class="tsd-kind-icon">Interface with type parameter</span></li>
 			</ul>
 			<ul class="tsd-legend">
+				<li class="tsd-kind-class"><span class="tsd-kind-icon">Class</span></li>
+				<li class="tsd-kind-class tsd-has-type-parameter"><span class="tsd-kind-icon">Class with type parameter</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-constructor tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited constructor</span></li>
 				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited property</span></li>
 			</ul>
 		</div>

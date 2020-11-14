@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>IsUUIDOptions | @typescript-entity</title>
+	<title>BaseAttrConfig | @typescript-entity</title>
 	<meta name="description" content="Documentation for @typescript-entity">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -54,13 +54,13 @@
 					<a href="../globals.html">Globals</a>
 				</li>
 				<li>
-					<a href="../modules/validators.html">validators</a>
+					<a href="../modules/core.html">core</a>
 				</li>
 				<li>
-					<a href="validators.isuuidoptions.html">IsUUIDOptions</a>
+					<a href="core.baseattrconfig.html">BaseAttrConfig</a>
 				</li>
 			</ul>
-			<h1>Interface IsUUIDOptions</h1>
+			<h1>Interface BaseAttrConfig</h1>
 		</div>
 	</div>
 </header>
@@ -71,7 +71,15 @@
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">IsUUIDOptions</span>
+						<span class="target">BaseAttrConfig</span>
+						<ul class="tsd-hierarchy">
+							<li>
+								<a href="core.writableattrconfig.html" class="tsd-signature-type">WritableAttrConfig</a>
+							</li>
+							<li>
+								<a href="core.callableattrconfig.html" class="tsd-signature-type">CallableAttrConfig</a>
+							</li>
+						</ul>
 					</li>
 				</ul>
 			</section>
@@ -82,7 +90,7 @@
 						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="validators.isuuidoptions.html#version" class="tsd-kind-icon">version</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="core.baseattrconfig.html#hidden" class="tsd-kind-icon">hidden</a></li>
 							</ul>
 						</section>
 					</div>
@@ -91,12 +99,12 @@
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Properties</h2>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="version" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> version</h3>
-					<div class="tsd-signature tsd-kind-icon">version<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">validator.UUIDVersion</span></div>
+					<a name="hidden" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> hidden</h3>
+					<div class="tsd-signature tsd-kind-icon">hidden<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">false</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">true</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/typescript-entity/typescript-entity/blob/e922f08/packages/validators/src/isUUID.ts#L5">packages/validators/src/isUUID.ts:5</a></li>
+							<li>Defined in <a href="https://github.com/typescript-entity/typescript-entity/blob/e922f08/packages/core/src/Entity.ts#L23">packages/core/src/Entity.ts:23</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -111,7 +119,7 @@
 					<li class=" tsd-kind-module">
 						<a href="../modules/configs.html">configs</a>
 					</li>
-					<li class=" tsd-kind-module">
+					<li class="current tsd-kind-module">
 						<a href="../modules/core.html">core</a>
 					</li>
 					<li class=" tsd-kind-module">
@@ -120,7 +128,7 @@
 					<li class=" tsd-kind-module">
 						<a href="../modules/sanitizers.html">sanitizers</a>
 					</li>
-					<li class="current tsd-kind-module">
+					<li class=" tsd-kind-module">
 						<a href="../modules/validators.html">validators</a>
 					</li>
 				</ul>
@@ -130,77 +138,32 @@
 					<li class=" tsd-kind-module">
 						<a href="../modules/configs.html" class="tsd-kind-icon">configs</a>
 					</li>
-					<li class=" tsd-kind-module">
+				</ul>
+				<ul class="current">
+					<li class="current tsd-kind-module">
 						<a href="../modules/core.html" class="tsd-kind-icon">core</a>
+						<ul>
+							<li class="current tsd-kind-interface tsd-parent-kind-module">
+								<a href="core.baseattrconfig.html" class="tsd-kind-icon">Base<wbr>Attr<wbr>Config</a>
+								<ul>
+									<li class=" tsd-kind-property tsd-parent-kind-interface">
+										<a href="core.baseattrconfig.html#hidden" class="tsd-kind-icon">hidden</a>
+									</li>
+								</ul>
+							</li>
+						</ul>
 					</li>
+				</ul>
+				<ul class="after-current">
 					<li class=" tsd-kind-module">
 						<a href="../modules/normalizers.html" class="tsd-kind-icon">normalizers</a>
 					</li>
 					<li class=" tsd-kind-module">
 						<a href="../modules/sanitizers.html" class="tsd-kind-icon">sanitizers</a>
 					</li>
-				</ul>
-				<ul class="current">
-					<li class="current tsd-kind-module">
+					<li class=" tsd-kind-module">
 						<a href="../modules/validators.html" class="tsd-kind-icon">validators</a>
-						<ul>
-							<li class=" tsd-kind-interface tsd-parent-kind-module">
-								<a href="validators.isafteroptions.html" class="tsd-kind-icon">Is<wbr>After<wbr>Options</a>
-							</li>
-							<li class=" tsd-kind-interface tsd-parent-kind-module">
-								<a href="validators.isbeforeoptions.html" class="tsd-kind-icon">Is<wbr>Before<wbr>Options</a>
-							</li>
-							<li class=" tsd-kind-interface tsd-parent-kind-module">
-								<a href="validators.iscountrycodeoptions.html" class="tsd-kind-icon">Is<wbr>Country<wbr>Code<wbr>Options</a>
-							</li>
-							<li class="current tsd-kind-interface tsd-parent-kind-module">
-								<a href="validators.isuuidoptions.html" class="tsd-kind-icon">IsUUIDOptions</a>
-								<ul>
-									<li class=" tsd-kind-property tsd-parent-kind-interface">
-										<a href="validators.isuuidoptions.html#version" class="tsd-kind-icon">version</a>
-									</li>
-								</ul>
-							</li>
-							<li class=" tsd-kind-type-alias tsd-parent-kind-module">
-								<a href="../modules/validators.html#isemailoptions" class="tsd-kind-icon">Is<wbr>Email<wbr>Options</a>
-							</li>
-							<li class=" tsd-kind-type-alias tsd-parent-kind-module">
-								<a href="../modules/validators.html#islengthoptions" class="tsd-kind-icon">Is<wbr>Length<wbr>Options</a>
-							</li>
-							<li class=" tsd-kind-type-alias tsd-parent-kind-module">
-								<a href="../modules/validators.html#isurloptions" class="tsd-kind-icon">IsURLOptions</a>
-							</li>
-							<li class=" tsd-kind-function tsd-parent-kind-module">
-								<a href="../modules/validators.html#isafter" class="tsd-kind-icon">is<wbr>After</a>
-							</li>
-							<li class=" tsd-kind-function tsd-parent-kind-module">
-								<a href="../modules/validators.html#isbefore" class="tsd-kind-icon">is<wbr>Before</a>
-							</li>
-							<li class=" tsd-kind-function tsd-parent-kind-module">
-								<a href="../modules/validators.html#iscountrycode" class="tsd-kind-icon">is<wbr>Country<wbr>Code</a>
-							</li>
-							<li class=" tsd-kind-function tsd-parent-kind-module">
-								<a href="../modules/validators.html#isemail" class="tsd-kind-icon">is<wbr>Email</a>
-							</li>
-							<li class=" tsd-kind-function tsd-parent-kind-module">
-								<a href="../modules/validators.html#islength" class="tsd-kind-icon">is<wbr>Length</a>
-							</li>
-							<li class=" tsd-kind-function tsd-parent-kind-module">
-								<a href="../modules/validators.html#isnegative" class="tsd-kind-icon">is<wbr>Negative</a>
-							</li>
-							<li class=" tsd-kind-function tsd-parent-kind-module">
-								<a href="../modules/validators.html#ispositive" class="tsd-kind-icon">is<wbr>Positive</a>
-							</li>
-							<li class=" tsd-kind-function tsd-parent-kind-module">
-								<a href="../modules/validators.html#isurl" class="tsd-kind-icon">isURL</a>
-							</li>
-							<li class=" tsd-kind-function tsd-parent-kind-module">
-								<a href="../modules/validators.html#isuuid" class="tsd-kind-icon">isUUID</a>
-							</li>
-						</ul>
 					</li>
-				</ul>
-				<ul class="after-current">
 				</ul>
 			</nav>
 		</div>

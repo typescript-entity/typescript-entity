@@ -1,25 +1,29 @@
-import type { ConfigFactory } from './ConfigFactory';
+import { Entity } from '@typescript-entity/core';
+import type { AttrName } from '@typescript-entity/core';
 import { toNumber, toString } from '@typescript-entity/sanitizers';
+import type { WritableAttrConfigFactory } from './AttrConfigFactory';
 
 export type NumberConfigFactory<
   Optional extends boolean = false,
   Hidden extends boolean = false,
-  ReadOnly extends boolean = false,
+  Immutable extends boolean = false,
   Normalizer extends boolean = false,
   Validator extends boolean = false
-> = ConfigFactory<number, Optional, Hidden, ReadOnly, Normalizer, Validator>;
+> = WritableAttrConfigFactory<number, Optional, Hidden, Immutable, Normalizer, Validator>;
 
 export const numberConfig = <
   O extends boolean = false,
   H extends boolean = false,
   R extends boolean = false
->(optional?: O, hidden?: H, readOnly?: R): NumberConfigFactory<O, H, R> => ({
+>(optional?: O, hidden?: H, immutable?: R): NumberConfigFactory<O, H, R> => ({
   hidden,
-  readOnly,
-  value: optional ? undefined : 0,
+  immutable,
+  value: optional ? null : 0,
   sanitizer: (
     optional
-      ? (value: unknown): number | undefined => toString(value) ? toNumber(value) : undefined
+      ? function(this: Entity, value: unknown, name: AttrName): number | null {
+        return toString(value) ? toNumber.bind(this)(value, name) : null;
+      }
       : toNumber
   ),
 } as unknown as NumberConfigFactory<O, H, R>);
