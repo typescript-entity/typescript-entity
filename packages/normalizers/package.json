@@ -23,7 +23,7 @@
   "sideEffects": false,
   "dependencies": {
     "@types/lodash": "4",
-    "lodash": "4"
+    "lodash": "^4.17.12"
   },
   "devDependencies": {
     "rimraf": "3",
