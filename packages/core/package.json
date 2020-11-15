@@ -21,10 +21,10 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "dependencies": {
-    "lodash": "^4.17.20"
+    "@types/lodash": "4",
+    "lodash": "4"
   },
   "devDependencies": {
-    "@types/lodash": "4",
     "rimraf": "3",
     "typescript": "4"
   },
