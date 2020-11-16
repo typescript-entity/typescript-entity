@@ -1,9 +1,9 @@
 import { Entity } from '@typescript-entity/core';
 import type { AttrName } from '@typescript-entity/core';
 import { toNumber, toString } from '@typescript-entity/sanitizers';
-import type { WritableAttrConfigFactory } from './AttrConfigFactory';
+import type { WritableAttrConfigFactory } from './writable';
 
-export type NumberConfigFactory<
+export type NumberAttrConfigFactory<
   Optional extends boolean = false,
   Hidden extends boolean = false,
   Immutable extends boolean = false,
@@ -11,11 +11,11 @@ export type NumberConfigFactory<
   Validator extends boolean = false
 > = WritableAttrConfigFactory<number, Optional, Hidden, Immutable, Normalizer, Validator>;
 
-export const numberConfig = <
+export const number = <
   O extends boolean = false,
   H extends boolean = false,
   R extends boolean = false
->(optional?: O, hidden?: H, immutable?: R): NumberConfigFactory<O, H, R> => ({
+>(optional?: O, hidden?: H, immutable?: R): NumberAttrConfigFactory<O, H, R> => ({
   hidden,
   immutable,
   value: optional ? null : 0,
@@ -26,4 +26,4 @@ export const numberConfig = <
       }
       : toNumber
   ),
-} as unknown as NumberConfigFactory<O, H, R>);
+} as unknown as NumberAttrConfigFactory<O, H, R>);

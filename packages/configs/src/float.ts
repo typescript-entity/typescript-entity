@@ -1,23 +1,23 @@
 import { Entity } from '@typescript-entity/core';
 import type { AttrName } from '@typescript-entity/core';
 import { toFloat, toString } from '@typescript-entity/sanitizers';
-import { numberConfig } from './numberConfig';
-import type { NumberConfigFactory } from './numberConfig';
+import { number } from './number';
+import type { NumberAttrConfigFactory } from './number';
 
-export type FloatConfigFactory<
+export type FloatAttrConfigFactory<
   Optional extends boolean = false,
   Hidden extends boolean = false,
   Immutable extends boolean = false,
   Normalizer extends boolean = false,
   Validator extends boolean = false
-> = NumberConfigFactory<Optional, Hidden, Immutable, Normalizer, Validator>;
+> = NumberAttrConfigFactory<Optional, Hidden, Immutable, Normalizer, Validator>;
 
-export const floatConfig = <
+export const float = <
   O extends boolean = false,
   H extends boolean = false,
   R extends boolean = false
->(optional?: O, hidden?: H, immutable?: R): FloatConfigFactory<O, H, R> => ({
-  ...numberConfig(optional, hidden, immutable),
+>(optional?: O, hidden?: H, immutable?: R): FloatAttrConfigFactory<O, H, R> => ({
+  ...number(optional, hidden, immutable),
   sanitizer: (
     optional
       ? function(this: Entity, value: unknown, name: AttrName): number | null {
@@ -25,4 +25,4 @@ export const floatConfig = <
       }
       : toFloat
   ),
-} as unknown as FloatConfigFactory<O, H, R>);
+} as unknown as FloatAttrConfigFactory<O, H, R>);

@@ -66,8 +66,8 @@ yarn add @typescript-entity/validators
 ## Usage
 
 ```typescript
-import { booleanConfig, callableConfig, dateInPastConfig, emailConfig, stringConfig, uuidConfig } from '@typescript-entity/configs';
-import type { BooleanConfigFactory, CallableAttrConfigFactory, DateInPastConfigFactory, EmailConfigFactory, StringConfigFactory, UUIDConfigFactory } from '@typescript-entity/configs';
+import { boolean, callable, dateInPast, email, string, uuid } from '@typescript-entity/configs';
+import type { BooleanAttrConfigFactory, CallableAttrConfigFactory, DateInPastAttrConfigFactory, EmailAttrConfigFactory, StringAttrConfigFactory, UUIDAttrConfigFactory } from '@typescript-entity/configs';
 import { entity } from '@typescript-entity/core';
 import type { AttrName } from '@typescript-entity/core';
 import { isLength } from '@typescript-entity/validators';
@@ -75,54 +75,54 @@ import { isLength } from '@typescript-entity/validators';
 type UserAttrConfigSet = {
 
   // `User.date_of_birth` is a date in the past
-  date_of_birth: DateInPastConfigFactory;
+  date_of_birth: DateInPastAttrConfigFactory;
 
   // `User.email` is an email address
-  email: EmailConfigFactory;
+  email: EmailAttrConfigFactory;
 
   // `User.email_domain` is an optional, callable attribute that returns the domain part of
   // `User.email` (string). Since this attribute is optional, the callback may also return `null`.
   email_domain: CallableAttrConfigFactory<string, true>;
 
   // `User.uuid` is an optional, immutable and hidden UUID v4 attribute
-  uuid: UUIDConfigFactory<true, true, true>;
+  uuid: UUIDAttrConfigFactory<true, true, true>;
 
   // `User.username` is a required, mutable, visible string attribute, that does not require a
   // normalizer function but does require a validator function
-  username: StringConfigFactory<false, false, false, false, true>;
+  username: StringAttrConfigFactory<false, false, false, false, true>;
 
   // `User.verified` is a required, mutable and hidden boolean attribute
-  verified: BooleanConfigFactory<false, false, true>;
+  verified: BooleanAttrConfigFactory<false, false, true>;
 
 };
 
 const config: UserAttrConfigSet = {
 
   // Use the `dateInPastConfig()` helper to generate the config to match the type defined in UserAttrConfigSet['date_of_birth']
-  date_of_birth: dateInPastConfig(),
+  date_of_birth: dateInPast(),
 
   // Likewise, use the `emailConfig()` helper to generate the config to match the type defined in UserAttrConfigSet['email']
-  email: emailConfig(),
+  email: email(),
 
   // Create a function that returns the domain part of `User.email`. Using [`this` parameters](https://www.typescriptlang.org/docs/handbook/functions.html#this-parameters)
   // gives you access to the entity instance. The return value must match the type defined in
   // `UserAttrConfigSet['date_of_birth']` (`string` or `null`).
-  email_domain: callableConfig(function(this: User): string | null { return this.email.split('@', 2)[1] || null }),
+  email_domain: callable(function(this: User): string | null { return this.email.split('@', 2)[1] || null }),
 
   // The argument order of helper functions match the argument order of the config typings
-  uuid: uuidConfig(true, true, true),
+  uuid: uuid(true, true, true),
 
   // `User.username` needs to have a custom validator function defined. This validator ensures the
   // username is at least 5 characters long.
   username: {
-    ...stringConfig(),
+    ...string(),
     validator: (value: string, name: AttrName): boolean => isLength(value, name, { min: 5 }),
   },
 
   // Once again, arguments provided to helper functions must match the arguments provided to the
   // type definition. All arguments (`optional`, `immutable`, `hidden`, `normalizer`, `validator`)
   // default to `false`.
-  verified: booleanConfig(false, false, true),
+  verified: boolean(false, false, true),
 
 };
 

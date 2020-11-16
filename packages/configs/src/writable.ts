@@ -1,8 +1,8 @@
-import type { AttrValue, CallableAttrConfig, WritableAttrConfig } from '@typescript-entity/core';
+import type { AttrValue, WritableAttrConfig } from '@typescript-entity/core';
 
 type ArrayType<T extends Array<AttrValue>> = T extends (infer R)[] ? R : never;
 
-type ResolvedValue<V extends AttrValue, Optional extends boolean = false> = (
+export type ResolveValue<V extends AttrValue, Optional extends boolean = false> = (
   Optional extends true
     ? V extends Array<AttrValue>
       ? (ArrayType<V> | null)[]
@@ -18,8 +18,8 @@ export type WritableAttrConfigFactory<
   Normalizer extends boolean = false,
   Validator extends boolean = false
 > = (
-  WritableAttrConfig<ResolvedValue<V, Optional>> extends infer C
-    ? C extends WritableAttrConfig<ResolvedValue<V, Optional>>
+  WritableAttrConfig<ResolveValue<V, Optional>> extends infer C
+    ? C extends WritableAttrConfig<ResolveValue<V, Optional>>
       ? (
         Pick<C, 'value' | 'sanitizer'>
         & (Hidden extends true ? { hidden: true } : { hidden?: false })
@@ -29,13 +29,4 @@ export type WritableAttrConfigFactory<
       )
       : never
     : never
-);
-
-export type CallableAttrConfigFactory<
-  V extends AttrValue,
-  Optional extends boolean = false,
-  Hidden extends boolean = false
-> = (
-  Pick<CallableAttrConfig<ResolvedValue<V, Optional>>, 'fn'>
-  & (Hidden extends true ? { hidden: true } : { hidden?: false })
 );
