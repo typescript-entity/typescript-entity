@@ -77,8 +77,11 @@ export type ResolveMutableAttrName<ACS extends AttrConfigSet> = AsAttrName<Exclu
 export type ResolveMutableAttrConfigSet<ACS extends AttrConfigSet> = Pick<ACS, ResolveMutableAttrName<ACS>>;
 export type ResolveMutableAttrSet<ACS extends AttrConfigSet> = ResolveAttrSet<ResolveMutableAttrConfigSet<ACS>>;
 
+export type ResolveConstructorData<ACS extends AttrConfigSet> = Partial<ResolveWritableAttrSet<ACS>> | Entity<ACS> | string;
+export type ResolveFillData<ACS extends AttrConfigSet> = Partial<ResolveMutableAttrSet<ACS>> | Entity<ACS> | string;
+
 export type EntityConstructor<ACS extends AttrConfigSet, E extends Entity<ACS> = Entity<ACS>> = {
-  new(data?: Partial<ResolveWritableAttrSet<ACS>> | E | string): E;
+  new(data?: ResolveConstructorData<ACS>): E;
 };
 
 export type EntityWithAccessorsConstructor<ACS extends AttrConfigSet, E extends Entity<ACS> = Entity<ACS>> = EntityConstructor<ACS, E & ResolveAttrSet<ACS>>;
@@ -101,7 +104,7 @@ export class Entity<ACS extends AttrConfigSet = typeof EmptyObject> {
    * @param attrConfigSet
    * @param data
    */
-  constructor(attrConfigSet: ACS, data: Partial<ResolveWritableAttrSet<ACS>> | Entity<ACS> | string = {}) {
+  constructor(attrConfigSet: ACS, data: ResolveConstructorData<ACS> = {}) {
     this.#attrConfigSet = attrConfigSet;
     Object.freeze(this.#attrConfigSet);
 
@@ -278,7 +281,7 @@ export class Entity<ACS extends AttrConfigSet = typeof EmptyObject> {
    *
    * @param data
    */
-  public fill(data: Partial<ResolveMutableAttrSet<ACS>> | Entity<ACS> | string): this {
+  public fill(data: ResolveFillData<ACS>): this {
     Object.entries(this.parseData(data)).forEach(([ name, value ]) => {
       this.set(name as ResolveMutableAttrName<ACS>, value);
     });

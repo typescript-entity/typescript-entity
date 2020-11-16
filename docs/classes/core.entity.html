@@ -135,13 +135,13 @@
 					<a name="constructor" class="tsd-anchor"></a>
 					<h3>constructor</h3>
 					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">new <wbr>Entity<span class="tsd-signature-symbol">(</span>attrConfigSet<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">ACS</span>, data<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">Partial</span><span class="tsd-signature-symbol">&lt;</span><a href="../modules/core.html#resolvewritableattrset" class="tsd-signature-type">ResolveWritableAttrSet</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">ACS</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> | </span><a href="core.entity.html" class="tsd-signature-type">Entity</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">ACS</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="core.entity.html" class="tsd-signature-type">Entity</a></li>
+						<li class="tsd-signature tsd-kind-icon">new <wbr>Entity<span class="tsd-signature-symbol">(</span>attrConfigSet<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">ACS</span>, data<span class="tsd-signature-symbol">?: </span><a href="../modules/core.html#resolveconstructordata" class="tsd-signature-type">ResolveConstructorData</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">ACS</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="core.entity.html" class="tsd-signature-type">Entity</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/typescript-entity/typescript-entity/blob/2b07503/packages/core/src/Entity.ts#L92">packages/core/src/Entity.ts:92</a></li>
+									<li>Defined in <a href="https://github.com/typescript-entity/typescript-entity/blob/1748b12/packages/core/src/Entity.ts#L95">packages/core/src/Entity.ts:95</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -159,7 +159,7 @@
 									<h5>attrConfigSet: <span class="tsd-signature-type">ACS</span></h5>
 								</li>
 								<li>
-									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> data: <span class="tsd-signature-type">Partial</span><span class="tsd-signature-symbol">&lt;</span><a href="../modules/core.html#resolvewritableattrset" class="tsd-signature-type">ResolveWritableAttrSet</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">ACS</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> | </span><a href="core.entity.html" class="tsd-signature-type">Entity</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">ACS</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> = {}</span></h5>
+									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> data: <a href="../modules/core.html#resolveconstructordata" class="tsd-signature-type">ResolveConstructorData</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">ACS</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> = {}</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<div class="lead">
 										</div>
@@ -179,7 +179,7 @@
 					<div class="tsd-signature tsd-kind-icon">#attr<wbr>Config<wbr>Set<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">ACS</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/typescript-entity/typescript-entity/blob/2b07503/packages/core/src/Entity.ts#L89">packages/core/src/Entity.ts:89</a></li>
+							<li>Defined in <a href="https://github.com/typescript-entity/typescript-entity/blob/1748b12/packages/core/src/Entity.ts#L92">packages/core/src/Entity.ts:92</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -189,7 +189,7 @@
 					<div class="tsd-signature tsd-kind-icon">#immutable<span class="tsd-signature-symbol">:</span> <a href="../modules/core.html#resolveimmutableattrset" class="tsd-signature-type">ResolveImmutableAttrSet</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">ACS</span><span class="tsd-signature-symbol">&gt;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/typescript-entity/typescript-entity/blob/2b07503/packages/core/src/Entity.ts#L90">packages/core/src/Entity.ts:90</a></li>
+							<li>Defined in <a href="https://github.com/typescript-entity/typescript-entity/blob/1748b12/packages/core/src/Entity.ts#L93">packages/core/src/Entity.ts:93</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -199,7 +199,7 @@
 					<div class="tsd-signature tsd-kind-icon">#modified<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Set</span><span class="tsd-signature-symbol">&lt;</span><a href="../modules/core.html#attrname" class="tsd-signature-type">AttrName</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> = new Set&lt;ResolveMutableAttrName&lt;ACS&gt;&gt;()</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/typescript-entity/typescript-entity/blob/2b07503/packages/core/src/Entity.ts#L92">packages/core/src/Entity.ts:92</a></li>
+							<li>Defined in <a href="https://github.com/typescript-entity/typescript-entity/blob/1748b12/packages/core/src/Entity.ts#L95">packages/core/src/Entity.ts:95</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -209,7 +209,7 @@
 					<div class="tsd-signature tsd-kind-icon">#mutable<span class="tsd-signature-symbol">:</span> <a href="../modules/core.html#resolvemutableattrset" class="tsd-signature-type">ResolveMutableAttrSet</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">ACS</span><span class="tsd-signature-symbol">&gt;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/typescript-entity/typescript-entity/blob/2b07503/packages/core/src/Entity.ts#L91">packages/core/src/Entity.ts:91</a></li>
+							<li>Defined in <a href="https://github.com/typescript-entity/typescript-entity/blob/1748b12/packages/core/src/Entity.ts#L94">packages/core/src/Entity.ts:94</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -226,7 +226,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/typescript-entity/typescript-entity/blob/2b07503/packages/core/src/Entity.ts#L170">packages/core/src/Entity.ts:170</a></li>
+									<li>Defined in <a href="https://github.com/typescript-entity/typescript-entity/blob/1748b12/packages/core/src/Entity.ts#L173">packages/core/src/Entity.ts:173</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -248,7 +248,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/typescript-entity/typescript-entity/blob/2b07503/packages/core/src/Entity.ts#L177">packages/core/src/Entity.ts:177</a></li>
+									<li>Defined in <a href="https://github.com/typescript-entity/typescript-entity/blob/1748b12/packages/core/src/Entity.ts#L180">packages/core/src/Entity.ts:180</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -270,7 +270,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/typescript-entity/typescript-entity/blob/2b07503/packages/core/src/Entity.ts#L292">packages/core/src/Entity.ts:292</a></li>
+									<li>Defined in <a href="https://github.com/typescript-entity/typescript-entity/blob/1748b12/packages/core/src/Entity.ts#L295">packages/core/src/Entity.ts:295</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -287,13 +287,13 @@
 					<a name="fill" class="tsd-anchor"></a>
 					<h3>fill</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">fill<span class="tsd-signature-symbol">(</span>data<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Partial</span><span class="tsd-signature-symbol">&lt;</span><a href="../modules/core.html#resolvemutableattrset" class="tsd-signature-type">ResolveMutableAttrSet</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">ACS</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> | </span><a href="core.entity.html" class="tsd-signature-type">Entity</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">ACS</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">this</span></li>
+						<li class="tsd-signature tsd-kind-icon">fill<span class="tsd-signature-symbol">(</span>data<span class="tsd-signature-symbol">: </span><a href="../modules/core.html#resolvefilldata" class="tsd-signature-type">ResolveFillData</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">ACS</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">this</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/typescript-entity/typescript-entity/blob/2b07503/packages/core/src/Entity.ts#L281">packages/core/src/Entity.ts:281</a></li>
+									<li>Defined in <a href="https://github.com/typescript-entity/typescript-entity/blob/1748b12/packages/core/src/Entity.ts#L284">packages/core/src/Entity.ts:284</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -305,7 +305,7 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>data: <span class="tsd-signature-type">Partial</span><span class="tsd-signature-symbol">&lt;</span><a href="../modules/core.html#resolvemutableattrset" class="tsd-signature-type">ResolveMutableAttrSet</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">ACS</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> | </span><a href="core.entity.html" class="tsd-signature-type">Entity</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">ACS</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span></h5>
+									<h5>data: <a href="../modules/core.html#resolvefilldata" class="tsd-signature-type">ResolveFillData</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">ACS</span><span class="tsd-signature-symbol">&gt;</span></h5>
 									<div class="tsd-comment tsd-typography">
 									</div>
 								</li>
@@ -324,7 +324,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/typescript-entity/typescript-entity/blob/2b07503/packages/core/src/Entity.ts#L211">packages/core/src/Entity.ts:211</a></li>
+									<li>Defined in <a href="https://github.com/typescript-entity/typescript-entity/blob/1748b12/packages/core/src/Entity.ts#L214">packages/core/src/Entity.ts:214</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -346,7 +346,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/typescript-entity/typescript-entity/blob/2b07503/packages/core/src/Entity.ts#L197">packages/core/src/Entity.ts:197</a></li>
+									<li>Defined in <a href="https://github.com/typescript-entity/typescript-entity/blob/1748b12/packages/core/src/Entity.ts#L200">packages/core/src/Entity.ts:200</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -368,7 +368,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/typescript-entity/typescript-entity/blob/2b07503/packages/core/src/Entity.ts#L160">packages/core/src/Entity.ts:160</a></li>
+									<li>Defined in <a href="https://github.com/typescript-entity/typescript-entity/blob/1748b12/packages/core/src/Entity.ts#L163">packages/core/src/Entity.ts:163</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -398,7 +398,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/typescript-entity/typescript-entity/blob/2b07503/packages/core/src/Entity.ts#L232">packages/core/src/Entity.ts:232</a></li>
+									<li>Defined in <a href="https://github.com/typescript-entity/typescript-entity/blob/1748b12/packages/core/src/Entity.ts#L235">packages/core/src/Entity.ts:235</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -421,7 +421,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/typescript-entity/typescript-entity/blob/2b07503/packages/core/src/Entity.ts#L204">packages/core/src/Entity.ts:204</a></li>
+									<li>Defined in <a href="https://github.com/typescript-entity/typescript-entity/blob/1748b12/packages/core/src/Entity.ts#L207">packages/core/src/Entity.ts:207</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -443,7 +443,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/typescript-entity/typescript-entity/blob/2b07503/packages/core/src/Entity.ts#L327">packages/core/src/Entity.ts:327</a></li>
+									<li>Defined in <a href="https://github.com/typescript-entity/typescript-entity/blob/1748b12/packages/core/src/Entity.ts#L330">packages/core/src/Entity.ts:330</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -487,7 +487,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/typescript-entity/typescript-entity/blob/2b07503/packages/core/src/Entity.ts#L138">packages/core/src/Entity.ts:138</a></li>
+									<li>Defined in <a href="https://github.com/typescript-entity/typescript-entity/blob/1748b12/packages/core/src/Entity.ts#L141">packages/core/src/Entity.ts:141</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -523,7 +523,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/typescript-entity/typescript-entity/blob/2b07503/packages/core/src/Entity.ts#L374">packages/core/src/Entity.ts:374</a></li>
+									<li>Defined in <a href="https://github.com/typescript-entity/typescript-entity/blob/1748b12/packages/core/src/Entity.ts#L377">packages/core/src/Entity.ts:377</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -554,7 +554,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/typescript-entity/typescript-entity/blob/2b07503/packages/core/src/Entity.ts#L304">packages/core/src/Entity.ts:304</a></li>
+									<li>Defined in <a href="https://github.com/typescript-entity/typescript-entity/blob/1748b12/packages/core/src/Entity.ts#L307">packages/core/src/Entity.ts:307</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -594,7 +594,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/typescript-entity/typescript-entity/blob/2b07503/packages/core/src/Entity.ts#L243">packages/core/src/Entity.ts:243</a></li>
+									<li>Defined in <a href="https://github.com/typescript-entity/typescript-entity/blob/1748b12/packages/core/src/Entity.ts#L246">packages/core/src/Entity.ts:246</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -634,7 +634,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/typescript-entity/typescript-entity/blob/2b07503/packages/core/src/Entity.ts#L405">packages/core/src/Entity.ts:405</a></li>
+									<li>Defined in <a href="https://github.com/typescript-entity/typescript-entity/blob/1748b12/packages/core/src/Entity.ts#L408">packages/core/src/Entity.ts:408</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -656,7 +656,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/typescript-entity/typescript-entity/blob/2b07503/packages/core/src/Entity.ts#L397">packages/core/src/Entity.ts:397</a></li>
+									<li>Defined in <a href="https://github.com/typescript-entity/typescript-entity/blob/1748b12/packages/core/src/Entity.ts#L400">packages/core/src/Entity.ts:400</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -678,7 +678,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/typescript-entity/typescript-entity/blob/2b07503/packages/core/src/Entity.ts#L350">packages/core/src/Entity.ts:350</a></li>
+									<li>Defined in <a href="https://github.com/typescript-entity/typescript-entity/blob/1748b12/packages/core/src/Entity.ts#L353">packages/core/src/Entity.ts:353</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -719,7 +719,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/typescript-entity/typescript-entity/blob/2b07503/packages/core/src/Entity.ts#L221">packages/core/src/Entity.ts:221</a></li>
+									<li>Defined in <a href="https://github.com/typescript-entity/typescript-entity/blob/1748b12/packages/core/src/Entity.ts#L224">packages/core/src/Entity.ts:224</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -741,7 +741,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/typescript-entity/typescript-entity/blob/2b07503/packages/core/src/Entity.ts#L187">packages/core/src/Entity.ts:187</a></li>
+									<li>Defined in <a href="https://github.com/typescript-entity/typescript-entity/blob/1748b12/packages/core/src/Entity.ts#L190">packages/core/src/Entity.ts:190</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
