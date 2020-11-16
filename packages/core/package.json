@@ -22,7 +22,8 @@
   "types": "dist/index.d.ts",
   "dependencies": {
     "@types/lodash": "4",
-    "lodash": "^4.17.12"
+    "lodash": "^4.17.12",
+    "make-error-cause": "2"
   },
   "devDependencies": {
     "rimraf": "3",

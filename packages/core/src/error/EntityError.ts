@@ -1,7 +1,7 @@
+import { BaseError } from 'make-error-cause';
 import type { Entity } from '../Entity';
-import { RethrownError } from './RethrownError';
 
-export class EntityError extends RethrownError {
+export class EntityError extends BaseError {
 
   public readonly entity: Entity;
 
