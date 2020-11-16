@@ -67,49 +67,24 @@ yarn add @typescript-entity/validators
 
 ```typescript
 import { boolean, callable, dateInPast, email, string, uuid } from '@typescript-entity/configs';
-import type { BooleanAttrConfigFactory, CallableAttrConfigFactory, DateInPastAttrConfigFactory, EmailAttrConfigFactory, StringAttrConfigFactory, UUIDAttrConfigFactory } from '@typescript-entity/configs';
 import { entity } from '@typescript-entity/core';
 import type { AttrName } from '@typescript-entity/core';
 import { isLength } from '@typescript-entity/validators';
 
-type UserAttrConfigSet = {
+const config = {
 
   // `User.date_of_birth` is a date in the past
-  date_of_birth: DateInPastAttrConfigFactory;
-
-  // `User.email` is an email address
-  email: EmailAttrConfigFactory;
-
-  // `User.email_domain` is an optional, callable attribute that returns the domain part of
-  // `User.email` (string). Since this attribute is optional, the callback may also return `null`.
-  email_domain: CallableAttrConfigFactory<string, true>;
-
-  // `User.uuid` is an optional, immutable and hidden UUID v4 attribute
-  uuid: UUIDAttrConfigFactory<true, true, true>;
-
-  // `User.username` is a required, mutable, visible string attribute, that does not require a
-  // normalizer function but does require a validator function
-  username: StringAttrConfigFactory<false, false, false, false, true>;
-
-  // `User.verified` is a required, mutable and hidden boolean attribute
-  verified: BooleanAttrConfigFactory<false, false, true>;
-
-};
-
-const config: UserAttrConfigSet = {
-
-  // Use the `dateInPastConfig()` helper to generate the config to match the type defined in UserAttrConfigSet['date_of_birth']
   date_of_birth: dateInPast(),
 
-  // Likewise, use the `emailConfig()` helper to generate the config to match the type defined in UserAttrConfigSet['email']
+  // `User.email` is an email address
   email: email(),
 
-  // Create a function that returns the domain part of `User.email`. Using [`this` parameters](https://www.typescriptlang.org/docs/handbook/functions.html#this-parameters)
-  // gives you access to the entity instance. The return value must match the type defined in
-  // `UserAttrConfigSet['date_of_birth']` (`string` or `null`).
+  // `User.email_domain` is a callable attribute that returns the domain part of `User.email`. Using
+  // [`this` parameter](https://www.typescriptlang.org/docs/handbook/functions.html#this-parameters)
+  // gives you access to the entity instance.
   email_domain: callable(function(this: User): string | null { return this.email.split('@', 2)[1] || null }),
 
-  // The argument order of helper functions match the argument order of the config typings
+  // `User.uuid` is an optional, immutable and hidden UUID v4 attribute
   uuid: uuid(true, true, true),
 
   // `User.username` needs to have a custom validator function defined. This validator ensures the
@@ -119,9 +94,7 @@ const config: UserAttrConfigSet = {
     validator: (value: string, name: AttrName): boolean => isLength(value, name, { min: 5 }),
   },
 
-  // Once again, arguments provided to helper functions must match the arguments provided to the
-  // type definition. All arguments (`optional`, `immutable`, `hidden`, `normalizer`, `validator`)
-  // default to `false`.
+  // `User.verified` is a required, immutable and hidden boolean attribute
   verified: boolean(false, false, true),
 
 };
@@ -149,7 +122,7 @@ console.log(JSON.stringify(user)) // {"date_of_birth":"1970-01-01T00:00:00.000Z"
 // Hidden attributes (`uuid`) are not exposed in JSON
 
 const anotherUser = new User({
-  uuid: 'abc', // Immutable attributes can only be set at instantiation
+  uuid: 'abc', // Since `User.uuid` is immutable it can only be set at instantiation
 });
 
 anotherUser.set('uuid', 'bar'); // Throws a `ReadOnlyError`
