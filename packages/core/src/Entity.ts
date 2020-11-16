@@ -39,7 +39,7 @@ export interface CallableAttrConfig<V extends AttrValue> extends BaseAttrConfig 
 
 export type Fn<V> = () => V;
 export type SanitizerFn<V> = (value: unknown, name: AttrName) => V;
-export type NormalizerFn<V> = (value: V, name: AttrName) => V;
+export type NormalizerFn<V> = (value: NonNullable<V>, name: AttrName) => V;
 export type ValidatorFn<V> = (value: NonNullable<V>, name: AttrName) => boolean;
 
 // Type interprets `keyof` as various types; attribute names should be strings only.
@@ -333,7 +333,7 @@ export class Entity<ACS extends AttrConfigSet = typeof EmptyObject> {
       if (!isWritableAttrConfig(attrConfig)) {
         throw new NormalizationError(this, name, value, `Attribute ${name} cannot be normalized as it is not a writable attribute.`);
       }
-      return (attrConfig.normalizer ? attrConfig.normalizer.call(this, value, name) : value);
+      return null !== value && attrConfig.normalizer ? attrConfig.normalizer.call(this, value, name) : value;
     } catch (err) {
       throw err instanceof NormalizationError ? err : new NormalizationError(this, name, value, err.message, err);
     }
