@@ -1,6 +1,6 @@
 {
   "name": "@typescript-entity/sanitizers",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "description": "Sanitizer functions for use with @typescript-entity/core.",
   "homepage": "https://github.com/typescript-entity/typescript-entity/tree/master/packages/%40typescript-entity/sanitizers#readme",
   "bugs": {
@@ -23,7 +23,7 @@
   "sideEffects": false,
   "dependencies": {
     "@types/validator": "13",
-    "@typescript-entity/core": "^0.2.2",
+    "@typescript-entity/core": "^0.2.3",
     "validator": "13"
   },
   "devDependencies": {
