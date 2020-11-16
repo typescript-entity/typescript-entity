@@ -13,8 +13,6 @@ export type UserAttrConfigSet = {
   verified: BooleanAttrConfigFactory<false, false, true>;
 };
 
-export type User = InstanceType<typeof User>;
-
 export const UserAttrConfigSet: UserAttrConfigSet = {
   date_of_birth: dateInPast(),
   email: email(),
@@ -27,4 +25,4 @@ export const UserAttrConfigSet: UserAttrConfigSet = {
   verified: boolean(false, false, true),
 };
 
-export const User = entity(UserAttrConfigSet);
+export class User extends entity(UserAttrConfigSet) {}

@@ -126,12 +126,7 @@ const config: UserAttrConfigSet = {
 
 };
 
-// User constructor for creating new `User` instances (`new User()`), runtime type-checking using
-// the `instanceof` operator, etc.
-const User = entity(config);
-
-// Instance typing for use within Typescript for type-hinting `(user: User) => {}` arguments, etc.
-type User = InstanceType<typeof User>;
+export class User extends entity(config) {}
 ```
 ### Examples
 
