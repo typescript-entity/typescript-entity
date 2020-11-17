@@ -2,7 +2,7 @@
 
 Typed entity library with attribute sanitization, normalization and validation.
 
-Provides a low-level implementation of data objects represented as entity classes. Each entity class is assigned a collection of attribute configurations that define the value type (`string`, `number`, custom type, anything...) and other constraints such as `optional`, `immutable` or `hidden` (from JSON representation).
+Provides a low-level implementation of data objects represented as entity classes. Each entity class is assigned a collection of attribute configurations that define the value type (`string`, `number`, custom type, anything...) and other constraints such as `optional` (`null` values allowed), `immutable` (read-only) or `hidden` (from JSON representation).
 
 Attribute values can be sanitized from raw/untrusted data (e.g. JSON or user-input) using the `sanitizer` function configured for each attribute, as well as normalized and validated by configuring an optional `normalizer` and `validator` function, respectively.
 
@@ -10,10 +10,7 @@ Callable attributes can also be defined which use a callback to obtain generate 
 
 - [Installation](#installation)
   - [Optional Packages](#optional-packages)
-- [Usage](#usage)
-  - [Verbose Usage](#verbose-usage)
-  - [Simplified Usage](#simplified-usage)
-  - [Examples](#examples)
+- [Example](#example)
 - [API Documentation](#api-documentation)
 - [Contributing](#contributing)
   - [Running Tests](#running-tests)
@@ -29,7 +26,7 @@ yarn add @typescript-entity/core
 
 ### Optional Packages
 
-These packages can help minimize the code required for declaring common attribute configuration sets. They are entirely optional but you may find them useful.
+These packages help minimize the code required for declaring common attribute configuration sets. They are entirely optional but you may find them useful.
 
 ##### [`@typescript-entity/configs`](https://www.npmjs.com/package/@typescript-entity/configs)
 
@@ -63,7 +60,7 @@ Validator functions for common validation strategies.
 yarn add @typescript-entity/validators
 ```
 
-## Usage
+## Example
 
 ![Example](https://github.com/typescript-entity/typescript-entity/raw/master/example.png "Example")
 

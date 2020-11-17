@@ -66,7 +66,7 @@
 					<h1>@typescript-entity</h1>
 				</a>
 				<p>Typed entity library with attribute sanitization, normalization and validation.</p>
-				<p>Provides a low-level implementation of data objects represented as entity classes. Each entity class is assigned a collection of attribute configurations that define the value type (<code>string</code>, <code>number</code>, custom type, anything...) and other constraints such as <code>optional</code>, <code>immutable</code> or <code>hidden</code> (from JSON representation).</p>
+				<p>Provides a low-level implementation of data objects represented as entity classes. Each entity class is assigned a collection of attribute configurations that define the value type (<code>string</code>, <code>number</code>, custom type, anything...) and other constraints such as <code>optional</code> (<code>null</code> values allowed), <code>immutable</code> (read-only) or <code>hidden</code> (from JSON representation).</p>
 				<p>Attribute values can be sanitized from raw/untrusted data (e.g. JSON or user-input) using the <code>sanitizer</code> function configured for each attribute, as well as normalized and validated by configuring an optional <code>normalizer</code> and <code>validator</code> function, respectively.</p>
 				<p>Callable attributes can also be defined which use a callback to obtain generate and return a typed value.</p>
 				<ul>
@@ -74,12 +74,7 @@
 							<li><a href="#optional-packages">Optional Packages</a></li>
 						</ul>
 					</li>
-					<li><a href="#usage">Usage</a><ul>
-							<li><a href="#verbose-usage">Verbose Usage</a></li>
-							<li><a href="#simplified-usage">Simplified Usage</a></li>
-							<li><a href="#examples">Examples</a></li>
-						</ul>
-					</li>
+					<li><a href="#example">Example</a></li>
 					<li><a href="#api-documentation">API Documentation</a></li>
 					<li><a href="#contributing">Contributing</a><ul>
 							<li><a href="#running-tests">Running Tests</a></li>
@@ -95,7 +90,7 @@
 				<a href="#optional-packages" id="optional-packages" style="color: inherit; text-decoration: none;">
 					<h3>Optional Packages</h3>
 				</a>
-				<p>These packages can help minimize the code required for declaring common attribute configuration sets. They are entirely optional but you may find them useful.</p>
+				<p>These packages help minimize the code required for declaring common attribute configuration sets. They are entirely optional but you may find them useful.</p>
 				<a href="#typescript-entityconfigs" id="typescript-entityconfigs" style="color: inherit; text-decoration: none;">
 					<h5><a href="https://www.npmjs.com/package/@typescript-entity/configs"><code>@typescript-entity/configs</code></a></h5>
 				</a>
@@ -116,8 +111,8 @@
 				</a>
 				<p>Validator functions for common validation strategies.</p>
 				<pre><code class="language-shell">yarn add @typescript-entity/validators</code></pre>
-				<a href="#usage" id="usage" style="color: inherit; text-decoration: none;">
-					<h2>Usage</h2>
+				<a href="#example" id="example" style="color: inherit; text-decoration: none;">
+					<h2>Example</h2>
 				</a>
 				<p><img src="https://github.com/typescript-entity/typescript-entity/raw/master/example.png" alt="Example" title="Example"></p>
 				<p>A copy/paste version is available in <a href="https://github.com/typescript-entity/typescript-entity/tree/master/example.ts">example.ts</a></p>
