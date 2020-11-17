@@ -3,7 +3,9 @@ import { entity } from '../packages/core/src/';
 import type { AttrName } from '../packages/core/src/';
 import { isLength } from '../packages/validators/src/';
 
-export const CONFIG = {
+export type UserAttrConfigSet = typeof USER_ATTR_CONFIG_SET;
+
+export const USER_ATTR_CONFIG_SET = {
   date_of_birth: dateInPast(),
   email: email(),
   email_domain: callable(function(this: User): string | null { return this.email.split('@', 2)[1] || null }),
@@ -15,4 +17,4 @@ export const CONFIG = {
   verified: boolean(false, false, true),
 };
 
-export class User extends entity(CONFIG) {}
+export class User extends entity(USER_ATTR_CONFIG_SET) {}
