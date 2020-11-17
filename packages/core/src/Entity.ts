@@ -160,11 +160,11 @@ export class Entity<ACS extends AttrConfigSet = typeof EmptyObject> {
    *
    * @param names
    */
-  public many(names: ResolveAttrName<ACS>[]): Partial<ResolveAttrSet<ACS>> {
+  public many<N extends ResolveAttrName<ACS>[]>(names: N): Pick<ResolveAttrSet<ACS>, typeof names[number]> {
     return names.reduce((attrs, name) => ({
       ...attrs,
       [name]: this.one(name),
-    }), {});
+    }), {}) as Pick<ResolveAttrSet<ACS>, typeof names[number]>;
   }
 
   /**
