@@ -3,7 +3,7 @@ import { entity } from '../packages/core/src/';
 import type { AttrName } from '../packages/core/src/';
 import { isLength } from '../packages/validators/src/';
 
-export const UserAttrConfigSet = {
+export class User extends entity({
   date_of_birth: dateInPast(),
   email: email(),
   email_domain: callable(function(this: User): string | null { return this.email.split('@', 2)[1] || null }),
@@ -13,6 +13,4 @@ export const UserAttrConfigSet = {
     validator: (value: string, name: AttrName): boolean => isLength(value, name, { min: 5 }),
   },
   verified: boolean(false, false, true),
-};
-
-export class User extends entity(UserAttrConfigSet) {}
+}) {}

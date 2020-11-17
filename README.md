@@ -65,72 +65,9 @@ yarn add @typescript-entity/validators
 
 ## Usage
 
-```typescript
-import { boolean, callable, dateInPast, email, string, uuid } from '@typescript-entity/configs';
-import { entity } from '@typescript-entity/core';
-import type { AttrName } from '@typescript-entity/core';
-import { isLength } from '@typescript-entity/validators';
+![Example](https://github.com/typescript-entity/typescript-entity/raw/master/example.png "Example")
 
-const config = {
-
-  // `User.date_of_birth` is a date in the past
-  date_of_birth: dateInPast(),
-
-  // `User.email` is an email address
-  email: email(),
-
-  // `User.email_domain` is a callable attribute that returns the domain part of `User.email`. Using
-  // [`this` parameter](https://www.typescriptlang.org/docs/handbook/functions.html#this-parameters)
-  // gives you access to the entity instance.
-  email_domain: callable(function(this: User): string | null { return this.email.split('@', 2)[1] || null }),
-
-  // `User.uuid` is an optional, immutable and hidden UUID v4 attribute
-  uuid: uuid(true, true, true),
-
-  // `User.username` needs to have a custom validator function defined. This validator ensures the
-  // username is at least 5 characters long.
-  username: {
-    ...string(),
-    validator: (value: string, name: AttrName): boolean => isLength(value, name, { min: 5 }),
-  },
-
-  // `User.verified` is a required, immutable and hidden boolean attribute
-  verified: boolean(false, false, true),
-
-};
-
-export class User extends entity(config) {}
-```
-### Examples
-
-```typescript
-const user = new User();
-
-console.log(user.date_of_birth); // 1970-01-01T00:00:00.000Z
-// Required date attributes default to Unix epoch
-
-console.log(user.email); // ''
-// Required string attributes default to an empty string
-
-console.log(user.email_domain); // null
-// Optional callable attributes can return null
-
-console.log(user.verified); // false
-// Optional boolean attributes default to false
-
-console.log(JSON.stringify(user)) // {"date_of_birth":"1970-01-01T00:00:00.000Z","email":"","email_domain":null,"username":"","verified":false}
-// Hidden attributes (`uuid`) are not exposed in JSON
-
-const anotherUser = new User({
-  uuid: 'abc', // Since `User.uuid` is immutable it can only be set at instantiation
-});
-
-anotherUser.set('uuid', 'bar'); // Throws a `ReadOnlyError`
-
-anotherUser.fill({
-  uuid: 'bar', // Throws a `ReadOnlyError`
-});
-```
+A copy/paste version is available in [example.ts](https://github.com/typescript-entity/typescript-entity/tree/master/example.ts)
 
 ## API Documentation
 
