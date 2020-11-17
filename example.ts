@@ -46,6 +46,10 @@ user.fill({
 
 user.wtf_is_this = 'I dunno... have some RED SQUIGGLES!';
 
+const attrs = user.many([ 'email', 'uuid' ]);
+console.log(attrs.email);
+console.log(attrs.username); // Didn't ask for 'username' when calling many()
+
 console.log(user.all()); // Dump all attribute values
 
 const json = JSON.stringify(user); // Export all visible attributes as JSON
