@@ -1,7 +1,6 @@
 import { ReadOnlyError, UnconfiguredAttrError, ValidationError } from '../packages/core/src/';
 import type { ResolveAttrSet, ResolveMutableAttrSet } from '../packages/core/src/';
-import { User } from './User';
-import type { UserAttrConfigSet } from './User';
+import { CONFIG, User } from './User';
 
 test('an Entity can be constructed with default values', () => {
 
@@ -54,7 +53,7 @@ test('an Entity cannot be filled with values for immutable attributes later', ()
 
   expect(() => {
     const user = new User();
-    user.fill({ uuid: '7a2d2178-37da-4f5c-bb05-5f6819ff6ecd' } as unknown as ResolveMutableAttrSet<UserAttrConfigSet>);
+    user.fill({ uuid: '7a2d2178-37da-4f5c-bb05-5f6819ff6ecd' } as unknown as ResolveMutableAttrSet<typeof CONFIG>);
   }).toThrow(ReadOnlyError);
 
 });
@@ -108,7 +107,7 @@ test('an Entity can expose some attributes', () => {
     verified: attrs.verified,
   };
   const user = new User(attrs);
-  expect(user.many(Object.keys(expected) as (keyof ResolveAttrSet<UserAttrConfigSet>)[])).toStrictEqual(expected);
+  expect(user.many(Object.keys(expected) as (keyof ResolveAttrSet<typeof CONFIG>)[])).toStrictEqual(expected);
 
 });
 
