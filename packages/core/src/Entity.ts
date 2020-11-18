@@ -80,12 +80,6 @@ export type ResolveMutableAttrSet<ACS extends AttrConfigSet> = ResolveAttrSet<Re
 export type ResolveConstructorData<ACS extends AttrConfigSet> = Partial<ResolveWritableAttrSet<ACS>> | Entity<ACS> | string;
 export type ResolveFillData<ACS extends AttrConfigSet> = Partial<ResolveMutableAttrSet<ACS>> | Entity<ACS> | string;
 
-export type EntityConstructor<ACS extends AttrConfigSet, E extends Entity<ACS> = Entity<ACS>> = {
-  new(data?: ResolveConstructorData<ACS>): E;
-};
-
-export type EntityWithAccessorsConstructor<ACS extends AttrConfigSet, E extends Entity<ACS> = Entity<ACS>> = EntityConstructor<ACS, E & ResolveAttrSet<ACS>>;
-
 const EmptyObject = {};
 export class Entity<ACS extends AttrConfigSet = typeof EmptyObject> {
 
